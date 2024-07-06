@@ -60,3 +60,19 @@ gc_prompt_result = """
     11. The architect of Casa Loma was E. J. Lennox. | architect | Casa Loma | E. J. Lennox
     12. E. J. Lennox designed several other city landmarks. | E. J. Lennox | designed | several other city landmarks
 """
+
+###
+# Extract atomic facts and key elements
+###
+gc_prompt_result_list = [x.strip() for x in gc_prompt_result.splitlines()]
+list_key_elements = []
+for af_and_ke in gc_prompt_result_list:
+    if len(af_and_ke):
+        # print(af_and_ke)
+        atomic_fact = af_and_ke.split("|")[0].strip()[af_and_ke.find(".")+1:].strip()
+        print(atomic_fact)
+        key_elements = [x.strip() for x in af_and_ke.split("|")[1:]]
+        print(key_elements)
+        for ke in key_elements:
+            list_key_elements.append(ke)
+        print("\n")
