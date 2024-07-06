@@ -47,22 +47,16 @@ gc_prompt = """
 """
 
 gc_prompt_result = """
-    1.  Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. | Never Too Loud | fourth studio album | Canadian hard rock band | Danko Jones |
-    2.  Never Too Loud was recorded at Studio 606 in Los Angeles. | Never Too Loud | Studio 606 | Los Angeles |
-    3.  Nick Raskulinecz produced Never Too Loud. | Nick Raskulinecz | produced | Never Too Loud |
-    4.  Danko Jones is a Canadian hard rock trio from Toronto. | Danko Jones | Canadian hard rock trio | Toronto |
-    5.  The band consists of Danko Jones, John "JC" Calabrese, and Rich Knox. | Danko Jones | John "JC" Calabrese | Rich Knox |
-    6.  Danko Jones is the vocalist and guitarist of the band. | Danko Jones | vocalist | guitarist |
-    7.  John "JC" Calabrese plays bass in the band. | John "JC" Calabrese | plays bass |
-    8.  Rich Knox is the drummer for Danko Jones. | Rich Knox | drummer | Danko Jones |
-    9.  Danko Jones' music includes elements of hard rock and punk. | Danko Jones | music | elements | hard rock | punk |
-    10. Danko Jones is known for their energetic live shows. | Danko Jones | known | energetic live shows |
-    11. Casa Loma is a Gothic Revival castle-style mansion in midtown Toronto. | Casa Loma | Gothic Revival | castle-style mansion | midtown Toronto |
-    12. Casa Loma is now a historic house museum and landmark. | Casa Loma | historic house museum | landmark |
-    13. Casa Loma was constructed from 1911 to 1914. | Casa Loma | constructed | 1911 | 1914 |
-    14. Casa Loma was constructed as a residence for financier Sir Henry Pellatt. | Casa Loma | constructed | residence | financier | Sir Henry Pellatt |
-    15. E. J. Lennox was the architect of Casa Loma. | E. J. Lennox | architect | Casa Loma |
-    16. E. J. Lennox designed several other city landmarks. | E. J. Lennox | designed | city landmarks |
+    1. Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. | Never Too Loud | fourth studio album | Canadian hard rock band | Danko Jones
+    2. Never Too Loud was recorded at Studio 606 in Los Angeles. | Never Too Loud | recorded | Studio 606 | Los Angeles
+    3. Nick Raskulinecz was the producer of Never Too Loud. | Nick Raskulinecz | producer | Never Too Loud
+    4. Danko Jones is a Canadian hard rock trio from Toronto. | Danko Jones | Canadian | hard rock trio | Toronto
+    5. The band Danko Jones consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums). | Danko Jones | Danko Jones (vocals/guitar) | John 'JC' Calabrese (bass) | Rich Knox (drums)
+    6. Danko Jones' music includes elements of hard rock and punk. | Danko Jones | music | elements | hard rock | punk
+    7. Danko Jones is known for their energetic live shows. | Danko Jones | known | energetic live shows
+    8. Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. | Casa Loma | Gothic Revival | castle-style mansion | garden | midtown Toronto | Ontario | Canada
+    9. Casa Loma is now a historic house museum and landmark. | Casa Loma | historic house museum | landmark
+    10. Casa Loma was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt. | Casa Loma | constructed | 1911 | 1914 | residence | financier | Sir Henry Pellatt
+    11. The architect of Casa Loma was E. J. Lennox. | architect | Casa Loma | E. J. Lennox
+    12. E. J. Lennox designed several other city landmarks. | E. J. Lennox | designed | several other city landmarks
 """
-
-### Normalize ###
