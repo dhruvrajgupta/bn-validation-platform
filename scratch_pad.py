@@ -180,3 +180,78 @@ def aggregation():
 
     print(f"Input: {inputs1}\nOutput: {output1}")
     print(f"Input: {inputs2}\nOutput: {output2}")
+
+
+def max_substring():
+    from difflib import SequenceMatcher
+
+    def get_maximum_substring(s1, s2):
+        # Create a SequenceMatcher object
+        seq_matcher = SequenceMatcher(None, s1, s2)
+        # Find the longest match
+        match = seq_matcher.find_longest_match(0, len(s1), 0, len(s2))
+        # Extract the longest matching substring
+        if match.size != 0:
+            substring = s1[match.a: match.a + match.size]
+            return substring
+        return ""
+
+    # Example usage
+    s1 = "midtown Toronto"
+    s2 = "Toronto is a city"
+
+    max_substring = get_maximum_substring(s1, s2)
+    print(f"The longest matching substring is: '{max_substring}'")
+
+
+# max_substring()
+
+def fp_growth_association():
+
+    from mlxtend.frequent_patterns import fpgrowth, association_rules
+    import pandas as pd
+
+    def preprocess_tags(tags_list):
+        # Function to preprocess tags for standardization
+        # e.g., converting to lowercase, removing punctuation, etc.
+        return [tag.lower().strip() for tag in tags_list]
+
+    def merge_associated_tags(tags_list, min_support=0.5, min_threshold=0.5):
+        # Preprocess the input tags
+        tags_list = preprocess_tags(tags_list)
+        
+        # Create a DataFrame with dummy variables
+        df = pd.DataFrame([[tag in tags for tag in tags_list] for tags in [tags_list]], columns=tags_list)
+        
+        # Apply FP-Growth algorithm
+        frequent_itemsets = fpgrowth(df, min_support=min_support, use_colnames=True)
+        
+        # Generate association rules
+        rules = association_rules(frequent_itemsets, metric="lift", min_threshold=min_threshold)
+        
+        # Create a dictionary to store merged tags
+        merged_tags = set(tags_list)
+        
+        for index, row in rules.iterrows():
+            antecedents = set(row['antecedents'])
+            consequents = set(row['consequents'])
+            
+            if len(antecedents) == 1 and len(consequents) == 1:
+                tag_to_merge = next(iter(antecedents))
+                tag_merged_into = next(iter(consequents))
+                
+                if tag_to_merge in merged_tags:
+                    merged_tags.remove(tag_to_merge)
+                merged_tags.add(tag_merged_into)
+        
+        return list(merged_tags)
+
+    # Example usage
+    input_tags_1 = ['Canadian', 'midtown Toronto', 'Toronto', 'Canada', 'Ontario']
+    input_tags_2 = ['hard rock trio', 'Canadian hard rock band', 'hard rock']
+
+    output_tags_1 = merge_associated_tags(input_tags_1)
+    output_tags_2 = merge_associated_tags(input_tags_2)
+
+    print("Output for input 1:", output_tags_1)
+    print("Output for input 2:", output_tags_2)
