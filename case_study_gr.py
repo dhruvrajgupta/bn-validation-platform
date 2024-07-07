@@ -1,3 +1,5 @@
+from utils import cluster_key_elements, get_maximum_substring
+
 question_text = "Question What is the name of the castle in the city where the performer of Never Too Loud was formed?"
 answer = "Casa Loma"
 
@@ -102,10 +104,85 @@ def extract_atomic_facts_key_elements():
 
     return gc_construct_map
 
+def list_all_key_elements():
+    list_of_key_elements = []
+    for _, atomic_facts_key_elements in gc_construct_map.items():
+        list_of_key_elements.extend(atomic_facts_key_elements["key_elements"])
+    
+    return list_of_key_elements
+
+def distinct_node_from_list(list_of_key_elements, list_of_distinct_nodes):
+
+    # Processed all the elements in the original list
+    if not list_of_key_elements: return list_of_distinct_nodes
+    
+    # Get the longest common substring
+    max_substring = ""
+    max_length = 0
+    for a in list_of_key_elements:
+        for b in list_of_key_elements:
+            if a == b:
+                continue
+
+            current_substring = get_maximum_substring(a,b)
+            if len(current_substring) > max_length:
+                max_substring = current_substring
+                max_length = len(current_substring)
+
+    # print(max_substring, max_length)
+    # Extract all the key elements that have the longest common substring
+    elements_with_max_substring = []
+    max_substring = max_substring.strip()
+    for element in list_of_key_elements:
+        if max_substring in element:
+            # print(element)
+            elements_with_max_substring.append(element)
+            # Element removal here does not adhere to the logic
+            # list_of_key_elements.remove(element)
+    # print(elements_with_max_substring)
+
+    # Remove all the elements that have the longest common substring
+    for element in elements_with_max_substring:
+        if element in list_of_key_elements:
+            list_of_key_elements.remove(element)
+
+    key_element_max_substring = min(elements_with_max_substring, key=len)
+    list_of_distinct_nodes.append({
+        "key_element": key_element_max_substring,
+        "max_substring": max_substring
+        })
+
+    # print(list_of_key_elements)
+
+    return distinct_node_from_list(list_of_key_elements, list_of_distinct_nodes)
+
+def extract_distinct_nodes(gc_construct_map):
+    all_key_elements = list_all_key_elements()
+    distinct_nodes = []
+
+    clustered_key_elements = cluster_key_elements(all_key_elements)
+
+    # Display the clusters
+    for label, elements in clustered_key_elements.items():
+        # print(f"Cluster {label}: {elements}")
+        if label == -1:
+            continue
+        distinct_nodes.extend(distinct_node_from_list(elements, []))
+
+    gc_construct_map["distinct_nodes_substring"] = distinct_nodes
+
+    return gc_construct_map
+
 if __name__ == "__main__":
     gc_construct_map = extract_atomic_facts_key_elements()
+    gc_construct_map = extract_distinct_nodes(gc_construct_map)
+
     for id, gc_construct in gc_construct_map.items():
+        if id == "distinct_nodes_substring":
+            continue
         print(f"ID: {id}")
         print(f"Atomic Fact: {gc_construct['atomic_fact']}")
         print(f"Key Elements: {gc_construct['key_elements']}")
-        print("\n")
+        print()
+    
+    print(f"Distinct Nodes: {gc_construct_map['distinct_nodes_substring']}")
