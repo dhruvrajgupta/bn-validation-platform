@@ -43,12 +43,35 @@ def get_maximum_substring(s1, s2):
         return ""
 
 def cluster_key_elements(key_elements: List[str])-> Dict[int, List[str]]:
+    """
+    Clusters the given list of key elements using DBSCAN algorithm.
+
+    Args:
+        key_elements (List[str]): A list of key elements to be clustered.
+
+    Returns:
+        Dict[int, List[str]]: A dictionary mapping cluster labels to lists of key elements belonging to each cluster.
+
+    Description:
+        This function clusters the given list of key elements using the DBSCAN algorithm. It follows the following steps:
+        1. Converts the corpus (list of key elements) to embeddings using the SentenceTransformer model.
+        2. Performs clustering using the DBSCAN algorithm with eps=0.4, min_samples=2, and cosine metric.
+        3. Organizes and displays the clusters.
+        4. Returns a dictionary mapping cluster labels to lists of key elements belonging to each cluster.
+
+        Note: The function currently does not display the clusters.
+
+    Example:
+        >>> key_elements = ['apple', 'banana', 'orange', 'grape', 'kiwi']
+        >>> cluster_key_elements(key_elements)
+        {0: ['apple', 'banana'], 1: ['orange', 'grape'], 2: ['kiwi']}
+    """
     # Step 3: Convert Corpus to Embeddings
     model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
     embeddings = model.encode(key_elements)
 
     # Step 4: Perform Clustering with DBSCAN
-    clustering = DBSCAN(eps=0.5, min_samples=2, metric='cosine').fit(embeddings)
+    clustering = DBSCAN(eps=0.4, min_samples=2, metric='cosine').fit(embeddings)
     labels = clustering.labels_
 
     # Step 5: Organize and Display Clusters
@@ -58,10 +81,21 @@ def cluster_key_elements(key_elements: List[str])-> Dict[int, List[str]]:
             clustered_data[label] = []
         clustered_data[label].append(key_elements[idx])
 
-    # # Display the clusters
+    # Display the clusters
     # for label, elements in clustered_data.items():
     #     print(f"Cluster {label}: {elements}")
 
     return clustered_data
 
+def similarity(a, b):
+    """
+    Calculate the similarity between two strings using the SequenceMatcher module.
 
+    Parameters:
+        a (str): The first string to compare.
+        b (str): The second string to compare.
+
+    Returns:
+        float: The similarity ratio between the two strings. The value ranges from 0 to 1, where 1 indicates perfect similarity.
+    """
+    return SequenceMatcher(None, a, b).ratio() 
