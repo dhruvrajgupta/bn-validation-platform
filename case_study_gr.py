@@ -1,4 +1,5 @@
-from utils import cluster_key_elements, get_maximum_substring
+from utils import cluster_key_elements, get_maximum_substring, similarity
+import json
 
 question_text = "Question What is the name of the castle in the city where the performer of Never Too Loud was formed?"
 answer = "Casa Loma"
@@ -63,15 +64,12 @@ gc_prompt_result = """
     12. E. J. Lennox designed several other city landmarks. | E. J. Lennox | designed | several other city landmarks
 """
 
-gc_prompt_result = """
-    1. Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. | Never Too Loud | fourth studio album | Canadian hard rock band | Danko Jones
-    4. Danko Jones is a Canadian hard rock trio from Toronto. | Danko Jones | Canadian | hard rock trio | Toronto
-    8. Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. | Casa Loma | Gothic Revival | castle-style mansion | garden | midtown Toronto | Ontario | Canada
-    """
+# gc_prompt_result = """
+#     1. Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. | Never Too Loud | fourth studio album | Canadian hard rock band | Danko Jones
+#     4. Danko Jones is a Canadian hard rock trio from Toronto. | Danko Jones | Canadian | hard rock trio | Toronto
+#     8. Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. | Casa Loma | Gothic Revival | castle-style mansion | garden | midtown Toronto | Ontario | Canada
+#     """
 
-###
-# Extract atomic facts and key elements
-###
 def extract_atomic_facts_key_elements():
     """
     Extracts atomic facts and their key elements from a given prompt result list.
@@ -147,9 +145,13 @@ def distinct_node_from_list(list_of_key_elements, list_of_distinct_nodes):
             list_of_key_elements.remove(element)
 
     key_element_max_substring = min(elements_with_max_substring, key=len)
-    list_of_distinct_nodes.append({
-        "key_element": key_element_max_substring,
-        "max_substring": max_substring
+
+    if max_substring == "":
+        list_of_distinct_nodes.append(key_element_max_substring)
+    else:
+        list_of_distinct_nodes.append({
+            "key_element": key_element_max_substring,
+            "max_substring": max_substring
         })
 
     # print(list_of_key_elements)
@@ -162,27 +164,132 @@ def extract_distinct_nodes(gc_construct_map):
 
     clustered_key_elements = cluster_key_elements(all_key_elements)
 
+    print("\nClustering all nodes semantically:")
+    print("-"*50+"\n")
     # Display the clusters
     for label, elements in clustered_key_elements.items():
-        # print(f"Cluster {label}: {elements}")
+        print(f"Cluster {label}: {elements}")
+
+    # Extracting distinct nodes within aggregated cluster
+    print("\n\nExtracting distinct nodes within cluster...")
+    print("-"*50+"\n")
+    for label, elements in clustered_key_elements.items():
+        print(f"Cluster {label}: {elements}")
         if label == -1:
+            print(f"Skipping [Cluster -1] as they are alldistinct within the cluster...\n")
             continue
-        distinct_nodes.extend(distinct_node_from_list(elements, []))
+        
+        cluster_distinct_nodes = distinct_node_from_list(elements, [])
+        print(f"{json.dumps(cluster_distinct_nodes, indent=2)}\n")
+
+        # Only append distinct nodes with substring mapping
+        for node in cluster_distinct_nodes:
+            if type(node) is not dict:
+                continue
+            distinct_nodes.append(node)
 
     gc_construct_map["distinct_nodes_substring"] = distinct_nodes
 
     return gc_construct_map
 
-if __name__ == "__main__":
-    gc_construct_map = extract_atomic_facts_key_elements()
-    gc_construct_map = extract_distinct_nodes(gc_construct_map)
+def map_key_elements_to_distinct_nodes(gc_construct_map):
+    """
+    Node mapping and their relative strengths
+    {
+        11: {
+            "atomic_fact": "The architect of Casa Loma was E. J. Lennox.",
+            "key_elements": ["architect", "Casa Loma", "E. J. Lennox"],
+            "nodes": {
+                "architect": [{"arch": 0.3}, {"architectural": 1.3}],
+                "Casa Loma": "Casa Loma"
+                ...
+                }
+        }
+    }
+    """
+    # Make nodes dictionary for all atomic facts
+    for id, gc_construct in gc_construct_map.items():
+        if id == "distinct_nodes_substring":
+            continue
+        gc_construct_map[id]["nodes"] = {}
+    
+    distinct_nodes_substring_list = gc_construct_map["distinct_nodes_substring"]
 
+    for distinct_node_substring in distinct_nodes_substring_list:
+        max_substring = distinct_node_substring["max_substring"]
+        distinct_node_id = distinct_node_substring["key_element"]
+
+        print(f"\nMapping key elements having [\"{max_substring}\"] to [\"{distinct_node_id}\"]...")
+        print("-"*50)
+
+        for id, gc_construct in gc_construct_map.items():
+            if id == "distinct_nodes_substring":
+                continue
+            print(f"ID: {id}")
+            print(f"Atomic Fact: {gc_construct['atomic_fact']}")
+            print(f"Key Elements: {gc_construct['key_elements']}")
+
+            nodes = gc_construct["nodes"]
+
+            for element in gc_construct['key_elements']:
+                if max_substring in element:
+                    if element in nodes:
+                        nodes[element].append({max_substring: similarity(element, max_substring)})
+                    else:
+                        nodes[element] = [{max_substring: similarity(element, max_substring)}]
+
+            print(f"Nodes: {gc_construct_map[id]['nodes']}\n")
+
+        print(f"{'-'*50}\n")
+
+    # Mapping remaining key elements to distinct nodes
+    print(f"Mapping remaining key elements...\n{'-'*50}")
+    for id, gc_construct in gc_construct_map.items():
+        if id == "distinct_nodes_substring":
+                continue
+        print(f"ID: {id}")
+        print(f"Atomic Fact: {gc_construct['atomic_fact']}")
+        print(f"Key Elements: {gc_construct['key_elements']}")
+        print(f"Nodes: {gc_construct_map[id]['nodes']}")
+
+        nodes = gc_construct["nodes"]
+
+        for element in gc_construct['key_elements']:
+            if element not in gc_construct_map[id]['nodes']:
+                nodes[element] = element
+        print(f"Nodes: {gc_construct_map[id]['nodes']}\n")
+    return gc_construct_map
+
+if __name__ == "__main__":
+    print("\nStarting...")
+    print("="*50)
+    print("Extracting Atomic Facts and Key Elements...")
+    gc_construct_map = extract_atomic_facts_key_elements()
+    print("Extracted Atomic Facts and Key Elements COMPLETED")
+    print("="*50)
+    print("Extracting Distinct Nodes of the Graph...")
+    gc_construct_map = extract_distinct_nodes(gc_construct_map)
+    print("Extracting Distinct Nodes of the Graph COMPLETED")
+    print("="*50)
+    print("Mapping Key Elements to Distinct Nodes of the Graph...")
+    gc_construct_map = map_key_elements_to_distinct_nodes(gc_construct_map)
+    print("Mapping Key Elements to Distinct Nodes of the Graph COMPLETED")
+    print("="*50)
+
+    # TODO: filter distinct substrings 'e m'
+
+    print("\n\n")
+    print("*"*50)
+    print("GRAPH DATA")
+    print("*"*50+"\n\n")
     for id, gc_construct in gc_construct_map.items():
         if id == "distinct_nodes_substring":
             continue
         print(f"ID: {id}")
         print(f"Atomic Fact: {gc_construct['atomic_fact']}")
         print(f"Key Elements: {gc_construct['key_elements']}")
-        print()
+        print(f"Nodes: {json.dumps(gc_construct['nodes'], indent=2)}")
+        print("-"*50)
     
-    print(f"Distinct Nodes: {gc_construct_map['distinct_nodes_substring']}")
+    print(f"\nDistinct Nodes from Aggregation: \n{json.dumps(gc_construct_map['distinct_nodes_substring'], indent=2)}")
+    print("\n\n"+"*"*50+"\n\n")
