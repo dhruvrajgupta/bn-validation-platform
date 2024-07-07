@@ -61,18 +61,51 @@ gc_prompt_result = """
     12. E. J. Lennox designed several other city landmarks. | E. J. Lennox | designed | several other city landmarks
 """
 
+gc_prompt_result = """
+    1. Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. | Never Too Loud | fourth studio album | Canadian hard rock band | Danko Jones
+    4. Danko Jones is a Canadian hard rock trio from Toronto. | Danko Jones | Canadian | hard rock trio | Toronto
+    8. Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. | Casa Loma | Gothic Revival | castle-style mansion | garden | midtown Toronto | Ontario | Canada
+    """
+
 ###
 # Extract atomic facts and key elements
 ###
-gc_prompt_result_list = [x.strip() for x in gc_prompt_result.splitlines()]
-list_key_elements = []
-for af_and_ke in gc_prompt_result_list:
-    if len(af_and_ke):
-        # print(af_and_ke)
-        atomic_fact = af_and_ke.split("|")[0].strip()[af_and_ke.find(".")+1:].strip()
-        print(atomic_fact)
-        key_elements = [x.strip() for x in af_and_ke.split("|")[1:]]
-        print(key_elements)
-        for ke in key_elements:
-            list_key_elements.append(ke)
+def extract_atomic_facts_key_elements():
+    """
+    Extracts atomic facts and their key elements from a given prompt result list.
+    Returns a dictionary with atomic facts mapped to their key elements.
+    """
+
+    """
+    {
+        11: {
+            "atomic_fact": "The architect of Casa Loma was E. J. Lennox.",
+            "key_elements": ["architect", "Casa Loma", "E. J. Lennox"]
+        }
+    }
+    """
+    gc_construct_map = {}
+
+    gc_prompt_result_list = [x.strip() for x in gc_prompt_result.splitlines()]
+    for id_af_and_ke in gc_prompt_result_list:
+        if not len(id_af_and_ke):
+            continue
+
+        id = id_af_and_ke.split(".")[0].strip()
+        af_ke = ".".join(id_af_and_ke.split(".")[1:]).strip()
+        atomic_fact = af_ke.split("|")[0].strip()
+        key_elements = [x.strip() for x in af_ke.split("|")[1:]]
+        gc_construct_map[id] = {
+            "atomic_fact": atomic_fact,
+            "key_elements": key_elements
+        }
+
+    return gc_construct_map
+
+if __name__ == "__main__":
+    gc_construct_map = extract_atomic_facts_key_elements()
+    for id, gc_construct in gc_construct_map.items():
+        print(f"ID: {id}")
+        print(f"Atomic Fact: {gc_construct['atomic_fact']}")
+        print(f"Key Elements: {gc_construct['key_elements']}")
         print("\n")
