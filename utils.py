@@ -7,6 +7,7 @@ from nltk.corpus import stopwords
 from sentence_transformers import SentenceTransformer
 from sklearn.cluster import DBSCAN
 from typing import List, Dict
+from difflib import SequenceMatcher
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -30,6 +31,17 @@ def lemmatize(element: str) -> str:
     # print(element)
     return element
 
+def get_maximum_substring(s1, s2):
+        # Create a SequenceMatcher object
+        seq_matcher = SequenceMatcher(None, s1, s2)
+        # Find the longest match
+        match = seq_matcher.find_longest_match(0, len(s1), 0, len(s2))
+        # Extract the longest matching substring
+        if match.size != 0:
+            substring = s1[match.a: match.a + match.size]
+            return substring
+        return ""
+
 def cluster_key_elements(key_elements: List[str])-> Dict[int, List[str]]:
     # Step 3: Convert Corpus to Embeddings
     model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
@@ -46,7 +58,7 @@ def cluster_key_elements(key_elements: List[str])-> Dict[int, List[str]]:
             clustered_data[label] = []
         clustered_data[label].append(key_elements[idx])
 
-    # Display the clusters
+    # # Display the clusters
     # for label, elements in clustered_data.items():
     #     print(f"Cluster {label}: {elements}")
 
