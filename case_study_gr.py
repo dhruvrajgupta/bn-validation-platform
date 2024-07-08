@@ -179,7 +179,11 @@ def extract_distinct_nodes(gc_construct_map):
             print(f"Skipping [Cluster -1] as they are alldistinct within the cluster...\n")
             continue
         
-        cluster_distinct_nodes = distinct_node_from_list(elements, [])
+        elements = list(set(elements))
+        if len(elements) > 1:
+            cluster_distinct_nodes = distinct_node_from_list(elements, [])
+        else:
+            cluster_distinct_nodes = elements
         print(f"{json.dumps(cluster_distinct_nodes, indent=2)}\n")
 
         # Only append distinct nodes with substring mapping
@@ -219,6 +223,16 @@ def map_key_elements_to_distinct_nodes(gc_construct_map):
         max_substring = distinct_node_substring["max_substring"]
         distinct_node_id = distinct_node_substring["key_element"]
 
+        if similarity(max_substring, distinct_node_id) < 0.4: 
+            continue
+
+        if len(max_substring)/len(distinct_node_id) < 0.4:
+            # designed, ed similarity = 0.4 so lengtth check
+            continue
+
+        if max_substring.isdigit():
+            continue
+
         print(f"\nMapping key elements having [\"{max_substring}\"] to [\"{distinct_node_id}\"]...")
         print("-"*50)
 
@@ -232,7 +246,7 @@ def map_key_elements_to_distinct_nodes(gc_construct_map):
             nodes = gc_construct["nodes"]
 
             for element in gc_construct['key_elements']:
-                if max_substring in element:
+                if max_substring in element and not element.isdigit():
                     if element in nodes:
                         nodes[element].append({max_substring: similarity(element, max_substring)})
                     else:
@@ -275,8 +289,6 @@ if __name__ == "__main__":
     gc_construct_map = map_key_elements_to_distinct_nodes(gc_construct_map)
     print("Mapping Key Elements to Distinct Nodes of the Graph COMPLETED")
     print("="*50)
-
-    # TODO: filter distinct substrings 'e m'
 
     print("\n\n")
     print("*"*50)
