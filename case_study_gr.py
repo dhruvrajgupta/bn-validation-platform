@@ -275,20 +275,16 @@ def map_key_elements_to_distinct_nodes(gc_construct_map):
     return gc_construct_map
 
 if __name__ == "__main__":
-    print("\nStarting...")
-    print("="*50)
+    print(f"\nStarting...\n{'='*50}")
     print("Extracting Atomic Facts and Key Elements...")
     gc_construct_map = extract_atomic_facts_key_elements()
-    print("Extracted Atomic Facts and Key Elements COMPLETED")
-    print("="*50)
+    print(f"Extracted Atomic Facts and Key Elements COMPLETED\n{'='*50}")
     print("Extracting Distinct Nodes of the Graph...")
     gc_construct_map = extract_distinct_nodes(gc_construct_map)
-    print("Extracting Distinct Nodes of the Graph COMPLETED")
-    print("="*50)
+    print(f"Extracting Distinct Nodes of the Graph COMPLETED\n{'='*50}")
     print("Mapping Key Elements to Distinct Nodes of the Graph...")
     gc_construct_map = map_key_elements_to_distinct_nodes(gc_construct_map)
-    print("Mapping Key Elements to Distinct Nodes of the Graph COMPLETED")
-    print("="*50)
+    print(f"Mapping Key Elements to Distinct Nodes of the Graph COMPLETED\n{'='*50}")
 
     print("\n\n")
     print("*"*50)
