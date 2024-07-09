@@ -269,3 +269,33 @@ def max_score_item():
     output = get_item_with_max_score(items)
 
     print(f"Input: {items}\nOutput: {output}")
+
+def paragraph_chunking_main():
+    import nltk
+    from nltk.tokenize import sent_tokenize
+
+    # Ensure you have the necessary resources downloaded
+    nltk.download('punkt')
+
+    def paragraph_chunking(text, sentences_per_chunk=3):
+        # Tokenize the text into sentences
+        sentences = sent_tokenize(text)
+        # Chunk sentences into the specified size
+        chunks = [' '.join(sentences[i:i + sentences_per_chunk]) for i in range(0, len(sentences), sentences_per_chunk)]
+        return chunks
+
+    # Example usage
+    paragraph = (
+        "Artificial intelligence (AI) is intelligence demonstrated by machines, in contrast to the natural intelligence displayed by humans and animals. "
+        "Leading AI textbooks define the field as the study of 'intelligent agents': any device that perceives its environment and takes actions that maximize its chance of successfully achieving its goals. "
+        "Colloquially, the term 'artificial intelligence' is often used to describe machines (or computers) that mimic 'cognitive' functions that humans associate with the human mind, such as 'learning' and 'problem-solving'. "
+        "As machines become increasingly capable, tasks considered to require 'intelligence' are often removed from the definition of AI, a phenomenon known as the AI effect. "
+        "A quip in Tesler's Theorem says 'AI is whatever hasn't been done yet.' For instance, optical character recognition is frequently excluded from things considered to be AI, having become a routine technology. "
+        "Modern machine capabilities generally classified as AI include successfully understanding human speech, competing at the highest level in strategic game systems (such as chess and Go), autonomously operating cars, intelligent routing in content delivery networks, and military simulations."
+    )
+
+    chunks = paragraph_chunking(paragraph, sentences_per_chunk=2)
+    for i, chunk in enumerate(chunks):
+        print(f"Chunk {i+1}:\n{chunk}\n")
+
+paragraph_chunking_main()

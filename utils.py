@@ -8,6 +8,7 @@ from sentence_transformers import SentenceTransformer
 from sklearn.cluster import DBSCAN
 from typing import List, Dict
 from difflib import SequenceMatcher
+from nltk.tokenize import sent_tokenize
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -113,3 +114,10 @@ def get_item_with_max_score(items):
     if not items:
         return None  # Return None if the list is empty
     return max(items, key=lambda x: list(x.values())[0])
+
+def paragraph_chunking(text, sentences_per_chunk=3):
+        # Tokenize the text into sentences
+        sentences = sent_tokenize(text)
+        # Chunk sentences into the specified size
+        chunks = [' '.join(sentences[i:i + sentences_per_chunk]) for i in range(0, len(sentences), sentences_per_chunk)]
+        return chunks
