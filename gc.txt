@@ -1,0 +1,987 @@
+
+Starting...
+==================================================
+Extracting Atomic Facts and Key Elements...
+Extracted Atomic Facts and Key Elements COMPLETED
+==================================================
+Extracting Distinct Nodes of the Graph...
+
+Clustering all nodes semantically:
+--------------------------------------------------
+
+Cluster 0: ['Never Too Loud', 'Never Too Loud', 'Never Too Loud']
+Cluster -1: ['fourth studio album', 'recorded', 'Studio 606', 'Los Angeles', 'Nick Raskulinecz', 'producer', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)', 'music', 'elements', 'punk', 'known', 'energetic live shows', 'Gothic Revival', 'garden', 'residence', 'financier', 'Sir Henry Pellatt']
+Cluster 1: ['Canadian hard rock band', 'hard rock trio', 'hard rock']
+Cluster 2: ['Danko Jones', 'Danko Jones', 'Danko Jones', 'Danko Jones (vocals/guitar)', 'Danko Jones', 'Danko Jones']
+Cluster 3: ['Canadian', 'Toronto', 'midtown Toronto', 'Ontario', 'Canada']
+Cluster 4: ['Casa Loma', 'Casa Loma', 'Casa Loma', 'Casa Loma']
+Cluster 5: ['castle-style mansion', 'historic house museum']
+Cluster 6: ['landmark', 'several other city landmarks']
+Cluster 7: ['constructed', 'architect', 'designed']
+Cluster 8: ['1911', '1914']
+Cluster 9: ['E. J. Lennox', 'E. J. Lennox']
+
+
+Extracting distinct nodes within cluster...
+--------------------------------------------------
+
+Cluster 0: ['Never Too Loud', 'Never Too Loud', 'Never Too Loud']
+[
+  "Never Too Loud"
+]
+
+Cluster -1: ['fourth studio album', 'recorded', 'Studio 606', 'Los Angeles', 'Nick Raskulinecz', 'producer', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)', 'music', 'elements', 'punk', 'known', 'energetic live shows', 'Gothic Revival', 'garden', 'residence', 'financier', 'Sir Henry Pellatt']
+Skipping [Cluster -1] as they are alldistinct within the cluster...
+
+Cluster 1: ['Canadian hard rock band', 'hard rock trio', 'hard rock']
+[
+  {
+    "key_element": "hard rock",
+    "max_substring": "hard rock"
+  }
+]
+
+Cluster 2: ['Danko Jones', 'Danko Jones', 'Danko Jones', 'Danko Jones (vocals/guitar)', 'Danko Jones', 'Danko Jones']
+[
+  {
+    "key_element": "Danko Jones",
+    "max_substring": "Danko Jones"
+  }
+]
+
+Cluster 3: ['Canadian', 'Toronto', 'midtown Toronto', 'Ontario', 'Canada']
+[
+  {
+    "key_element": "Toronto",
+    "max_substring": "Toronto"
+  },
+  {
+    "key_element": "Canada",
+    "max_substring": "Canad"
+  },
+  "Ontario"
+]
+
+Cluster 4: ['Casa Loma', 'Casa Loma', 'Casa Loma', 'Casa Loma']
+[
+  "Casa Loma"
+]
+
+Cluster 5: ['castle-style mansion', 'historic house museum']
+[
+  {
+    "key_element": "castle-style mansion",
+    "max_substring": "e m"
+  }
+]
+
+Cluster 6: ['landmark', 'several other city landmarks']
+[
+  {
+    "key_element": "landmark",
+    "max_substring": "landmark"
+  }
+]
+
+Cluster 7: ['constructed', 'architect', 'designed']
+[
+  {
+    "key_element": "architect",
+    "max_substring": "te"
+  },
+  "designed"
+]
+
+Cluster 8: ['1911', '1914']
+[
+  {
+    "key_element": "1911",
+    "max_substring": "191"
+  }
+]
+
+Cluster 9: ['E. J. Lennox', 'E. J. Lennox']
+[
+  "E. J. Lennox"
+]
+
+Extracting Distinct Nodes of the Graph COMPLETED
+==================================================
+Mapping Key Elements to Distinct Nodes of the Graph...
+
+Mapping key elements having ["hard rock"] to ["hard rock"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones.
+Key Elements: ['Never Too Loud', 'fourth studio album', 'Canadian hard rock band', 'Danko Jones']
+Nodes: {'Canadian hard rock band': [{'hard rock': 0.5625}]}
+
+ID: 2
+Atomic Fact: Never Too Loud was recorded at Studio 606 in Los Angeles.
+Key Elements: ['Never Too Loud', 'recorded', 'Studio 606', 'Los Angeles']
+Nodes: {}
+
+ID: 3
+Atomic Fact: Nick Raskulinecz was the producer of Never Too Loud.
+Key Elements: ['Nick Raskulinecz', 'producer', 'Never Too Loud']
+Nodes: {}
+
+ID: 4
+Atomic Fact: Danko Jones is a Canadian hard rock trio from Toronto.
+Key Elements: ['Danko Jones', 'Canadian', 'hard rock trio', 'Toronto']
+Nodes: {'hard rock trio': [{'hard rock': 0.782608695652174}]}
+
+ID: 5
+Atomic Fact: The band Danko Jones consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums).
+Key Elements: ['Danko Jones', 'Danko Jones (vocals/guitar)', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)']
+Nodes: {}
+
+ID: 6
+Atomic Fact: Danko Jones' music includes elements of hard rock and punk.
+Key Elements: ['Danko Jones', 'music', 'elements', 'hard rock', 'punk']
+Nodes: {'hard rock': [{'hard rock': 1.0}]}
+
+ID: 7
+Atomic Fact: Danko Jones is known for their energetic live shows.
+Key Elements: ['Danko Jones', 'known', 'energetic live shows']
+Nodes: {}
+
+ID: 8
+Atomic Fact: Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada.
+Key Elements: ['Casa Loma', 'Gothic Revival', 'castle-style mansion', 'garden', 'midtown Toronto', 'Ontario', 'Canada']
+Nodes: {}
+
+ID: 9
+Atomic Fact: Casa Loma is now a historic house museum and landmark.
+Key Elements: ['Casa Loma', 'historic house museum', 'landmark']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Casa Loma was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt.
+Key Elements: ['Casa Loma', 'constructed', '1911', '1914', 'residence', 'financier', 'Sir Henry Pellatt']
+Nodes: {}
+
+ID: 11
+Atomic Fact: The architect of Casa Loma was E. J. Lennox.
+Key Elements: ['architect', 'Casa Loma', 'E. J. Lennox']
+Nodes: {}
+
+ID: 12
+Atomic Fact: E. J. Lennox designed several other city landmarks.
+Key Elements: ['E. J. Lennox', 'designed', 'several other city landmarks']
+Nodes: {}
+
+--------------------------------------------------
+
+
+Mapping key elements having ["Danko Jones"] to ["Danko Jones"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones.
+Key Elements: ['Never Too Loud', 'fourth studio album', 'Canadian hard rock band', 'Danko Jones']
+Nodes: {'Canadian hard rock band': [{'hard rock': 0.5625}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 2
+Atomic Fact: Never Too Loud was recorded at Studio 606 in Los Angeles.
+Key Elements: ['Never Too Loud', 'recorded', 'Studio 606', 'Los Angeles']
+Nodes: {}
+
+ID: 3
+Atomic Fact: Nick Raskulinecz was the producer of Never Too Loud.
+Key Elements: ['Nick Raskulinecz', 'producer', 'Never Too Loud']
+Nodes: {}
+
+ID: 4
+Atomic Fact: Danko Jones is a Canadian hard rock trio from Toronto.
+Key Elements: ['Danko Jones', 'Canadian', 'hard rock trio', 'Toronto']
+Nodes: {'hard rock trio': [{'hard rock': 0.782608695652174}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 5
+Atomic Fact: The band Danko Jones consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums).
+Key Elements: ['Danko Jones', 'Danko Jones (vocals/guitar)', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}], 'Danko Jones (vocals/guitar)': [{'Danko Jones': 0.5789473684210527}]}
+
+ID: 6
+Atomic Fact: Danko Jones' music includes elements of hard rock and punk.
+Key Elements: ['Danko Jones', 'music', 'elements', 'hard rock', 'punk']
+Nodes: {'hard rock': [{'hard rock': 1.0}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 7
+Atomic Fact: Danko Jones is known for their energetic live shows.
+Key Elements: ['Danko Jones', 'known', 'energetic live shows']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 8
+Atomic Fact: Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada.
+Key Elements: ['Casa Loma', 'Gothic Revival', 'castle-style mansion', 'garden', 'midtown Toronto', 'Ontario', 'Canada']
+Nodes: {}
+
+ID: 9
+Atomic Fact: Casa Loma is now a historic house museum and landmark.
+Key Elements: ['Casa Loma', 'historic house museum', 'landmark']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Casa Loma was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt.
+Key Elements: ['Casa Loma', 'constructed', '1911', '1914', 'residence', 'financier', 'Sir Henry Pellatt']
+Nodes: {}
+
+ID: 11
+Atomic Fact: The architect of Casa Loma was E. J. Lennox.
+Key Elements: ['architect', 'Casa Loma', 'E. J. Lennox']
+Nodes: {}
+
+ID: 12
+Atomic Fact: E. J. Lennox designed several other city landmarks.
+Key Elements: ['E. J. Lennox', 'designed', 'several other city landmarks']
+Nodes: {}
+
+--------------------------------------------------
+
+
+Mapping key elements having ["Toronto"] to ["Toronto"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones.
+Key Elements: ['Never Too Loud', 'fourth studio album', 'Canadian hard rock band', 'Danko Jones']
+Nodes: {'Canadian hard rock band': [{'hard rock': 0.5625}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 2
+Atomic Fact: Never Too Loud was recorded at Studio 606 in Los Angeles.
+Key Elements: ['Never Too Loud', 'recorded', 'Studio 606', 'Los Angeles']
+Nodes: {}
+
+ID: 3
+Atomic Fact: Nick Raskulinecz was the producer of Never Too Loud.
+Key Elements: ['Nick Raskulinecz', 'producer', 'Never Too Loud']
+Nodes: {}
+
+ID: 4
+Atomic Fact: Danko Jones is a Canadian hard rock trio from Toronto.
+Key Elements: ['Danko Jones', 'Canadian', 'hard rock trio', 'Toronto']
+Nodes: {'hard rock trio': [{'hard rock': 0.782608695652174}], 'Danko Jones': [{'Danko Jones': 1.0}], 'Toronto': [{'Toronto': 1.0}]}
+
+ID: 5
+Atomic Fact: The band Danko Jones consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums).
+Key Elements: ['Danko Jones', 'Danko Jones (vocals/guitar)', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}], 'Danko Jones (vocals/guitar)': [{'Danko Jones': 0.5789473684210527}]}
+
+ID: 6
+Atomic Fact: Danko Jones' music includes elements of hard rock and punk.
+Key Elements: ['Danko Jones', 'music', 'elements', 'hard rock', 'punk']
+Nodes: {'hard rock': [{'hard rock': 1.0}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 7
+Atomic Fact: Danko Jones is known for their energetic live shows.
+Key Elements: ['Danko Jones', 'known', 'energetic live shows']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 8
+Atomic Fact: Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada.
+Key Elements: ['Casa Loma', 'Gothic Revival', 'castle-style mansion', 'garden', 'midtown Toronto', 'Ontario', 'Canada']
+Nodes: {'midtown Toronto': [{'Toronto': 0.6363636363636364}]}
+
+ID: 9
+Atomic Fact: Casa Loma is now a historic house museum and landmark.
+Key Elements: ['Casa Loma', 'historic house museum', 'landmark']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Casa Loma was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt.
+Key Elements: ['Casa Loma', 'constructed', '1911', '1914', 'residence', 'financier', 'Sir Henry Pellatt']
+Nodes: {}
+
+ID: 11
+Atomic Fact: The architect of Casa Loma was E. J. Lennox.
+Key Elements: ['architect', 'Casa Loma', 'E. J. Lennox']
+Nodes: {}
+
+ID: 12
+Atomic Fact: E. J. Lennox designed several other city landmarks.
+Key Elements: ['E. J. Lennox', 'designed', 'several other city landmarks']
+Nodes: {}
+
+--------------------------------------------------
+
+
+Mapping key elements having ["Canad"] to ["Canada"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones.
+Key Elements: ['Never Too Loud', 'fourth studio album', 'Canadian hard rock band', 'Danko Jones']
+Nodes: {'Canadian hard rock band': [{'hard rock': 0.5625}, {'Canad': 0.35714285714285715}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 2
+Atomic Fact: Never Too Loud was recorded at Studio 606 in Los Angeles.
+Key Elements: ['Never Too Loud', 'recorded', 'Studio 606', 'Los Angeles']
+Nodes: {}
+
+ID: 3
+Atomic Fact: Nick Raskulinecz was the producer of Never Too Loud.
+Key Elements: ['Nick Raskulinecz', 'producer', 'Never Too Loud']
+Nodes: {}
+
+ID: 4
+Atomic Fact: Danko Jones is a Canadian hard rock trio from Toronto.
+Key Elements: ['Danko Jones', 'Canadian', 'hard rock trio', 'Toronto']
+Nodes: {'hard rock trio': [{'hard rock': 0.782608695652174}], 'Danko Jones': [{'Danko Jones': 1.0}], 'Toronto': [{'Toronto': 1.0}], 'Canadian': [{'Canad': 0.7692307692307693}]}
+
+ID: 5
+Atomic Fact: The band Danko Jones consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums).
+Key Elements: ['Danko Jones', 'Danko Jones (vocals/guitar)', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}], 'Danko Jones (vocals/guitar)': [{'Danko Jones': 0.5789473684210527}]}
+
+ID: 6
+Atomic Fact: Danko Jones' music includes elements of hard rock and punk.
+Key Elements: ['Danko Jones', 'music', 'elements', 'hard rock', 'punk']
+Nodes: {'hard rock': [{'hard rock': 1.0}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 7
+Atomic Fact: Danko Jones is known for their energetic live shows.
+Key Elements: ['Danko Jones', 'known', 'energetic live shows']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 8
+Atomic Fact: Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada.
+Key Elements: ['Casa Loma', 'Gothic Revival', 'castle-style mansion', 'garden', 'midtown Toronto', 'Ontario', 'Canada']
+Nodes: {'midtown Toronto': [{'Toronto': 0.6363636363636364}], 'Canada': [{'Canad': 0.9090909090909091}]}
+
+ID: 9
+Atomic Fact: Casa Loma is now a historic house museum and landmark.
+Key Elements: ['Casa Loma', 'historic house museum', 'landmark']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Casa Loma was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt.
+Key Elements: ['Casa Loma', 'constructed', '1911', '1914', 'residence', 'financier', 'Sir Henry Pellatt']
+Nodes: {}
+
+ID: 11
+Atomic Fact: The architect of Casa Loma was E. J. Lennox.
+Key Elements: ['architect', 'Casa Loma', 'E. J. Lennox']
+Nodes: {}
+
+ID: 12
+Atomic Fact: E. J. Lennox designed several other city landmarks.
+Key Elements: ['E. J. Lennox', 'designed', 'several other city landmarks']
+Nodes: {}
+
+--------------------------------------------------
+
+
+Mapping key elements having ["landmark"] to ["landmark"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones.
+Key Elements: ['Never Too Loud', 'fourth studio album', 'Canadian hard rock band', 'Danko Jones']
+Nodes: {'Canadian hard rock band': [{'hard rock': 0.5625}, {'Canad': 0.35714285714285715}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 2
+Atomic Fact: Never Too Loud was recorded at Studio 606 in Los Angeles.
+Key Elements: ['Never Too Loud', 'recorded', 'Studio 606', 'Los Angeles']
+Nodes: {}
+
+ID: 3
+Atomic Fact: Nick Raskulinecz was the producer of Never Too Loud.
+Key Elements: ['Nick Raskulinecz', 'producer', 'Never Too Loud']
+Nodes: {}
+
+ID: 4
+Atomic Fact: Danko Jones is a Canadian hard rock trio from Toronto.
+Key Elements: ['Danko Jones', 'Canadian', 'hard rock trio', 'Toronto']
+Nodes: {'hard rock trio': [{'hard rock': 0.782608695652174}], 'Danko Jones': [{'Danko Jones': 1.0}], 'Toronto': [{'Toronto': 1.0}], 'Canadian': [{'Canad': 0.7692307692307693}]}
+
+ID: 5
+Atomic Fact: The band Danko Jones consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums).
+Key Elements: ['Danko Jones', 'Danko Jones (vocals/guitar)', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}], 'Danko Jones (vocals/guitar)': [{'Danko Jones': 0.5789473684210527}]}
+
+ID: 6
+Atomic Fact: Danko Jones' music includes elements of hard rock and punk.
+Key Elements: ['Danko Jones', 'music', 'elements', 'hard rock', 'punk']
+Nodes: {'hard rock': [{'hard rock': 1.0}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 7
+Atomic Fact: Danko Jones is known for their energetic live shows.
+Key Elements: ['Danko Jones', 'known', 'energetic live shows']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}]}
+
+ID: 8
+Atomic Fact: Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada.
+Key Elements: ['Casa Loma', 'Gothic Revival', 'castle-style mansion', 'garden', 'midtown Toronto', 'Ontario', 'Canada']
+Nodes: {'midtown Toronto': [{'Toronto': 0.6363636363636364}], 'Canada': [{'Canad': 0.9090909090909091}]}
+
+ID: 9
+Atomic Fact: Casa Loma is now a historic house museum and landmark.
+Key Elements: ['Casa Loma', 'historic house museum', 'landmark']
+Nodes: {'landmark': [{'landmark': 1.0}]}
+
+ID: 10
+Atomic Fact: Casa Loma was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt.
+Key Elements: ['Casa Loma', 'constructed', '1911', '1914', 'residence', 'financier', 'Sir Henry Pellatt']
+Nodes: {}
+
+ID: 11
+Atomic Fact: The architect of Casa Loma was E. J. Lennox.
+Key Elements: ['architect', 'Casa Loma', 'E. J. Lennox']
+Nodes: {}
+
+ID: 12
+Atomic Fact: E. J. Lennox designed several other city landmarks.
+Key Elements: ['E. J. Lennox', 'designed', 'several other city landmarks']
+Nodes: {'several other city landmarks': [{'landmark': 0.4444444444444444}]}
+
+--------------------------------------------------
+
+Mapping remaining key elements...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones.
+Key Elements: ['Never Too Loud', 'fourth studio album', 'Canadian hard rock band', 'Danko Jones']
+Nodes: {'Canadian hard rock band': [{'hard rock': 0.5625}, {'Canad': 0.35714285714285715}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+Nodes: {'Canadian hard rock band': [{'hard rock': 0.5625}, {'Canad': 0.35714285714285715}], 'Danko Jones': [{'Danko Jones': 1.0}], 'Never Too Loud': 'Never Too Loud', 'fourth studio album': 'fourth studio album'}
+
+ID: 2
+Atomic Fact: Never Too Loud was recorded at Studio 606 in Los Angeles.
+Key Elements: ['Never Too Loud', 'recorded', 'Studio 606', 'Los Angeles']
+Nodes: {}
+Nodes: {'Never Too Loud': 'Never Too Loud', 'recorded': 'recorded', 'Studio 606': 'Studio 606', 'Los Angeles': 'Los Angeles'}
+
+ID: 3
+Atomic Fact: Nick Raskulinecz was the producer of Never Too Loud.
+Key Elements: ['Nick Raskulinecz', 'producer', 'Never Too Loud']
+Nodes: {}
+Nodes: {'Nick Raskulinecz': 'Nick Raskulinecz', 'producer': 'producer', 'Never Too Loud': 'Never Too Loud'}
+
+ID: 4
+Atomic Fact: Danko Jones is a Canadian hard rock trio from Toronto.
+Key Elements: ['Danko Jones', 'Canadian', 'hard rock trio', 'Toronto']
+Nodes: {'hard rock trio': [{'hard rock': 0.782608695652174}], 'Danko Jones': [{'Danko Jones': 1.0}], 'Toronto': [{'Toronto': 1.0}], 'Canadian': [{'Canad': 0.7692307692307693}]}
+Nodes: {'hard rock trio': [{'hard rock': 0.782608695652174}], 'Danko Jones': [{'Danko Jones': 1.0}], 'Toronto': [{'Toronto': 1.0}], 'Canadian': [{'Canad': 0.7692307692307693}]}
+
+ID: 5
+Atomic Fact: The band Danko Jones consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums).
+Key Elements: ['Danko Jones', 'Danko Jones (vocals/guitar)', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}], 'Danko Jones (vocals/guitar)': [{'Danko Jones': 0.5789473684210527}]}
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}], 'Danko Jones (vocals/guitar)': [{'Danko Jones': 0.5789473684210527}], "John 'JC' Calabrese (bass)": "John 'JC' Calabrese (bass)", 'Rich Knox (drums)': 'Rich Knox (drums)'}
+
+ID: 6
+Atomic Fact: Danko Jones' music includes elements of hard rock and punk.
+Key Elements: ['Danko Jones', 'music', 'elements', 'hard rock', 'punk']
+Nodes: {'hard rock': [{'hard rock': 1.0}], 'Danko Jones': [{'Danko Jones': 1.0}]}
+Nodes: {'hard rock': [{'hard rock': 1.0}], 'Danko Jones': [{'Danko Jones': 1.0}], 'music': 'music', 'elements': 'elements', 'punk': 'punk'}
+
+ID: 7
+Atomic Fact: Danko Jones is known for their energetic live shows.
+Key Elements: ['Danko Jones', 'known', 'energetic live shows']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}]}
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}], 'known': 'known', 'energetic live shows': 'energetic live shows'}
+
+ID: 8
+Atomic Fact: Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada.
+Key Elements: ['Casa Loma', 'Gothic Revival', 'castle-style mansion', 'garden', 'midtown Toronto', 'Ontario', 'Canada']
+Nodes: {'midtown Toronto': [{'Toronto': 0.6363636363636364}], 'Canada': [{'Canad': 0.9090909090909091}]}
+Nodes: {'midtown Toronto': [{'Toronto': 0.6363636363636364}], 'Canada': [{'Canad': 0.9090909090909091}], 'Casa Loma': 'Casa Loma', 'Gothic Revival': 'Gothic Revival', 'castle-style mansion': 'castle-style mansion', 'garden': 'garden', 'Ontario': 'Ontario'}
+
+ID: 9
+Atomic Fact: Casa Loma is now a historic house museum and landmark.
+Key Elements: ['Casa Loma', 'historic house museum', 'landmark']
+Nodes: {'landmark': [{'landmark': 1.0}]}
+Nodes: {'landmark': [{'landmark': 1.0}], 'Casa Loma': 'Casa Loma', 'historic house museum': 'historic house museum'}
+
+ID: 10
+Atomic Fact: Casa Loma was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt.
+Key Elements: ['Casa Loma', 'constructed', '1911', '1914', 'residence', 'financier', 'Sir Henry Pellatt']
+Nodes: {}
+Nodes: {'Casa Loma': 'Casa Loma', 'constructed': 'constructed', '1911': '1911', '1914': '1914', 'residence': 'residence', 'financier': 'financier', 'Sir Henry Pellatt': 'Sir Henry Pellatt'}
+
+ID: 11
+Atomic Fact: The architect of Casa Loma was E. J. Lennox.
+Key Elements: ['architect', 'Casa Loma', 'E. J. Lennox']
+Nodes: {}
+Nodes: {'architect': 'architect', 'Casa Loma': 'Casa Loma', 'E. J. Lennox': 'E. J. Lennox'}
+
+ID: 12
+Atomic Fact: E. J. Lennox designed several other city landmarks.
+Key Elements: ['E. J. Lennox', 'designed', 'several other city landmarks']
+Nodes: {'several other city landmarks': [{'landmark': 0.4444444444444444}]}
+Nodes: {'several other city landmarks': [{'landmark': 0.4444444444444444}], 'E. J. Lennox': 'E. J. Lennox', 'designed': 'designed'}
+
+Mapping Key Elements to Distinct Nodes of the Graph COMPLETED
+==================================================
+Labelling of Nodes of the Graph...
+
+Creating Node Mappings dictionary...
+--------------------------------------------------
+{
+  "hard rock": "hard rock",
+  "Danko Jones": "Danko Jones",
+  "Toronto": "Toronto",
+  "Canad": "Canada",
+  "e m": "castle-style mansion",
+  "landmark": "landmark",
+  "te": "architect",
+  "191": "1911"
+}
+
+Mapping final representation of nodes labels...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones.
+Key Elements: ['Never Too Loud', 'fourth studio album', 'Canadian hard rock band', 'Danko Jones']
+Nodes: {'Canadian hard rock band': [{'hard rock': 0.5625}, {'Canad': 0.35714285714285715}], 'Danko Jones': [{'Danko Jones': 1.0}], 'Never Too Loud': 'Never Too Loud', 'fourth studio album': 'fourth studio album'}
+
+Substring Mapping: [hard rock -> hard rock]
+Key Element Mapping: [Canadian hard rock band -> hard rock]
+
+Substring Mapping: [Danko Jones -> Danko Jones]
+Key Element Mapping: [Danko Jones -> Danko Jones]
+
+Key Element Mapping: [Never Too Loud -> Never Too Loud]
+
+Key Element Mapping: [fourth studio album -> fourth studio album]
+
+Nodes Label: {'Canadian hard rock band': 'hard rock', 'Danko Jones': 'Danko Jones', 'Never Too Loud': 'Never Too Loud', 'fourth studio album': 'fourth studio album'}
+..................................................
+
+ID: 2
+Atomic Fact: Never Too Loud was recorded at Studio 606 in Los Angeles.
+Key Elements: ['Never Too Loud', 'recorded', 'Studio 606', 'Los Angeles']
+Nodes: {'Never Too Loud': 'Never Too Loud', 'recorded': 'recorded', 'Studio 606': 'Studio 606', 'Los Angeles': 'Los Angeles'}
+
+Key Element Mapping: [Never Too Loud -> Never Too Loud]
+
+Key Element Mapping: [recorded -> recorded]
+
+Key Element Mapping: [Studio 606 -> Studio 606]
+
+Key Element Mapping: [Los Angeles -> Los Angeles]
+
+Nodes Label: {'Never Too Loud': 'Never Too Loud', 'recorded': 'recorded', 'Studio 606': 'Studio 606', 'Los Angeles': 'Los Angeles'}
+..................................................
+
+ID: 3
+Atomic Fact: Nick Raskulinecz was the producer of Never Too Loud.
+Key Elements: ['Nick Raskulinecz', 'producer', 'Never Too Loud']
+Nodes: {'Nick Raskulinecz': 'Nick Raskulinecz', 'producer': 'producer', 'Never Too Loud': 'Never Too Loud'}
+
+Key Element Mapping: [Nick Raskulinecz -> Nick Raskulinecz]
+
+Key Element Mapping: [producer -> producer]
+
+Key Element Mapping: [Never Too Loud -> Never Too Loud]
+
+Nodes Label: {'Nick Raskulinecz': 'Nick Raskulinecz', 'producer': 'producer', 'Never Too Loud': 'Never Too Loud'}
+..................................................
+
+ID: 4
+Atomic Fact: Danko Jones is a Canadian hard rock trio from Toronto.
+Key Elements: ['Danko Jones', 'Canadian', 'hard rock trio', 'Toronto']
+Nodes: {'hard rock trio': [{'hard rock': 0.782608695652174}], 'Danko Jones': [{'Danko Jones': 1.0}], 'Toronto': [{'Toronto': 1.0}], 'Canadian': [{'Canad': 0.7692307692307693}]}
+
+Substring Mapping: [hard rock -> hard rock]
+Key Element Mapping: [hard rock trio -> hard rock]
+
+Substring Mapping: [Danko Jones -> Danko Jones]
+Key Element Mapping: [Danko Jones -> Danko Jones]
+
+Substring Mapping: [Toronto -> Toronto]
+Key Element Mapping: [Toronto -> Toronto]
+
+Substring Mapping: [Canad -> Canada]
+Key Element Mapping: [Canadian -> Canada]
+
+Nodes Label: {'hard rock trio': 'hard rock', 'Danko Jones': 'Danko Jones', 'Toronto': 'Toronto', 'Canadian': 'Canada'}
+..................................................
+
+ID: 5
+Atomic Fact: The band Danko Jones consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums).
+Key Elements: ['Danko Jones', 'Danko Jones (vocals/guitar)', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}], 'Danko Jones (vocals/guitar)': [{'Danko Jones': 0.5789473684210527}], "John 'JC' Calabrese (bass)": "John 'JC' Calabrese (bass)", 'Rich Knox (drums)': 'Rich Knox (drums)'}
+
+Substring Mapping: [Danko Jones -> Danko Jones]
+Key Element Mapping: [Danko Jones -> Danko Jones]
+
+Substring Mapping: [Danko Jones -> Danko Jones]
+Key Element Mapping: [Danko Jones (vocals/guitar) -> Danko Jones]
+
+Key Element Mapping: [John 'JC' Calabrese (bass) -> John 'JC' Calabrese (bass)]
+
+Key Element Mapping: [Rich Knox (drums) -> Rich Knox (drums)]
+
+Nodes Label: {'Danko Jones': 'Danko Jones', 'Danko Jones (vocals/guitar)': 'Danko Jones', "John 'JC' Calabrese (bass)": "John 'JC' Calabrese (bass)", 'Rich Knox (drums)': 'Rich Knox (drums)'}
+..................................................
+
+ID: 6
+Atomic Fact: Danko Jones' music includes elements of hard rock and punk.
+Key Elements: ['Danko Jones', 'music', 'elements', 'hard rock', 'punk']
+Nodes: {'hard rock': [{'hard rock': 1.0}], 'Danko Jones': [{'Danko Jones': 1.0}], 'music': 'music', 'elements': 'elements', 'punk': 'punk'}
+
+Substring Mapping: [hard rock -> hard rock]
+Key Element Mapping: [hard rock -> hard rock]
+
+Substring Mapping: [Danko Jones -> Danko Jones]
+Key Element Mapping: [Danko Jones -> Danko Jones]
+
+Key Element Mapping: [music -> music]
+
+Key Element Mapping: [elements -> elements]
+
+Key Element Mapping: [punk -> punk]
+
+Nodes Label: {'hard rock': 'hard rock', 'Danko Jones': 'Danko Jones', 'music': 'music', 'elements': 'elements', 'punk': 'punk'}
+..................................................
+
+ID: 7
+Atomic Fact: Danko Jones is known for their energetic live shows.
+Key Elements: ['Danko Jones', 'known', 'energetic live shows']
+Nodes: {'Danko Jones': [{'Danko Jones': 1.0}], 'known': 'known', 'energetic live shows': 'energetic live shows'}
+
+Substring Mapping: [Danko Jones -> Danko Jones]
+Key Element Mapping: [Danko Jones -> Danko Jones]
+
+Key Element Mapping: [known -> known]
+
+Key Element Mapping: [energetic live shows -> energetic live shows]
+
+Nodes Label: {'Danko Jones': 'Danko Jones', 'known': 'known', 'energetic live shows': 'energetic live shows'}
+..................................................
+
+ID: 8
+Atomic Fact: Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada.
+Key Elements: ['Casa Loma', 'Gothic Revival', 'castle-style mansion', 'garden', 'midtown Toronto', 'Ontario', 'Canada']
+Nodes: {'midtown Toronto': [{'Toronto': 0.6363636363636364}], 'Canada': [{'Canad': 0.9090909090909091}], 'Casa Loma': 'Casa Loma', 'Gothic Revival': 'Gothic Revival', 'castle-style mansion': 'castle-style mansion', 'garden': 'garden', 'Ontario': 'Ontario'}
+
+Substring Mapping: [Toronto -> Toronto]
+Key Element Mapping: [midtown Toronto -> Toronto]
+
+Substring Mapping: [Canad -> Canada]
+Key Element Mapping: [Canada -> Canada]
+
+Key Element Mapping: [Casa Loma -> Casa Loma]
+
+Key Element Mapping: [Gothic Revival -> Gothic Revival]
+
+Key Element Mapping: [castle-style mansion -> castle-style mansion]
+
+Key Element Mapping: [garden -> garden]
+
+Key Element Mapping: [Ontario -> Ontario]
+
+Nodes Label: {'midtown Toronto': 'Toronto', 'Canada': 'Canada', 'Casa Loma': 'Casa Loma', 'Gothic Revival': 'Gothic Revival', 'castle-style mansion': 'castle-style mansion', 'garden': 'garden', 'Ontario': 'Ontario'}
+..................................................
+
+ID: 9
+Atomic Fact: Casa Loma is now a historic house museum and landmark.
+Key Elements: ['Casa Loma', 'historic house museum', 'landmark']
+Nodes: {'landmark': [{'landmark': 1.0}], 'Casa Loma': 'Casa Loma', 'historic house museum': 'historic house museum'}
+
+Substring Mapping: [landmark -> landmark]
+Key Element Mapping: [landmark -> landmark]
+
+Key Element Mapping: [Casa Loma -> Casa Loma]
+
+Key Element Mapping: [historic house museum -> historic house museum]
+
+Nodes Label: {'landmark': 'landmark', 'Casa Loma': 'Casa Loma', 'historic house museum': 'historic house museum'}
+..................................................
+
+ID: 10
+Atomic Fact: Casa Loma was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt.
+Key Elements: ['Casa Loma', 'constructed', '1911', '1914', 'residence', 'financier', 'Sir Henry Pellatt']
+Nodes: {'Casa Loma': 'Casa Loma', 'constructed': 'constructed', '1911': '1911', '1914': '1914', 'residence': 'residence', 'financier': 'financier', 'Sir Henry Pellatt': 'Sir Henry Pellatt'}
+
+Key Element Mapping: [Casa Loma -> Casa Loma]
+
+Key Element Mapping: [constructed -> constructed]
+
+Key Element Mapping: [1911 -> 1911]
+
+Key Element Mapping: [1914 -> 1914]
+
+Key Element Mapping: [residence -> residence]
+
+Key Element Mapping: [financier -> financier]
+
+Key Element Mapping: [Sir Henry Pellatt -> Sir Henry Pellatt]
+
+Nodes Label: {'Casa Loma': 'Casa Loma', 'constructed': 'constructed', '1911': '1911', '1914': '1914', 'residence': 'residence', 'financier': 'financier', 'Sir Henry Pellatt': 'Sir Henry Pellatt'}
+..................................................
+
+ID: 11
+Atomic Fact: The architect of Casa Loma was E. J. Lennox.
+Key Elements: ['architect', 'Casa Loma', 'E. J. Lennox']
+Nodes: {'architect': 'architect', 'Casa Loma': 'Casa Loma', 'E. J. Lennox': 'E. J. Lennox'}
+
+Key Element Mapping: [architect -> architect]
+
+Key Element Mapping: [Casa Loma -> Casa Loma]
+
+Key Element Mapping: [E. J. Lennox -> E. J. Lennox]
+
+Nodes Label: {'architect': 'architect', 'Casa Loma': 'Casa Loma', 'E. J. Lennox': 'E. J. Lennox'}
+..................................................
+
+ID: 12
+Atomic Fact: E. J. Lennox designed several other city landmarks.
+Key Elements: ['E. J. Lennox', 'designed', 'several other city landmarks']
+Nodes: {'several other city landmarks': [{'landmark': 0.4444444444444444}], 'E. J. Lennox': 'E. J. Lennox', 'designed': 'designed'}
+
+Substring Mapping: [landmark -> landmark]
+Key Element Mapping: [several other city landmarks -> landmark]
+
+Key Element Mapping: [E. J. Lennox -> E. J. Lennox]
+
+Key Element Mapping: [designed -> designed]
+
+Nodes Label: {'several other city landmarks': 'landmark', 'E. J. Lennox': 'E. J. Lennox', 'designed': 'designed'}
+..................................................
+
+Mapping Key Elements to Distinct Nodes of the Graph COMPLETED
+==================================================
+
+
+
+**************************************************
+GRAPH DATA
+**************************************************
+
+
+ID: 1
+Atomic Fact: Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones.
+Key Elements: ['Never Too Loud', 'fourth studio album', 'Canadian hard rock band', 'Danko Jones']
+Nodes: {
+  "Canadian hard rock band": [
+    {
+      "hard rock": 0.5625
+    },
+    {
+      "Canad": 0.35714285714285715
+    }
+  ],
+  "Danko Jones": [
+    {
+      "Danko Jones": 1.0
+    }
+  ],
+  "Never Too Loud": "Never Too Loud",
+  "fourth studio album": "fourth studio album"
+}
+Nodes Label :{'Canadian hard rock band': 'hard rock', 'Danko Jones': 'Danko Jones', 'Never Too Loud': 'Never Too Loud', 'fourth studio album': 'fourth studio album'}
+--------------------------------------------------
+ID: 2
+Atomic Fact: Never Too Loud was recorded at Studio 606 in Los Angeles.
+Key Elements: ['Never Too Loud', 'recorded', 'Studio 606', 'Los Angeles']
+Nodes: {
+  "Never Too Loud": "Never Too Loud",
+  "recorded": "recorded",
+  "Studio 606": "Studio 606",
+  "Los Angeles": "Los Angeles"
+}
+Nodes Label :{'Never Too Loud': 'Never Too Loud', 'recorded': 'recorded', 'Studio 606': 'Studio 606', 'Los Angeles': 'Los Angeles'}
+--------------------------------------------------
+ID: 3
+Atomic Fact: Nick Raskulinecz was the producer of Never Too Loud.
+Key Elements: ['Nick Raskulinecz', 'producer', 'Never Too Loud']
+Nodes: {
+  "Nick Raskulinecz": "Nick Raskulinecz",
+  "producer": "producer",
+  "Never Too Loud": "Never Too Loud"
+}
+Nodes Label :{'Nick Raskulinecz': 'Nick Raskulinecz', 'producer': 'producer', 'Never Too Loud': 'Never Too Loud'}
+--------------------------------------------------
+ID: 4
+Atomic Fact: Danko Jones is a Canadian hard rock trio from Toronto.
+Key Elements: ['Danko Jones', 'Canadian', 'hard rock trio', 'Toronto']
+Nodes: {
+  "hard rock trio": [
+    {
+      "hard rock": 0.782608695652174
+    }
+  ],
+  "Danko Jones": [
+    {
+      "Danko Jones": 1.0
+    }
+  ],
+  "Toronto": [
+    {
+      "Toronto": 1.0
+    }
+  ],
+  "Canadian": [
+    {
+      "Canad": 0.7692307692307693
+    }
+  ]
+}
+Nodes Label :{'hard rock trio': 'hard rock', 'Danko Jones': 'Danko Jones', 'Toronto': 'Toronto', 'Canadian': 'Canada'}
+--------------------------------------------------
+ID: 5
+Atomic Fact: The band Danko Jones consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums).
+Key Elements: ['Danko Jones', 'Danko Jones (vocals/guitar)', "John 'JC' Calabrese (bass)", 'Rich Knox (drums)']
+Nodes: {
+  "Danko Jones": [
+    {
+      "Danko Jones": 1.0
+    }
+  ],
+  "Danko Jones (vocals/guitar)": [
+    {
+      "Danko Jones": 0.5789473684210527
+    }
+  ],
+  "John 'JC' Calabrese (bass)": "John 'JC' Calabrese (bass)",
+  "Rich Knox (drums)": "Rich Knox (drums)"
+}
+Nodes Label :{'Danko Jones': 'Danko Jones', 'Danko Jones (vocals/guitar)': 'Danko Jones', "John 'JC' Calabrese (bass)": "John 'JC' Calabrese (bass)", 'Rich Knox (drums)': 'Rich Knox (drums)'}
+--------------------------------------------------
+ID: 6
+Atomic Fact: Danko Jones' music includes elements of hard rock and punk.
+Key Elements: ['Danko Jones', 'music', 'elements', 'hard rock', 'punk']
+Nodes: {
+  "hard rock": [
+    {
+      "hard rock": 1.0
+    }
+  ],
+  "Danko Jones": [
+    {
+      "Danko Jones": 1.0
+    }
+  ],
+  "music": "music",
+  "elements": "elements",
+  "punk": "punk"
+}
+Nodes Label :{'hard rock': 'hard rock', 'Danko Jones': 'Danko Jones', 'music': 'music', 'elements': 'elements', 'punk': 'punk'}
+--------------------------------------------------
+ID: 7
+Atomic Fact: Danko Jones is known for their energetic live shows.
+Key Elements: ['Danko Jones', 'known', 'energetic live shows']
+Nodes: {
+  "Danko Jones": [
+    {
+      "Danko Jones": 1.0
+    }
+  ],
+  "known": "known",
+  "energetic live shows": "energetic live shows"
+}
+Nodes Label :{'Danko Jones': 'Danko Jones', 'known': 'known', 'energetic live shows': 'energetic live shows'}
+--------------------------------------------------
+ID: 8
+Atomic Fact: Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada.
+Key Elements: ['Casa Loma', 'Gothic Revival', 'castle-style mansion', 'garden', 'midtown Toronto', 'Ontario', 'Canada']
+Nodes: {
+  "midtown Toronto": [
+    {
+      "Toronto": 0.6363636363636364
+    }
+  ],
+  "Canada": [
+    {
+      "Canad": 0.9090909090909091
+    }
+  ],
+  "Casa Loma": "Casa Loma",
+  "Gothic Revival": "Gothic Revival",
+  "castle-style mansion": "castle-style mansion",
+  "garden": "garden",
+  "Ontario": "Ontario"
+}
+Nodes Label :{'midtown Toronto': 'Toronto', 'Canada': 'Canada', 'Casa Loma': 'Casa Loma', 'Gothic Revival': 'Gothic Revival', 'castle-style mansion': 'castle-style mansion', 'garden': 'garden', 'Ontario': 'Ontario'}
+--------------------------------------------------
+ID: 9
+Atomic Fact: Casa Loma is now a historic house museum and landmark.
+Key Elements: ['Casa Loma', 'historic house museum', 'landmark']
+Nodes: {
+  "landmark": [
+    {
+      "landmark": 1.0
+    }
+  ],
+  "Casa Loma": "Casa Loma",
+  "historic house museum": "historic house museum"
+}
+Nodes Label :{'landmark': 'landmark', 'Casa Loma': 'Casa Loma', 'historic house museum': 'historic house museum'}
+--------------------------------------------------
+ID: 10
+Atomic Fact: Casa Loma was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt.
+Key Elements: ['Casa Loma', 'constructed', '1911', '1914', 'residence', 'financier', 'Sir Henry Pellatt']
+Nodes: {
+  "Casa Loma": "Casa Loma",
+  "constructed": "constructed",
+  "1911": "1911",
+  "1914": "1914",
+  "residence": "residence",
+  "financier": "financier",
+  "Sir Henry Pellatt": "Sir Henry Pellatt"
+}
+Nodes Label :{'Casa Loma': 'Casa Loma', 'constructed': 'constructed', '1911': '1911', '1914': '1914', 'residence': 'residence', 'financier': 'financier', 'Sir Henry Pellatt': 'Sir Henry Pellatt'}
+--------------------------------------------------
+ID: 11
+Atomic Fact: The architect of Casa Loma was E. J. Lennox.
+Key Elements: ['architect', 'Casa Loma', 'E. J. Lennox']
+Nodes: {
+  "architect": "architect",
+  "Casa Loma": "Casa Loma",
+  "E. J. Lennox": "E. J. Lennox"
+}
+Nodes Label :{'architect': 'architect', 'Casa Loma': 'Casa Loma', 'E. J. Lennox': 'E. J. Lennox'}
+--------------------------------------------------
+ID: 12
+Atomic Fact: E. J. Lennox designed several other city landmarks.
+Key Elements: ['E. J. Lennox', 'designed', 'several other city landmarks']
+Nodes: {
+  "several other city landmarks": [
+    {
+      "landmark": 0.4444444444444444
+    }
+  ],
+  "E. J. Lennox": "E. J. Lennox",
+  "designed": "designed"
+}
+Nodes Label :{'several other city landmarks': 'landmark', 'E. J. Lennox': 'E. J. Lennox', 'designed': 'designed'}
+--------------------------------------------------
+
+Distinct Nodes from Aggregation: 
+[
+  {
+    "key_element": "hard rock",
+    "max_substring": "hard rock"
+  },
+  {
+    "key_element": "Danko Jones",
+    "max_substring": "Danko Jones"
+  },
+  {
+    "key_element": "Toronto",
+    "max_substring": "Toronto"
+  },
+  {
+    "key_element": "Canada",
+    "max_substring": "Canad"
+  },
+  {
+    "key_element": "castle-style mansion",
+    "max_substring": "e m"
+  },
+  {
+    "key_element": "landmark",
+    "max_substring": "landmark"
+  },
+  {
+    "key_element": "architect",
+    "max_substring": "te"
+  },
+  {
+    "key_element": "1911",
+    "max_substring": "191"
+  }
+]
+
+
+**************************************************
+
+
