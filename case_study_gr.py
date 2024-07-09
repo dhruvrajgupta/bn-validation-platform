@@ -65,11 +65,96 @@ gc_prompt_result = """
     12. E. J. Lennox designed several other city landmarks. | E. J. Lennox | designed | several other city landmarks
 """
 
-# gc_prompt_result = """
-#     1. Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. | Never Too Loud | fourth studio album | Canadian hard rock band | Danko Jones
-#     4. Danko Jones is a Canadian hard rock trio from Toronto. | Danko Jones | Canadian | hard rock trio | Toronto
-#     8. Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. | Casa Loma | Gothic Revival | castle-style mansion | garden | midtown Toronto | Ontario | Canada
-#     """
+gc_prompt_result = """
+    1. Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. | Never Too Loud | fourth studio album | Canadian hard rock band | Danko Jones
+    4. Danko Jones is a Canadian hard rock trio from Toronto. | Danko Jones | Canadian | hard rock trio | Toronto
+    8. Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. | Casa Loma | Gothic Revival | castle-style mansion | garden | midtown Toronto | Ontario | Canada
+"""
+
+# In Order to get the proper Rational Plan, LLM should not have any idea of the article.
+rational_plan_prompt = """
+    As an intelligent assistant, your primary objective is to answer the question by gathering
+    supporting facts from a given article. To facilitate this objective, the first step is to make 
+    a rational plan based on the question. This plan should outline the step-by-step process to 
+    resolve the question and specify the key information required to formulate a comprehensive answer. 
+    
+    Example: 
+    ##### 
+    User: Who had a longer tennis career, Danny or Alice? 
+    
+    Assistant: In order to answer this question, we first need to find the length of Danny’s 
+    and Alice’s tennis careers, such as the start and retirement of their careers, and then compare the 
+    two. 
+    ##### 
+    
+    Please strictly follow the above format. Let’s begin.
+"""
+
+question = "What is the name of the castle in the city where the performer of Never Too Loud was formed?"
+
+rational_plan_prompt_result = """
+    In order to answer this question, we first need to identify the following key pieces of information:
+
+    1. The performer of the song "Never Too Loud."
+    2. The city where this performer was formed.
+    3. The name of the castle in that city.
+    We will then gather the necessary details to provide a comprehensive answer.
+"""
+
+initial_node_selection_prompt = """
+    As an intelligent assistant, your primary objective is to answer questions based on information 
+    contained within a text. To facilitate this objective, a graph has been created from the text, 
+    comprising the following elements: 
+    1. Text Chunks: Chunks of the original text. 
+    2. Atomic Facts: Smallest, indivisible truths extracted from text chunks. 
+    3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic 
+    facts derived from different text chunks. 
+    
+    Your current task is to check a list of nodes, with the objective of selecting the most 
+    relevant initial nodes from the graph to efficiently answer the question. You are given the question, the 
+    rational plan, and a list of node key elements. These initial nodes are crucial because they are the 
+    starting point for searching for relevant information. 
+    
+    Requirements: 
+    ##### 
+    1. Once you have selected a starting node, assess its relevance to the potential answer by assigning 
+    a score between 0 and 100. A score of 100 implies a high likelihood of relevance to the answer, 
+    whereas a score of 0 suggests minimal relevance. 
+    2. Present each chosen starting node in a separate line, accompanied by its relevance score. Format 
+    each line as follows: Node: [Key Element of Node], Score: [Relevance Score]. 
+    3. Please select at least 10 starting nodes, ensuring they are non-repetitive and diverse. 
+    4. In the user’s input, each line constitutes a node. When selecting the starting node, please make 
+    your choice from those provided, and refrain from fabricating your own. The nodes you output 
+    must correspond exactly to the nodes given by the user, with identical wording. 
+    ##### 
+
+    Example: 
+    ##### 
+    User: 
+    Question: {QUESTION} 
+    Plan: {RATIONAL PLAN} 
+    Nodes: {LIST OF KEY ELEMENTS} 
+    
+    Assistant:{LIST OF SELECTED NODES} 
+    ##### 
+    
+    Finally, I emphasize again that you need to select the starting node from the given Nodes, and 
+    it must be consistent with the words of the node you selected. Please strictly follow the above 
+    format. Let’s begin.
+"""
+
+initial_node_selection_result = """
+    Node: 'Never Too Loud', Score: 100
+    Node: 'Danko Jones', Score: 100
+    Node: 'Canadian hard rock band', Score: 90
+    Node: 'Toronto', Score: 90
+    Node: 'Casa Loma', Score: 80
+    Node: 'castle-style mansion', Score: 70
+    Node: 'midtown Toronto', Score: 70
+    Node: 'Canadian', Score: 60
+    Node: 'Ontario', Score: 60
+    Node: 'Canada', Score: 50
+"""
 
 def extract_atomic_facts_key_elements():
     """
@@ -161,6 +246,8 @@ def distinct_node_from_list(list_of_key_elements, list_of_distinct_nodes):
 
 def extract_distinct_nodes(gc_construct_map):
     all_key_elements = list_all_key_elements()
+    print(f"\n List of all key elements: \n{set(all_key_elements)}")
+    
     distinct_nodes = []
 
     clustered_key_elements = cluster_key_elements(all_key_elements)
