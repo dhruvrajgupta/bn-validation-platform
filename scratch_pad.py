@@ -255,3 +255,17 @@ def fp_growth_association():
 
     print("Output for input 1:", output_tags_1)
     print("Output for input 2:", output_tags_2)
+
+
+def max_score_item():
+    def get_item_with_max_score(items):
+        if not items:
+            return None  # Return None if the list is empty
+        return max(items, key=lambda x: list(x.values())[0])
+
+    # Example usage
+    items = [{'landmark': 0.4444444444444444}, {'land': 0.7}]
+
+    output = get_item_with_max_score(items)
+
+    print(f"Input: {items}\nOutput: {output}")

@@ -1,4 +1,5 @@
-from utils import cluster_key_elements, get_maximum_substring, similarity
+from utils import cluster_key_elements, get_maximum_substring, \
+    similarity, get_item_with_max_score
 import json
 
 question_text = "Question What is the name of the castle in the city where the performer of Never Too Loud was formed?"
@@ -274,6 +275,51 @@ def map_key_elements_to_distinct_nodes(gc_construct_map):
         print(f"Nodes: {gc_construct_map[id]['nodes']}\n")
     return gc_construct_map
 
+def map_nodes_label(gc_construct_map):
+
+    # Make nodes_labels dictionary for all atomic facts
+    for id, gc_construct in gc_construct_map.items():
+        if id == "distinct_nodes_substring":
+            continue
+        gc_construct_map[id]["node_label"] = {}
+    
+    # Dictionay of substring : Node representation (e.g, Canad: Canada)
+    print(f"\nCreating Node Mappings dictionary...\n{'-'*50}")
+    node_mappings = {}
+    for mapping in gc_construct_map["distinct_nodes_substring"]:
+        key_element = mapping["key_element"]
+        max_substring = mapping["max_substring"]
+        node_mappings[max_substring] = key_element
+    
+    print(json.dumps(node_mappings, indent=2))
+
+    print(f"\nMapping final representation of nodes labels...\n{'-'*50}")
+    for id, gc_construct in gc_construct_map.items():
+        # print(id)
+        # print(gc_construct)
+        if id == "distinct_nodes_substring":
+            continue
+        print(f"ID: {id}")
+        print(f"Atomic Fact: {gc_construct['atomic_fact']}")
+        print(f"Key Elements: {gc_construct['key_elements']}")
+        print(f"Nodes: {gc_construct['nodes']}\n")
+
+        nodes = gc_construct['nodes']
+
+        for node, value in nodes.items():
+            if type(value) == list:
+                # map with highest ratio
+                node_key = next(iter(get_item_with_max_score(value)))
+                value = node_mappings[node_key]
+                print(f"Substring Mapping: [{node_key} -> {value}]")
+
+            print(f"Key Element Mapping: [{node} -> {value}]\n")
+            gc_construct['node_label'][node] = value
+        print(f"Nodes Label: {gc_construct['node_label']}\n{'.'*50}\n")
+
+
+    return gc_construct_map
+
 if __name__ == "__main__":
     print(f"\nStarting...\n{'='*50}")
     print("Extracting Atomic Facts and Key Elements...")
@@ -284,6 +330,9 @@ if __name__ == "__main__":
     print(f"Extracting Distinct Nodes of the Graph COMPLETED\n{'='*50}")
     print("Mapping Key Elements to Distinct Nodes of the Graph...")
     gc_construct_map = map_key_elements_to_distinct_nodes(gc_construct_map)
+    print(f"Mapping Key Elements to Distinct Nodes of the Graph COMPLETED\n{'='*50}")
+    print("Labelling of Nodes of the Graph...")
+    gc_construct_map = map_nodes_label(gc_construct_map)
     print(f"Mapping Key Elements to Distinct Nodes of the Graph COMPLETED\n{'='*50}")
 
     print("\n\n")
@@ -297,6 +346,7 @@ if __name__ == "__main__":
         print(f"Atomic Fact: {gc_construct['atomic_fact']}")
         print(f"Key Elements: {gc_construct['key_elements']}")
         print(f"Nodes: {json.dumps(gc_construct['nodes'], indent=2)}")
+        print(f"Nodes Label :{gc_construct['node_label']}")
         print("-"*50)
     
     print(f"\nDistinct Nodes from Aggregation: \n{json.dumps(gc_construct_map['distinct_nodes_substring'], indent=2)}")

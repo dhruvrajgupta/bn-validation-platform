@@ -99,3 +99,17 @@ def similarity(a, b):
         float: The similarity ratio between the two strings. The value ranges from 0 to 1, where 1 indicates perfect similarity.
     """
     return SequenceMatcher(None, a, b).ratio() 
+
+def get_item_with_max_score(items):
+    """
+    A function that returns the item with the maximum score from a list of items.
+
+    Parameters:
+        items (list): A list of dictionaries where each dictionary represents an item with a score.
+
+    Returns:
+        dict or None: The item with the maximum score. Returns None if the list is empty.
+    """
+    if not items:
+        return None  # Return None if the list is empty
+    return max(items, key=lambda x: list(x.values())[0])
