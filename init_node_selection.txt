@@ -64,3 +64,18 @@ LIST OF KEY ELEMENTS:
 'Ontario' 
 'Canada' 
 'midtown Toronto'
+
+
+
+
+Result:
+Node: 'Never Too Loud', Score: 100
+Node: 'Danko Jones', Score: 95
+Node: 'Toronto', Score: 90
+Node: 'Canadian hard rock band', Score: 85
+Node: 'Casa Loma', Score: 80
+Node: 'castle-style mansion', Score: 75
+Node: 'Ontario', Score: 70
+Node: 'Canada', Score: 65
+Node: 'midtown Toronto', Score: 60
+Node: 'hard rock trio', Score: 55

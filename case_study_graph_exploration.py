@@ -1,6 +1,56 @@
 from utils import paragraph_chunking
 from corpus import corpus, corpus_map_small
 import json
+from typing import List
+
+# EXPLORING ATOMIC FACTS
+def read_chunk (chunk_ids: List):
+    # if the agent identifies certain chunks as valuable for further reading, 
+    # it will complete the function parameters with the chunk IDs, 
+    # i.e., read_chunk(List[ID]), and append these IDs to a chunk queue
+    pass
+
+    # EXPLORING CHUNKS
+    def search_more():
+        # if supporting fact is insufficient, the agent will continue 
+        # exploring chunks in the queue;
+        pass
+
+    def read_previous_chunk():
+        # due to truncation issues, adjacent chunks might contain relevant 
+        # and useful information, the agent may insert these IDs to the queue;
+        pass
+
+    def read_subsequent_chunk():
+        # due to truncation issues, adjacent chunks might contain relevant 
+        # and useful information, the agent may insert these IDs to the queue;
+        pass
+
+
+def termination():
+    # if sufficient information has been gathered for answering the question, 
+    # the agent will finish exploration.
+    pass
+
+
+
+def stop_and_read_neighbor():
+    # conversely, if the agent deems that none of the chunks are worth 
+    # further reading, it will finish reading this node and proceed 
+    # to explore neighboring nodes.
+    pass
+
+    def read_neighbor_node():
+        # the agent selects a neighboring node that might be helpful in 
+        # answering the question and re-enters the process of exploring 
+        # atomic facts and chunks;
+        pass
+
+    def termination():
+        # the agent determines that none of the neighboring nodes contain 
+        # useful information, it finish the exploration.
+        pass
+
 
 def main():
 
