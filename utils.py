@@ -121,3 +121,10 @@ def paragraph_chunking(text, sentences_per_chunk=3):
         # Chunk sentences into the specified size
         chunks = [' '.join(sentences[i:i + sentences_per_chunk]) for i in range(0, len(sentences), sentences_per_chunk)]
         return chunks
+
+def chunk_corpus(corpus):
+    # Chunking the corpus
+    print(f"Chunking the corpus...\n{'='*50}\n")
+    chunked_corpus = paragraph_chunking(corpus, sentences_per_chunk=2)
+    for i, chunk in enumerate(chunked_corpus):
+        print(f"Chunk {i+1}:\n{chunk}\n")

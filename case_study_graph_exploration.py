@@ -10,13 +10,6 @@ def main():
 
     corpus_map = corpus_map_small
 
-    # Chunking the corpus
-    # print(f"Chunking the corpus...\n{'='*50}\n")
-    # chunked_corpus = paragraph_chunking(corpus, sentences_per_chunk=2)
-    # for i, chunk in enumerate(chunked_corpus):
-    #     print(f"Chunk {i+1}:\n{chunk}\n")
-
-
     #
     # all atomic facts associated with a node are grouped by their 
     # corresponding chunks, labeled with the respective chunk IDs, 
