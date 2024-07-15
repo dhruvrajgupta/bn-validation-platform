@@ -70,6 +70,8 @@ def read_chunk (chunk_id: str):
     
     print("PROMPT RESPONSE: \n", res)
 
+    previous_actions.append(f"Exploring Chunk: {chunk_id}")
+
     notebook, rationale_next_actions, chosen_action = extract_notebook_rationale_next_steps_chosen_action(res)
 
     print(f"{'-'*50}")
