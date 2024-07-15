@@ -1,5 +1,13 @@
+import json
 
+def get_corpus():
+    supoorting_passages = [
+        "Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. It was recorded at Studio 606 in Los Angeles, with the producer Nick Raskulinecz.",
+        "Danko Jones is a Canadian hard rock trio from Toronto. The band consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums). The band’s music includes elements of hard rock and punk and they are known for their energetic live shows.",
+        "Casa Loma (improper Spanish for 'Hill House') is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada, that is now a historic house museum and landmark. It was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt. The architect was E. J. Lennox, who designed several other city landmarks."
+    ]
 
+    return supoorting_passages
 
 def get_atomic_facts_and_key_elements(corpus: str):
     # CORPUS to ATOMIC FACTS AND KEY ELEMENTS
@@ -93,7 +101,7 @@ def get_rational_plan(corpus: str):
 
     return result
 
-def get_initial_nodes(corpus: str):
+def get_initial_nodes():
     initial_node_selection_prompt = """
         As an intelligent assistant, your primary objective is to answer questions based on information 
         contained within a text. To facilitate this objective, a graph has been created from the text, 
@@ -136,7 +144,7 @@ def get_initial_nodes(corpus: str):
         format. Let’s begin.
     """
 
-    result = """
+    im_result = """
         Node: 'Never Too Loud', Score: 100
         Node: 'Danko Jones', Score: 100
         Node: 'Canadian hard rock band', Score: 90
@@ -149,4 +157,317 @@ def get_initial_nodes(corpus: str):
         Node: 'Canada', Score: 50
     """
 
+    result = []
+
+    im_result = [x.strip() for x in im_result.splitlines()]
+    for x in im_result:
+        if x == '':
+            continue
+
+        x = x.split(",")
+        node = x[0].split(":")[1].strip().replace("'","")
+        score = int(x[1].split(":")[1].strip())
+        result.append((node, score))
+
     return result
+
+
+def exploring_atomic_facts_prompt():
+    exploring_atomic_facts_prompt = """
+        As an intelligent assistant, your primary objective is to answer questions based on information 
+        contained within a text. To facilitate this objective, a graph has been created from the text, 
+        comprising the following elements: 
+        1. Text Chunks: Chunks of the original text. 
+        2. Atomic Facts: Smallest, indivisible truths extracted from text chunks. 
+        3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic 
+        facts derived from different text chunks. 
+        
+        Your current task is to check a node and its associated atomic facts, with the objective of 
+        determining whether to proceed with reviewing the text chunk corresponding to these atomic facts. 
+        Given the question, the rational plan, {[previous actions]}, notebook content, and the current node’s 
+        atomic facts and their corresponding chunk IDs, you have the following Action Options: 
+        ##### 
+        1. read_chunk(List[ID]): Choose this action if you believe that a text chunk linked to an atomic 
+        fact may hold the necessary information to answer the question. This will allow you to access 
+        more complete and detailed information. 
+        2. stop_and_read_neighbor(): Choose this action if you ascertain that all text chunks lack valuable 
+        information. 
+        ##### 
+        
+        Strategy: 
+        ##### 
+        1. Reflect on previous actions and prevent redundant revisiting nodes or chunks. 
+        2. You can choose to read multiple text chunks at the same time. 
+        3. Atomic facts only cover part of the information in the text chunk, so even if you feel that the 
+        atomic facts are slightly relevant to the question, please try to read the text chunk to get more 
+        complete information. 
+        ##### 
+        
+        Response format: 
+        ##### 
+        *Updated Notebook*: First, combine your current notebook with new insights and findings about 
+        the question from current atomic facts, creating a more complete version of the notebook that 
+        contains more valid information. 
+        *Rationale for Next Action*: Based on the given question, the rational plan, previous actions, and 
+        notebook content, analyze how to choose the next action. 
+        *Chosen Action*: read_chunk(List[ID]) or stop_and_read_neighbor(). (Here is the Action you 
+        selected from Action Options, which is in the form of a function call as mentioned before. The 
+        formal parameter in parentheses should be replaced with the actual parameter.) 
+        ##### 
+        
+        Finally, it is emphasized again that even if the atomic fact is only slightly relevant to the 
+        question, you should still look at the text chunk to avoid missing information. You should only 
+        choose stop_and_read_neighbor() when you are very sure that the given text chunk is irrelevant to 
+        the question. Please strictly follow the above format. Let’s begin."""
+    
+
+def exploring_chunks_prompt():
+    exploring_chunks_prompt = """
+    As an intelligent assistant, your primary objective is to answer questions based on information
+    within a text. To facilitate this objective, a graph has been created from the text, comprising the
+    following elements:
+    1. Text Chunks: Segments of the original text.
+    2. Atomic Facts: Smallest, indivisible truths extracted from text chunks.
+    3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic
+    facts derived from different text chunks.
+
+
+    Your current task is to assess a specific text chunk and determine whether the available information
+    suffices to answer the question. Given the question, rational plan, previous actions, notebook
+    content, and the current text chunk, you have the following Action Options:
+    #####
+    1. search_more(): Choose this action if you think that the essential information necessary to
+    answer the question is still lacking.
+    2. read_previous_chunk(): Choose this action if you feel that the previous text chunk contains
+    valuable information for answering the question.
+    3. read_subsequent_chunk(): Choose this action if you feel that the subsequent text chunk contains
+    valuable information for answering the question.
+    4. termination(): Choose this action if you believe that the information you have currently obtained
+    is enough to answer the question. This will allow you to summarize the gathered information and
+    provide a final answer.
+    #####
+
+    Strategy:
+    #####
+    1. Reflect on previous actions and prevent redundant revisiting of nodes or chunks.
+    2. You can only choose one action.
+    #####
+
+    Response format:
+    #####
+    *Updated Notebook*: First, combine your previous notes with new insights and findings about the
+    question from current text chunks, creating a more complete version of the notebook that contains
+    more valid information.
+    *Rationale for Next Action*: Based on the given question, rational plan, previous actions, and
+    notebook content, analyze how to choose the next action.
+    *Chosen Action*: search_more() or read_previous_chunk() or read_subsequent_chunk() or
+    termination(). (Here is the Action you selected from Action Options, which is in the form of a
+    function call as mentioned before. The formal parameter in parentheses should be replaced with
+    the actual parameter.)
+    #####
+
+    Please strictly follow the above format. Let’s begin.
+    """
+
+
+def exploring_neighbors_prompt():
+    exploring_neighbors_prompt = """
+    As an intelligent assistant, your primary objective is to answer questions based on information
+    within a text. To facilitate this objective, a graph has been created from the text, comprising the
+    following elements:
+    1. Text Chunks: Segments of the original text.
+    2. Atomic Facts: Smallest, indivisible truths extracted from text chunks.
+    3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic
+    facts derived from different text chunks.
+
+    Your current task is to assess all neighbouring nodes of the current node, with the
+    objective of determining whether to proceed to the next neighboring node. Given the question, rational
+    plan, previous actions, notebook content, and the neighbors of the current node, you have the
+    following Action Options:
+    #####
+    1. read_neighbor_node(key element of node): Choose this action if you believe that any of the
+    neighboring nodes may contain information relevant to the question. Note that you should focus
+    on one neighbor node at a time.
+    2. termination(): Choose this action if you believe that none of the neighboring nodes possess
+    information that could answer the question.
+    #####
+
+    Strategy:
+    #####
+    1. Reflect on previous actions and prevent redundant revisiting of nodes or chunks.
+    2. You can only choose one action. This means that you can choose to read only one neighbour
+    node or choose to terminate.
+    #####
+
+    Response format:
+    #####
+    *Rationale for Next Action*: Based on the given question, rational plan, previous actions, and
+    notebook content, analyze how to choose the next action.
+    *Chosen Action*: read_neighbor_node(neighbor_node) or termination(). (Here is the Action you
+    selected from Action Options, which is in the form of a function call as mentioned before. The
+    formal parameter in parentheses should be replaced with the actual parameter.)
+    #####
+
+    Please strictly follow the above format. Let’s begin.
+    """
+
+
+def answer_reasoning_prompt():
+    answer_reasoning_prompt = """
+    As an intelligent assistant, your primary objective is to answer questions based on information
+    within a text. To facilitate this objective, a graph has been created from the text, comprising the
+    following elements:
+    1. Text Chunks: Segments of the original text.
+    2. Atomic Facts: Smallest, indivisible truths extracted from text chunks.
+    3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic
+    facts derived from different text chunks.
+
+    You have now explored multiple paths from various starting nodes on this graph,
+    recording key information for each path in a notebook.
+    Your task now is to analyze these memories and reason to answer the question.
+
+    Strategy:
+    #####
+    1. You should first analyze each notebook content before providing a final answer.
+    2. During the analysis, consider complementary information from other notes and employ a
+    majority voting strategy to resolve any inconsistencies.
+    3. When generating the final answer, ensure that you take into account all available information.
+    #####
+
+    Example:
+    #####
+    User: 
+    Question: Who had a longer tennis career, Danny or Alice?
+    Notebook of different exploration paths:
+    1. We only know that Danny’s tennis career started in 1972 and ended in 1990, but we don’t know
+    the length of Alice’s career.
+    2. ......
+
+    Assistant:
+    Analyze:
+    The summary of search path 1 points out that Danny’s tennis career is 1990-1972=18 years.
+    Although it does not indicate the length of Alice’s career, the summary of search path 2 finds this
+    information, that is, the length of Alice’s tennis career is 15 years. Then we can get the final
+    answer, that is, Danny’s tennis career is longer than Alice’s.
+    Final answer:
+    Danny’s tennis career is longer than Alice’s.
+    #####
+
+    Please strictly follow the above format. Let’s begin.
+    """
+
+
+def llm_rating_one_prompt():
+    llm_rating_one_prompt = """
+        After reading some text, John was given the following question about the text: 
+        {QUESTION TEXT} 
+        John’s answer to the question was: 
+        {MODEL RESPONSE TEXT} 
+        The ground truth answer was: 
+        {REFERENCE RESPONSE TEXT} 
+        Does John’s answer agree with the ground truth answer? 
+        Please answer "Yes" or "No".
+    """
+
+def llm_rating_two_prompt():
+    llm_rating_two_prompt = """
+        After reading some text, John was given the following question about the text: 
+        {QUESTION TEXT} 
+        John’s answer to the question was: 
+        {MODEL RESPONSE TEXT} 
+        The ground truth answer was: 
+        {REFERENCE RESPONSE TEXT} 
+        
+        Does John’s answer agree with the ground truth answer? 
+        Please answer “Yes”, “Yes, partially”, or “No”. If John’s response has any overlap with the ground 
+        truth answer, answer “Yes, partially”. If John’s response contains the ground truth answer, answer 
+        “Yes”. If John’s response is more specific than the ground truth answer, answer “Yes”.
+    """
+
+
+def full_text_read_prompt():
+    full_text_read_prompt = """
+        Please read the passage below and answer the question based on the passage. 
+        Passage: 
+        {PASSAGE TEXT} 
+        Question: 
+        {QUESTION TEXT} 
+
+        Now please answer this question based on the passage content.
+    """
+
+
+def chunk_read_prompt():
+    chunk_read_prompt = """
+        Please read the text chunks below and answer the question. 
+        Text chunks: 
+        {CHUNKED PASSAGE TEXT} 
+        Question: 
+        {QUESTION TEXT} 
+        
+        If you think you can answer the question based on the above text chunks please output 
+        [answerable] and then output your answer. 
+        Otherwise, if there is not enough information to answer the question, please output: 
+        [unanswerable]
+    """
+
+
+def chunk_read_note_prompt():
+    chunk_read_note_prompt = """
+        Please read the text chunk below and answer the questions based on your previous summary. 
+        Text chunk: 
+        {CHUNKED PASSAGE TEXT} 
+        Your previous summary: 
+        {SUMMARY TEXT} 
+        Question: 
+        {QUESTION TEXT} 
+        
+        If the above text chunk has information that can help answer the question, please extract 
+        the effective information, output [summary], and then output the refined information. Please note 
+        that it must be brief. 
+        If you can answer the question based on the above information, please output [answerable] and 
+        then output your answer. 
+        Otherwise, if there is insufficient information to answer the question, please output [unanswerable].
+    """
+
+
+def rag_prompt():
+    rag_prompt = """
+        Please read the text chunk below and answer the question. 
+        Text chunks: 
+        {RETRIEVED PASSAGE TEXT} 
+        Question: 
+        {QUESTION TEXT} 
+        
+        Now please answer this question based on the text chunks.
+    """
+
+
+def evaluate_recall_prompt():
+    evaluate_recall_prompt = """
+        Now you are an intelligent assistant. Given a text, a question, and x supporting facts that can
+        answer the question, please determine how many supporting facts the text covers.
+
+        Requirements:
+        #####
+        1. It’s possible that not all supporting facts are needed to answer the question, so you’ll need to
+        analyze the supporting facts to determine which supporting facts are actually needed, and then
+        determine whether those supporting facts are covered. Supporting facts that are not really needed
+        are discarded, and you do not need to judge whether they are covered. So the number of real
+        supporting facts is t (0 < t <= x).
+        2. A supporting fact has some valid information that helps answer the question. When the text
+        provides this part of the valid information, it is considered to have covered the supporting fact,
+        even if the text does not provide all the information supporting the fact.
+        3. The number of covered items in your output should be between 0 and t (including 0 and t).
+        4. Please analyze and reason first, and then output the final result.
+        #####
+
+        Example:
+        #####
+        {EXAMPLE}
+        #####
+
+        Please note that you should follow: 0 <= Number of recalls <= True number of
+        supporting facts <= Number of supporting facts.
+        Please output according to the example format. Now let’s start.
+    """
