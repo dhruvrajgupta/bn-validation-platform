@@ -172,54 +172,46 @@ def get_initial_nodes():
     return result
 
 
-def exploring_atomic_facts_prompt():
-    exploring_atomic_facts_prompt = """
-        As an intelligent assistant, your primary objective is to answer questions based on information 
-        contained within a text. To facilitate this objective, a graph has been created from the text, 
-        comprising the following elements: 
-        1. Text Chunks: Chunks of the original text. 
-        2. Atomic Facts: Smallest, indivisible truths extracted from text chunks. 
-        3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic 
-        facts derived from different text chunks. 
-        
-        Your current task is to check a node and its associated atomic facts, with the objective of 
-        determining whether to proceed with reviewing the text chunk corresponding to these atomic facts. 
-        Given the question, the rational plan, {[previous actions]}, notebook content, and the current node’s 
-        atomic facts and their corresponding chunk IDs, you have the following Action Options: 
-        ##### 
-        1. read_chunk(List[ID]): Choose this action if you believe that a text chunk linked to an atomic 
-        fact may hold the necessary information to answer the question. This will allow you to access 
-        more complete and detailed information. 
-        2. stop_and_read_neighbor(): Choose this action if you ascertain that all text chunks lack valuable 
-        information. 
-        ##### 
-        
-        Strategy: 
-        ##### 
-        1. Reflect on previous actions and prevent redundant revisiting nodes or chunks. 
-        2. You can choose to read multiple text chunks at the same time. 
-        3. Atomic facts only cover part of the information in the text chunk, so even if you feel that the 
-        atomic facts are slightly relevant to the question, please try to read the text chunk to get more 
-        complete information. 
-        ##### 
-        
-        Response format: 
-        ##### 
-        *Updated Notebook*: First, combine your current notebook with new insights and findings about 
-        the question from current atomic facts, creating a more complete version of the notebook that 
-        contains more valid information. 
-        *Rationale for Next Action*: Based on the given question, the rational plan, previous actions, and 
-        notebook content, analyze how to choose the next action. 
-        *Chosen Action*: read_chunk(List[ID]) or stop_and_read_neighbor(). (Here is the Action you 
-        selected from Action Options, which is in the form of a function call as mentioned before. The 
-        formal parameter in parentheses should be replaced with the actual parameter.) 
-        ##### 
-        
-        Finally, it is emphasized again that even if the atomic fact is only slightly relevant to the 
-        question, you should still look at the text chunk to avoid missing information. You should only 
-        choose stop_and_read_neighbor() when you are very sure that the given text chunk is irrelevant to 
-        the question. Please strictly follow the above format. Let’s begin."""
-    
+def exploring_atomic_facts_prompt(question, rational_plan, previous_actions, notebook, current_node, node_content):
+    from prompt_templates import EXPLORING_ATOMIC_FACTS_PROMPT
+    exploring_atomic_facts_prompt = EXPLORING_ATOMIC_FACTS_PROMPT
+
+    from langchain_core.prompts import PromptTemplate
+
+    exploring_atomic_facts_prompt = PromptTemplate.from_template(exploring_atomic_facts_prompt) \
+                                        .format(
+                                            question=question,
+                                            rational_plan=rational_plan,
+                                            previous_actions=previous_actions,
+                                            notebook=notebook,
+                                            current_node=current_node,
+                                            node_content=json.dumps(node_content, indent=2)
+                                        )
+
+
+    print(exploring_atomic_facts_prompt)
+
+    results = {
+        "Never Too Loud": """
+Updated Notebook:
+
+Notebook:
+
+Performer of "Never Too Loud":
+Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Rationale for Next Action:
+
+The atomic fact we have indicates that "Never Too Loud" is an album by the band Danko Jones. This partially answers the first part of our rational plan. We need more information on the city where this band was formed and the name of the castle in that city. Therefore, it is crucial to explore more text chunks to gather the remaining details.
+
+Chosen Action: read_chunk(["C1"])
+
+""",
+    }
+
+    if current_node in results:
+        return results[current_node]
+    else:
+        return "Result Not Found!!!"
 
 def exploring_chunks_prompt():
     exploring_chunks_prompt = """
