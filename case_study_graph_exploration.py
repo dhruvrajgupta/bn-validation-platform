@@ -4,6 +4,7 @@ import json
 from typing import List
 from prompt_templates_results import get_rational_plan, get_corpus, \
     get_initial_nodes, exploring_atomic_facts_prompt
+import re
 
 corpus = get_corpus()
 question = "What is the name of the castle in the city where the performer of Never Too Loud was formed?"
@@ -28,28 +29,49 @@ def exploring_atomic_facts(node: str):
 
     print("PROMPT RESPONSE: \n", res)
 
+    previous_action = f"Exploring Atomic Facts of Node: {node}"
 
-    def read_chunk (chunk_ids: List):
-        # if the agent identifies certain chunks as valuable for further reading, 
-        # it will complete the function parameters with the chunk IDs, 
-        # i.e., read_chunk(List[ID]), and append these IDs to a chunk queue
-        pass
+    notebook_pattern = r"Updated Notebook:(.*?)(?=Rationale for Next Action:|\Z)"
+    rationale_next_action_pattern = r"Rationale for Next Action:\n\n(.*?)(?=\n\nChosen Action:|\Z)"
+    chosen_action_pattern = r"Chosen Action:\s*(.*)"
 
-        # EXPLORING CHUNKS
-        def search_more():
-            # if supporting fact is insufficient, the agent will continue 
-            # exploring chunks in the queue;
-            pass
+    notebook = re.search(notebook_pattern, res, re.DOTALL).group(1).strip()
+    rationale_next_action = re.search(rationale_next_action_pattern, res, re.DOTALL).group(1).strip()
+    chosen_action = re.search(chosen_action_pattern, res, re.DOTALL).group(1).strip()
+    
+    call_function(chosen_action)
 
-        def read_previous_chunk():
-            # due to truncation issues, adjacent chunks might contain relevant 
-            # and useful information, the agent may insert these IDs to the queue;
-            pass
+def call_function(chosen_action: str):
+    print("CALL FUNCTION: ", chosen_action)
+    if "read_chunk" in chosen_action:
+        pattern = r'\[([^\]]+)\]'
+        matches = re.findall(pattern, chosen_action)
+        parameters = matches[0]
+        chunk_ids = [x.replace('"','').strip() for x in parameters.split(",")]
+        func = globals()["read_chunk"]
+        func(chunk_ids)
 
-        def read_subsequent_chunk():
-            # due to truncation issues, adjacent chunks might contain relevant 
-            # and useful information, the agent may insert these IDs to the queue;
-            pass
+# EXPLORING CHUNKS
+def read_chunk (chunk_ids: List):
+    # if the agent identifies certain chunks as valuable for further reading, 
+    # it will complete the function parameters with the chunk IDs, 
+    # i.e., read_chunk(List[ID]), and append these IDs to a chunk queue
+    pass
+
+def search_more():
+    # if supporting fact is insufficient, the agent will continue 
+    # exploring chunks in the queue;
+    pass
+
+def read_previous_chunk():
+    # due to truncation issues, adjacent chunks might contain relevant 
+    # and useful information, the agent may insert these IDs to the queue;
+    pass
+
+def read_subsequent_chunk():
+    # due to truncation issues, adjacent chunks might contain relevant 
+    # and useful information, the agent may insert these IDs to the queue;
+    pass
 
 
     def termination():
@@ -59,22 +81,22 @@ def exploring_atomic_facts(node: str):
 
 
 
-    def stop_and_read_neighbor():
-        # conversely, if the agent deems that none of the chunks are worth 
-        # further reading, it will finish reading this node and proceed 
-        # to explore neighboring nodes.
-        pass
+def stop_and_read_neighbor():
+    # conversely, if the agent deems that none of the chunks are worth 
+    # further reading, it will finish reading this node and proceed 
+    # to explore neighboring nodes.
+    pass
 
-        def read_neighbor_node():
-            # the agent selects a neighboring node that might be helpful in 
-            # answering the question and re-enters the process of exploring 
-            # atomic facts and chunks;
-            pass
+def read_neighbor_node():
+    # the agent selects a neighboring node that might be helpful in 
+    # answering the question and re-enters the process of exploring 
+    # atomic facts and chunks;
+    pass
 
-        def termination():
-            # the agent determines that none of the neighboring nodes contain 
-            # useful information, it finish the exploration.
-            pass
+def termination():
+    # the agent determines that none of the neighboring nodes contain 
+    # useful information, it finish the exploration.
+    pass
 
 
 def map_nodes_af_chunks():
