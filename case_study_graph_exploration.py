@@ -1,62 +1,80 @@
-from utils import paragraph_chunking
+from utils import paragraph_chunking, extract_notebook_rationale_next_steps_chosen_action
 from corpus import corpus, corpus_map_small
 import json
 from typing import List
 from prompt_templates_results import get_rational_plan, get_corpus, \
-    get_initial_nodes, exploring_atomic_facts_prompt
+    get_initial_nodes, exploring_atomic_facts_prompt, exploring_chunks_prompt
 import re
 
 corpus = get_corpus()
 question = "What is the name of the castle in the city where the performer of Never Too Loud was formed?"
 rational_plan = get_rational_plan(corpus)
 notebook = ""
+previous_actions = []
 
 corpus_map = corpus_map_small
 node_grouped_chunks_afs = {}
 
 # EXPLORING ATOMIC FACTS
 def exploring_atomic_facts(node: str):
+
+    global notebook
+
     print(f"NODE: {node}")
     print(f"EXPLORING ATOMIC FACTS OF NODE: {node}")
     res = exploring_atomic_facts_prompt(
         question=question,
         rational_plan=rational_plan,
-        previous_actions="",
-        notebook="",
+        previous_actions=previous_actions,
+        notebook=notebook,
         current_node=node,
         node_content=node_grouped_chunks_afs[node]
     )
 
     print("PROMPT RESPONSE: \n", res)
 
-    previous_action = f"Exploring Atomic Facts of Node: {node}"
+    previous_actions.append(f"Exploring Atomic Facts of Node: {node}")
 
-    notebook_pattern = r"Updated Notebook:(.*?)(?=Rationale for Next Action:|\Z)"
-    rationale_next_action_pattern = r"Rationale for Next Action:\n\n(.*?)(?=\n\nChosen Action:|\Z)"
-    chosen_action_pattern = r"Chosen Action:\s*(.*)"
+    notebook, rationale_next_action, chosen_action = extract_notebook_rationale_next_steps_chosen_action(res)
 
-    notebook = re.search(notebook_pattern, res, re.DOTALL).group(1).strip()
-    rationale_next_action = re.search(rationale_next_action_pattern, res, re.DOTALL).group(1).strip()
-    chosen_action = re.search(chosen_action_pattern, res, re.DOTALL).group(1).strip()
+    print(f"{'-'*50}")
     
     call_function(chosen_action)
 
 def call_function(chosen_action: str):
-    print("CALL FUNCTION: ", chosen_action)
+    print(f"CALL FUNCTION: {chosen_action}\n")
     if "read_chunk" in chosen_action:
         pattern = r'\[([^\]]+)\]'
         matches = re.findall(pattern, chosen_action)
         parameters = matches[0]
-        chunk_ids = [x.replace('"','').strip() for x in parameters.split(",")]
+        chunk_ids = parameters.replace('"','').strip()
         func = globals()["read_chunk"]
         func(chunk_ids)
 
 # EXPLORING CHUNKS
-def read_chunk (chunk_ids: List):
+def read_chunk (chunk_id: str):
     # if the agent identifies certain chunks as valuable for further reading, 
     # it will complete the function parameters with the chunk IDs, 
     # i.e., read_chunk(List[ID]), and append these IDs to a chunk queue
-    pass
+    global notebook
+    print(f"CHUNK_ID: {chunk_id}")
+    print(f"EXPLORING CHUNK: {chunk_id}")
+    chunk_content = corpus_map[chunk_id]["text"]
+    res = exploring_chunks_prompt(
+        question=question,
+        rational_plan=rational_plan,
+        previous_actions=previous_actions,
+        notebook=notebook,
+        chunk_content=chunk_content,
+        chunk_id=chunk_id)
+    
+    print("PROMPT RESPONSE: \n", res)
+
+    notebook, rationale_next_actions, chosen_action = extract_notebook_rationale_next_steps_chosen_action(res)
+
+    print(f"{'-'*50}")
+    
+    call_function(chosen_action)
 
 def search_more():
     # if supporting fact is insufficient, the agent will continue 

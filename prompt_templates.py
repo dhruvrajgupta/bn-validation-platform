@@ -73,7 +73,7 @@ Current Node Chunks and Atomic Facts:
 
 
 
-EXPLORING_CHUNKS = """
+EXPLORING_CHUNKS_PROMPT = """
 As an intelligent assistant, your primary objective is to answer questions based on information
 within a text. To facilitate this objective, a graph has been created from the text, comprising the
 following elements:
@@ -118,4 +118,19 @@ the actual parameter.)
 #####
 
 Please strictly follow the above format. Let’s begin.
+
+Question:
+{question}
+
+Rational Plan:
+{rational_plan}
+
+Previous Actions:
+{previous_actions}
+
+Notebook:
+{notebook}
+
+Current Text Chunk:
+{chunk_content}
 """

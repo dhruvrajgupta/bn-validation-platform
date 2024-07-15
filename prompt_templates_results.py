@@ -1,4 +1,7 @@
 import json
+from prompt_templates import EXPLORING_ATOMIC_FACTS_PROMPT, \
+EXPLORING_CHUNKS_PROMPT
+from langchain_core.prompts import PromptTemplate
 
 def get_corpus():
     supoorting_passages = [
@@ -173,10 +176,8 @@ def get_initial_nodes():
 
 
 def exploring_atomic_facts_prompt(question, rational_plan, previous_actions, notebook, current_node, node_content):
-    from prompt_templates import EXPLORING_ATOMIC_FACTS_PROMPT
+    
     exploring_atomic_facts_prompt = EXPLORING_ATOMIC_FACTS_PROMPT
-
-    from langchain_core.prompts import PromptTemplate
 
     exploring_atomic_facts_prompt = PromptTemplate.from_template(exploring_atomic_facts_prompt) \
                                         .format(
@@ -188,7 +189,7 @@ def exploring_atomic_facts_prompt(question, rational_plan, previous_actions, not
                                             node_content=json.dumps(node_content, indent=2)
                                         )
 
-
+    print("\nPROMPT TO THE LLM:")
     print(exploring_atomic_facts_prompt)
 
     results = {
@@ -213,8 +214,42 @@ Chosen Action: read_chunk(["C1"])
     else:
         return "Result Not Found!!!"
 
-def exploring_chunks_prompt():
-    pass
+def exploring_chunks_prompt(question, rational_plan, previous_actions, notebook, chunk_content, chunk_id):
+    exploring_chunks_prompt = EXPLORING_CHUNKS_PROMPT
+    exploring_chunks_prompt = PromptTemplate.from_template(exploring_chunks_prompt) \
+        .format(
+            question=question,
+            rational_plan=rational_plan,
+            previous_actions=previous_actions,
+            notebook=notebook,
+            chunk_content=chunk_content
+        )
+    
+    print("\nPROMPT TO THE LLM:")
+    print(exploring_chunks_prompt)
+
+    result = {
+        "C1": """
+Updated Notebook:
+
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Current Chunk)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Current Chunk)
+Rationale for Next Action:
+To answer the question, we have identified that Danko Jones is the performer of "Never Too Loud," and they are from Toronto. The next step is to find out the name of the castle in Toronto.
+
+Chosen Action: search_more()
+"""
+    }
+
+    if chunk_id in result:
+        return result[chunk_id]
+    else:
+        return "Result Not Found!!!"
 
 
 def exploring_neighbors_prompt():

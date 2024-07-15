@@ -128,3 +128,16 @@ def chunk_corpus(corpus):
     chunked_corpus = paragraph_chunking(corpus, sentences_per_chunk=2)
     for i, chunk in enumerate(chunked_corpus):
         print(f"Chunk {i+1}:\n{chunk}\n")
+
+
+def extract_notebook_rationale_next_steps_chosen_action(resposne: str):
+    notebook_pattern = r"Updated Notebook:(.*?)(?=Rationale for Next Action:|\Z)"
+    rationale_next_action_pattern = r"Rationale for Next Action:(.*?)(?=Chosen Action:|\Z)"
+    chosen_action_pattern = r"Chosen Action:\s*(.*)"
+
+    notebook = re.search(notebook_pattern, resposne, re.DOTALL).group(1).strip()
+    notebook = notebook.replace("Notebook:", "").strip()
+    rationale_next_action = re.search(rationale_next_action_pattern, resposne, re.DOTALL).group(1).strip()
+    chosen_action = re.search(chosen_action_pattern, resposne, re.DOTALL).group(1).strip()
+
+    return notebook, rationale_next_action, chosen_action
