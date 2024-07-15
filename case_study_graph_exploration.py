@@ -6,6 +6,7 @@ from prompt_templates_results import get_rational_plan, get_corpus, \
     get_initial_nodes, exploring_atomic_facts_prompt, exploring_chunks_prompt
 import re
 
+chunk_queue = []
 corpus = get_corpus()
 question = "What is the name of the castle in the city where the performer of Never Too Loud was formed?"
 rational_plan = get_rational_plan(corpus)
@@ -57,6 +58,8 @@ def read_chunk (chunk_id: str):
     # it will complete the function parameters with the chunk IDs, 
     # i.e., read_chunk(List[ID]), and append these IDs to a chunk queue
     global notebook
+    chunk_queue.append(chunk_id)
+    print(f"CHUNK QUEUE: {chunk_queue}")
     print(f"CHUNK_ID: {chunk_id}")
     print(f"EXPLORING CHUNK: {chunk_id}")
     chunk_content = corpus_map[chunk_id]["text"]
@@ -74,8 +77,11 @@ def read_chunk (chunk_id: str):
 
     notebook, rationale_next_actions, chosen_action = extract_notebook_rationale_next_steps_chosen_action(res)
 
+    chunk_queue.remove(chunk_id)
+    print(f"CHUNK QUEUE: {chunk_queue}")
+
     print(f"{'-'*50}")
-    
+
     call_function(chosen_action)
 
 def search_more():
@@ -158,8 +164,6 @@ def map_nodes_af_chunks():
 
 
 def main():
-
-    chunk_queue = []
 
     print(f"\nCorpus: \n{corpus}\n")
     map_nodes_af_chunks()
