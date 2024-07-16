@@ -1,0 +1,990 @@
+
+Corpus: 
+['Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. It was recorded at Studio 606 in Los Angeles, with the producer Nick Raskulinecz.', "Danko Jones is a Canadian hard rock trio from Toronto. The band consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums). The band’s music includes elements of hard rock and punk and they are known for their energetic live shows.", "Casa Loma (improper Spanish for 'Hill House') is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada, that is now a historic house museum and landmark. It was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt. The architect was E. J. Lennox, who designed several other city landmarks."]
+
+Mapping nodes with their associated chunks and atomic facts...
+==================================================
+Nodes and their disambiguated label mapping...
+--------------------------------------------------
+Canadian hard rock band -> hard rock
+Danko Jones -> Danko Jones
+Never Too Loud -> Never Too Loud
+fourth studio album -> fourth studio album
+hard rock trio -> hard rock
+Danko Jones -> Danko Jones
+Toronto -> Toronto
+Canadian -> Canada
+midtown Toronto -> Toronto
+Canada -> Canada
+Casa Loma -> Casa Loma
+Gothic Revival -> Gothic Revival
+castle-style mansion -> castle-style mansion
+garden -> garden
+Ontario -> Ontario
+
+{
+  "hard rock": {
+    "C1": [
+      {
+        "AF1": "Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones."
+      },
+      {
+        "AF2": "Danko Jones is a Canadian hard rock trio from Toronto."
+      }
+    ]
+  },
+  "Danko Jones": {
+    "C1": [
+      {
+        "AF1": "Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones."
+      },
+      {
+        "AF2": "Danko Jones is a Canadian hard rock trio from Toronto."
+      }
+    ]
+  },
+  "Never Too Loud": {
+    "C1": [
+      {
+        "AF1": "Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones."
+      }
+    ]
+  },
+  "fourth studio album": {
+    "C1": [
+      {
+        "AF1": "Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones."
+      }
+    ]
+  },
+  "Toronto": {
+    "C1": [
+      {
+        "AF2": "Danko Jones is a Canadian hard rock trio from Toronto."
+      }
+    ],
+    "C2": [
+      {
+        "AF8": "Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada."
+      }
+    ]
+  },
+  "Canada": {
+    "C1": [
+      {
+        "AF2": "Danko Jones is a Canadian hard rock trio from Toronto."
+      }
+    ],
+    "C2": [
+      {
+        "AF8": "Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada."
+      }
+    ]
+  },
+  "Casa Loma": {
+    "C2": [
+      {
+        "AF8": "Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada."
+      }
+    ]
+  },
+  "Gothic Revival": {
+    "C2": [
+      {
+        "AF8": "Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada."
+      }
+    ]
+  },
+  "castle-style mansion": {
+    "C2": [
+      {
+        "AF8": "Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada."
+      }
+    ]
+  },
+  "garden": {
+    "C2": [
+      {
+        "AF8": "Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada."
+      }
+    ]
+  },
+  "Ontario": {
+    "C2": [
+      {
+        "AF8": "Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada."
+      }
+    ]
+  }
+}
+
+EXPLORATION 
+==================================================
+
+NODE: Never Too Loud
+EXPLORING ATOMIC FACTS OF NODE: Never Too Loud
+
+PROMPT TO THE LLM:
+--------------------
+
+As an intelligent assistant, your primary objective is to answer questions based on information 
+contained within a text. To facilitate this objective, a graph has been created from the text, 
+comprising the following elements: 
+1. Text Chunks: Chunks of the original text. 
+2. Atomic Facts: Smallest, indivisible truths extracted from text chunks. 
+3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic 
+facts derived from different text chunks. 
+
+Your current task is to check a node and its associated atomic facts, with the objective of 
+determining whether to proceed with reviewing the text chunk corresponding to these atomic facts. 
+Given the question, the rational plan, previous actions, notebook content, and the current node’s 
+atomic facts and their corresponding chunk IDs, you have the following Action Options: 
+##### 
+1. read_chunk(List[ID]): Choose this action if you believe that a text chunk linked to an atomic 
+fact may hold the necessary information to answer the question. This will allow you to access 
+more complete and detailed information. 
+2. stop_and_read_neighbor(): Choose this action if you ascertain that all text chunks lack valuable 
+information. 
+##### 
+
+Strategy: 
+##### 
+1. Reflect on previous actions and prevent redundant revisiting nodes or chunks. 
+2. You can choose to read multiple text chunks at the same time. 
+3. Atomic facts only cover part of the information in the text chunk, so even if you feel that the 
+atomic facts are slightly relevant to the question, please try to read the text chunk to get more 
+complete information. 
+##### 
+
+Response format: 
+##### 
+*Updated Notebook*: First, combine your current notebook with new insights and findings about 
+the question from current atomic facts, creating a more complete version of the notebook that 
+contains more valid information. 
+*Rationale for Next Action*: Based on the given question, the rational plan, previous actions, and 
+notebook content, analyze how to choose the next action. 
+*Chosen Action*: read_chunk(List[ID]) or stop_and_read_neighbor(). (Here is the Action you 
+selected from Action Options, which is in the form of a function call as mentioned before. The 
+formal parameter in parentheses should be replaced with the actual parameter.) 
+##### 
+
+Finally, it is emphasized again that even if the atomic fact is only slightly relevant to the 
+question, you should still look at the text chunk to avoid missing information. You should only 
+choose stop_and_read_neighbor() when you are very sure that the given text chunk is irrelevant to 
+the question. Please strictly follow the above format. Let’s begin.
+
+Question:
+What is the name of the castle in the city where the performer of Never Too Loud was formed?
+
+Rational Plan:
+
+        In order to answer this question, we first need to identify the following key pieces of information:
+
+        1. The performer of the song "Never Too Loud."
+        2. The city where this performer was formed.
+        3. The name of the castle in that city.
+        We will then gather the necessary details to provide a comprehensive answer.
+    
+
+Previous Actions:
+[]
+
+Notebook:
+
+
+Current Node:
+Never Too Loud
+
+Current Node Chunks and Atomic Facts are of the following format:
+"CHUNK_ID#": [
+    "ATOMIC_FACT_ID#": "ATOMIC_FACT_TEXT",
+    ....
+],
+....
+
+Current Node Chunks and Atomic Facts:
+{
+  "C1": [
+    {
+      "AF1": "Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones."
+    }
+  ]
+}
+
+PROMPT RESPONSE: 
+--------------------
+
+Updated Notebook:
+
+Notebook:
+
+Performer of "Never Too Loud":
+Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Rationale for Next Action:
+
+The atomic fact we have indicates that "Never Too Loud" is an album by the band Danko Jones. This partially answers the first part of our rational plan. We need more information on the city where this band was formed and the name of the castle in that city. Therefore, it is crucial to explore more text chunks to gather the remaining details.
+
+Chosen Action: read_chunk(["C1"])
+
+
+
+
+
+
+
+
+--------------------------------------------------
+CALL FUNCTION: read_chunk(["C1"])
+
+CHUNK QUEUE: ['C1']
+CHUNK_ID: C1
+EXPLORING CHUNK: C1
+
+PROMPT TO THE LLM:
+--------------------
+
+As an intelligent assistant, your primary objective is to answer questions based on information
+within a text. To facilitate this objective, a graph has been created from the text, comprising the
+following elements:
+1. Text Chunks: Segments of the original text.
+2. Atomic Facts: Smallest, indivisible truths extracted from text chunks.
+3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic
+facts derived from different text chunks.
+
+
+Your current task is to assess a specific text chunk and determine whether the available information
+suffices to answer the question. Given the question, rational plan, previous actions, notebook
+content, and the current text chunk, you have the following Action Options:
+#####
+1. search_more(): Choose this action if you think that the essential information necessary to
+answer the question is still lacking.
+2. read_previous_chunk(): Choose this action if you feel that the previous text chunk contains
+valuable information for answering the question.
+3. read_subsequent_chunk(): Choose this action if you feel that the subsequent text chunk contains
+valuable information for answering the question.
+4. termination(): Choose this action if you believe that the information you have currently obtained
+is enough to answer the question. This will allow you to summarize the gathered information and
+provide a final answer.
+#####
+
+Strategy:
+#####
+1. Reflect on previous actions and prevent redundant revisiting of nodes or chunks.
+2. You can only choose one action.
+#####
+
+Response format:
+#####
+*Updated Notebook*: First, combine your previous notes with new insights and findings about the
+question from current text chunks, creating a more complete version of the notebook that contains
+more valid information.
+*Rationale for Next Action*: Based on the given question, rational plan, previous actions, and
+notebook content, analyze how to choose the next action.
+*Chosen Action*: search_more() or read_previous_chunk() or read_subsequent_chunk() or
+termination(). (Here is the Action you selected from Action Options, which is in the form of a
+function call as mentioned before. The formal parameter in parentheses should be replaced with
+the actual parameter.)
+#####
+
+Please strictly follow the above format. Let’s begin.
+
+Question:
+What is the name of the castle in the city where the performer of Never Too Loud was formed?
+
+Rational Plan:
+
+        In order to answer this question, we first need to identify the following key pieces of information:
+
+        1. The performer of the song "Never Too Loud."
+        2. The city where this performer was formed.
+        3. The name of the castle in that city.
+        We will then gather the necessary details to provide a comprehensive answer.
+    
+
+Previous Actions:
+['Exploring Atomic Facts of Node: Never Too Loud']
+
+Notebook:
+Performer of "Never Too Loud":
+Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+
+Current Text Chunk:
+Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. It was recorded at Studio 606 in Los Angeles, with the producer Nick Raskulinecz. Danko Jones is a Canadian hard rock trio from Toronto. 
+
+PROMPT RESPONSE: 
+--------------------
+
+Updated Notebook:
+
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Current Chunk)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Current Chunk)
+Rationale for Next Action:
+To answer the question, we have identified that Danko Jones is the performer of "Never Too Loud," and they are from Toronto. The next step is to find out the name of the castle in Toronto.
+
+Chosen Action: search_more()
+
+CHUNK QUEUE: []
+--------------------------------------------------
+CALL FUNCTION: search_more()
+
+CURRENT NODE: Never Too Loud
+NEIGHBOURING NODES: ['Danko Jones', 'hard rock', 'fourth studio album']
+
+PROMPT TO THE LLM:
+--------------------
+
+As an intelligent assistant, your primary objective is to answer questions based on information
+within a text. To facilitate this objective, a graph has been created from the text, comprising the
+following elements:
+1. Text Chunks: Segments of the original text.
+2. Atomic Facts: Smallest, indivisible truths extracted from text chunks.
+3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic
+facts derived from different text chunks.
+
+Your current task is to assess all neighbouring nodes of the current node, with the
+objective of determining whether to proceed to the next neighboring node. Given the question, rational
+plan, previous actions, notebook content, and the neighbors of the current node, you have the
+following Action Options:
+#####
+1. read_neighbor_node(key element of node): Choose this action if you believe that any of the
+neighboring nodes may contain information relevant to the question. Note that you should focus
+on one neighbor node at a time.
+2. termination(): Choose this action if you believe that none of the neighboring nodes possess
+information that could answer the question.
+#####
+
+Strategy:
+#####
+1. Reflect on previous actions and prevent redundant revisiting of nodes or chunks.
+2. You can only choose one action. This means that you can choose to read only one neighbour
+node or choose to terminate.
+#####
+
+Response format:
+#####
+*Rationale for Next Action*: Based on the given question, rational plan, previous actions, and
+notebook content, analyze how to choose the next action.
+*Chosen Action*: read_neighbor_node(neighbor_node) or termination(). (Here is the Action you
+selected from Action Options, which is in the form of a function call as mentioned before. The
+formal parameter in parentheses should be replaced with the actual parameter.)
+#####
+
+Please strictly follow the above format. Let’s begin.
+
+Question:
+What is the name of the castle in the city where the performer of Never Too Loud was formed?
+
+Rational Plan:
+
+        In order to answer this question, we first need to identify the following key pieces of information:
+
+        1. The performer of the song "Never Too Loud."
+        2. The city where this performer was formed.
+        3. The name of the castle in that city.
+        We will then gather the necessary details to provide a comprehensive answer.
+    
+
+Previous Actions:
+[
+  "Exploring Atomic Facts of Node: Never Too Loud",
+  "Exploring Chunk: C1",
+  "Searching More on empty queue",
+  "Exploring Neighbouring Nodes of Node: Never Too Loud"
+]
+
+Notebook:
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Current Chunk)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Current Chunk)
+
+Neighbours of Current Node:
+[
+  "Danko Jones",
+  "hard rock",
+  "fourth studio album"
+]
+
+PROMPT RESPONSE: 
+--------------------
+
+Rationale for Next Action: Since the current chunk has provided information about the performer (Danko Jones) and the city (Toronto), the next step is to find information about the castle in Toronto. Given the neighbouring nodes, "Danko Jones" seems to be the most relevant node to potentially provide more context or related information that might lead to the castle.
+
+Chosen Action: read_neighbor_node("Danko Jones")
+
+
+Rationale for Next Action: Since the current chunk has provided information about the performer (Danko Jones) and the city (Toronto), the next step is to find information about the castle in Toronto. Given the neighbouring nodes, "Danko Jones" seems to be the most relevant node to potentially provide more context or related information that might lead to the castle.
+
+Chosen Action: read_neighbor_node("Danko Jones")
+
+--------------------------------------------------
+CALL FUNCTION: read_neighbor_node("Danko Jones")
+
+EXPLORING THE NEIGHBOUR NODE: Danko Jones
+NODE: Danko Jones
+EXPLORING ATOMIC FACTS OF NODE: Danko Jones
+
+PROMPT TO THE LLM:
+--------------------
+
+As an intelligent assistant, your primary objective is to answer questions based on information 
+contained within a text. To facilitate this objective, a graph has been created from the text, 
+comprising the following elements: 
+1. Text Chunks: Chunks of the original text. 
+2. Atomic Facts: Smallest, indivisible truths extracted from text chunks. 
+3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic 
+facts derived from different text chunks. 
+
+Your current task is to check a node and its associated atomic facts, with the objective of 
+determining whether to proceed with reviewing the text chunk corresponding to these atomic facts. 
+Given the question, the rational plan, previous actions, notebook content, and the current node’s 
+atomic facts and their corresponding chunk IDs, you have the following Action Options: 
+##### 
+1. read_chunk(List[ID]): Choose this action if you believe that a text chunk linked to an atomic 
+fact may hold the necessary information to answer the question. This will allow you to access 
+more complete and detailed information. 
+2. stop_and_read_neighbor(): Choose this action if you ascertain that all text chunks lack valuable 
+information. 
+##### 
+
+Strategy: 
+##### 
+1. Reflect on previous actions and prevent redundant revisiting nodes or chunks. 
+2. You can choose to read multiple text chunks at the same time. 
+3. Atomic facts only cover part of the information in the text chunk, so even if you feel that the 
+atomic facts are slightly relevant to the question, please try to read the text chunk to get more 
+complete information. 
+##### 
+
+Response format: 
+##### 
+*Updated Notebook*: First, combine your current notebook with new insights and findings about 
+the question from current atomic facts, creating a more complete version of the notebook that 
+contains more valid information. 
+*Rationale for Next Action*: Based on the given question, the rational plan, previous actions, and 
+notebook content, analyze how to choose the next action. 
+*Chosen Action*: read_chunk(List[ID]) or stop_and_read_neighbor(). (Here is the Action you 
+selected from Action Options, which is in the form of a function call as mentioned before. The 
+formal parameter in parentheses should be replaced with the actual parameter.) 
+##### 
+
+Finally, it is emphasized again that even if the atomic fact is only slightly relevant to the 
+question, you should still look at the text chunk to avoid missing information. You should only 
+choose stop_and_read_neighbor() when you are very sure that the given text chunk is irrelevant to 
+the question. Please strictly follow the above format. Let’s begin.
+
+Question:
+What is the name of the castle in the city where the performer of Never Too Loud was formed?
+
+Rational Plan:
+
+        In order to answer this question, we first need to identify the following key pieces of information:
+
+        1. The performer of the song "Never Too Loud."
+        2. The city where this performer was formed.
+        3. The name of the castle in that city.
+        We will then gather the necessary details to provide a comprehensive answer.
+    
+
+Previous Actions:
+['Exploring Atomic Facts of Node: Never Too Loud', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Never Too Loud']
+
+Notebook:
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Current Chunk)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Current Chunk)
+
+Current Node:
+Danko Jones
+
+Current Node Chunks and Atomic Facts are of the following format:
+"CHUNK_ID#": [
+    "ATOMIC_FACT_ID#": "ATOMIC_FACT_TEXT",
+    ....
+],
+....
+
+Current Node Chunks and Atomic Facts:
+{
+  "C1": [
+    {
+      "AF1": "Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones."
+    },
+    {
+      "AF2": "Danko Jones is a Canadian hard rock trio from Toronto."
+    }
+  ]
+}
+
+PROMPT RESPONSE: 
+--------------------
+
+Updated Notebook:
+
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Source: AF2, Chunk C1)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Source: AF2, Chunk C1)
+Rationale for Next Action:
+Based on the current atomic facts, we have identified that the performer of "Never Too Loud" is Danko Jones and that they are from Toronto. To answer the question fully, we still need to find the name of the castle in Toronto. There might be additional relevant information in other text chunks that could help us identify the name of the castle.
+
+Chosen Action: read_chunk(["C1"])
+
+
+
+
+
+
+
+--------------------------------------------------
+CALL FUNCTION: read_chunk(["C1"])
+
+CHUNK QUEUE: ['C1']
+CHUNK_ID: C1
+EXPLORING CHUNK: C1
+
+PROMPT TO THE LLM:
+--------------------
+
+As an intelligent assistant, your primary objective is to answer questions based on information
+within a text. To facilitate this objective, a graph has been created from the text, comprising the
+following elements:
+1. Text Chunks: Segments of the original text.
+2. Atomic Facts: Smallest, indivisible truths extracted from text chunks.
+3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic
+facts derived from different text chunks.
+
+
+Your current task is to assess a specific text chunk and determine whether the available information
+suffices to answer the question. Given the question, rational plan, previous actions, notebook
+content, and the current text chunk, you have the following Action Options:
+#####
+1. search_more(): Choose this action if you think that the essential information necessary to
+answer the question is still lacking.
+2. read_previous_chunk(): Choose this action if you feel that the previous text chunk contains
+valuable information for answering the question.
+3. read_subsequent_chunk(): Choose this action if you feel that the subsequent text chunk contains
+valuable information for answering the question.
+4. termination(): Choose this action if you believe that the information you have currently obtained
+is enough to answer the question. This will allow you to summarize the gathered information and
+provide a final answer.
+#####
+
+Strategy:
+#####
+1. Reflect on previous actions and prevent redundant revisiting of nodes or chunks.
+2. You can only choose one action.
+#####
+
+Response format:
+#####
+*Updated Notebook*: First, combine your previous notes with new insights and findings about the
+question from current text chunks, creating a more complete version of the notebook that contains
+more valid information.
+*Rationale for Next Action*: Based on the given question, rational plan, previous actions, and
+notebook content, analyze how to choose the next action.
+*Chosen Action*: search_more() or read_previous_chunk() or read_subsequent_chunk() or
+termination(). (Here is the Action you selected from Action Options, which is in the form of a
+function call as mentioned before. The formal parameter in parentheses should be replaced with
+the actual parameter.)
+#####
+
+Please strictly follow the above format. Let’s begin.
+
+Question:
+What is the name of the castle in the city where the performer of Never Too Loud was formed?
+
+Rational Plan:
+
+        In order to answer this question, we first need to identify the following key pieces of information:
+
+        1. The performer of the song "Never Too Loud."
+        2. The city where this performer was formed.
+        3. The name of the castle in that city.
+        We will then gather the necessary details to provide a comprehensive answer.
+    
+
+Previous Actions:
+['Exploring Atomic Facts of Node: Never Too Loud', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Never Too Loud', 'Exploring Atomic Facts of Node: Danko Jones']
+
+Notebook:
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Source: AF2, Chunk C1)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Source: AF2, Chunk C1)
+
+Current Text Chunk:
+Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. It was recorded at Studio 606 in Los Angeles, with the producer Nick Raskulinecz. Danko Jones is a Canadian hard rock trio from Toronto. 
+
+PROMPT RESPONSE: 
+--------------------
+
+Updated Notebook:
+
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Current Chunk)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Current Chunk)
+Rationale for Next Action:
+To answer the question, we have identified that Danko Jones is the performer of "Never Too Loud," and they are from Toronto. The next step is to find out the name of the castle in Toronto.
+
+Chosen Action: search_more()
+
+CHUNK QUEUE: []
+--------------------------------------------------
+CALL FUNCTION: search_more()
+
+CURRENT NODE: Danko Jones
+NEIGHBOURING NODES: ['Toronto', 'Never Too Loud', 'Canada', 'hard rock', 'fourth studio album']
+
+PROMPT TO THE LLM:
+--------------------
+
+As an intelligent assistant, your primary objective is to answer questions based on information
+within a text. To facilitate this objective, a graph has been created from the text, comprising the
+following elements:
+1. Text Chunks: Segments of the original text.
+2. Atomic Facts: Smallest, indivisible truths extracted from text chunks.
+3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic
+facts derived from different text chunks.
+
+Your current task is to assess all neighbouring nodes of the current node, with the
+objective of determining whether to proceed to the next neighboring node. Given the question, rational
+plan, previous actions, notebook content, and the neighbors of the current node, you have the
+following Action Options:
+#####
+1. read_neighbor_node(key element of node): Choose this action if you believe that any of the
+neighboring nodes may contain information relevant to the question. Note that you should focus
+on one neighbor node at a time.
+2. termination(): Choose this action if you believe that none of the neighboring nodes possess
+information that could answer the question.
+#####
+
+Strategy:
+#####
+1. Reflect on previous actions and prevent redundant revisiting of nodes or chunks.
+2. You can only choose one action. This means that you can choose to read only one neighbour
+node or choose to terminate.
+#####
+
+Response format:
+#####
+*Rationale for Next Action*: Based on the given question, rational plan, previous actions, and
+notebook content, analyze how to choose the next action.
+*Chosen Action*: read_neighbor_node(neighbor_node) or termination(). (Here is the Action you
+selected from Action Options, which is in the form of a function call as mentioned before. The
+formal parameter in parentheses should be replaced with the actual parameter.)
+#####
+
+Please strictly follow the above format. Let’s begin.
+
+Question:
+What is the name of the castle in the city where the performer of Never Too Loud was formed?
+
+Rational Plan:
+
+        In order to answer this question, we first need to identify the following key pieces of information:
+
+        1. The performer of the song "Never Too Loud."
+        2. The city where this performer was formed.
+        3. The name of the castle in that city.
+        We will then gather the necessary details to provide a comprehensive answer.
+    
+
+Previous Actions:
+[
+  "Exploring Atomic Facts of Node: Never Too Loud",
+  "Exploring Chunk: C1",
+  "Searching More on empty queue",
+  "Exploring Neighbouring Nodes of Node: Never Too Loud",
+  "Exploring Atomic Facts of Node: Danko Jones",
+  "Exploring Chunk: C1",
+  "Searching More on empty queue",
+  "Exploring Neighbouring Nodes of Node: Danko Jones"
+]
+
+Notebook:
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Current Chunk)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Current Chunk)
+
+Neighbours of Current Node:
+[
+  "Toronto",
+  "Never Too Loud",
+  "Canada",
+  "hard rock",
+  "fourth studio album"
+]
+
+PROMPT RESPONSE: 
+--------------------
+
+Rationale for Next Action: The next step is to identify the name of the castle in Toronto, as we have already determined that the performer of "Never Too Loud" is Danko Jones and they are from Toronto. The neighbouring node "Toronto" is most likely to contain relevant information about the city's landmarks, including any potential castles.
+
+Chosen Action: read_neighbor_node("Toronto")
+
+
+Rationale for Next Action: The next step is to identify the name of the castle in Toronto, as we have already determined that the performer of "Never Too Loud" is Danko Jones and they are from Toronto. The neighbouring node "Toronto" is most likely to contain relevant information about the city's landmarks, including any potential castles.
+
+Chosen Action: read_neighbor_node("Toronto")
+
+--------------------------------------------------
+CALL FUNCTION: read_neighbor_node("Toronto")
+
+EXPLORING THE NEIGHBOUR NODE: Toronto
+NODE: Toronto
+EXPLORING ATOMIC FACTS OF NODE: Toronto
+
+PROMPT TO THE LLM:
+--------------------
+
+As an intelligent assistant, your primary objective is to answer questions based on information 
+contained within a text. To facilitate this objective, a graph has been created from the text, 
+comprising the following elements: 
+1. Text Chunks: Chunks of the original text. 
+2. Atomic Facts: Smallest, indivisible truths extracted from text chunks. 
+3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic 
+facts derived from different text chunks. 
+
+Your current task is to check a node and its associated atomic facts, with the objective of 
+determining whether to proceed with reviewing the text chunk corresponding to these atomic facts. 
+Given the question, the rational plan, previous actions, notebook content, and the current node’s 
+atomic facts and their corresponding chunk IDs, you have the following Action Options: 
+##### 
+1. read_chunk(List[ID]): Choose this action if you believe that a text chunk linked to an atomic 
+fact may hold the necessary information to answer the question. This will allow you to access 
+more complete and detailed information. 
+2. stop_and_read_neighbor(): Choose this action if you ascertain that all text chunks lack valuable 
+information. 
+##### 
+
+Strategy: 
+##### 
+1. Reflect on previous actions and prevent redundant revisiting nodes or chunks. 
+2. You can choose to read multiple text chunks at the same time. 
+3. Atomic facts only cover part of the information in the text chunk, so even if you feel that the 
+atomic facts are slightly relevant to the question, please try to read the text chunk to get more 
+complete information. 
+##### 
+
+Response format: 
+##### 
+*Updated Notebook*: First, combine your current notebook with new insights and findings about 
+the question from current atomic facts, creating a more complete version of the notebook that 
+contains more valid information. 
+*Rationale for Next Action*: Based on the given question, the rational plan, previous actions, and 
+notebook content, analyze how to choose the next action. 
+*Chosen Action*: read_chunk(List[ID]) or stop_and_read_neighbor(). (Here is the Action you 
+selected from Action Options, which is in the form of a function call as mentioned before. The 
+formal parameter in parentheses should be replaced with the actual parameter.) 
+##### 
+
+Finally, it is emphasized again that even if the atomic fact is only slightly relevant to the 
+question, you should still look at the text chunk to avoid missing information. You should only 
+choose stop_and_read_neighbor() when you are very sure that the given text chunk is irrelevant to 
+the question. Please strictly follow the above format. Let’s begin.
+
+Question:
+What is the name of the castle in the city where the performer of Never Too Loud was formed?
+
+Rational Plan:
+
+        In order to answer this question, we first need to identify the following key pieces of information:
+
+        1. The performer of the song "Never Too Loud."
+        2. The city where this performer was formed.
+        3. The name of the castle in that city.
+        We will then gather the necessary details to provide a comprehensive answer.
+    
+
+Previous Actions:
+['Exploring Atomic Facts of Node: Never Too Loud', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Never Too Loud', 'Exploring Atomic Facts of Node: Danko Jones', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Danko Jones']
+
+Notebook:
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Current Chunk)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Current Chunk)
+
+Current Node:
+Toronto
+
+Current Node Chunks and Atomic Facts are of the following format:
+"CHUNK_ID#": [
+    "ATOMIC_FACT_ID#": "ATOMIC_FACT_TEXT",
+    ....
+],
+....
+
+Current Node Chunks and Atomic Facts:
+{
+  "C1": [
+    {
+      "AF2": "Danko Jones is a Canadian hard rock trio from Toronto."
+    }
+  ],
+  "C2": [
+    {
+      "AF8": "Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada."
+    }
+  ]
+}
+
+PROMPT RESPONSE: 
+--------------------
+
+Updated Notebook:
+
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Source: AF2, Chunk C1)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Source: AF2, Chunk C1)
+Castle in the City (Toronto):
+
+Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. (Source: AF8, Chunk C2)
+Rationale for Next Action: Based on the question, I need to confirm if Casa Loma is indeed the relevant castle in Toronto. The atomic fact AF8 provides a basic description of Casa Loma, but more context might be found in the associated text chunk. Reading this chunk will help ensure that we have all necessary details.
+
+Chosen Action: read_chunk(["C2"])
+
+--------------------------------------------------
+CALL FUNCTION: read_chunk(["C2"])
+
+CHUNK QUEUE: ['C2']
+CHUNK_ID: C2
+EXPLORING CHUNK: C2
+
+PROMPT TO THE LLM:
+--------------------
+
+As an intelligent assistant, your primary objective is to answer questions based on information
+within a text. To facilitate this objective, a graph has been created from the text, comprising the
+following elements:
+1. Text Chunks: Segments of the original text.
+2. Atomic Facts: Smallest, indivisible truths extracted from text chunks.
+3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic
+facts derived from different text chunks.
+
+
+Your current task is to assess a specific text chunk and determine whether the available information
+suffices to answer the question. Given the question, rational plan, previous actions, notebook
+content, and the current text chunk, you have the following Action Options:
+#####
+1. search_more(): Choose this action if you think that the essential information necessary to
+answer the question is still lacking.
+2. read_previous_chunk(): Choose this action if you feel that the previous text chunk contains
+valuable information for answering the question.
+3. read_subsequent_chunk(): Choose this action if you feel that the subsequent text chunk contains
+valuable information for answering the question.
+4. termination(): Choose this action if you believe that the information you have currently obtained
+is enough to answer the question. This will allow you to summarize the gathered information and
+provide a final answer.
+#####
+
+Strategy:
+#####
+1. Reflect on previous actions and prevent redundant revisiting of nodes or chunks.
+2. You can only choose one action.
+#####
+
+Response format:
+#####
+*Updated Notebook*: First, combine your previous notes with new insights and findings about the
+question from current text chunks, creating a more complete version of the notebook that contains
+more valid information.
+*Rationale for Next Action*: Based on the given question, rational plan, previous actions, and
+notebook content, analyze how to choose the next action.
+*Chosen Action*: search_more() or read_previous_chunk() or read_subsequent_chunk() or
+termination(). (Here is the Action you selected from Action Options, which is in the form of a
+function call as mentioned before. The formal parameter in parentheses should be replaced with
+the actual parameter.)
+#####
+
+Please strictly follow the above format. Let’s begin.
+
+Question:
+What is the name of the castle in the city where the performer of Never Too Loud was formed?
+
+Rational Plan:
+
+        In order to answer this question, we first need to identify the following key pieces of information:
+
+        1. The performer of the song "Never Too Loud."
+        2. The city where this performer was formed.
+        3. The name of the castle in that city.
+        We will then gather the necessary details to provide a comprehensive answer.
+    
+
+Previous Actions:
+['Exploring Atomic Facts of Node: Never Too Loud', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Never Too Loud', 'Exploring Atomic Facts of Node: Danko Jones', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Danko Jones', 'Exploring Atomic Facts of Node: Toronto']
+
+Notebook:
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Source: AF2, Chunk C1)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Source: AF2, Chunk C1)
+Castle in the City (Toronto):
+
+Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. (Source: AF8, Chunk C2)
+
+Current Text Chunk:
+The band consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums). The band’s music includes elements of hard rock and punk and they are known for their energetic live shows. Casa Loma (improper Spanish for 'Hill House') is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada, that is now a historic house museum and landmark.
+
+PROMPT RESPONSE: 
+--------------------
+
+Updated Notebook:
+
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Source: AF2, Chunk C1)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Source: AF2, Chunk C1)
+Castle in the City (Toronto):
+
+Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. (Source: AF8, Chunk C2)
+Rationale for Next Action:
+Based on the current information, we have established the performer of "Never Too Loud" (Danko Jones), the city where the performer was formed (Toronto), and the name of the castle in that city (Casa Loma).
+
+Chosen Action: termination()
+
+CHUNK QUEUE: []
+--------------------------------------------------
+CALL FUNCTION: termination()
+

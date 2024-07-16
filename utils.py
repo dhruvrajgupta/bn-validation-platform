@@ -135,8 +135,10 @@ def extract_notebook_rationale_next_steps_chosen_action(resposne: str):
     rationale_next_action_pattern = r"Rationale for Next Action:(.*?)(?=Chosen Action:|\Z)"
     chosen_action_pattern = r"Chosen Action:\s*(.*)"
 
-    notebook = re.search(notebook_pattern, resposne, re.DOTALL).group(1).strip()
-    notebook = notebook.replace("Notebook:", "").strip()
+    notebook = re.search(notebook_pattern, resposne, re.DOTALL)
+    if notebook is not None:
+        notebook = notebook.group(1).strip()
+        notebook = notebook.replace("Notebook:", "").strip()
     rationale_next_action = re.search(rationale_next_action_pattern, resposne, re.DOTALL).group(1).strip()
     chosen_action = re.search(chosen_action_pattern, resposne, re.DOTALL).group(1).strip()
 

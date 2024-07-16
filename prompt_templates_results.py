@@ -1,6 +1,6 @@
 import json
 from prompt_templates import EXPLORING_ATOMIC_FACTS_PROMPT, \
-EXPLORING_CHUNKS_PROMPT
+EXPLORING_CHUNKS_PROMPT, EXPLORING_NEIGHBOURS_PROMPT
 from langchain_core.prompts import PromptTemplate
 
 def get_corpus():
@@ -189,11 +189,11 @@ def exploring_atomic_facts_prompt(question, rational_plan, previous_actions, not
                                             node_content=json.dumps(node_content, indent=2)
                                         )
 
-    print("\nPROMPT TO THE LLM:")
+    print(f"\nPROMPT TO THE LLM:\n{'-'*20}")
     print(exploring_atomic_facts_prompt)
 
-    results = {
-        "Never Too Loud": """
+    if current_node == "Never Too Loud":
+        return """
 Updated Notebook:
 
 Notebook:
@@ -206,13 +206,57 @@ The atomic fact we have indicates that "Never Too Loud" is an album by the band 
 
 Chosen Action: read_chunk(["C1"])
 
-""",
-    }
 
-    if current_node in results:
-        return results[current_node]
-    else:
-        return "Result Not Found!!!"
+
+
+
+
+
+"""
+
+    if current_node == "Danko Jones":
+        return """
+Updated Notebook:
+
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Source: AF2, Chunk C1)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Source: AF2, Chunk C1)
+Rationale for Next Action:
+Based on the current atomic facts, we have identified that the performer of "Never Too Loud" is Danko Jones and that they are from Toronto. To answer the question fully, we still need to find the name of the castle in Toronto. There might be additional relevant information in other text chunks that could help us identify the name of the castle.
+
+Chosen Action: read_chunk(["C1"])
+
+
+
+
+
+
+"""
+
+    if current_node == "Toronto":
+        return """
+Updated Notebook:
+
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Source: AF2, Chunk C1)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Source: AF2, Chunk C1)
+Castle in the City (Toronto):
+
+Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. (Source: AF8, Chunk C2)
+Rationale for Next Action: Based on the question, I need to confirm if Casa Loma is indeed the relevant castle in Toronto. The atomic fact AF8 provides a basic description of Casa Loma, but more context might be found in the associated text chunk. Reading this chunk will help ensure that we have all necessary details.
+
+Chosen Action: read_chunk(["C2"])
+"""
+
+    return "Result Not Found!!!"
 
 def exploring_chunks_prompt(question, rational_plan, previous_actions, notebook, chunk_content, chunk_id):
     exploring_chunks_prompt = EXPLORING_CHUNKS_PROMPT
@@ -225,11 +269,11 @@ def exploring_chunks_prompt(question, rational_plan, previous_actions, notebook,
             chunk_content=chunk_content
         )
     
-    print("\nPROMPT TO THE LLM:")
+    print(f"\nPROMPT TO THE LLM:\n{'-'*20}")
     print(exploring_chunks_prompt)
 
-    result = {
-        "C1": """
+    if chunk_id == "C1": 
+        return """
 Updated Notebook:
 
 Performer of "Never Too Loud":
@@ -244,54 +288,62 @@ To answer the question, we have identified that Danko Jones is the performer of 
 
 Chosen Action: search_more()
 """
-    }
 
-    if chunk_id in result:
-        return result[chunk_id]
-    else:
-        return "Result Not Found!!!"
+    if chunk_id == "C2":
+        return """
+Updated Notebook:
+
+Performer of "Never Too Loud":
+
+"Never Too Loud" is the fourth studio album by Canadian hard rock band Danko Jones. (Source: AF1, Chunk C1)
+Danko Jones is a Canadian hard rock trio from Toronto. (Source: AF2, Chunk C1)
+City where the performer was formed:
+
+Danko Jones is from Toronto. (Source: AF2, Chunk C1)
+Castle in the City (Toronto):
+
+Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. (Source: AF8, Chunk C2)
+Rationale for Next Action:
+Based on the current information, we have established the performer of "Never Too Loud" (Danko Jones), the city where the performer was formed (Toronto), and the name of the castle in that city (Casa Loma).
+
+Chosen Action: termination()
+"""
 
 
-def exploring_neighbors_prompt():
-    exploring_neighbors_prompt = """
-    As an intelligent assistant, your primary objective is to answer questions based on information
-    within a text. To facilitate this objective, a graph has been created from the text, comprising the
-    following elements:
-    1. Text Chunks: Segments of the original text.
-    2. Atomic Facts: Smallest, indivisible truths extracted from text chunks.
-    3. Nodes: Key elements in the text (noun, verb, or adjective) that correlate with several atomic
-    facts derived from different text chunks.
+    return "Result Not Found!!!"
 
-    Your current task is to assess all neighbouring nodes of the current node, with the
-    objective of determining whether to proceed to the next neighboring node. Given the question, rational
-    plan, previous actions, notebook content, and the neighbors of the current node, you have the
-    following Action Options:
-    #####
-    1. read_neighbor_node(key element of node): Choose this action if you believe that any of the
-    neighboring nodes may contain information relevant to the question. Note that you should focus
-    on one neighbor node at a time.
-    2. termination(): Choose this action if you believe that none of the neighboring nodes possess
-    information that could answer the question.
-    #####
 
-    Strategy:
-    #####
-    1. Reflect on previous actions and prevent redundant revisiting of nodes or chunks.
-    2. You can only choose one action. This means that you can choose to read only one neighbour
-    node or choose to terminate.
-    #####
+def exploring_neighbors_prompt(question, rational_plan, previous_actions, notebook, neighbour_nodes, current_node):
+    exploring_neighbors_prompt = EXPLORING_NEIGHBOURS_PROMPT
+    exploring_neighbors_prompt = PromptTemplate.from_template(exploring_neighbors_prompt) \
+        .format(
+            question=question,
+            rational_plan=rational_plan,
+            previous_actions=json.dumps(previous_actions, indent=2),
+            notebook=notebook,
+            neighbour_nodes=json.dumps(neighbour_nodes, indent=2)
+        )
+    
+    print(f"\nPROMPT TO THE LLM:\n{'-'*20}")
+    print(exploring_neighbors_prompt)
+    
+    
+    if current_node == "Never Too Loud":
+        return """
+Rationale for Next Action: Since the current chunk has provided information about the performer (Danko Jones) and the city (Toronto), the next step is to find information about the castle in Toronto. Given the neighbouring nodes, "Danko Jones" seems to be the most relevant node to potentially provide more context or related information that might lead to the castle.
 
-    Response format:
-    #####
-    *Rationale for Next Action*: Based on the given question, rational plan, previous actions, and
-    notebook content, analyze how to choose the next action.
-    *Chosen Action*: read_neighbor_node(neighbor_node) or termination(). (Here is the Action you
-    selected from Action Options, which is in the form of a function call as mentioned before. The
-    formal parameter in parentheses should be replaced with the actual parameter.)
-    #####
+Chosen Action: read_neighbor_node("Danko Jones")
+"""
 
-    Please strictly follow the above format. Let’s begin.
-    """
+    if current_node == "Danko Jones":
+        return """
+Rationale for Next Action: The next step is to identify the name of the castle in Toronto, as we have already determined that the performer of "Never Too Loud" is Danko Jones and they are from Toronto. The neighbouring node "Toronto" is most likely to contain relevant information about the city's landmarks, including any potential castles.
+
+Chosen Action: read_neighbor_node("Toronto")
+"""
+
+    return "Result Not Found!!!"
+
 
 
 def answer_reasoning_prompt():

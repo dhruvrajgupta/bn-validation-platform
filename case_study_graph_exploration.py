@@ -3,7 +3,8 @@ from corpus import corpus, corpus_map_small
 import json
 from typing import List
 from prompt_templates_results import get_rational_plan, get_corpus, \
-    get_initial_nodes, exploring_atomic_facts_prompt, exploring_chunks_prompt
+    get_initial_nodes, exploring_atomic_facts_prompt, exploring_chunks_prompt, \
+    exploring_neighbors_prompt
 import re
 
 chunk_queue = []
@@ -32,7 +33,7 @@ def exploring_atomic_facts(node: str):
         node_content=node_grouped_chunks_afs[node]
     )
 
-    print("PROMPT RESPONSE: \n", res)
+    print(f"PROMPT RESPONSE: \n{'-'*20}\n{res}")
 
     previous_actions.append(f"Exploring Atomic Facts of Node: {node}")
 
@@ -40,9 +41,9 @@ def exploring_atomic_facts(node: str):
 
     print(f"{'-'*50}")
     
-    call_function(chosen_action)
+    call_function(chosen_action, node=node)
 
-def call_function(chosen_action: str):
+def call_function(chosen_action: str, node:str):
     print(f"CALL FUNCTION: {chosen_action}\n")
     if "read_chunk" in chosen_action:
         pattern = r'\[([^\]]+)\]'
@@ -50,10 +51,20 @@ def call_function(chosen_action: str):
         parameters = matches[0]
         chunk_ids = parameters.replace('"','').strip()
         func = globals()["read_chunk"]
-        func(chunk_ids)
+        func(chunk_ids, node)
+    elif "search_more" in chosen_action:
+        func = globals()["search_more"]
+        func(node)
+    elif"read_neighbor_node" in chosen_action:
+        pattern = r'\("([^"]+)"\)'
+        matches = re.findall(pattern, chosen_action)
+        parameters = matches[0]
+        node = parameters.replace('"','').strip()
+        func = globals()["read_neighbor_node"]
+        func(node)
 
 # EXPLORING CHUNKS
-def read_chunk (chunk_id: str):
+def read_chunk (chunk_id: str, node: str = None):
     # if the agent identifies certain chunks as valuable for further reading, 
     # it will complete the function parameters with the chunk IDs, 
     # i.e., read_chunk(List[ID]), and append these IDs to a chunk queue
@@ -71,7 +82,7 @@ def read_chunk (chunk_id: str):
         chunk_content=chunk_content,
         chunk_id=chunk_id)
     
-    print("PROMPT RESPONSE: \n", res)
+    print(f"PROMPT RESPONSE: \n{'-'*20}\n{res}")
 
     previous_actions.append(f"Exploring Chunk: {chunk_id}")
 
@@ -82,12 +93,16 @@ def read_chunk (chunk_id: str):
 
     print(f"{'-'*50}")
 
-    call_function(chosen_action)
+    call_function(chosen_action, node=node)
 
-def search_more():
+def search_more(node: str):
     # if supporting fact is insufficient, the agent will continue 
     # exploring chunks in the queue;
-    pass
+    if chunk_queue:
+        pass
+    else:
+        previous_actions.append("Searching More on empty queue")
+        stop_and_read_neighbor(node)
 
 def read_previous_chunk():
     # due to truncation issues, adjacent chunks might contain relevant 
@@ -100,29 +115,70 @@ def read_subsequent_chunk():
     pass
 
 
-    def termination():
-        # if sufficient information has been gathered for answering the question, 
-        # the agent will finish exploration.
-        pass
-
-
-
-def stop_and_read_neighbor():
+def stop_and_read_neighbor(node: str):
     # conversely, if the agent deems that none of the chunks are worth 
     # further reading, it will finish reading this node and proceed 
     # to explore neighboring nodes.
-    pass
 
-def read_neighbor_node():
+    neighbouring_nodes = get_neighbouring_nodes(node)
+    print(f"CURRENT NODE: {node}")
+    print(f"NEIGHBOURING NODES: {neighbouring_nodes}")
+    previous_actions.append(f"Exploring Neighbouring Nodes of Node: {node}")
+    res = exploring_neighbors_prompt(
+        question=question,
+        rational_plan=rational_plan,
+        previous_actions=previous_actions,
+        notebook=notebook,
+        neighbour_nodes=neighbouring_nodes,
+        current_node=node)
+
+    print(f"PROMPT RESPONSE: \n{'-'*20}\n{res}")
+    print(res)
+    
+    _, rationale_next_steps, chosen_action = extract_notebook_rationale_next_steps_chosen_action(res)
+
+    print(f"{'-'*50}")
+    
+    call_function(chosen_action, None)
+    # Check if the node has been visited
+    # for neighbouring_node in neighbouring_nodes:
+    #     print(neighbouring_node)
+    #     if f"Exploring Atomic Facts of Node: {neighbouring_node}" in previous_actions:
+    #         print(f"Node: {neighbouring_node} has already been visited")
+    #         continue
+
+    #     if neighbouring_node == "Danko Jones":
+    #         chosen_action = f"read_neighbor_node({neighbouring_node})"
+    #         call_function(chosen_action, neighbouring_node)
+    #         break
+
+    #     if neighbouring_node == "Toronto":
+    #         chosen_action = f"read_neighbor_node({neighbouring_node})"
+    #         call_function(chosen_action, neighbouring_node)
+    #         break
+
+def read_neighbor_node(node: str):
     # the agent selects a neighboring node that might be helpful in 
     # answering the question and re-enters the process of exploring 
     # atomic facts and chunks;
-    pass
+    print(f"EXPLORING THE NEIGHBOUR NODE: {node}")
+    exploring_atomic_facts(node)
 
 def termination():
     # the agent determines that none of the neighboring nodes contain 
     # useful information, it finish the exploration.
+
+    # Perform c) answer reasoning
     pass
+
+def get_neighbouring_nodes(node: str):
+    neighbouring_nodes = []
+    for chunk_id, chunk_content in corpus_map.items():
+        for af_id, af in chunk_content["atomic_facts"].items():
+            if node in af["nodes_labels"].values():
+                neighbouring_nodes.extend([x for x in af["nodes_labels"].values() if x != node])
+
+    return list(set(neighbouring_nodes))
 
 
 def map_nodes_af_chunks():
