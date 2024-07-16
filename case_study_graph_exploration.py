@@ -122,7 +122,7 @@ def stop_and_read_neighbor(node: str):
 
     neighbouring_nodes = get_neighbouring_nodes(node)
     print(f"CURRENT NODE: {node}")
-    print(f"NEIGHBOURING NODES: {neighbouring_nodes}")
+    print(f"NEIGHBOURING NODES: {json.dumps(neighbouring_nodes, indent=2)}")
     previous_actions.append(f"Exploring Neighbouring Nodes of Node: {node}")
     res = exploring_neighbors_prompt(
         question=question,

@@ -302,7 +302,9 @@ Rational Plan:
     
 
 Previous Actions:
-['Exploring Atomic Facts of Node: Never Too Loud']
+[
+  "Exploring Atomic Facts of Node: Never Too Loud"
+]
 
 Notebook:
 Performer of "Never Too Loud":
@@ -333,7 +335,11 @@ CHUNK QUEUE: []
 CALL FUNCTION: search_more()
 
 CURRENT NODE: Never Too Loud
-NEIGHBOURING NODES: ['Danko Jones', 'hard rock', 'fourth studio album']
+NEIGHBOURING NODES: [
+  "Danko Jones",
+  "hard rock",
+  "fourth studio album"
+]
 
 PROMPT TO THE LLM:
 --------------------
@@ -495,7 +501,12 @@ Rational Plan:
     
 
 Previous Actions:
-['Exploring Atomic Facts of Node: Never Too Loud', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Never Too Loud']
+[
+  "Exploring Atomic Facts of Node: Never Too Loud",
+  "Exploring Chunk: C1",
+  "Searching More on empty queue",
+  "Exploring Neighbouring Nodes of Node: Never Too Loud"
+]
 
 Notebook:
 Performer of "Never Too Loud":
@@ -620,7 +631,13 @@ Rational Plan:
     
 
 Previous Actions:
-['Exploring Atomic Facts of Node: Never Too Loud', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Never Too Loud', 'Exploring Atomic Facts of Node: Danko Jones']
+[
+  "Exploring Atomic Facts of Node: Never Too Loud",
+  "Exploring Chunk: C1",
+  "Searching More on empty queue",
+  "Exploring Neighbouring Nodes of Node: Never Too Loud",
+  "Exploring Atomic Facts of Node: Danko Jones"
+]
 
 Notebook:
 Performer of "Never Too Loud":
@@ -656,7 +673,13 @@ CHUNK QUEUE: []
 CALL FUNCTION: search_more()
 
 CURRENT NODE: Danko Jones
-NEIGHBOURING NODES: ['Toronto', 'Never Too Loud', 'Canada', 'hard rock', 'fourth studio album']
+NEIGHBOURING NODES: [
+  "Never Too Loud",
+  "Toronto",
+  "fourth studio album",
+  "hard rock",
+  "Canada"
+]
 
 PROMPT TO THE LLM:
 --------------------
@@ -735,11 +758,11 @@ Danko Jones is from Toronto. (Current Chunk)
 
 Neighbours of Current Node:
 [
-  "Toronto",
   "Never Too Loud",
-  "Canada",
+  "Toronto",
+  "fourth studio album",
   "hard rock",
-  "fourth studio album"
+  "Canada"
 ]
 
 PROMPT RESPONSE: 
@@ -824,7 +847,16 @@ Rational Plan:
     
 
 Previous Actions:
-['Exploring Atomic Facts of Node: Never Too Loud', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Never Too Loud', 'Exploring Atomic Facts of Node: Danko Jones', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Danko Jones']
+[
+  "Exploring Atomic Facts of Node: Never Too Loud",
+  "Exploring Chunk: C1",
+  "Searching More on empty queue",
+  "Exploring Neighbouring Nodes of Node: Never Too Loud",
+  "Exploring Atomic Facts of Node: Danko Jones",
+  "Exploring Chunk: C1",
+  "Searching More on empty queue",
+  "Exploring Neighbouring Nodes of Node: Danko Jones"
+]
 
 Notebook:
 Performer of "Never Too Loud":
@@ -947,7 +979,17 @@ Rational Plan:
     
 
 Previous Actions:
-['Exploring Atomic Facts of Node: Never Too Loud', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Never Too Loud', 'Exploring Atomic Facts of Node: Danko Jones', 'Exploring Chunk: C1', 'Searching More on empty queue', 'Exploring Neighbouring Nodes of Node: Danko Jones', 'Exploring Atomic Facts of Node: Toronto']
+[
+  "Exploring Atomic Facts of Node: Never Too Loud",
+  "Exploring Chunk: C1",
+  "Searching More on empty queue",
+  "Exploring Neighbouring Nodes of Node: Never Too Loud",
+  "Exploring Atomic Facts of Node: Danko Jones",
+  "Exploring Chunk: C1",
+  "Searching More on empty queue",
+  "Exploring Neighbouring Nodes of Node: Danko Jones",
+  "Exploring Atomic Facts of Node: Toronto"
+]
 
 Notebook:
 Performer of "Never Too Loud":

@@ -183,7 +183,7 @@ def exploring_atomic_facts_prompt(question, rational_plan, previous_actions, not
                                         .format(
                                             question=question,
                                             rational_plan=rational_plan,
-                                            previous_actions=previous_actions,
+                                            previous_actions=json.dumps(previous_actions, indent=2),
                                             notebook=notebook,
                                             current_node=current_node,
                                             node_content=json.dumps(node_content, indent=2)
@@ -264,7 +264,7 @@ def exploring_chunks_prompt(question, rational_plan, previous_actions, notebook,
         .format(
             question=question,
             rational_plan=rational_plan,
-            previous_actions=previous_actions,
+            previous_actions=json.dumps(previous_actions, indent=2),
             notebook=notebook,
             chunk_content=chunk_content
         )
