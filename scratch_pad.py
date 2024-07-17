@@ -294,6 +294,12 @@ def paragraph_chunking_main():
         "Modern machine capabilities generally classified as AI include successfully understanding human speech, competing at the highest level in strategic game systems (such as chess and Go), autonomously operating cars, intelligent routing in content delivery networks, and military simulations."
     )
 
+    paragraph = (
+    "Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. It was recorded at Studio 606 in Los Angeles, with the producer Nick Raskulinecz. "
+    "Danko Jones is a Canadian hard rock trio from Toronto. The band consists of Danko Jones (vocals/guitar), John 'JC' Calabrese (bass), and Rich Knox (drums). The band’s music includes elements of hard rock and punk and they are known for their energetic live shows. "
+    "Casa Loma (improper Spanish for 'Hill House') is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada, that is now a historic house museum and landmark. It was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt. The architect was E. J. Lennox, who designed several other city landmarks. "
+    )
+
     chunks = paragraph_chunking(paragraph, sentences_per_chunk=2)
     for i, chunk in enumerate(chunks):
         print(f"Chunk {i+1}:\n{chunk}\n")
@@ -307,11 +313,16 @@ def ask_llm():
     {
         'role': 'user',
         'content': 'Why is the sky blue?',
+        'options': {
+            "seed": 1
+        }
     },
     ]
 
-    for part in chat('mistral', messages=messages, stream=True):
+    for part in chat('llama3', messages=messages, stream=True):
         print(part['message']['content'], end='', flush=True)
 
     # end with a newline
     print()
+# TODO: chunk the paragraph
+paragraph_chunking_main()

@@ -9,6 +9,7 @@ from sklearn.cluster import DBSCAN
 from typing import List, Dict
 from difflib import SequenceMatcher
 from nltk.tokenize import sent_tokenize
+from ollama import chat
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -131,9 +132,9 @@ def chunk_corpus(corpus):
 
 
 def extract_notebook_rationale_next_steps_chosen_action(resposne: str):
-    notebook_pattern = r"Updated Notebook:(.*?)(?=Rationale for Next Action:|\Z)"
-    rationale_next_action_pattern = r"Rationale for Next Action:(.*?)(?=Chosen Action:|\Z)"
-    chosen_action_pattern = r"Chosen Action:\s*(.*)"
+    notebook_pattern = r"\*Updated Notebook\*:(.*?)(?=\*Rationale for Next Action\*:|\Z)"
+    rationale_next_action_pattern = r"\*Rationale for Next Action\*:(.*?)(?=\*Chosen Action\*:|\Z)"
+    chosen_action_pattern = r"\*Chosen Action\*:\s*(.*)"
 
     notebook = re.search(notebook_pattern, resposne, re.DOTALL)
     if notebook is not None:
@@ -143,3 +144,44 @@ def extract_notebook_rationale_next_steps_chosen_action(resposne: str):
     chosen_action = re.search(chosen_action_pattern, resposne, re.DOTALL).group(1).strip()
 
     return notebook, rationale_next_action, chosen_action
+
+
+def ask_llm(prompt: str):
+    # Figure out to clear the context
+
+    messages = [
+    {
+        'role': 'user',
+        'content': prompt,
+        'options': {
+            "seed": 1,
+            "temperature": 0.0001
+        }
+    },
+    ]
+
+    llm_response = ""
+    model = 'xlama'
+
+    for part in chat(model, messages=messages, stream=True):
+        llm_response += part['message']['content']
+        print(part['message']['content'], end='', flush=True)
+
+    # end with a newline
+    print("\n")
+    print(f"END OF LLM RESPONSE\n{'-'*50}")
+
+    # messages = [
+    # {
+    #     'role': 'user',
+    #     'content': 'Why is the sky blue?',
+    #     'options': {
+    #         "seed": 1
+    #     }
+    # },
+    # ]
+    # for part in chat(model, messages=messages, stream=True):
+    #     # print(part['message']['content'], end='', flush=True)
+    #     pass
+
+    return llm_response

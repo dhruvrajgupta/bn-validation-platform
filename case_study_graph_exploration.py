@@ -40,7 +40,6 @@ def exploring_atomic_facts(node: str):
     notebook, rationale_next_action, chosen_action = extract_notebook_rationale_next_steps_chosen_action(res)
 
     print(f"{'-'*50}")
-    
     call_function(chosen_action, node=node)
 
 def call_function(chosen_action: str, node:str):
@@ -65,8 +64,8 @@ def call_function(chosen_action: str, node:str):
 
 # EXPLORING CHUNKS
 def read_chunk (chunk_id: str, node: str = None):
-    # if the agent identifies certain chunks as valuable for further reading, 
-    # it will complete the function parameters with the chunk IDs, 
+    # if the agent identifies certain chunks as valuable for further reading,
+    # it will complete the function parameters with the chunk IDs,
     # i.e., read_chunk(List[ID]), and append these IDs to a chunk queue
     global notebook
     chunk_queue.append(chunk_id)
@@ -81,7 +80,7 @@ def read_chunk (chunk_id: str, node: str = None):
         notebook=notebook,
         chunk_content=chunk_content,
         chunk_id=chunk_id)
-    
+
     print(f"PROMPT RESPONSE: \n{'-'*20}\n{res}")
 
     previous_actions.append(f"Exploring Chunk: {chunk_id}")
@@ -96,7 +95,7 @@ def read_chunk (chunk_id: str, node: str = None):
     call_function(chosen_action, node=node)
 
 def search_more(node: str):
-    # if supporting fact is insufficient, the agent will continue 
+    # if supporting fact is insufficient, the agent will continue
     # exploring chunks in the queue;
     if chunk_queue:
         pass
@@ -105,19 +104,19 @@ def search_more(node: str):
         stop_and_read_neighbor(node)
 
 def read_previous_chunk():
-    # due to truncation issues, adjacent chunks might contain relevant 
+    # due to truncation issues, adjacent chunks might contain relevant
     # and useful information, the agent may insert these IDs to the queue;
     pass
 
 def read_subsequent_chunk():
-    # due to truncation issues, adjacent chunks might contain relevant 
+    # due to truncation issues, adjacent chunks might contain relevant
     # and useful information, the agent may insert these IDs to the queue;
     pass
 
 
 def stop_and_read_neighbor(node: str):
-    # conversely, if the agent deems that none of the chunks are worth 
-    # further reading, it will finish reading this node and proceed 
+    # conversely, if the agent deems that none of the chunks are worth
+    # further reading, it will finish reading this node and proceed
     # to explore neighboring nodes.
 
     neighbouring_nodes = get_neighbouring_nodes(node)
@@ -134,11 +133,11 @@ def stop_and_read_neighbor(node: str):
 
     print(f"PROMPT RESPONSE: \n{'-'*20}\n{res}")
     print(res)
-    
+
     _, rationale_next_steps, chosen_action = extract_notebook_rationale_next_steps_chosen_action(res)
 
     print(f"{'-'*50}")
-    
+
     call_function(chosen_action, None)
     # Check if the node has been visited
     # for neighbouring_node in neighbouring_nodes:
@@ -158,14 +157,14 @@ def stop_and_read_neighbor(node: str):
     #         break
 
 def read_neighbor_node(node: str):
-    # the agent selects a neighboring node that might be helpful in 
-    # answering the question and re-enters the process of exploring 
+    # the agent selects a neighboring node that might be helpful in
+    # answering the question and re-enters the process of exploring
     # atomic facts and chunks;
     print(f"EXPLORING THE NEIGHBOUR NODE: {node}")
     exploring_atomic_facts(node)
 
 def termination():
-    # the agent determines that none of the neighboring nodes contain 
+    # the agent determines that none of the neighboring nodes contain
     # useful information, it finish the exploration.
 
     # Perform c) answer reasoning
@@ -183,15 +182,15 @@ def get_neighbouring_nodes(node: str):
 
 def map_nodes_af_chunks():
     #
-    # all atomic facts associated with a node are grouped by their 
-    # corresponding chunks, labeled with the respective chunk IDs, 
+    # all atomic facts associated with a node are grouped by their
+    # corresponding chunks, labeled with the respective chunk IDs,
     # and fed to the agent.
     #
 
     print(f"Mapping nodes with their associated chunks and atomic facts...\n{'='*50}")
     print(f"Nodes and their disambiguated label mapping...\n{'-'*50}")
     for chunk_id, chunk in corpus_map.items():
-        
+
         chunk_text = chunk["text"]
         chunk_atomic_facts = chunk["atomic_facts"]
 
@@ -223,7 +222,7 @@ def main():
 
     print(f"\nCorpus: \n{corpus}\n")
     map_nodes_af_chunks()
-    
+
     print(f"\nEXPLORATION \n{'='*50}\n")
     # Initial Node and Score
     node, score = get_initial_nodes()[0]
