@@ -48,7 +48,7 @@ def explore_atomic_facts(node: str):
     call_function(chosen_action, node=node)
 
 
-def read_chunk (chunk_id: str, node: str = None):
+def read_chunk (chunk_id: str):
     # if the agent identifies certain chunks as valuable for further reading,
     # it will complete the function parameters with the chunk IDs,
     # i.e., read_chunk(List[ID]), and append these IDs to a chunk queue
@@ -84,34 +84,37 @@ def read_chunk (chunk_id: str, node: str = None):
 
     print(f"{'-'*50}")
 
+    call_function(chosen_action, current_chunk_id=chunk_id)
+
+
+def read_previous_chunk(chunk_id: str):
+    # due to truncation issues, adjacent chunks might contain relevant
+    # and useful information, the agent may insert these IDs to the queue;
+
+    # Temp Logic to get the previous_chunk_id
+    import collections
+    sorted_chunks = collections.OrderedDict(sorted(corpus_map.items()))
+    sorted_chunks_ids = [chunk_id for chunk_id in sorted_chunks.keys()]
+    previous_chunk_index = sorted_chunks_ids.index(chunk_id) - 1
+
+    if previous_chunk_index < 0:
+        print("There is no previous chunk, so re-reading the current chunk...\n")
+        # TODO: What to do when there is no previous chunk
+        # For now we will re-read the chunk
+        previous_chunk_index = 0
+
+    previous_chunk_id =  sorted_chunks_ids[previous_chunk_index]
+
+    print(f"CURRENT CHUNK ID: {chunk_id}")
+    print(f"PREVIOUS CHUNK ID: {previous_chunk_id}")
+
+    previous_actions.append(f"Reading Previous Chunk of {chunk_id}: Previous Chunk - {previous_chunk_id}")
+
+    # previous_chunk = corpus_map[previous_chunk_id]
+    # previous_chunk_text = previous_chunk["text"]
+    # print(previous_chunk_text)
+    chosen_action = f'read_chunk(["{previous_chunk_id}]")'
     call_function(chosen_action)
-
-
-# def read_previous_chunk(chunk_id, node):
-#     # due to truncation issues, adjacent chunks might contain relevant
-#     # and useful information, the agent may insert these IDs to the queue;
-
-#     # Temp Logic to get the previous_chunk_id
-#     import collections
-#     sorted_chunks = collections.OrderedDict(sorted(corpus_map.items()))
-#     sorted_chunks_ids = [chunk_id for chunk_id in sorted_chunks.keys()]
-#     previous_chunk_index = sorted_chunks_ids.index(chunk_id) - 1
-
-#     if previous_chunk_index < 0:
-#         print("There is no previous chunk, so re-reading the current chunk...\n")
-#         # TODO: What to do when there is no previous chunk
-#         # For now we will re-read the chunk
-#         previous_chunk_index = 0
-
-#     previous_chunk_id =  sorted_chunks_ids[previous_chunk_index]
-
-#     print(f"CURRENT CHUNK ID: {chunk_id}")
-#     print(f"PREVIOUS CHUNK ID: {previous_chunk_id}")
-#     # previous_chunk = corpus_map[previous_chunk_id]
-#     # previous_chunk_text = previous_chunk["text"]
-#     # print(previous_chunk_text)
-#     chosen_action = f'read_chunk("{previous_chunk_id}")'
-#     call_function(chosen_action, node=node)
 
 
 
@@ -160,15 +163,13 @@ def call_function(chosen_action: str, **kwargs):
         parameters = matches[0]
         chunk_ids = parameters.replace('"','').strip()
         func = globals()["read_chunk"]
-    #     func(chunk_ids, node)
+        func(chunk_ids)
 
-    # if "read_previous_chunk" in chosen_action:
-    #     pattern = r'\[([^\]]+)\]'
-    #     matches = re.findall(pattern, chosen_action)
-    #     parameters = matches[0]
-    #     chunk_ids = parameters.replace('"','').strip()
-    #     func = globals()["read_previous_chunk"]
-    #     func(chunk_ids, node)
+    if "read_previous_chunk" in chosen_action:
+        if "current_chunk_id" in kwargs:
+            current_chunk_id = kwargs["current_chunk_id"]
+            func = globals()["read_previous_chunk"]
+            func(current_chunk_id)
 
 def main():
 
@@ -183,7 +184,8 @@ def main():
     print(f"INITIAL NODE: {node}, Score: {score}\n")
     explore_atomic_facts(node)
     # read_chunk("C1")
-    # read_previous_chunk("C1")
+    # read_previous_chunk()
+    # call_function("read_previous_chunk()", current_chunk_id="C1")
 
 
 if __name__ == '__main__':
