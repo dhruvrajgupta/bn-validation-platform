@@ -15,37 +15,37 @@ def get_corpus():
 def get_atomic_facts_and_key_elements(corpus: str):
     # CORPUS to ATOMIC FACTS AND KEY ELEMENTS
     gc_prompt = """
-        You are now an intelligent assistant tasked with meticulously extracting both key elements and 
+        You are now an intelligent assistant tasked with meticulously extracting both key elements and
         atomic facts from a long text.
-        1. Key Elements: The essential nouns (e.g., characters, times, events, places, numbers), verbs (e.g., 
+        1. Key Elements: The essential nouns (e.g., characters, times, events, places, numbers), verbs (e.g.,
         actions), and adjectives (e.g., states, feelings) that are pivotal to the text’s narrative.
-        2. Atomic Facts: The smallest, indivisible facts, presented as concise sentences. These include 
-        propositions, theories, existences, concepts, and implicit elements like logic, causality, event 
+        2. Atomic Facts: The smallest, indivisible facts, presented as concise sentences. These include
+        propositions, theories, existences, concepts, and implicit elements like logic, causality, event
         sequences, interpersonal relationships, timelines, etc.
 
-        Requirements: 
+        Requirements:
         #####
-        1. Ensure that all identified key elements are reflected within the corresponding atomic facts. 
-        2. You should extract key elements and atomic facts comprehensively, especially those that are 
-        important and potentially query-worthy and do not leave out details. 
-        3. Whenever applicable, replace pronouns with their specific noun counterparts (e.g., change I, He, 
-        She to actual names). 
-        4. Ensure that the key elements and atomic facts you extract are presented in the same language as 
-        the original text (e.g., English or Chinese). 
-        5. You should output a total of key elements and atomic facts that do not exceed 1024 tokens. 
-        6. Your answer format for each line should be: [Serial Number], [Atomic Facts], [List of Key 
+        1. Ensure that all identified key elements are reflected within the corresponding atomic facts.
+        2. You should extract key elements and atomic facts comprehensively, especially those that are
+        important and potentially query-worthy and do not leave out details.
+        3. Whenever applicable, replace pronouns with their specific noun counterparts (e.g., change I, He,
+        She to actual names).
+        4. Ensure that the key elements and atomic facts you extract are presented in the same language as
+        the original text (e.g., English or Chinese).
+        5. You should output a total of key elements and atomic facts that do not exceed 1024 tokens.
+        6. Your answer format for each line should be: [Serial Number], [Atomic Facts], [List of Key
         Elements, separated with ‘|’]
         #####
 
-        Example: 
-        ##### 
-        User: One day, a father and his little son ...... 
-        
-        Assistant: 
-        1. One day, a father and his little son were going home. | father | little son | going home 
-        2. ...... 
-        ##### 
-        
+        Example:
+        #####
+        User: One day, a father and his little son ......
+
+        Assistant:
+        1. One day, a father and his little son were going home. | father | little son | going home
+        2. ......
+        #####
+
         Please strictly follow the above format. Let’s begin.
     """
 
@@ -118,7 +118,7 @@ def get_initial_nodes():
 
 
 def exploring_atomic_facts_prompt(question, rational_plan, previous_actions, notebook, current_node, node_content):
-    
+
     exploring_atomic_facts_prompt = EXPLORING_ATOMIC_FACTS_PROMPT
 
     exploring_atomic_facts_prompt = PromptTemplate.from_template(exploring_atomic_facts_prompt) \
@@ -210,7 +210,7 @@ def exploring_chunks_prompt(question, rational_plan, previous_actions, notebook,
             notebook=notebook,
             chunk_content=chunk_content
         )
-    
+
     print(f"\nPROMPT TO THE LLM:\n{'-'*20}")
     print(exploring_chunks_prompt)
 
@@ -265,11 +265,11 @@ def exploring_neighbors_prompt(question, rational_plan, previous_actions, notebo
             notebook=notebook,
             neighbour_nodes=json.dumps(neighbour_nodes, indent=2)
         )
-    
+
     print(f"\nPROMPT TO THE LLM:\n{'-'*20}")
     print(exploring_neighbors_prompt)
-    
-    
+
+
     if current_node == "Never Too Loud":
         return """
 Rationale for Next Action: Since the current chunk has provided information about the performer (Danko Jones) and the city (Toronto), the next step is to find information about the castle in Toronto. Given the neighbouring nodes, "Danko Jones" seems to be the most relevant node to potentially provide more context or related information that might lead to the castle.
@@ -312,7 +312,7 @@ def answer_reasoning_prompt():
 
     Example:
     #####
-    User: 
+    User:
     Question: Who had a longer tennis career, Danny or Alice?
     Notebook of different exploration paths:
     1. We only know that Danny’s tennis career started in 1972 and ended in 1990, but we don’t know
@@ -335,39 +335,39 @@ def answer_reasoning_prompt():
 
 def llm_rating_one_prompt():
     llm_rating_one_prompt = """
-        After reading some text, John was given the following question about the text: 
-        {QUESTION TEXT} 
-        John’s answer to the question was: 
-        {MODEL RESPONSE TEXT} 
-        The ground truth answer was: 
-        {REFERENCE RESPONSE TEXT} 
-        Does John’s answer agree with the ground truth answer? 
+        After reading some text, John was given the following question about the text:
+        {QUESTION TEXT}
+        John’s answer to the question was:
+        {MODEL RESPONSE TEXT}
+        The ground truth answer was:
+        {REFERENCE RESPONSE TEXT}
+        Does John’s answer agree with the ground truth answer?
         Please answer "Yes" or "No".
     """
 
 def llm_rating_two_prompt():
     llm_rating_two_prompt = """
-        After reading some text, John was given the following question about the text: 
-        {QUESTION TEXT} 
-        John’s answer to the question was: 
-        {MODEL RESPONSE TEXT} 
-        The ground truth answer was: 
-        {REFERENCE RESPONSE TEXT} 
-        
-        Does John’s answer agree with the ground truth answer? 
-        Please answer “Yes”, “Yes, partially”, or “No”. If John’s response has any overlap with the ground 
-        truth answer, answer “Yes, partially”. If John’s response contains the ground truth answer, answer 
+        After reading some text, John was given the following question about the text:
+        {QUESTION TEXT}
+        John’s answer to the question was:
+        {MODEL RESPONSE TEXT}
+        The ground truth answer was:
+        {REFERENCE RESPONSE TEXT}
+
+        Does John’s answer agree with the ground truth answer?
+        Please answer “Yes”, “Yes, partially”, or “No”. If John’s response has any overlap with the ground
+        truth answer, answer “Yes, partially”. If John’s response contains the ground truth answer, answer
         “Yes”. If John’s response is more specific than the ground truth answer, answer “Yes”.
     """
 
 
 def full_text_read_prompt():
     full_text_read_prompt = """
-        Please read the passage below and answer the question based on the passage. 
-        Passage: 
-        {PASSAGE TEXT} 
-        Question: 
-        {QUESTION TEXT} 
+        Please read the passage below and answer the question based on the passage.
+        Passage:
+        {PASSAGE TEXT}
+        Question:
+        {QUESTION TEXT}
 
         Now please answer this question based on the passage content.
     """
@@ -375,46 +375,46 @@ def full_text_read_prompt():
 
 def chunk_read_prompt():
     chunk_read_prompt = """
-        Please read the text chunks below and answer the question. 
-        Text chunks: 
-        {CHUNKED PASSAGE TEXT} 
-        Question: 
-        {QUESTION TEXT} 
-        
-        If you think you can answer the question based on the above text chunks please output 
-        [answerable] and then output your answer. 
-        Otherwise, if there is not enough information to answer the question, please output: 
+        Please read the text chunks below and answer the question.
+        Text chunks:
+        {CHUNKED PASSAGE TEXT}
+        Question:
+        {QUESTION TEXT}
+
+        If you think you can answer the question based on the above text chunks please output
+        [answerable] and then output your answer.
+        Otherwise, if there is not enough information to answer the question, please output:
         [unanswerable]
     """
 
 
 def chunk_read_note_prompt():
     chunk_read_note_prompt = """
-        Please read the text chunk below and answer the questions based on your previous summary. 
-        Text chunk: 
-        {CHUNKED PASSAGE TEXT} 
-        Your previous summary: 
-        {SUMMARY TEXT} 
-        Question: 
-        {QUESTION TEXT} 
-        
-        If the above text chunk has information that can help answer the question, please extract 
-        the effective information, output [summary], and then output the refined information. Please note 
-        that it must be brief. 
-        If you can answer the question based on the above information, please output [answerable] and 
-        then output your answer. 
+        Please read the text chunk below and answer the questions based on your previous summary.
+        Text chunk:
+        {CHUNKED PASSAGE TEXT}
+        Your previous summary:
+        {SUMMARY TEXT}
+        Question:
+        {QUESTION TEXT}
+
+        If the above text chunk has information that can help answer the question, please extract
+        the effective information, output [summary], and then output the refined information. Please note
+        that it must be brief.
+        If you can answer the question based on the above information, please output [answerable] and
+        then output your answer.
         Otherwise, if there is insufficient information to answer the question, please output [unanswerable].
     """
 
 
 def rag_prompt():
     rag_prompt = """
-        Please read the text chunk below and answer the question. 
-        Text chunks: 
-        {RETRIEVED PASSAGE TEXT} 
-        Question: 
-        {QUESTION TEXT} 
-        
+        Please read the text chunk below and answer the question.
+        Text chunks:
+        {RETRIEVED PASSAGE TEXT}
+        Question:
+        {QUESTION TEXT
+
         Now please answer this question based on the text chunks.
     """
 

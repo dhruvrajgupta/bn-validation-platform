@@ -10,6 +10,7 @@ from typing import List, Dict
 from difflib import SequenceMatcher
 from nltk.tokenize import sent_tokenize
 from ollama import chat
+import json
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -100,7 +101,7 @@ def similarity(a, b):
     Returns:
         float: The similarity ratio between the two strings. The value ranges from 0 to 1, where 1 indicates perfect similarity.
     """
-    return SequenceMatcher(None, a, b).ratio() 
+    return SequenceMatcher(None, a, b).ratio()
 
 def get_item_with_max_score(items):
     """
@@ -146,8 +147,27 @@ def extract_notebook_rationale_next_steps_chosen_action(resposne: str):
     return notebook, rationale_next_action, chosen_action
 
 
+def print_state(question: str, rational_plan: str, previous_actions: List[str], notebook: str, chunk_queue: List[str], current_node: str):
+    print("===================")
+    print("CURRENT STATE:")
+    print("===================")
+    print(f"QUESTION: {question}\n")
+    print("RATIONAL PLAN:")
+    print(f"{rational_plan}\n")
+    print("PREVIOUS ACTIONS:")
+    print(json.dumps(previous_actions, indent=2))
+    print("\nNOTEBOOK:")
+    print(f"{notebook}\n")
+    print("Chunk Queue:")
+    print(chunk_queue)
+    print(f"\nCURRENT NODE: {current_node}")
+    print("===================\n")
+
+
 def ask_llm(prompt: str):
     # Figure out to clear the context
+
+    print(f"\nPROMPT RESPONSE: \n{'-'*20}\n")
 
     messages = [
     {
@@ -169,19 +189,19 @@ def ask_llm(prompt: str):
 
     # end with a newline
     print("\n")
-    print(f"END OF LLM RESPONSE\n{'-'*50}")
+    print(f"END OF LLM RESPONSE\n{'-'*50}\n")
 
-    # messages = [
-    # {
-    #     'role': 'user',
-    #     'content': 'Why is the sky blue?',
-    #     'options': {
-    #         "seed": 1
-    #     }
-    # },
-    # ]
-    # for part in chat(model, messages=messages, stream=True):
-    #     # print(part['message']['content'], end='', flush=True)
-    #     pass
+    messages = [
+    {
+        'role': 'user',
+        'content': 'Why is the sky blue?',
+        'options': {
+            "seed": 1
+        }
+    },
+    ]
+    for part in chat(model, messages=messages, stream=True):
+        # print(part['message']['content'], end='', flush=True)
+        pass
 
     return llm_response

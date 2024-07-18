@@ -1,8 +1,8 @@
 from corpus import corpus, corpus_map_small
 from prompt_templates_results import get_initial_nodes, get_rational_plan
-from prompt_templates import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT
+from prompt_templates import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT, EXPLORING_NEIGHBOURS_PROMPT
 from langchain_core.prompts import PromptTemplate
-from utils import ask_llm, extract_notebook_rationale_next_steps_chosen_action
+from utils import ask_llm, extract_notebook_rationale_next_steps_chosen_action, print_state
 import json
 import re
 
@@ -12,18 +12,19 @@ rational_plan = get_rational_plan()
 previous_actions = []
 notebook = ""
 chunk_queue = []
-insert = ""
+current_node = None
 
 nodes_grouped_chunks_afs = {}
 
 
 # EXPLORING ATOMIC FACTS
-def explore_atomic_facts(node: str):
+def explore_atomic_facts():
 
     global notebook
 
-    print(f"NODE: {node}")
-    print(f"EXPLORING ATOMIC FACTS OF NODE: {node}")
+    print(f"NODE: {current_node}")
+    print(f"EXPLORING ATOMIC FACTS OF NODE: {current_node}")
+
     exploring_atomic_facts_prompt = EXPLORING_ATOMIC_FACTS_PROMPT
     exploring_atomic_facts_prompt = PromptTemplate.from_template(exploring_atomic_facts_prompt) \
                                         .format(
@@ -31,21 +32,17 @@ def explore_atomic_facts(node: str):
                                             rational_plan=rational_plan,
                                             previous_actions=json.dumps(previous_actions, indent=2),
                                             notebook=notebook,
-                                            current_node=node,
-                                            node_content=json.dumps(nodes_grouped_chunks_afs[node], indent=2)
+                                            current_node=current_node,
+                                            node_content=json.dumps(nodes_grouped_chunks_afs[current_node], indent=2)
                                         )
 
-    print(f"\nPROMPT TO THE LLM:\n{'-'*20}")
-    print(exploring_atomic_facts_prompt)
+    previous_actions.append(f"Exploring Atomic Facts of Node: {current_node}")
 
-    previous_actions.append(f"Exploring Atomic Facts of Node: {node}")
-
-    print(f"PROMPT RESPONSE: \n{'-'*20}\n")
     llm_response =ask_llm(exploring_atomic_facts_prompt)
 
     notebook, rationale_next_action, chosen_action = extract_notebook_rationale_next_steps_chosen_action(llm_response)
 
-    call_function(chosen_action, node=node)
+    call_function(chosen_action)
 
 
 def read_chunk (chunk_id: str):
@@ -53,11 +50,13 @@ def read_chunk (chunk_id: str):
     # it will complete the function parameters with the chunk IDs,
     # i.e., read_chunk(List[ID]), and append these IDs to a chunk queue
     global notebook
+
     chunk_queue.append(chunk_id)
     print(f"CHUNK QUEUE: {chunk_queue}")
     print(f"CHUNK_ID: {chunk_id}")
-    print(f"EXPLORING CHUNK: {chunk_id}")
+    print(f"EXPLORING CHUNK: {chunk_id}\n")
     chunk_content = corpus_map[chunk_id]["text"]
+
     exploring_chunks_prompt = EXPLORING_CHUNKS_PROMPT
     exploring_chunks_prompt = PromptTemplate.from_template(exploring_chunks_prompt) \
                                 .format(
@@ -69,22 +68,16 @@ def read_chunk (chunk_id: str):
                                     chunk_id=chunk_id
                                 )
 
-    print(f"\nPROMPT TO THE LLM:\n{'-'*20}")
-    print(exploring_chunks_prompt)
-
     previous_actions.append(f"Exploring Chunk: {chunk_id}")
 
-    print(f"PROMPT RESPONSE: \n{'-'*20}\n")
     llm_response =ask_llm(exploring_chunks_prompt)
 
     notebook, rationale_next_action, chosen_action = extract_notebook_rationale_next_steps_chosen_action(llm_response)
 
     chunk_queue.remove(chunk_id)
-    print(f"CHUNK QUEUE: {chunk_queue}")
 
-    print(f"{'-'*50}")
-
-    call_function(chosen_action, current_chunk_id=chunk_id)
+    # call_function(chosen_action, current_chunk_id=chunk_id)
+    call_function(chosen_action)
 
 
 def read_previous_chunk(chunk_id: str):
@@ -110,11 +103,55 @@ def read_previous_chunk(chunk_id: str):
 
     previous_actions.append(f"Reading Previous Chunk of {chunk_id}: Previous Chunk - {previous_chunk_id}")
 
-    # previous_chunk = corpus_map[previous_chunk_id]
-    # previous_chunk_text = previous_chunk["text"]
-    # print(previous_chunk_text)
     chosen_action = f'read_chunk(["{previous_chunk_id}]")'
     call_function(chosen_action)
+
+
+def stop_and_read_neighbor():
+    # conversely, if the agent deems that none of the chunks are worth
+    # further reading, it will finish reading this node and proceed
+    # to explore neighboring nodes.
+
+    global current_node
+
+    neighbouring_nodes = get_neighbouring_nodes(current_node)
+    print(f"CURRENT NODE: {current_node}")
+    print(f"NEIGHBOURING NODES: {json.dumps(neighbouring_nodes, indent=2)}")
+    previous_actions.append(f"Exploring Neighbouring Nodes of Node: {current_node}")
+
+    exploring_neighbours_prompt = EXPLORING_NEIGHBOURS_PROMPT
+    exploring_neighbours_prompt = PromptTemplate.from_template(exploring_neighbours_prompt) \
+                                .format(
+                                    question=question,
+                                    rational_plan=rational_plan,
+                                    previous_actions=json.dumps(previous_actions, indent=2),
+                                    notebook=notebook,
+                                    neighbour_nodes=neighbouring_nodes,
+                                    current_node=current_node
+                                )
+
+    llm_response =ask_llm(exploring_neighbours_prompt)
+
+    _, rationale_next_steps, chosen_action = extract_notebook_rationale_next_steps_chosen_action(llm_response)
+
+    if "termintaion" in chosen_action:
+        pass
+    else:
+        pattern = r"\('([^']+)'\)"
+        matches = re.findall(pattern, chosen_action)
+        new_node = matches[0]
+        current_node = new_node
+
+
+def search_more():
+    # if supporting fact is insufficient, the agent will continue
+    # exploring chunks in the queue;
+    if chunk_queue:
+        pass
+    else:
+        print(f"The chunk queue is empty, so exploring the other nodes related to Node: '{current_node}' ...\n")
+        previous_actions.append(f"Empty Chunk Queue, so exploring connected nodes to Node: '{current_node}'")
+        call_function("stop_and_read_neighbor()")
 
 
 
@@ -155,8 +192,27 @@ def map_nodes_chunks_afs():
     print("\n")
     print(json.dumps(nodes_grouped_chunks_afs, indent=2))
 
+
+def get_neighbouring_nodes(node: str):
+    neighbouring_nodes = []
+    for chunk_id, chunk_content in corpus_map.items():
+        for af_id, af in chunk_content["atomic_facts"].items():
+            if node in af["nodes_labels"].values():
+                neighbouring_nodes.extend([x for x in af["nodes_labels"].values() if x != node])
+
+    return list(set(neighbouring_nodes))
+
+
 def call_function(chosen_action: str, **kwargs):
+
+    print_state(question, rational_plan, previous_actions, notebook, chunk_queue, current_node)
+
     print(f"CALL FUNCTION: {chosen_action}\n")
+
+    if "explore_atomic_facts" in chosen_action:
+        func = globals()["explore_atomic_facts"]
+        func()
+
     if "read_chunk" in chosen_action:
         pattern = r'\[([^\]]+)\]'
         matches = re.findall(pattern, chosen_action)
@@ -165,13 +221,23 @@ def call_function(chosen_action: str, **kwargs):
         func = globals()["read_chunk"]
         func(chunk_ids)
 
-    if "read_previous_chunk" in chosen_action:
-        if "current_chunk_id" in kwargs:
-            current_chunk_id = kwargs["current_chunk_id"]
-            func = globals()["read_previous_chunk"]
-            func(current_chunk_id)
+    # if "read_previous_chunk" in chosen_action:
+    #     if "current_chunk_id" in kwargs:
+    #         current_chunk_id = kwargs["current_chunk_id"]
+    #         func = globals()["read_previous_chunk"]
+    #         func(current_chunk_id)
+
+    if "search_more" in chosen_action:
+        func = globals()["search_more"]
+        func()
+
+    if "stop_and_read_neighbor" in chosen_action:
+        func = globals()["stop_and_read_neighbor"]
+        func()
 
 def main():
+
+    global current_node
 
     print(f"\nCORPUS: \n{'='*50}\n{corpus}\n")
     map_nodes_chunks_afs()
@@ -179,13 +245,13 @@ def main():
     print(f"\n\nEXPLORATION \n{'='*50}\n")
 
     # Initial Node and Score
-    node, score = get_initial_nodes()[0]
+    current_node, score = get_initial_nodes()[0]
 
-    print(f"INITIAL NODE: {node}, Score: {score}\n")
-    explore_atomic_facts(node)
-    # read_chunk("C1")
-    # read_previous_chunk()
-    # call_function("read_previous_chunk()", current_chunk_id="C1")
+    print(f"INITIAL NODE: {current_node}, Score: {score}\n")
+    call_function("explore_atomic_facts()")
+    # search_more()
+
+    print_state(question, rational_plan, previous_actions, notebook, chunk_queue, current_node)
 
 
 if __name__ == '__main__':
