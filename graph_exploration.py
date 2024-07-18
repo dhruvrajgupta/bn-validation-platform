@@ -107,6 +107,33 @@ def read_previous_chunk(chunk_id: str):
     call_function(chosen_action)
 
 
+def read_subsequent_chunk(chunk_id: str):
+    # due to truncation issues, adjacent chunks might contain relevant
+    # and useful information, the agent may insert these IDs to the queue;
+
+    # Temp Logic to get the previous_chunk_id
+    import collections
+    sorted_chunks = collections.OrderedDict(sorted(corpus_map.items()))
+    sorted_chunks_ids = [chunk_id for chunk_id in sorted_chunks.keys()]
+    subsequent_chunk_index = sorted_chunks_ids.index(chunk_id) + 1
+
+    if subsequent_chunk_index >= len(sorted_chunks_ids):
+        print("There is no subsequent chunk, so re-reading the current chunk...\n")
+        # TODO: What to do when there is no previous chunk
+        # For now we will re-read the chunk
+        subsequent_chunk_index = len(sorted_chunks_ids) - 1
+
+    subsequent_chunk_id =  sorted_chunks_ids[subsequent_chunk_index]
+
+    print(f"CURRENT CHUNK ID: {chunk_id}")
+    print(f"SUBSEQUENT CHUNK ID: {subsequent_chunk_id}")
+
+    previous_actions.append(f"Reading Subsequent Chunk of {chunk_id}: Subsequent Chunk - {subsequent_chunk_id}")
+
+    chosen_action = f'read_chunk(["{subsequent_chunk_id}]")'
+    call_function(chosen_action)
+
+
 def stop_and_read_neighbor():
     # conversely, if the agent deems that none of the chunks are worth
     # further reading, it will finish reading this node and proceed
@@ -142,6 +169,8 @@ def stop_and_read_neighbor():
         new_node = matches[0]
         current_node = new_node
 
+    call_function(chosen_action)
+
 
 def search_more():
     # if supporting fact is insufficient, the agent will continue
@@ -151,8 +180,16 @@ def search_more():
     else:
         print(f"The chunk queue is empty, so exploring the other nodes related to Node: '{current_node}' ...\n")
         previous_actions.append(f"Empty Chunk Queue, so exploring connected nodes to Node: '{current_node}'")
-        call_function("stop_and_read_neighbor()")
+        stop_and_read_neighbor()
 
+def read_neighbor_node():
+    # the agent selects a neighboring node that might be helpful in
+    # answering the question and re-enters the process of exploring
+    # atomic facts and chunks;
+
+    # The node is being set during stop_and_read_neighbor
+    print(f"EXPLORING THE NEIGHBOUR NODE: {current_node}")
+    explore_atomic_facts()
 
 
 def map_nodes_chunks_afs():
@@ -221,18 +258,25 @@ def call_function(chosen_action: str, **kwargs):
         func = globals()["read_chunk"]
         func(chunk_ids)
 
-    # if "read_previous_chunk" in chosen_action:
-    #     if "current_chunk_id" in kwargs:
-    #         current_chunk_id = kwargs["current_chunk_id"]
-    #         func = globals()["read_previous_chunk"]
-    #         func(current_chunk_id)
+    if "read_previous_chunk" in chosen_action:
+        if "current_chunk_id" in kwargs:
+            current_chunk_id = kwargs["current_chunk_id"]
+            func = globals()["read_previous_chunk"]
+            func(current_chunk_id)
+
+    if "read_subsequent_chunk" in chosen_action:
+        if "current_chunk_id" in kwargs:
+            current_chunk_id = kwargs["current_chunk_id"]
+            func = globals()["read_subsequent_chunk"]
+            func(current_chunk_id)
+
 
     if "search_more" in chosen_action:
         func = globals()["search_more"]
         func()
 
-    if "stop_and_read_neighbor" in chosen_action:
-        func = globals()["stop_and_read_neighbor"]
+    if "read_neighbor_node" in chosen_action:
+        func = globals()["read_neighbor_node"]
         func()
 
 def main():
@@ -250,8 +294,11 @@ def main():
     print(f"INITIAL NODE: {current_node}, Score: {score}\n")
     call_function("explore_atomic_facts()")
     # search_more()
+    # current_node = "fourth studio album"
+    # call_function("read_neighbor_node('fourth studio album')")
+    # read_subsequent_chunk('C1')
 
-    print_state(question, rational_plan, previous_actions, notebook, chunk_queue, current_node)
+    # print_state(question, rational_plan, previous_actions, notebook, chunk_queue, current_node)
 
 
 if __name__ == '__main__':
