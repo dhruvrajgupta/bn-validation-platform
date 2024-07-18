@@ -77,7 +77,10 @@ def read_chunk (chunk_id: str):
     chunk_queue.remove(chunk_id)
 
     # call_function(chosen_action, current_chunk_id=chunk_id)
-    call_function(chosen_action)
+    if "read_previous_chunk" in chosen_action or "read_subsequent_chunk" in chosen_action:
+        call_function(chosen_action, current_chunk_id=chunk_id)
+    else:
+        call_function(chosen_action)
 
 
 def read_previous_chunk(chunk_id: str):
