@@ -165,43 +165,77 @@ def print_state(question: str, rational_plan: str, previous_actions: List[str], 
 
 
 def ask_llm(prompt: str):
-    # Figure out to clear the context
+    #### OLLAMA ####
+
+    # # Figure out to clear the context
+
+    # print(f"\nPROMPT RESPONSE: \n{'-'*20}\n")
+
+    # messages = [
+    # {
+    #     'role': 'user',
+    #     'content': prompt,
+    #     'options': {
+    #         "seed": 1,
+    #         "temperature": 0.0001
+    #     }
+    # },
+    # ]
+
+    # llm_response = ""
+    # model = 'xlama'
+
+    # for part in chat(model, messages=messages, stream=True):
+    #     llm_response += part['message']['content']
+    #     print(part['message']['content'], end='', flush=True)
+
+    # # end with a newline
+    # print("\n")
+    # print(f"END OF LLM RESPONSE\n{'-'*50}\n")
+
+    # messages = [
+    # {
+    #     'role': 'user',
+    #     'content': 'Why is the sky blue?',
+    #     'options': {
+    #         "seed": 1
+    #     }
+    # },
+    # ]
+    # for part in chat(model, messages=messages, stream=True):
+    #     # print(part['message']['content'], end='', flush=True)
+    #     pass
+
+    # return llm_response
+
+    #### INFRA ####
+
+    from openai import OpenAI
+    client = OpenAI(
+        api_key='YOUR_API_KEY',
+        base_url="http://0.0.0.0:23333/v1",
+    )
+    model_name = client.models.list().data[0].id
+    response = client.chat.completions.create(
+    model=model_name,
+    response_format={ "type": "json_object" },
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": prompt},
+    ],
+    temperature=0.8,
+    top_p=0.8,
+    stream=True
+    )
 
     print(f"\nPROMPT RESPONSE: \n{'-'*20}\n")
 
-    messages = [
-    {
-        'role': 'user',
-        'content': prompt,
-        'options': {
-            "seed": 1,
-            "temperature": 0.0001
-        }
-    },
-    ]
-
     llm_response = ""
-    model = 'xlama'
 
-    for part in chat(model, messages=messages, stream=True):
-        llm_response += part['message']['content']
-        print(part['message']['content'], end='', flush=True)
+    for chunk in response:
+        llm_response += chunk.choices[0].delta.content
+        print(chunk.choices[0].delta.content, end='', flush=True)
 
-    # end with a newline
-    print("\n")
-    print(f"END OF LLM RESPONSE\n{'-'*50}\n")
-
-    messages = [
-    {
-        'role': 'user',
-        'content': 'Why is the sky blue?',
-        'options': {
-            "seed": 1
-        }
-    },
-    ]
-    for part in chat(model, messages=messages, stream=True):
-        # print(part['message']['content'], end='', flush=True)
-        pass
+    print(f"\n\nEND OF LLM RESPONSE\n{'-'*50}\n")
 
     return llm_response

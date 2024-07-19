@@ -103,7 +103,9 @@ contains more valid information.
 notebook content, analyze how to choose the next action.
 *Chosen Action*: read_chunk(List[ID]) or stop_and_read_neighbor(). (Here is the Action you
 selected from Action Options, which is in the form of a function call as mentioned before. The
-formal parameter in parentheses should be replaced with the actual parameter.)
+formal parameter in parentheses should be replaced with the actual parameter.). The Chunk List[ID]s
+will be provied below in the place "Chunk Identifiers (List[ID]): [Chunk ID 1, Chunk ID 2, Chunk ID 3, Chunk ID #, ...]"
+You can read only one chunk at a time
 #####
 
 Finally, it is emphasized again that even if the atomic fact is only slightly relevant to the
@@ -125,6 +127,9 @@ Notebook:
 
 Current Node:
 {current_node}
+
+Chunk Identifiers (List[ID]):
+{chunk_ids}
 
 Current Node Chunks and Atomic Facts are of the following format:
 "CHUNK_ID#": [

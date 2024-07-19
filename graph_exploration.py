@@ -33,7 +33,8 @@ def explore_atomic_facts():
                                             previous_actions=json.dumps(previous_actions, indent=2),
                                             notebook=notebook,
                                             current_node=current_node,
-                                            node_content=json.dumps(nodes_grouped_chunks_afs[current_node], indent=2)
+                                            node_content=json.dumps(nodes_grouped_chunks_afs[current_node], indent=2),
+                                            chunk_ids="[ C1, C2 ]"
                                         )
 
     previous_actions.append(f"Exploring Atomic Facts of Node: {current_node}")
@@ -258,6 +259,7 @@ def call_function(chosen_action: str, **kwargs):
         matches = re.findall(pattern, chosen_action)
         parameters = matches[0]
         chunk_ids = parameters.replace('"','').strip()
+        chunk_ids = parameters.replace("'",'').strip()
         func = globals()["read_chunk"]
         func(chunk_ids)
 

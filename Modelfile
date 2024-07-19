@@ -1,5 +1,5 @@
 FROM llama3
 # sets the temperature to 1 [higher is more creative, lower is more coherent]
-PARAMETER temperature 0.001
-PARAMETER seed 123
+# PARAMETER temperature 0.001
+# PARAMETER seed 123
 PARAMETER num_ctx 1024
