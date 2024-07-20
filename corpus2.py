@@ -343,7 +343,7 @@ corpus_map = {
                     "E. J. Lennox":"E. J. Lennox",
                     "designed":"designed"
                 },
-                "node_labels":{
+                "nodes_labels":{
                     "several other city landmarks":"landmark",
                     "E. J. Lennox":"E. J. Lennox",
                     "designed":"designed"

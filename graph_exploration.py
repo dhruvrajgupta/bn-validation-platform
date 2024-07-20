@@ -1,4 +1,5 @@
 from corpus import corpus, corpus_map_small
+from corpus2 import corpus_map
 from prompt_templates_results import get_initial_nodes, get_rational_plan
 from prompt_templates import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT, EXPLORING_NEIGHBOURS_PROMPT
 from langchain_core.prompts import PromptTemplate
@@ -33,13 +34,12 @@ def explore_atomic_facts():
                                             previous_actions=json.dumps(previous_actions, indent=2),
                                             notebook=notebook,
                                             current_node=current_node,
-                                            node_content=json.dumps(nodes_grouped_chunks_afs[current_node], indent=2),
-                                            chunk_ids="[ C1, C2 ]"
+                                            node_content=json.dumps(nodes_grouped_chunks_afs[current_node], indent=2)
                                         )
 
     previous_actions.append(f"Exploring Atomic Facts of Node: {current_node}")
 
-    llm_response =ask_llm(exploring_atomic_facts_prompt)
+    llm_response = ask_llm(exploring_atomic_facts_prompt)
 
     notebook, rationale_next_action, chosen_action = extract_notebook_rationale_next_steps_chosen_action(llm_response)
 
@@ -258,8 +258,8 @@ def call_function(chosen_action: str, **kwargs):
         pattern = r'\[([^\]]+)\]'
         matches = re.findall(pattern, chosen_action)
         parameters = matches[0]
+        chunk_ids = parameters.replace("'",'')
         chunk_ids = parameters.replace('"','').strip()
-        chunk_ids = parameters.replace("'",'').strip()
         func = globals()["read_chunk"]
         func(chunk_ids)
 
@@ -287,6 +287,7 @@ def call_function(chosen_action: str, **kwargs):
 def main():
 
     global current_node
+    global previous_actions
 
     print(f"\nCORPUS: \n{'='*50}\n{corpus}\n")
     map_nodes_chunks_afs()
