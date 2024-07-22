@@ -39,7 +39,7 @@ from langchain.tools import BaseTool, StructuredTool, Tool, tool
 import random
 
 def make_uppercase(text: str) -> str:
-    return "its magic"
+    return "what is magic"
 
 explore_atomic_facts = StructuredTool.from_function(
     func=make_uppercase,
@@ -106,6 +106,8 @@ def map_nodes_chunks_afs():
 
 def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
     # Each worker node will be given a name and some tools.
+    # agent_scratchpad should be a sequence of messages that contains the 
+    # previous agent tool invocations and the corresponding tool outputs.
     prompt = ChatPromptTemplate.from_messages(
         [
             (
@@ -117,7 +119,7 @@ def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
         ]
     )
     agent = create_openai_tools_agent(llm, tools, prompt)
-    executor = AgentExecutor(agent=agent, tools=tools)
+    executor = AgentExecutor(agent=agent, tools=tools, return_intermediate_steps=True, verbose=True)
     return executor
 
 def agent_node(state, agent, name):
@@ -217,7 +219,7 @@ def main():
 
     for s in graph.stream(
         {"messages": [HumanMessage(content="make the text 'its magic' in capital letters")]},
-        {"recursion_limit": 5},
+        {"recursion_limit": 5},debug=True
     ):
         if "__end__" not in s:
             print(s)
