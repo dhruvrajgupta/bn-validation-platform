@@ -3,7 +3,7 @@ import json
 from corpus2 import corpus_map_small, corpus
 from prompt_templates_results import get_rational_plan
 from prompt_templates_results import get_initial_nodes
-from typing import TypedDict, Annotated, Sequence
+from typing import TypedDict, Annotated, Sequence, List
 from langgraph.graph import END, StateGraph, START
 from langchain_core.messages import HumanMessage, BaseMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -126,25 +126,7 @@ def agent_node(state, agent, name):
     result = agent.invoke(state)
     return {"messages": [HumanMessage(content=result["output"], name=name)]}
 
-
-def main():
-
-    # print(f"\nCORPUS: \n{'='*50}\n{corpus}\n")
-    # map_nodes_chunks_afs()
-
-    # print(f"\n\nEXPLORATION \n{'='*50}\n")
-
-    # # Initial Node and Score
-    # current_node, score = get_initial_nodes()[0]
-    # node_queue.append(current_node)
-    # print_state()
-
-
-
-    ##################################################################################
-
-    members = ["UpperCaseMaker"]
-
+def create_supervisor(members: List[str], llm: ChatOpenAI):
     # Creating the Supervisor which handles the routing
     system_prompt = (
         "You are a supervisor tasked with managing a conversation between the"
@@ -186,21 +168,44 @@ def main():
         ]
     ).partial(options=str(options), members=", ".join(members))
 
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0, streaming=True)
-
     supervisor_chain = (
         prompt
         | llm.bind_functions(functions=[function_def], function_call="route")
         | JsonOutputFunctionsParser()
     )
+    return supervisor_chain
+
+
+def main():
+
+    # print(f"\nCORPUS: \n{'='*50}\n{corpus}\n")
+    # map_nodes_chunks_afs()
+
+    # print(f"\n\nEXPLORATION \n{'='*50}\n")
+
+    # # Initial Node and Score
+    # current_node, score = get_initial_nodes()[0]
+    # node_queue.append(current_node)
+    # print_state()
+
+
+
+    ##################################################################################
+
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0, streaming=True)
+
+    members = ["UpperCaseMaker"]
 
     # Create Agents
     uppercase_agent = create_agent(llm, tools, "You are a language analyzer.")
     uppercase_node = functools.partial(agent_node, agent=uppercase_agent, name="UpperCaseMaker")
 
+
+    #### Create the Workflow Graph ####
+
     workflow = StateGraph(AgentState)
     workflow.add_node("UpperCaseMaker", uppercase_node)
-    workflow.add_node("supervisor", supervisor_chain)
+    workflow.add_node("supervisor", create_supervisor(members,llm))
 
     for member in members:
         # We want our workers to ALWAYS "report back" to the supervisor when done
