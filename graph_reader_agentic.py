@@ -3,7 +3,7 @@ import json
 from corpus2 import corpus_map_small, corpus
 from prompt_templates_results import get_rational_plan
 from prompt_templates_results import get_initial_nodes
-from typing import TypedDict, Annotated, Sequence, List
+from typing import TypedDict, Annotated, Sequence, List, Any
 from langgraph.graph import END, StateGraph, START
 from langchain_core.messages import HumanMessage, BaseMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -12,8 +12,9 @@ from langchain_core.output_parsers.openai_functions import JsonOutputFunctionsPa
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 import functools
 import operator
-from agent_template import EXPLORING_ATOMIC_FACTS_PROMPT
+from agent_template import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT
 from utils import extract_notebook_rationale_next_steps_chosen_action
+import re
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "Graph Reader Agent - Small"
@@ -30,30 +31,6 @@ gr_state = {
 }
 
 nodes_grouped_chunks_afs = {}
-
-class AgentState(TypedDict):
-    # The annotation tells the graph that new messages will always
-    # be added to the current states
-    messages: Annotated[Sequence[BaseMessage], operator.add]
-    # The 'next' field indicates where to route to next
-    next: str
-
-########### TOOLS USED BY AGENT ##############
-
-from langchain.tools import BaseTool, StructuredTool, Tool, tool
-import random
-
-def calculate_two_plus_two() -> None:
-    pass
-
-calculate_two_plus_two = StructuredTool.from_function(
-    func=calculate_two_plus_two,
-    name="calculate_two_plus_two",
-    description="Calculate two plus two",)
-
-tools = [calculate_two_plus_two]
-
-##############################################
 
 def print_state():
     print("======================================")
@@ -132,6 +109,82 @@ def map_nodes_chunks_afs():
     print("\n")
     print(json.dumps(nodes_grouped_chunks_afs, indent=2))
 
+from langchain_core.output_parsers import JsonOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_openai import ChatOpenAI
+
+class NotebookRationaleChosenAction(BaseModel):
+    notebook: str = Field(description="value of the *Updated Notebook*")
+    rationale: str = Field(description="value of the *Rationale for Next Action*")
+    chosen_action: str = Field(description="value of the *Chosen Action*")
+    # setup: str = Field(description="question to set up a joke")
+    # punchline: str = Field(description="answer to resolve the joke")
+
+class AgentState(TypedDict):
+    # The annotation tells the graph that new messages will always
+    # be added to the current states
+    messages: Annotated[Sequence[BaseMessage], operator.add]
+    # The 'next' field indicates where to route to next
+    next: str
+
+########### TOOLS USED BY AGENT ##############
+
+from langchain.tools import BaseTool, StructuredTool, Tool, tool
+import random
+
+def calculate_two_plus_two() -> None:
+    pass
+
+calculate_two_plus_two = StructuredTool.from_function(
+    func=calculate_two_plus_two,
+    name="calculate_two_plus_two",
+    description="Calculate two plus two",)
+
+tools = [calculate_two_plus_two]
+
+##############################################
+
+
+def preprocess_explore_atomic_facts(agent):
+    current_node = gr_state["node_stack"][-1]
+    node_content = nodes_grouped_chunks_afs[current_node]
+
+    more_info = f"""Current Node:
+{current_node}
+
+Current Node Chunks and Atomic Facts are of the following format:
+"CHUNK_ID#": [{{
+"ATOMIC_FACT_ID#": "ATOMIC_FACT_TEXT"}},
+....
+],
+....
+
+Current Node Chunks and Atomic Facts:
+{json.dumps(node_content, indent=2)}
+"""
+    gr_state["previous_actions"].append(f"Exploring Atomic Facts of Node: {current_node}")
+
+    return more_info
+
+def process_state(result):
+    import re
+    global gr_state
+    print(result["messages"])
+    rational_plan_pattern = r"RATIONAL PLAN:\n(.*?)\n\nPREVIOUS ACTIONS:"
+    gr_state["rational_plan"] = re.search(rational_plan_pattern, result["messages"], re.DOTALL).group(1).strip()
+    previous_actions_pattern = r"PREVIOUS ACTIONS:\n(.*?)\n\nNOTEBOOK:"
+    gr_state["previous_actions"] = re.search(previous_actions_pattern, result["messages"], re.DOTALL).group(1).strip()
+    notebook_pattern = r"NOTEBOOK:\n(.*?)\n\nCHUNK QUEUE:"
+    gr_state["notebook"] = re.search(notebook_pattern, result["messages"], re.DOTALL).group(1).strip()
+    chunk_queue_pattern = r"CHUNK QUEUE:\n(.*?)\n\nNODE STACK:"
+    gr_state["chunk_queue"] = re.search(chunk_queue_pattern, result["messages"], re.DOTALL).group(1).strip()
+    node_stack_pattern = r"NODE STACK:\n(.*?)\n"
+    gr_state["node_stack"] = re.search(node_stack_pattern, result["messages"], re.DOTALL).group(1).strip()
+
+    return gr_state
+
+
 def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
     # Each worker node will be given a name and some tools.
     # agent_scratchpad should be a sequence of messages that contains the 
@@ -150,37 +203,27 @@ def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
     executor = AgentExecutor(agent=agent, tools=tools, return_intermediate_steps=True, verbose=True)
     return executor
 
-def preprocess_explore_atomic_facts():
-    current_node = gr_state["node_stack"][-1]
-    node_content = nodes_grouped_chunks_afs[current_node]
-
-    more_info = f"""Current Node:
-{current_node}
-
-Current Node Chunks and Atomic Facts are of the following format:
-"CHUNK_ID#": [{{
-"ATOMIC_FACT_ID#": "ATOMIC_FACT_TEXT"}},
-....
-],
-....
-
-Current Node Chunks and Atomic Facts:
-{json.dumps(node_content, indent=2)}
-"""
-    gr_state["previous_actions"].append(f"Exploring Atomic Facts of Node: {current_node}")
-    return more_info
-
 def agent_node(agent_state, agent, name):
     # print(agent_state)
     if name == "ExploreAtomicFacts":
-        more_info = preprocess_explore_atomic_facts()
-        # print(more_info)
+        more_info = preprocess_explore_atomic_facts(agent)
         agent_state["messages"] = [HumanMessage(content=more_info)]
 
     result = agent.invoke(agent_state)
+    print(result)
 
     notebook, rationale_next_step, chosen_action = extract_notebook_rationale_next_steps_chosen_action(result["output"])
-    gr_state["notebook"], gr_state["rationale_next_step"], gr_state["chosen_action"] = notebook, rationale_next_step, chosen_action
+    
+    # Extract the chunklist from chosen_action
+    if "read_chunk" in chosen_action:
+        pattern = r"read_chunk\((.*?)\)"
+        matches = re.findall(pattern, chosen_action)
+        chunk_ids = json.loads(matches[0])
+        gr_state["chunk_queue"].extend(chunk_ids)
+    
+    gr_state["notebook"] = notebook
+    gr_state["rationale_next_step"]= rationale_next_step
+    gr_state["chosen_action"] = chosen_action
     # print(json.dumps(gr_state, indent=2))
     # print(result)
     # Clearing History
@@ -239,23 +282,6 @@ def create_supervisor(members: List[str], llm: ChatOpenAI):
     )
     return supervisor_chain
 
-def process_state(result):
-    import re
-    global gr_state
-    print(result["messages"])
-    rational_plan_pattern = r"RATIONAL PLAN:\n(.*?)\n\nPREVIOUS ACTIONS:"
-    gr_state["rational_plan"] = re.search(rational_plan_pattern, result["messages"], re.DOTALL).group(1).strip()
-    previous_actions_pattern = r"PREVIOUS ACTIONS:\n(.*?)\n\nNOTEBOOK:"
-    gr_state["previous_actions"] = re.search(previous_actions_pattern, result["messages"], re.DOTALL).group(1).strip()
-    notebook_pattern = r"NOTEBOOK:\n(.*?)\n\nCHUNK QUEUE:"
-    gr_state["notebook"] = re.search(notebook_pattern, result["messages"], re.DOTALL).group(1).strip()
-    chunk_queue_pattern = r"CHUNK QUEUE:\n(.*?)\n\nNODE STACK:"
-    gr_state["chunk_queue"] = re.search(chunk_queue_pattern, result["messages"], re.DOTALL).group(1).strip()
-    node_stack_pattern = r"NODE STACK:\n(.*?)\n"
-    gr_state["node_stack"] = re.search(node_stack_pattern, result["messages"], re.DOTALL).group(1).strip()
-
-    return gr_state
-
 def main():
     global gr_state
 
@@ -277,7 +303,7 @@ def main():
     # from langchain_groq import ChatGroq
     # llm = ChatGroq(model="llama3-groq-8b-8192-tool-use-preview")
 
-    members = ["ExploreAtomicFacts"]
+    members = ["ExploreAtomicFacts", "ExploreChunks"]
 
     # Create Agents
     # nodes_analyzer_agent = create_agent(llm, tools, "You are an expert in analyzing list of nodes.")
@@ -285,11 +311,15 @@ def main():
     explore_atomic_facts_agent = create_agent(llm, tools, EXPLORING_ATOMIC_FACTS_PROMPT)
     explore_atomic_facts_node = functools.partial(agent_node, agent=explore_atomic_facts_agent, name="ExploreAtomicFacts")
 
+    exploring_chunk_agent = create_agent(llm, tools, EXPLORING_CHUNKS_PROMPT)
+    exploring_chunk_node = functools.partial(agent_node, agent=exploring_chunk_agent, name="ExploreChunks")
+
 
     #### Create the Workflow Graph ####
 
     workflow = StateGraph(AgentState)
     workflow.add_node("ExploreAtomicFacts", explore_atomic_facts_node)
+    workflow.add_node("ExploreChunks", exploring_chunk_node)
     workflow.add_node("supervisor", create_supervisor(members,llm))
 
     for member in members:
@@ -313,7 +343,7 @@ def main():
             HumanMessage(content=get_state()),
             ]
         },
-        {"recursion_limit": 2},debug=True
+        {"recursion_limit": 5},debug=True
     ):
         if "__end__" not in s:
             print("========")
