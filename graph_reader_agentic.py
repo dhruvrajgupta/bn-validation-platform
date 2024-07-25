@@ -124,7 +124,7 @@ class NotebookRationaleChosenAction(BaseModel):
 class AgentState(TypedDict):
     # The annotation tells the graph that new messages will always
     # be added to the current states
-    messages: Annotated[Sequence[BaseMessage], operator.add]
+    messages: Sequence[BaseMessage]
     # The 'next' field indicates where to route to next
     next: str
 
@@ -146,7 +146,7 @@ tools = [calculate_two_plus_two]
 ##############################################
 
 
-def preprocess_explore_atomic_facts(agent):
+def preprocess_explore_atomic_facts():
     current_node = gr_state["node_stack"][-1]
     node_content = nodes_grouped_chunks_afs[current_node]
 
@@ -164,6 +164,31 @@ Current Node Chunks and Atomic Facts:
 {json.dumps(node_content, indent=2)}
 """
     gr_state["previous_actions"].append(f"Exploring Atomic Facts of Node: {current_node}")
+
+    return more_info
+
+def preprocess_read_chunks():
+    global gr_state
+    current_chunk_id = gr_state["chunk_queue"].pop(0)
+    # print(current_chunk_id)
+    chunk_content = corpus_map[current_chunk_id]["text"]
+    # print(chunk_content)
+    more_info = f"""Question:
+{gr_state["question"]}
+
+Rational Plan:
+{gr_state["rational_plan"]}
+
+Previous Actions:
+{gr_state["previous_actions"]}
+
+Notebook:
+{gr_state["notebook"]}
+
+Current Text Chunk:
+{chunk_content}"""
+    
+    gr_state["previous_actions"].append(f"Exploring Chunk: {current_chunk_id}")
 
     return more_info
 
@@ -204,13 +229,17 @@ def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
     return executor
 
 def agent_node(agent_state, agent, name):
+    global gr_state
     # print(agent_state)
     if name == "ExploreAtomicFacts":
-        more_info = preprocess_explore_atomic_facts(agent)
+        more_info = preprocess_explore_atomic_facts()
+        agent_state["messages"] = [HumanMessage(content=more_info)]
+
+    if name == "ExploreChunks":
+        more_info = preprocess_read_chunks()
         agent_state["messages"] = [HumanMessage(content=more_info)]
 
     result = agent.invoke(agent_state)
-    print(result)
 
     notebook, rationale_next_step, chosen_action = extract_notebook_rationale_next_steps_chosen_action(result["output"])
     
@@ -226,8 +255,6 @@ def agent_node(agent_state, agent, name):
     gr_state["chosen_action"] = chosen_action
     # print(json.dumps(gr_state, indent=2))
     # print(result)
-    # Clearing History
-    agent_state["messages"] = []
     # print(agent_state)
     return {"messages": [HumanMessage(content=result["output"], name=name)]}
 
