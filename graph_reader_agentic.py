@@ -239,6 +239,20 @@ def agent_node(agent_state, agent, name):
         more_info = preprocess_read_chunks()
         agent_state["messages"] = [HumanMessage(content=more_info)]
 
+    if name == "SearchMore":
+        if gr_state["chunk_queue"]:
+            pass
+        else:
+            current_node = gr_state["node_stack"][-1]
+            print(f"The chunk queue is empty, so exploring the other nodes related to Node: '{current_node}' ...\n")
+            gr_state["previous_actions"].append(f"Empty Chunk Queue, so exploring connected nodes to Node: '{current_node}'")
+            return {"messages": 
+                [
+                    HumanMessage(content=f"The chunk queue is empty, so exploring the other nodes related to Node: '{current_node}' ...\n"),
+                    HumanMessage(content=f"Stop and Read Neighbour Nodes")
+                ]
+            }
+
     result = agent.invoke(agent_state)
 
     notebook, rationale_next_step, chosen_action = extract_notebook_rationale_next_steps_chosen_action(result["output"])
@@ -330,7 +344,7 @@ def main():
     # from langchain_groq import ChatGroq
     # llm = ChatGroq(model="llama3-groq-8b-8192-tool-use-preview")
 
-    members = ["ExploreAtomicFacts", "ExploreChunks"]
+    members = ["ExploreAtomicFacts", "ExploreChunks", "SearchMore"]
 
     # Create Agents
     # nodes_analyzer_agent = create_agent(llm, tools, "You are an expert in analyzing list of nodes.")
@@ -341,12 +355,16 @@ def main():
     exploring_chunk_agent = create_agent(llm, tools, EXPLORING_CHUNKS_PROMPT)
     exploring_chunk_node = functools.partial(agent_node, agent=exploring_chunk_agent, name="ExploreChunks")
 
+    search_more_agent = create_agent(llm, tools, "If Chosen Action is search_more() then this agent is executed")
+    search_more_agent_node = functools.partial(agent_node, agent=search_more_agent, name="SearchMore")
+
 
     #### Create the Workflow Graph ####
 
     workflow = StateGraph(AgentState)
     workflow.add_node("ExploreAtomicFacts", explore_atomic_facts_node)
     workflow.add_node("ExploreChunks", exploring_chunk_node)
+    workflow.add_node("SearchMore", search_more_agent_node)
     workflow.add_node("supervisor", create_supervisor(members,llm))
 
     for member in members:
@@ -370,7 +388,7 @@ def main():
             HumanMessage(content=get_state()),
             ]
         },
-        {"recursion_limit": 5},debug=True
+        {"recursion_limit": 7},debug=True
     ):
         if "__end__" not in s:
             print("========")
