@@ -76,14 +76,12 @@ def get_atomic_facts_and_key_elements(corpus: str):
 def get_rational_plan():
     # In Order to get the proper Rational Plan, LLM should not have any idea of the article.
 
-    result = """
-        In order to answer this question, we first need to identify the following key pieces of information:
+    result = """In order to answer this question, we first need to identify the following key pieces of information:
 
-        1. The performer of the song "Never Too Loud."
-        2. The city where this performer was formed.
-        3. The name of the castle in that city.
-        We will then gather the necessary details to provide a comprehensive answer.
-    """
+1. The performer of the song "Never Too Loud."
+2. The city where this performer was formed.
+3. The name of the castle in that city.
+We will then gather the necessary details to provide a comprehensive answer."""
 
     return result
 

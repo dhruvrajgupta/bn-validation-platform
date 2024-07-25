@@ -12,17 +12,22 @@ from langchain_core.output_parsers.openai_functions import JsonOutputFunctionsPa
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 import functools
 import operator
+from agent_template import EXPLORING_ATOMIC_FACTS_PROMPT
+from utils import extract_notebook_rationale_next_steps_chosen_action
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "Graph Reader Agent - Small"
 
 corpus_map = corpus_map_small
-question = "What is the name of the castle in the city where the performer of Never Too Loud was formed?"
-rational_plan = get_rational_plan()
-previous_actions = []
-notebook = ""
-chunk_queue = []
-node_queue = []
+
+gr_state = {
+    "question": "What is the name of the castle in the city where the performer of Never Too Loud was formed?",
+    "rational_plan": get_rational_plan(),
+    "previous_actions": [],
+    "notebook": "",
+    "chunk_queue": [],
+    "node_stack": []
+}
 
 nodes_grouped_chunks_afs = {}
 
@@ -38,15 +43,15 @@ class AgentState(TypedDict):
 from langchain.tools import BaseTool, StructuredTool, Tool, tool
 import random
 
-def make_uppercase(text: str) -> str:
-    return "what is magic"
+def calculate_two_plus_two() -> None:
+    pass
 
-explore_atomic_facts = StructuredTool.from_function(
-    func=make_uppercase,
-    name="make_uppercase",
-    description="Takes an input and convert into uppercase.",)
+calculate_two_plus_two = StructuredTool.from_function(
+    func=calculate_two_plus_two,
+    name="calculate_two_plus_two",
+    description="Calculate two plus two",)
 
-tools = [explore_atomic_facts]
+tools = [calculate_two_plus_two]
 
 ##############################################
 
@@ -54,17 +59,41 @@ def print_state():
     print("======================================")
     print("CURRENT STATE:")
     print("======================================")
-    print(f"QUESTION: {question}\n")
+    print(f"QUESTION: {gr_state['question']}\n")
     print("RATIONAL PLAN:")
-    print(f"{rational_plan}\n")
+    print(f"{gr_state['rational_plan']}\n")
     print("PREVIOUS ACTIONS:")
-    print(json.dumps(previous_actions, indent=2))
+    print(json.dumps(gr_state['previous_actions'], indent=2))
     print("\nNOTEBOOK:")
-    print(f"{notebook}\n")
+    print(f"{gr_state['notebook']}\n")
     print("CHUNK QUEUE:")
-    print(chunk_queue)
-    print(f"\nNODE QUEUE: {node_queue}\n")
+    print(gr_state['chunk_queue'])
+    print(f"\nNODE STACK: {gr_state['node_stack']}\n")
     print("======================================\n")
+
+def get_state():
+    result = f"""======================================
+CURRENT STATE:
+======================================
+QUESTION: {gr_state["question"]}
+
+RATIONAL PLAN:
+{gr_state["rational_plan"]}
+
+PREVIOUS ACTIONS:
+{gr_state["previous_actions"]}
+
+NOTEBOOK:
+{gr_state["notebook"]}
+
+CHUNK QUEUE:
+{gr_state["chunk_queue"]}
+
+NODE STACK:
+{gr_state["node_stack"]}
+"""
+    
+    return result
 
 def map_nodes_chunks_afs():
     #
@@ -103,7 +132,6 @@ def map_nodes_chunks_afs():
     print("\n")
     print(json.dumps(nodes_grouped_chunks_afs, indent=2))
 
-
 def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
     # Each worker node will be given a name and some tools.
     # agent_scratchpad should be a sequence of messages that contains the 
@@ -122,8 +150,42 @@ def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
     executor = AgentExecutor(agent=agent, tools=tools, return_intermediate_steps=True, verbose=True)
     return executor
 
-def agent_node(state, agent, name):
-    result = agent.invoke(state)
+def preprocess_explore_atomic_facts():
+    current_node = gr_state["node_stack"][-1]
+    node_content = nodes_grouped_chunks_afs[current_node]
+
+    more_info = f"""Current Node:
+{current_node}
+
+Current Node Chunks and Atomic Facts are of the following format:
+"CHUNK_ID#": [{{
+"ATOMIC_FACT_ID#": "ATOMIC_FACT_TEXT"}},
+....
+],
+....
+
+Current Node Chunks and Atomic Facts:
+{json.dumps(node_content, indent=2)}
+"""
+    gr_state["previous_actions"].append(f"Exploring Atomic Facts of Node: {current_node}")
+    return more_info
+
+def agent_node(agent_state, agent, name):
+    # print(agent_state)
+    if name == "ExploreAtomicFacts":
+        more_info = preprocess_explore_atomic_facts()
+        # print(more_info)
+        agent_state["messages"] = [HumanMessage(content=more_info)]
+
+    result = agent.invoke(agent_state)
+
+    notebook, rationale_next_step, chosen_action = extract_notebook_rationale_next_steps_chosen_action(result["output"])
+    gr_state["notebook"], gr_state["rationale_next_step"], gr_state["chosen_action"] = notebook, rationale_next_step, chosen_action
+    # print(json.dumps(gr_state, indent=2))
+    # print(result)
+    # Clearing History
+    agent_state["messages"] = []
+    # print(agent_state)
     return {"messages": [HumanMessage(content=result["output"], name=name)]}
 
 def create_supervisor(members: List[str], llm: ChatOpenAI):
@@ -156,6 +218,7 @@ def create_supervisor(members: List[str], llm: ChatOpenAI):
             "required": ["next"],
         },
     }
+    
     prompt = ChatPromptTemplate.from_messages(
         [
             ("system", system_prompt),
@@ -171,46 +234,68 @@ def create_supervisor(members: List[str], llm: ChatOpenAI):
     supervisor_chain = (
         prompt
         | llm.bind_functions(functions=[function_def], function_call="route")
+        # | process_messages
         | JsonOutputFunctionsParser()
     )
     return supervisor_chain
 
+def process_state(result):
+    import re
+    global gr_state
+    print(result["messages"])
+    rational_plan_pattern = r"RATIONAL PLAN:\n(.*?)\n\nPREVIOUS ACTIONS:"
+    gr_state["rational_plan"] = re.search(rational_plan_pattern, result["messages"], re.DOTALL).group(1).strip()
+    previous_actions_pattern = r"PREVIOUS ACTIONS:\n(.*?)\n\nNOTEBOOK:"
+    gr_state["previous_actions"] = re.search(previous_actions_pattern, result["messages"], re.DOTALL).group(1).strip()
+    notebook_pattern = r"NOTEBOOK:\n(.*?)\n\nCHUNK QUEUE:"
+    gr_state["notebook"] = re.search(notebook_pattern, result["messages"], re.DOTALL).group(1).strip()
+    chunk_queue_pattern = r"CHUNK QUEUE:\n(.*?)\n\nNODE STACK:"
+    gr_state["chunk_queue"] = re.search(chunk_queue_pattern, result["messages"], re.DOTALL).group(1).strip()
+    node_stack_pattern = r"NODE STACK:\n(.*?)\n"
+    gr_state["node_stack"] = re.search(node_stack_pattern, result["messages"], re.DOTALL).group(1).strip()
+
+    return gr_state
 
 def main():
+    global gr_state
 
-    # print(f"\nCORPUS: \n{'='*50}\n{corpus}\n")
-    # map_nodes_chunks_afs()
+    print(f"\nCORPUS: \n{'='*50}\n{corpus}\n")
+    map_nodes_chunks_afs()
 
-    # print(f"\n\nEXPLORATION \n{'='*50}\n")
+    print(f"\n\nEXPLORATION \n{'='*50}\n")
 
-    # # Initial Node and Score
-    # current_node, score = get_initial_nodes()[0]
-    # node_queue.append(current_node)
-    # print_state()
+    # Initial Node and Score
+    current_node, score = get_initial_nodes()[0]
+    gr_state["node_stack"].append(current_node)
+    print_state()
 
 
 
     ##################################################################################
 
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0, streaming=True)
+    # from langchain_groq import ChatGroq
+    # llm = ChatGroq(model="llama3-groq-8b-8192-tool-use-preview")
 
-    members = ["UpperCaseMaker"]
+    members = ["ExploreAtomicFacts"]
 
     # Create Agents
-    uppercase_agent = create_agent(llm, tools, "You are a language analyzer.")
-    uppercase_node = functools.partial(agent_node, agent=uppercase_agent, name="UpperCaseMaker")
+    # nodes_analyzer_agent = create_agent(llm, tools, "You are an expert in analyzing list of nodes.")
+    # nodes_analyzer_node = functools.partial(agent_node, agent=nodes_analyzer_agent, name="NodesAnalyzer")
+    explore_atomic_facts_agent = create_agent(llm, tools, EXPLORING_ATOMIC_FACTS_PROMPT)
+    explore_atomic_facts_node = functools.partial(agent_node, agent=explore_atomic_facts_agent, name="ExploreAtomicFacts")
 
 
     #### Create the Workflow Graph ####
 
     workflow = StateGraph(AgentState)
-    workflow.add_node("UpperCaseMaker", uppercase_node)
+    workflow.add_node("ExploreAtomicFacts", explore_atomic_facts_node)
     workflow.add_node("supervisor", create_supervisor(members,llm))
 
     for member in members:
         # We want our workers to ALWAYS "report back" to the supervisor when done
         workflow.add_edge(member, "supervisor")
-    # The supervisor populates the "next" field in the graph state
+    # The supervisor populates the "next" field in the graph gr_state
     # which routes to a node or finishes
     conditional_map = {k: k for k in members}
     conditional_map["FINISH"] = END
@@ -223,12 +308,17 @@ def main():
 
 
     for s in graph.stream(
-        {"messages": [HumanMessage(content="make the text 'its magic' in capital letters")]},
-        {"recursion_limit": 5},debug=True
+        {
+            "messages": [
+            HumanMessage(content=get_state()),
+            ]
+        },
+        {"recursion_limit": 2},debug=True
     ):
         if "__end__" not in s:
+            print("========")
             print(s)
-            print("----")
+            print("========")
 
     # print(f"INITIAL NODE: {current_node}, Score: {score}\n")
     # call_function("explore_atomic_facts()")
