@@ -1,0 +1,1221 @@
+
+Starting...
+==================================================
+Extracting Atomic Facts and Key Elements...
+Extracted Atomic Facts and Key Elements COMPLETED
+==================================================
+Extracting Distinct Nodes of the Graph...
+
+ List of all key elements: 
+{'essential', "body's inability", 'high blood sugar levels', 'managing stress', 'balanced diet', 'insulin', 'blood vessels', 'blood sugar', 'quitting smoking', 'nerves', 'atherosclerosis', 'lifestyle changes', 'plaques', 'individuals', 'arteries', 'vegetables', 'monitoring', 'inflammation', 'damage', 'risk', 'recommended', 'reduce', 'narrows', 'rich', 'cholesterol levels', 'Type 2 diabetes', 'important', 'lean proteins', 'help', 'cardiovascular disease', 'increase', 'mitigate', 'whole grains', 'maintaining', 'heart attack', 'fatty deposits', 'reducing', 'crucial', 'healthy weight', 'hardened arteries', 'regular physical activity', 'narrowed arteries', 'inner lining', 'hardens', 'stroke', 'type 2 diabetes', 'high glucose levels', 'blood pressure', 'fruits', 'artery walls', 'buildup'}
+
+Clustering all nodes semantically:
+--------------------------------------------------
+
+Cluster 0: ['Type 2 diabetes', 'high blood sugar levels', 'insulin', 'high blood sugar levels', 'high blood sugar levels', 'high glucose levels', 'type 2 diabetes', 'type 2 diabetes', 'blood sugar']
+Cluster -1: ["body's inability", 'nerves', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'narrows', 'hardens', 'increase', 'heart attack', 'stroke', 'lifestyle changes', 'mitigate', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended', 'regular physical activity', 'quitting smoking', 'help', 'managing stress', 'maintaining', 'monitoring', 'blood pressure', 'cholesterol levels']
+Cluster 1: ['damage', 'damage', 'damage']
+Cluster 2: ['blood vessels', 'blood vessels', 'blood vessels', 'artery walls', 'arteries', 'narrowed arteries', 'hardened arteries']
+Cluster 3: ['cardiovascular disease', 'atherosclerosis', 'atherosclerosis', 'cardiovascular disease', 'cardiovascular disease']
+Cluster 4: ['inner lining', 'inner lining']
+Cluster 5: ['risk', 'risk', 'risk', 'risk']
+Cluster 6: ['individuals', 'individuals']
+Cluster 7: ['balanced diet', 'healthy weight']
+Cluster 8: ['important', 'crucial', 'important', 'essential']
+Cluster 9: ['reduce', 'reducing']
+
+
+Extracting distinct nodes within cluster...
+--------------------------------------------------
+
+Cluster 0: ['Type 2 diabetes', 'high blood sugar levels', 'insulin', 'high blood sugar levels', 'high blood sugar levels', 'high glucose levels', 'type 2 diabetes', 'type 2 diabetes', 'blood sugar']
+[
+  {
+    "key_element": "type 2 diabetes",
+    "max_substring": "ype 2 diabetes"
+  },
+  {
+    "key_element": "blood sugar",
+    "max_substring": "blood sugar"
+  },
+  {
+    "key_element": "insulin",
+    "max_substring": "i"
+  }
+]
+
+Cluster -1: ["body's inability", 'nerves', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'narrows', 'hardens', 'increase', 'heart attack', 'stroke', 'lifestyle changes', 'mitigate', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended', 'regular physical activity', 'quitting smoking', 'help', 'managing stress', 'maintaining', 'monitoring', 'blood pressure', 'cholesterol levels']
+Skipping [Cluster -1] as they are alldistinct within the cluster...
+
+Cluster 1: ['damage', 'damage', 'damage']
+[
+  "damage"
+]
+
+Cluster 2: ['blood vessels', 'blood vessels', 'blood vessels', 'artery walls', 'arteries', 'narrowed arteries', 'hardened arteries']
+[
+  {
+    "key_element": "hardened arteries",
+    "max_substring": "ed arteries"
+  },
+  {
+    "key_element": "arteries",
+    "max_substring": "arter"
+  },
+  "blood vessels"
+]
+
+Cluster 3: ['cardiovascular disease', 'atherosclerosis', 'atherosclerosis', 'cardiovascular disease', 'cardiovascular disease']
+[
+  {
+    "key_element": "atherosclerosis",
+    "max_substring": "sc"
+  }
+]
+
+Cluster 4: ['inner lining', 'inner lining']
+[
+  "inner lining"
+]
+
+Cluster 5: ['risk', 'risk', 'risk', 'risk']
+[
+  "risk"
+]
+
+Cluster 6: ['individuals', 'individuals']
+[
+  "individuals"
+]
+
+Cluster 7: ['balanced diet', 'healthy weight']
+[
+  {
+    "key_element": "balanced diet",
+    "max_substring": "al"
+  }
+]
+
+Cluster 8: ['important', 'crucial', 'important', 'essential']
+[
+  {
+    "key_element": "crucial",
+    "max_substring": "ial"
+  },
+  "important"
+]
+
+Cluster 9: ['reduce', 'reducing']
+[
+  {
+    "key_element": "reduce",
+    "max_substring": "reduc"
+  }
+]
+
+Extracting Distinct Nodes of the Graph COMPLETED
+==================================================
+Mapping Key Elements to Distinct Nodes of the Graph...
+
+Mapping key elements having ["ype 2 diabetes"] to ["type 2 diabetes"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively.
+Key Elements: ['Type 2 diabetes', 'high blood sugar levels', "body's inability", 'insulin']
+Nodes: {'Type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 2
+Atomic Fact: High blood sugar levels lead to damage of the blood vessels and nerves over time.
+Key Elements: ['high blood sugar levels', 'damage', 'blood vessels', 'nerves']
+Nodes: {}
+
+ID: 3
+Atomic Fact: High blood sugar levels cause cardiovascular disease through the process of atherosclerosis.
+Key Elements: ['high blood sugar levels', 'cardiovascular disease', 'atherosclerosis']
+Nodes: {}
+
+ID: 4
+Atomic Fact: High glucose levels damage the inner lining of the blood vessels.
+Key Elements: ['high glucose levels', 'damage', 'inner lining', 'blood vessels']
+Nodes: {}
+
+ID: 5
+Atomic Fact: Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls.
+Key Elements: ['damage', 'inner lining', 'blood vessels', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'artery walls']
+Nodes: {}
+
+ID: 6
+Atomic Fact: Atherosclerosis narrows and hardens the arteries.
+Key Elements: ['atherosclerosis', 'narrows', 'hardens', 'arteries']
+Nodes: {}
+
+ID: 7
+Atomic Fact: Narrowed and hardened arteries increase the risk of heart attack and stroke.
+Key Elements: ['narrowed arteries', 'hardened arteries', 'increase', 'risk', 'heart attack', 'stroke']
+Nodes: {}
+
+ID: 8
+Atomic Fact: Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes.
+Key Elements: ['lifestyle changes', 'mitigate', 'risk', 'cardiovascular disease', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 9
+Atomic Fact: A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended.
+Key Elements: ['balanced diet', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Engaging in regular physical activity is important.
+Key Elements: ['regular physical activity', 'important']
+Nodes: {}
+
+ID: 11
+Atomic Fact: Quitting smoking can help reduce the risk.
+Key Elements: ['quitting smoking', 'help', 'reduce', 'risk']
+Nodes: {}
+
+ID: 12
+Atomic Fact: Managing stress is crucial for individuals with type 2 diabetes.
+Key Elements: ['managing stress', 'crucial', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 13
+Atomic Fact: Maintaining a healthy weight is important for reducing the risk of cardiovascular disease.
+Key Elements: ['maintaining', 'healthy weight', 'important', 'reducing', 'risk', 'cardiovascular disease']
+Nodes: {}
+
+ID: 14
+Atomic Fact: Monitoring blood sugar, blood pressure, and cholesterol levels is essential.
+Key Elements: ['monitoring', 'blood sugar', 'blood pressure', 'cholesterol levels', 'essential']
+Nodes: {}
+
+--------------------------------------------------
+
+
+Mapping key elements having ["blood sugar"] to ["blood sugar"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively.
+Key Elements: ['Type 2 diabetes', 'high blood sugar levels', "body's inability", 'insulin']
+Nodes: {'Type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 2
+Atomic Fact: High blood sugar levels lead to damage of the blood vessels and nerves over time.
+Key Elements: ['high blood sugar levels', 'damage', 'blood vessels', 'nerves']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 3
+Atomic Fact: High blood sugar levels cause cardiovascular disease through the process of atherosclerosis.
+Key Elements: ['high blood sugar levels', 'cardiovascular disease', 'atherosclerosis']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 4
+Atomic Fact: High glucose levels damage the inner lining of the blood vessels.
+Key Elements: ['high glucose levels', 'damage', 'inner lining', 'blood vessels']
+Nodes: {}
+
+ID: 5
+Atomic Fact: Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls.
+Key Elements: ['damage', 'inner lining', 'blood vessels', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'artery walls']
+Nodes: {}
+
+ID: 6
+Atomic Fact: Atherosclerosis narrows and hardens the arteries.
+Key Elements: ['atherosclerosis', 'narrows', 'hardens', 'arteries']
+Nodes: {}
+
+ID: 7
+Atomic Fact: Narrowed and hardened arteries increase the risk of heart attack and stroke.
+Key Elements: ['narrowed arteries', 'hardened arteries', 'increase', 'risk', 'heart attack', 'stroke']
+Nodes: {}
+
+ID: 8
+Atomic Fact: Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes.
+Key Elements: ['lifestyle changes', 'mitigate', 'risk', 'cardiovascular disease', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 9
+Atomic Fact: A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended.
+Key Elements: ['balanced diet', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Engaging in regular physical activity is important.
+Key Elements: ['regular physical activity', 'important']
+Nodes: {}
+
+ID: 11
+Atomic Fact: Quitting smoking can help reduce the risk.
+Key Elements: ['quitting smoking', 'help', 'reduce', 'risk']
+Nodes: {}
+
+ID: 12
+Atomic Fact: Managing stress is crucial for individuals with type 2 diabetes.
+Key Elements: ['managing stress', 'crucial', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 13
+Atomic Fact: Maintaining a healthy weight is important for reducing the risk of cardiovascular disease.
+Key Elements: ['maintaining', 'healthy weight', 'important', 'reducing', 'risk', 'cardiovascular disease']
+Nodes: {}
+
+ID: 14
+Atomic Fact: Monitoring blood sugar, blood pressure, and cholesterol levels is essential.
+Key Elements: ['monitoring', 'blood sugar', 'blood pressure', 'cholesterol levels', 'essential']
+Nodes: {'blood sugar': [{'blood sugar': 1.0}]}
+
+--------------------------------------------------
+
+
+Mapping key elements having ["ed arteries"] to ["hardened arteries"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively.
+Key Elements: ['Type 2 diabetes', 'high blood sugar levels', "body's inability", 'insulin']
+Nodes: {'Type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 2
+Atomic Fact: High blood sugar levels lead to damage of the blood vessels and nerves over time.
+Key Elements: ['high blood sugar levels', 'damage', 'blood vessels', 'nerves']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 3
+Atomic Fact: High blood sugar levels cause cardiovascular disease through the process of atherosclerosis.
+Key Elements: ['high blood sugar levels', 'cardiovascular disease', 'atherosclerosis']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 4
+Atomic Fact: High glucose levels damage the inner lining of the blood vessels.
+Key Elements: ['high glucose levels', 'damage', 'inner lining', 'blood vessels']
+Nodes: {}
+
+ID: 5
+Atomic Fact: Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls.
+Key Elements: ['damage', 'inner lining', 'blood vessels', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'artery walls']
+Nodes: {}
+
+ID: 6
+Atomic Fact: Atherosclerosis narrows and hardens the arteries.
+Key Elements: ['atherosclerosis', 'narrows', 'hardens', 'arteries']
+Nodes: {}
+
+ID: 7
+Atomic Fact: Narrowed and hardened arteries increase the risk of heart attack and stroke.
+Key Elements: ['narrowed arteries', 'hardened arteries', 'increase', 'risk', 'heart attack', 'stroke']
+Nodes: {'narrowed arteries': [{'ed arteries': 0.7857142857142857}], 'hardened arteries': [{'ed arteries': 0.7857142857142857}]}
+
+ID: 8
+Atomic Fact: Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes.
+Key Elements: ['lifestyle changes', 'mitigate', 'risk', 'cardiovascular disease', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 9
+Atomic Fact: A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended.
+Key Elements: ['balanced diet', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Engaging in regular physical activity is important.
+Key Elements: ['regular physical activity', 'important']
+Nodes: {}
+
+ID: 11
+Atomic Fact: Quitting smoking can help reduce the risk.
+Key Elements: ['quitting smoking', 'help', 'reduce', 'risk']
+Nodes: {}
+
+ID: 12
+Atomic Fact: Managing stress is crucial for individuals with type 2 diabetes.
+Key Elements: ['managing stress', 'crucial', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 13
+Atomic Fact: Maintaining a healthy weight is important for reducing the risk of cardiovascular disease.
+Key Elements: ['maintaining', 'healthy weight', 'important', 'reducing', 'risk', 'cardiovascular disease']
+Nodes: {}
+
+ID: 14
+Atomic Fact: Monitoring blood sugar, blood pressure, and cholesterol levels is essential.
+Key Elements: ['monitoring', 'blood sugar', 'blood pressure', 'cholesterol levels', 'essential']
+Nodes: {'blood sugar': [{'blood sugar': 1.0}]}
+
+--------------------------------------------------
+
+
+Mapping key elements having ["arter"] to ["arteries"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively.
+Key Elements: ['Type 2 diabetes', 'high blood sugar levels', "body's inability", 'insulin']
+Nodes: {'Type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 2
+Atomic Fact: High blood sugar levels lead to damage of the blood vessels and nerves over time.
+Key Elements: ['high blood sugar levels', 'damage', 'blood vessels', 'nerves']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 3
+Atomic Fact: High blood sugar levels cause cardiovascular disease through the process of atherosclerosis.
+Key Elements: ['high blood sugar levels', 'cardiovascular disease', 'atherosclerosis']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 4
+Atomic Fact: High glucose levels damage the inner lining of the blood vessels.
+Key Elements: ['high glucose levels', 'damage', 'inner lining', 'blood vessels']
+Nodes: {}
+
+ID: 5
+Atomic Fact: Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls.
+Key Elements: ['damage', 'inner lining', 'blood vessels', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'artery walls']
+Nodes: {'artery walls': [{'arter': 0.5882352941176471}]}
+
+ID: 6
+Atomic Fact: Atherosclerosis narrows and hardens the arteries.
+Key Elements: ['atherosclerosis', 'narrows', 'hardens', 'arteries']
+Nodes: {'arteries': [{'arter': 0.7692307692307693}]}
+
+ID: 7
+Atomic Fact: Narrowed and hardened arteries increase the risk of heart attack and stroke.
+Key Elements: ['narrowed arteries', 'hardened arteries', 'increase', 'risk', 'heart attack', 'stroke']
+Nodes: {'narrowed arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}], 'hardened arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}]}
+
+ID: 8
+Atomic Fact: Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes.
+Key Elements: ['lifestyle changes', 'mitigate', 'risk', 'cardiovascular disease', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 9
+Atomic Fact: A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended.
+Key Elements: ['balanced diet', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Engaging in regular physical activity is important.
+Key Elements: ['regular physical activity', 'important']
+Nodes: {}
+
+ID: 11
+Atomic Fact: Quitting smoking can help reduce the risk.
+Key Elements: ['quitting smoking', 'help', 'reduce', 'risk']
+Nodes: {}
+
+ID: 12
+Atomic Fact: Managing stress is crucial for individuals with type 2 diabetes.
+Key Elements: ['managing stress', 'crucial', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 13
+Atomic Fact: Maintaining a healthy weight is important for reducing the risk of cardiovascular disease.
+Key Elements: ['maintaining', 'healthy weight', 'important', 'reducing', 'risk', 'cardiovascular disease']
+Nodes: {}
+
+ID: 14
+Atomic Fact: Monitoring blood sugar, blood pressure, and cholesterol levels is essential.
+Key Elements: ['monitoring', 'blood sugar', 'blood pressure', 'cholesterol levels', 'essential']
+Nodes: {'blood sugar': [{'blood sugar': 1.0}]}
+
+--------------------------------------------------
+
+
+Mapping key elements having ["ial"] to ["crucial"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively.
+Key Elements: ['Type 2 diabetes', 'high blood sugar levels', "body's inability", 'insulin']
+Nodes: {'Type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 2
+Atomic Fact: High blood sugar levels lead to damage of the blood vessels and nerves over time.
+Key Elements: ['high blood sugar levels', 'damage', 'blood vessels', 'nerves']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 3
+Atomic Fact: High blood sugar levels cause cardiovascular disease through the process of atherosclerosis.
+Key Elements: ['high blood sugar levels', 'cardiovascular disease', 'atherosclerosis']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 4
+Atomic Fact: High glucose levels damage the inner lining of the blood vessels.
+Key Elements: ['high glucose levels', 'damage', 'inner lining', 'blood vessels']
+Nodes: {}
+
+ID: 5
+Atomic Fact: Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls.
+Key Elements: ['damage', 'inner lining', 'blood vessels', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'artery walls']
+Nodes: {'artery walls': [{'arter': 0.5882352941176471}]}
+
+ID: 6
+Atomic Fact: Atherosclerosis narrows and hardens the arteries.
+Key Elements: ['atherosclerosis', 'narrows', 'hardens', 'arteries']
+Nodes: {'arteries': [{'arter': 0.7692307692307693}]}
+
+ID: 7
+Atomic Fact: Narrowed and hardened arteries increase the risk of heart attack and stroke.
+Key Elements: ['narrowed arteries', 'hardened arteries', 'increase', 'risk', 'heart attack', 'stroke']
+Nodes: {'narrowed arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}], 'hardened arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}]}
+
+ID: 8
+Atomic Fact: Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes.
+Key Elements: ['lifestyle changes', 'mitigate', 'risk', 'cardiovascular disease', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 9
+Atomic Fact: A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended.
+Key Elements: ['balanced diet', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Engaging in regular physical activity is important.
+Key Elements: ['regular physical activity', 'important']
+Nodes: {}
+
+ID: 11
+Atomic Fact: Quitting smoking can help reduce the risk.
+Key Elements: ['quitting smoking', 'help', 'reduce', 'risk']
+Nodes: {}
+
+ID: 12
+Atomic Fact: Managing stress is crucial for individuals with type 2 diabetes.
+Key Elements: ['managing stress', 'crucial', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'crucial': [{'ial': 0.6}]}
+
+ID: 13
+Atomic Fact: Maintaining a healthy weight is important for reducing the risk of cardiovascular disease.
+Key Elements: ['maintaining', 'healthy weight', 'important', 'reducing', 'risk', 'cardiovascular disease']
+Nodes: {}
+
+ID: 14
+Atomic Fact: Monitoring blood sugar, blood pressure, and cholesterol levels is essential.
+Key Elements: ['monitoring', 'blood sugar', 'blood pressure', 'cholesterol levels', 'essential']
+Nodes: {'blood sugar': [{'blood sugar': 1.0}], 'essential': [{'ial': 0.5}]}
+
+--------------------------------------------------
+
+
+Mapping key elements having ["reduc"] to ["reduce"]...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively.
+Key Elements: ['Type 2 diabetes', 'high blood sugar levels', "body's inability", 'insulin']
+Nodes: {'Type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 2
+Atomic Fact: High blood sugar levels lead to damage of the blood vessels and nerves over time.
+Key Elements: ['high blood sugar levels', 'damage', 'blood vessels', 'nerves']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 3
+Atomic Fact: High blood sugar levels cause cardiovascular disease through the process of atherosclerosis.
+Key Elements: ['high blood sugar levels', 'cardiovascular disease', 'atherosclerosis']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+
+ID: 4
+Atomic Fact: High glucose levels damage the inner lining of the blood vessels.
+Key Elements: ['high glucose levels', 'damage', 'inner lining', 'blood vessels']
+Nodes: {}
+
+ID: 5
+Atomic Fact: Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls.
+Key Elements: ['damage', 'inner lining', 'blood vessels', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'artery walls']
+Nodes: {'artery walls': [{'arter': 0.5882352941176471}]}
+
+ID: 6
+Atomic Fact: Atherosclerosis narrows and hardens the arteries.
+Key Elements: ['atherosclerosis', 'narrows', 'hardens', 'arteries']
+Nodes: {'arteries': [{'arter': 0.7692307692307693}]}
+
+ID: 7
+Atomic Fact: Narrowed and hardened arteries increase the risk of heart attack and stroke.
+Key Elements: ['narrowed arteries', 'hardened arteries', 'increase', 'risk', 'heart attack', 'stroke']
+Nodes: {'narrowed arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}], 'hardened arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}]}
+
+ID: 8
+Atomic Fact: Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes.
+Key Elements: ['lifestyle changes', 'mitigate', 'risk', 'cardiovascular disease', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+
+ID: 9
+Atomic Fact: A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended.
+Key Elements: ['balanced diet', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended']
+Nodes: {}
+
+ID: 10
+Atomic Fact: Engaging in regular physical activity is important.
+Key Elements: ['regular physical activity', 'important']
+Nodes: {}
+
+ID: 11
+Atomic Fact: Quitting smoking can help reduce the risk.
+Key Elements: ['quitting smoking', 'help', 'reduce', 'risk']
+Nodes: {'reduce': [{'reduc': 0.9090909090909091}]}
+
+ID: 12
+Atomic Fact: Managing stress is crucial for individuals with type 2 diabetes.
+Key Elements: ['managing stress', 'crucial', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'crucial': [{'ial': 0.6}]}
+
+ID: 13
+Atomic Fact: Maintaining a healthy weight is important for reducing the risk of cardiovascular disease.
+Key Elements: ['maintaining', 'healthy weight', 'important', 'reducing', 'risk', 'cardiovascular disease']
+Nodes: {'reducing': [{'reduc': 0.7692307692307693}]}
+
+ID: 14
+Atomic Fact: Monitoring blood sugar, blood pressure, and cholesterol levels is essential.
+Key Elements: ['monitoring', 'blood sugar', 'blood pressure', 'cholesterol levels', 'essential']
+Nodes: {'blood sugar': [{'blood sugar': 1.0}], 'essential': [{'ial': 0.5}]}
+
+--------------------------------------------------
+
+Mapping remaining key elements...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively.
+Key Elements: ['Type 2 diabetes', 'high blood sugar levels', "body's inability", 'insulin']
+Nodes: {'Type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+Nodes: {'Type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'high blood sugar levels': [{'blood sugar': 0.6470588235294118}], "body's inability": "body's inability", 'insulin': 'insulin'}
+
+ID: 2
+Atomic Fact: High blood sugar levels lead to damage of the blood vessels and nerves over time.
+Key Elements: ['high blood sugar levels', 'damage', 'blood vessels', 'nerves']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}], 'damage': 'damage', 'blood vessels': 'blood vessels', 'nerves': 'nerves'}
+
+ID: 3
+Atomic Fact: High blood sugar levels cause cardiovascular disease through the process of atherosclerosis.
+Key Elements: ['high blood sugar levels', 'cardiovascular disease', 'atherosclerosis']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}]}
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}], 'cardiovascular disease': 'cardiovascular disease', 'atherosclerosis': 'atherosclerosis'}
+
+ID: 4
+Atomic Fact: High glucose levels damage the inner lining of the blood vessels.
+Key Elements: ['high glucose levels', 'damage', 'inner lining', 'blood vessels']
+Nodes: {}
+Nodes: {'high glucose levels': 'high glucose levels', 'damage': 'damage', 'inner lining': 'inner lining', 'blood vessels': 'blood vessels'}
+
+ID: 5
+Atomic Fact: Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls.
+Key Elements: ['damage', 'inner lining', 'blood vessels', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'artery walls']
+Nodes: {'artery walls': [{'arter': 0.5882352941176471}]}
+Nodes: {'artery walls': [{'arter': 0.5882352941176471}], 'damage': 'damage', 'inner lining': 'inner lining', 'blood vessels': 'blood vessels', 'inflammation': 'inflammation', 'buildup': 'buildup', 'fatty deposits': 'fatty deposits', 'plaques': 'plaques'}
+
+ID: 6
+Atomic Fact: Atherosclerosis narrows and hardens the arteries.
+Key Elements: ['atherosclerosis', 'narrows', 'hardens', 'arteries']
+Nodes: {'arteries': [{'arter': 0.7692307692307693}]}
+Nodes: {'arteries': [{'arter': 0.7692307692307693}], 'atherosclerosis': 'atherosclerosis', 'narrows': 'narrows', 'hardens': 'hardens'}
+
+ID: 7
+Atomic Fact: Narrowed and hardened arteries increase the risk of heart attack and stroke.
+Key Elements: ['narrowed arteries', 'hardened arteries', 'increase', 'risk', 'heart attack', 'stroke']
+Nodes: {'narrowed arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}], 'hardened arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}]}
+Nodes: {'narrowed arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}], 'hardened arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}], 'increase': 'increase', 'risk': 'risk', 'heart attack': 'heart attack', 'stroke': 'stroke'}
+
+ID: 8
+Atomic Fact: Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes.
+Key Elements: ['lifestyle changes', 'mitigate', 'risk', 'cardiovascular disease', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}]}
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'lifestyle changes': 'lifestyle changes', 'mitigate': 'mitigate', 'risk': 'risk', 'cardiovascular disease': 'cardiovascular disease', 'individuals': 'individuals'}
+
+ID: 9
+Atomic Fact: A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended.
+Key Elements: ['balanced diet', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended']
+Nodes: {}
+Nodes: {'balanced diet': 'balanced diet', 'rich': 'rich', 'fruits': 'fruits', 'vegetables': 'vegetables', 'whole grains': 'whole grains', 'lean proteins': 'lean proteins', 'recommended': 'recommended'}
+
+ID: 10
+Atomic Fact: Engaging in regular physical activity is important.
+Key Elements: ['regular physical activity', 'important']
+Nodes: {}
+Nodes: {'regular physical activity': 'regular physical activity', 'important': 'important'}
+
+ID: 11
+Atomic Fact: Quitting smoking can help reduce the risk.
+Key Elements: ['quitting smoking', 'help', 'reduce', 'risk']
+Nodes: {'reduce': [{'reduc': 0.9090909090909091}]}
+Nodes: {'reduce': [{'reduc': 0.9090909090909091}], 'quitting smoking': 'quitting smoking', 'help': 'help', 'risk': 'risk'}
+
+ID: 12
+Atomic Fact: Managing stress is crucial for individuals with type 2 diabetes.
+Key Elements: ['managing stress', 'crucial', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'crucial': [{'ial': 0.6}]}
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'crucial': [{'ial': 0.6}], 'managing stress': 'managing stress', 'individuals': 'individuals'}
+
+ID: 13
+Atomic Fact: Maintaining a healthy weight is important for reducing the risk of cardiovascular disease.
+Key Elements: ['maintaining', 'healthy weight', 'important', 'reducing', 'risk', 'cardiovascular disease']
+Nodes: {'reducing': [{'reduc': 0.7692307692307693}]}
+Nodes: {'reducing': [{'reduc': 0.7692307692307693}], 'maintaining': 'maintaining', 'healthy weight': 'healthy weight', 'important': 'important', 'risk': 'risk', 'cardiovascular disease': 'cardiovascular disease'}
+
+ID: 14
+Atomic Fact: Monitoring blood sugar, blood pressure, and cholesterol levels is essential.
+Key Elements: ['monitoring', 'blood sugar', 'blood pressure', 'cholesterol levels', 'essential']
+Nodes: {'blood sugar': [{'blood sugar': 1.0}], 'essential': [{'ial': 0.5}]}
+Nodes: {'blood sugar': [{'blood sugar': 1.0}], 'essential': [{'ial': 0.5}], 'monitoring': 'monitoring', 'blood pressure': 'blood pressure', 'cholesterol levels': 'cholesterol levels'}
+
+Mapping Key Elements to Distinct Nodes of the Graph COMPLETED
+==================================================
+Labelling of Nodes of the Graph...
+
+Creating Node Mappings dictionary...
+--------------------------------------------------
+{
+  "ype 2 diabetes": "type 2 diabetes",
+  "blood sugar": "blood sugar",
+  "i": "insulin",
+  "ed arteries": "hardened arteries",
+  "arter": "arteries",
+  "sc": "atherosclerosis",
+  "al": "balanced diet",
+  "ial": "crucial",
+  "reduc": "reduce"
+}
+
+Mapping final representation of nodes labels...
+--------------------------------------------------
+ID: 1
+Atomic Fact: Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively.
+Key Elements: ['Type 2 diabetes', 'high blood sugar levels', "body's inability", 'insulin']
+Nodes: {'Type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'high blood sugar levels': [{'blood sugar': 0.6470588235294118}], "body's inability": "body's inability", 'insulin': 'insulin'}
+
+Substring Mapping: [ype 2 diabetes -> type 2 diabetes]
+Key Element Mapping: [Type 2 diabetes -> type 2 diabetes]
+
+Substring Mapping: [blood sugar -> blood sugar]
+Key Element Mapping: [high blood sugar levels -> blood sugar]
+
+Key Element Mapping: [body's inability -> body's inability]
+
+Key Element Mapping: [insulin -> insulin]
+
+Nodes Label: {'Type 2 diabetes': 'type 2 diabetes', 'high blood sugar levels': 'blood sugar', "body's inability": "body's inability", 'insulin': 'insulin'}
+..................................................
+
+ID: 2
+Atomic Fact: High blood sugar levels lead to damage of the blood vessels and nerves over time.
+Key Elements: ['high blood sugar levels', 'damage', 'blood vessels', 'nerves']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}], 'damage': 'damage', 'blood vessels': 'blood vessels', 'nerves': 'nerves'}
+
+Substring Mapping: [blood sugar -> blood sugar]
+Key Element Mapping: [high blood sugar levels -> blood sugar]
+
+Key Element Mapping: [damage -> damage]
+
+Key Element Mapping: [blood vessels -> blood vessels]
+
+Key Element Mapping: [nerves -> nerves]
+
+Nodes Label: {'high blood sugar levels': 'blood sugar', 'damage': 'damage', 'blood vessels': 'blood vessels', 'nerves': 'nerves'}
+..................................................
+
+ID: 3
+Atomic Fact: High blood sugar levels cause cardiovascular disease through the process of atherosclerosis.
+Key Elements: ['high blood sugar levels', 'cardiovascular disease', 'atherosclerosis']
+Nodes: {'high blood sugar levels': [{'blood sugar': 0.6470588235294118}], 'cardiovascular disease': 'cardiovascular disease', 'atherosclerosis': 'atherosclerosis'}
+
+Substring Mapping: [blood sugar -> blood sugar]
+Key Element Mapping: [high blood sugar levels -> blood sugar]
+
+Key Element Mapping: [cardiovascular disease -> cardiovascular disease]
+
+Key Element Mapping: [atherosclerosis -> atherosclerosis]
+
+Nodes Label: {'high blood sugar levels': 'blood sugar', 'cardiovascular disease': 'cardiovascular disease', 'atherosclerosis': 'atherosclerosis'}
+..................................................
+
+ID: 4
+Atomic Fact: High glucose levels damage the inner lining of the blood vessels.
+Key Elements: ['high glucose levels', 'damage', 'inner lining', 'blood vessels']
+Nodes: {'high glucose levels': 'high glucose levels', 'damage': 'damage', 'inner lining': 'inner lining', 'blood vessels': 'blood vessels'}
+
+Key Element Mapping: [high glucose levels -> high glucose levels]
+
+Key Element Mapping: [damage -> damage]
+
+Key Element Mapping: [inner lining -> inner lining]
+
+Key Element Mapping: [blood vessels -> blood vessels]
+
+Nodes Label: {'high glucose levels': 'high glucose levels', 'damage': 'damage', 'inner lining': 'inner lining', 'blood vessels': 'blood vessels'}
+..................................................
+
+ID: 5
+Atomic Fact: Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls.
+Key Elements: ['damage', 'inner lining', 'blood vessels', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'artery walls']
+Nodes: {'artery walls': [{'arter': 0.5882352941176471}], 'damage': 'damage', 'inner lining': 'inner lining', 'blood vessels': 'blood vessels', 'inflammation': 'inflammation', 'buildup': 'buildup', 'fatty deposits': 'fatty deposits', 'plaques': 'plaques'}
+
+Substring Mapping: [arter -> arteries]
+Key Element Mapping: [artery walls -> arteries]
+
+Key Element Mapping: [damage -> damage]
+
+Key Element Mapping: [inner lining -> inner lining]
+
+Key Element Mapping: [blood vessels -> blood vessels]
+
+Key Element Mapping: [inflammation -> inflammation]
+
+Key Element Mapping: [buildup -> buildup]
+
+Key Element Mapping: [fatty deposits -> fatty deposits]
+
+Key Element Mapping: [plaques -> plaques]
+
+Nodes Label: {'artery walls': 'arteries', 'damage': 'damage', 'inner lining': 'inner lining', 'blood vessels': 'blood vessels', 'inflammation': 'inflammation', 'buildup': 'buildup', 'fatty deposits': 'fatty deposits', 'plaques': 'plaques'}
+..................................................
+
+ID: 6
+Atomic Fact: Atherosclerosis narrows and hardens the arteries.
+Key Elements: ['atherosclerosis', 'narrows', 'hardens', 'arteries']
+Nodes: {'arteries': [{'arter': 0.7692307692307693}], 'atherosclerosis': 'atherosclerosis', 'narrows': 'narrows', 'hardens': 'hardens'}
+
+Substring Mapping: [arter -> arteries]
+Key Element Mapping: [arteries -> arteries]
+
+Key Element Mapping: [atherosclerosis -> atherosclerosis]
+
+Key Element Mapping: [narrows -> narrows]
+
+Key Element Mapping: [hardens -> hardens]
+
+Nodes Label: {'arteries': 'arteries', 'atherosclerosis': 'atherosclerosis', 'narrows': 'narrows', 'hardens': 'hardens'}
+..................................................
+
+ID: 7
+Atomic Fact: Narrowed and hardened arteries increase the risk of heart attack and stroke.
+Key Elements: ['narrowed arteries', 'hardened arteries', 'increase', 'risk', 'heart attack', 'stroke']
+Nodes: {'narrowed arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}], 'hardened arteries': [{'ed arteries': 0.7857142857142857}, {'arter': 0.45454545454545453}], 'increase': 'increase', 'risk': 'risk', 'heart attack': 'heart attack', 'stroke': 'stroke'}
+
+Substring Mapping: [ed arteries -> hardened arteries]
+Key Element Mapping: [narrowed arteries -> hardened arteries]
+
+Substring Mapping: [ed arteries -> hardened arteries]
+Key Element Mapping: [hardened arteries -> hardened arteries]
+
+Key Element Mapping: [increase -> increase]
+
+Key Element Mapping: [risk -> risk]
+
+Key Element Mapping: [heart attack -> heart attack]
+
+Key Element Mapping: [stroke -> stroke]
+
+Nodes Label: {'narrowed arteries': 'hardened arteries', 'hardened arteries': 'hardened arteries', 'increase': 'increase', 'risk': 'risk', 'heart attack': 'heart attack', 'stroke': 'stroke'}
+..................................................
+
+ID: 8
+Atomic Fact: Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes.
+Key Elements: ['lifestyle changes', 'mitigate', 'risk', 'cardiovascular disease', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'lifestyle changes': 'lifestyle changes', 'mitigate': 'mitigate', 'risk': 'risk', 'cardiovascular disease': 'cardiovascular disease', 'individuals': 'individuals'}
+
+Substring Mapping: [ype 2 diabetes -> type 2 diabetes]
+Key Element Mapping: [type 2 diabetes -> type 2 diabetes]
+
+Key Element Mapping: [lifestyle changes -> lifestyle changes]
+
+Key Element Mapping: [mitigate -> mitigate]
+
+Key Element Mapping: [risk -> risk]
+
+Key Element Mapping: [cardiovascular disease -> cardiovascular disease]
+
+Key Element Mapping: [individuals -> individuals]
+
+Nodes Label: {'type 2 diabetes': 'type 2 diabetes', 'lifestyle changes': 'lifestyle changes', 'mitigate': 'mitigate', 'risk': 'risk', 'cardiovascular disease': 'cardiovascular disease', 'individuals': 'individuals'}
+..................................................
+
+ID: 9
+Atomic Fact: A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended.
+Key Elements: ['balanced diet', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended']
+Nodes: {'balanced diet': 'balanced diet', 'rich': 'rich', 'fruits': 'fruits', 'vegetables': 'vegetables', 'whole grains': 'whole grains', 'lean proteins': 'lean proteins', 'recommended': 'recommended'}
+
+Key Element Mapping: [balanced diet -> balanced diet]
+
+Key Element Mapping: [rich -> rich]
+
+Key Element Mapping: [fruits -> fruits]
+
+Key Element Mapping: [vegetables -> vegetables]
+
+Key Element Mapping: [whole grains -> whole grains]
+
+Key Element Mapping: [lean proteins -> lean proteins]
+
+Key Element Mapping: [recommended -> recommended]
+
+Nodes Label: {'balanced diet': 'balanced diet', 'rich': 'rich', 'fruits': 'fruits', 'vegetables': 'vegetables', 'whole grains': 'whole grains', 'lean proteins': 'lean proteins', 'recommended': 'recommended'}
+..................................................
+
+ID: 10
+Atomic Fact: Engaging in regular physical activity is important.
+Key Elements: ['regular physical activity', 'important']
+Nodes: {'regular physical activity': 'regular physical activity', 'important': 'important'}
+
+Key Element Mapping: [regular physical activity -> regular physical activity]
+
+Key Element Mapping: [important -> important]
+
+Nodes Label: {'regular physical activity': 'regular physical activity', 'important': 'important'}
+..................................................
+
+ID: 11
+Atomic Fact: Quitting smoking can help reduce the risk.
+Key Elements: ['quitting smoking', 'help', 'reduce', 'risk']
+Nodes: {'reduce': [{'reduc': 0.9090909090909091}], 'quitting smoking': 'quitting smoking', 'help': 'help', 'risk': 'risk'}
+
+Substring Mapping: [reduc -> reduce]
+Key Element Mapping: [reduce -> reduce]
+
+Key Element Mapping: [quitting smoking -> quitting smoking]
+
+Key Element Mapping: [help -> help]
+
+Key Element Mapping: [risk -> risk]
+
+Nodes Label: {'reduce': 'reduce', 'quitting smoking': 'quitting smoking', 'help': 'help', 'risk': 'risk'}
+..................................................
+
+ID: 12
+Atomic Fact: Managing stress is crucial for individuals with type 2 diabetes.
+Key Elements: ['managing stress', 'crucial', 'individuals', 'type 2 diabetes']
+Nodes: {'type 2 diabetes': [{'ype 2 diabetes': 0.9655172413793104}], 'crucial': [{'ial': 0.6}], 'managing stress': 'managing stress', 'individuals': 'individuals'}
+
+Substring Mapping: [ype 2 diabetes -> type 2 diabetes]
+Key Element Mapping: [type 2 diabetes -> type 2 diabetes]
+
+Substring Mapping: [ial -> crucial]
+Key Element Mapping: [crucial -> crucial]
+
+Key Element Mapping: [managing stress -> managing stress]
+
+Key Element Mapping: [individuals -> individuals]
+
+Nodes Label: {'type 2 diabetes': 'type 2 diabetes', 'crucial': 'crucial', 'managing stress': 'managing stress', 'individuals': 'individuals'}
+..................................................
+
+ID: 13
+Atomic Fact: Maintaining a healthy weight is important for reducing the risk of cardiovascular disease.
+Key Elements: ['maintaining', 'healthy weight', 'important', 'reducing', 'risk', 'cardiovascular disease']
+Nodes: {'reducing': [{'reduc': 0.7692307692307693}], 'maintaining': 'maintaining', 'healthy weight': 'healthy weight', 'important': 'important', 'risk': 'risk', 'cardiovascular disease': 'cardiovascular disease'}
+
+Substring Mapping: [reduc -> reduce]
+Key Element Mapping: [reducing -> reduce]
+
+Key Element Mapping: [maintaining -> maintaining]
+
+Key Element Mapping: [healthy weight -> healthy weight]
+
+Key Element Mapping: [important -> important]
+
+Key Element Mapping: [risk -> risk]
+
+Key Element Mapping: [cardiovascular disease -> cardiovascular disease]
+
+Nodes Label: {'reducing': 'reduce', 'maintaining': 'maintaining', 'healthy weight': 'healthy weight', 'important': 'important', 'risk': 'risk', 'cardiovascular disease': 'cardiovascular disease'}
+..................................................
+
+ID: 14
+Atomic Fact: Monitoring blood sugar, blood pressure, and cholesterol levels is essential.
+Key Elements: ['monitoring', 'blood sugar', 'blood pressure', 'cholesterol levels', 'essential']
+Nodes: {'blood sugar': [{'blood sugar': 1.0}], 'essential': [{'ial': 0.5}], 'monitoring': 'monitoring', 'blood pressure': 'blood pressure', 'cholesterol levels': 'cholesterol levels'}
+
+Substring Mapping: [blood sugar -> blood sugar]
+Key Element Mapping: [blood sugar -> blood sugar]
+
+Substring Mapping: [ial -> crucial]
+Key Element Mapping: [essential -> crucial]
+
+Key Element Mapping: [monitoring -> monitoring]
+
+Key Element Mapping: [blood pressure -> blood pressure]
+
+Key Element Mapping: [cholesterol levels -> cholesterol levels]
+
+Nodes Label: {'blood sugar': 'blood sugar', 'essential': 'crucial', 'monitoring': 'monitoring', 'blood pressure': 'blood pressure', 'cholesterol levels': 'cholesterol levels'}
+..................................................
+
+Mapping Key Elements to Distinct Nodes of the Graph COMPLETED
+==================================================
+
+
+
+**************************************************
+GRAPH DATA
+**************************************************
+
+
+ID: 1
+Atomic Fact: Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively.
+Key Elements: ['Type 2 diabetes', 'high blood sugar levels', "body's inability", 'insulin']
+Nodes: {
+  "Type 2 diabetes": [
+    {
+      "ype 2 diabetes": 0.9655172413793104
+    }
+  ],
+  "high blood sugar levels": [
+    {
+      "blood sugar": 0.6470588235294118
+    }
+  ],
+  "body's inability": "body's inability",
+  "insulin": "insulin"
+}
+Nodes Label :{'Type 2 diabetes': 'type 2 diabetes', 'high blood sugar levels': 'blood sugar', "body's inability": "body's inability", 'insulin': 'insulin'}
+--------------------------------------------------
+ID: 2
+Atomic Fact: High blood sugar levels lead to damage of the blood vessels and nerves over time.
+Key Elements: ['high blood sugar levels', 'damage', 'blood vessels', 'nerves']
+Nodes: {
+  "high blood sugar levels": [
+    {
+      "blood sugar": 0.6470588235294118
+    }
+  ],
+  "damage": "damage",
+  "blood vessels": "blood vessels",
+  "nerves": "nerves"
+}
+Nodes Label :{'high blood sugar levels': 'blood sugar', 'damage': 'damage', 'blood vessels': 'blood vessels', 'nerves': 'nerves'}
+--------------------------------------------------
+ID: 3
+Atomic Fact: High blood sugar levels cause cardiovascular disease through the process of atherosclerosis.
+Key Elements: ['high blood sugar levels', 'cardiovascular disease', 'atherosclerosis']
+Nodes: {
+  "high blood sugar levels": [
+    {
+      "blood sugar": 0.6470588235294118
+    }
+  ],
+  "cardiovascular disease": "cardiovascular disease",
+  "atherosclerosis": "atherosclerosis"
+}
+Nodes Label :{'high blood sugar levels': 'blood sugar', 'cardiovascular disease': 'cardiovascular disease', 'atherosclerosis': 'atherosclerosis'}
+--------------------------------------------------
+ID: 4
+Atomic Fact: High glucose levels damage the inner lining of the blood vessels.
+Key Elements: ['high glucose levels', 'damage', 'inner lining', 'blood vessels']
+Nodes: {
+  "high glucose levels": "high glucose levels",
+  "damage": "damage",
+  "inner lining": "inner lining",
+  "blood vessels": "blood vessels"
+}
+Nodes Label :{'high glucose levels': 'high glucose levels', 'damage': 'damage', 'inner lining': 'inner lining', 'blood vessels': 'blood vessels'}
+--------------------------------------------------
+ID: 5
+Atomic Fact: Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls.
+Key Elements: ['damage', 'inner lining', 'blood vessels', 'inflammation', 'buildup', 'fatty deposits', 'plaques', 'artery walls']
+Nodes: {
+  "artery walls": [
+    {
+      "arter": 0.5882352941176471
+    }
+  ],
+  "damage": "damage",
+  "inner lining": "inner lining",
+  "blood vessels": "blood vessels",
+  "inflammation": "inflammation",
+  "buildup": "buildup",
+  "fatty deposits": "fatty deposits",
+  "plaques": "plaques"
+}
+Nodes Label :{'artery walls': 'arteries', 'damage': 'damage', 'inner lining': 'inner lining', 'blood vessels': 'blood vessels', 'inflammation': 'inflammation', 'buildup': 'buildup', 'fatty deposits': 'fatty deposits', 'plaques': 'plaques'}
+--------------------------------------------------
+ID: 6
+Atomic Fact: Atherosclerosis narrows and hardens the arteries.
+Key Elements: ['atherosclerosis', 'narrows', 'hardens', 'arteries']
+Nodes: {
+  "arteries": [
+    {
+      "arter": 0.7692307692307693
+    }
+  ],
+  "atherosclerosis": "atherosclerosis",
+  "narrows": "narrows",
+  "hardens": "hardens"
+}
+Nodes Label :{'arteries': 'arteries', 'atherosclerosis': 'atherosclerosis', 'narrows': 'narrows', 'hardens': 'hardens'}
+--------------------------------------------------
+ID: 7
+Atomic Fact: Narrowed and hardened arteries increase the risk of heart attack and stroke.
+Key Elements: ['narrowed arteries', 'hardened arteries', 'increase', 'risk', 'heart attack', 'stroke']
+Nodes: {
+  "narrowed arteries": [
+    {
+      "ed arteries": 0.7857142857142857
+    },
+    {
+      "arter": 0.45454545454545453
+    }
+  ],
+  "hardened arteries": [
+    {
+      "ed arteries": 0.7857142857142857
+    },
+    {
+      "arter": 0.45454545454545453
+    }
+  ],
+  "increase": "increase",
+  "risk": "risk",
+  "heart attack": "heart attack",
+  "stroke": "stroke"
+}
+Nodes Label :{'narrowed arteries': 'hardened arteries', 'hardened arteries': 'hardened arteries', 'increase': 'increase', 'risk': 'risk', 'heart attack': 'heart attack', 'stroke': 'stroke'}
+--------------------------------------------------
+ID: 8
+Atomic Fact: Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes.
+Key Elements: ['lifestyle changes', 'mitigate', 'risk', 'cardiovascular disease', 'individuals', 'type 2 diabetes']
+Nodes: {
+  "type 2 diabetes": [
+    {
+      "ype 2 diabetes": 0.9655172413793104
+    }
+  ],
+  "lifestyle changes": "lifestyle changes",
+  "mitigate": "mitigate",
+  "risk": "risk",
+  "cardiovascular disease": "cardiovascular disease",
+  "individuals": "individuals"
+}
+Nodes Label :{'type 2 diabetes': 'type 2 diabetes', 'lifestyle changes': 'lifestyle changes', 'mitigate': 'mitigate', 'risk': 'risk', 'cardiovascular disease': 'cardiovascular disease', 'individuals': 'individuals'}
+--------------------------------------------------
+ID: 9
+Atomic Fact: A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended.
+Key Elements: ['balanced diet', 'rich', 'fruits', 'vegetables', 'whole grains', 'lean proteins', 'recommended']
+Nodes: {
+  "balanced diet": "balanced diet",
+  "rich": "rich",
+  "fruits": "fruits",
+  "vegetables": "vegetables",
+  "whole grains": "whole grains",
+  "lean proteins": "lean proteins",
+  "recommended": "recommended"
+}
+Nodes Label :{'balanced diet': 'balanced diet', 'rich': 'rich', 'fruits': 'fruits', 'vegetables': 'vegetables', 'whole grains': 'whole grains', 'lean proteins': 'lean proteins', 'recommended': 'recommended'}
+--------------------------------------------------
+ID: 10
+Atomic Fact: Engaging in regular physical activity is important.
+Key Elements: ['regular physical activity', 'important']
+Nodes: {
+  "regular physical activity": "regular physical activity",
+  "important": "important"
+}
+Nodes Label :{'regular physical activity': 'regular physical activity', 'important': 'important'}
+--------------------------------------------------
+ID: 11
+Atomic Fact: Quitting smoking can help reduce the risk.
+Key Elements: ['quitting smoking', 'help', 'reduce', 'risk']
+Nodes: {
+  "reduce": [
+    {
+      "reduc": 0.9090909090909091
+    }
+  ],
+  "quitting smoking": "quitting smoking",
+  "help": "help",
+  "risk": "risk"
+}
+Nodes Label :{'reduce': 'reduce', 'quitting smoking': 'quitting smoking', 'help': 'help', 'risk': 'risk'}
+--------------------------------------------------
+ID: 12
+Atomic Fact: Managing stress is crucial for individuals with type 2 diabetes.
+Key Elements: ['managing stress', 'crucial', 'individuals', 'type 2 diabetes']
+Nodes: {
+  "type 2 diabetes": [
+    {
+      "ype 2 diabetes": 0.9655172413793104
+    }
+  ],
+  "crucial": [
+    {
+      "ial": 0.6
+    }
+  ],
+  "managing stress": "managing stress",
+  "individuals": "individuals"
+}
+Nodes Label :{'type 2 diabetes': 'type 2 diabetes', 'crucial': 'crucial', 'managing stress': 'managing stress', 'individuals': 'individuals'}
+--------------------------------------------------
+ID: 13
+Atomic Fact: Maintaining a healthy weight is important for reducing the risk of cardiovascular disease.
+Key Elements: ['maintaining', 'healthy weight', 'important', 'reducing', 'risk', 'cardiovascular disease']
+Nodes: {
+  "reducing": [
+    {
+      "reduc": 0.7692307692307693
+    }
+  ],
+  "maintaining": "maintaining",
+  "healthy weight": "healthy weight",
+  "important": "important",
+  "risk": "risk",
+  "cardiovascular disease": "cardiovascular disease"
+}
+Nodes Label :{'reducing': 'reduce', 'maintaining': 'maintaining', 'healthy weight': 'healthy weight', 'important': 'important', 'risk': 'risk', 'cardiovascular disease': 'cardiovascular disease'}
+--------------------------------------------------
+ID: 14
+Atomic Fact: Monitoring blood sugar, blood pressure, and cholesterol levels is essential.
+Key Elements: ['monitoring', 'blood sugar', 'blood pressure', 'cholesterol levels', 'essential']
+Nodes: {
+  "blood sugar": [
+    {
+      "blood sugar": 1.0
+    }
+  ],
+  "essential": [
+    {
+      "ial": 0.5
+    }
+  ],
+  "monitoring": "monitoring",
+  "blood pressure": "blood pressure",
+  "cholesterol levels": "cholesterol levels"
+}
+Nodes Label :{'blood sugar': 'blood sugar', 'essential': 'crucial', 'monitoring': 'monitoring', 'blood pressure': 'blood pressure', 'cholesterol levels': 'cholesterol levels'}
+--------------------------------------------------
+
+Distinct Nodes from Aggregation: 
+[
+  {
+    "key_element": "type 2 diabetes",
+    "max_substring": "ype 2 diabetes"
+  },
+  {
+    "key_element": "blood sugar",
+    "max_substring": "blood sugar"
+  },
+  {
+    "key_element": "insulin",
+    "max_substring": "i"
+  },
+  {
+    "key_element": "hardened arteries",
+    "max_substring": "ed arteries"
+  },
+  {
+    "key_element": "arteries",
+    "max_substring": "arter"
+  },
+  {
+    "key_element": "atherosclerosis",
+    "max_substring": "sc"
+  },
+  {
+    "key_element": "balanced diet",
+    "max_substring": "al"
+  },
+  {
+    "key_element": "crucial",
+    "max_substring": "ial"
+  },
+  {
+    "key_element": "reduce",
+    "max_substring": "reduc"
+  }
+]
+
+
+**************************************************
+
+

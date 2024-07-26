@@ -65,10 +65,27 @@ def get_atomic_facts_and_key_elements(corpus: str):
     """
 
     result = """
-        1. Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. | Never Too Loud | fourth studio album | Canadian hard rock band | Danko Jones
-        4. Danko Jones is a Canadian hard rock trio from Toronto. | Danko Jones | Canadian | hard rock trio | Toronto
-        8. Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. | Casa Loma | Gothic Revival | castle-style mansion | garden | midtown Toronto | Ontario | Canada
-    """
+    1. Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively. | Type 2 diabetes | high blood sugar levels | body's inability | insulin
+    2. High blood sugar levels lead to damage of the blood vessels and nerves over time. | high blood sugar levels | damage | blood vessels | nerves
+    3. High blood sugar levels cause cardiovascular disease through the process of atherosclerosis. | high blood sugar levels | cardiovascular disease | atherosclerosis
+    4. High glucose levels damage the inner lining of the blood vessels. | high glucose levels | damage | inner lining | blood vessels
+    5. Damage to the inner lining of blood vessels leads to inflammation and the buildup of fatty deposits (plaques) on the artery walls. | damage | inner lining | blood vessels | inflammation | buildup | fatty deposits | plaques | artery walls
+    6. Atherosclerosis narrows and hardens the arteries. | atherosclerosis | narrows | hardens | arteries
+    7. Narrowed and hardened arteries increase the risk of heart attack and stroke. | narrowed arteries | hardened arteries | increase | risk | heart attack | stroke
+    8. Lifestyle changes can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes. | lifestyle changes | mitigate | risk | cardiovascular disease | individuals | type 2 diabetes
+    9. A balanced diet rich in fruits, vegetables, whole grains, and lean proteins is recommended. | balanced diet | rich | fruits | vegetables | whole grains | lean proteins | recommended
+    10. Engaging in regular physical activity is important. | regular physical activity | important
+    11. Quitting smoking can help reduce the risk. | quitting smoking | help | reduce | risk
+    12. Managing stress is crucial for individuals with type 2 diabetes. | managing stress | crucial | individuals | type 2 diabetes
+    13. Maintaining a healthy weight is important for reducing the risk of cardiovascular disease. | maintaining | healthy weight | important | reducing | risk | cardiovascular disease
+    14. Monitoring blood sugar, blood pressure, and cholesterol levels is essential. | monitoring | blood sugar | blood pressure | cholesterol levels | essential
+"""
+
+    # result = """
+    #     1. Never Too Loud is the fourth studio album by Canadian hard rock band Danko Jones. | Never Too Loud | fourth studio album | Canadian hard rock band | Danko Jones
+    #     4. Danko Jones is a Canadian hard rock trio from Toronto. | Danko Jones | Canadian | hard rock trio | Toronto
+    #     8. Casa Loma is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada. | Casa Loma | Gothic Revival | castle-style mansion | garden | midtown Toronto | Ontario | Canada
+    # """
 
     return result
 

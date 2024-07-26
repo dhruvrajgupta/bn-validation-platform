@@ -12,6 +12,12 @@ supoorting_passages = [
     "Casa Loma (improper Spanish for 'Hill House') is a Gothic Revival castle-style mansion and garden in midtown Toronto, Ontario, Canada, that is now a historic house museum and landmark. It was constructed from 1911 to 1914 as a residence for financier Sir Henry Pellatt. The architect was E. J. Lennox, who designed several other city landmarks."
 ]
 
+supoorting_passages = [
+    "Type 2 diabetes is characterized by high blood sugar levels due to the body's inability to use insulin effectively. When blood sugar levels remain elevated over time, it can lead to damage of the blood vessels and nerves.",
+    "The mechanism by which high blood sugar levels cause cardiovascular disease involves the process of atherosclerosis. High glucose levels damage the inner lining of the blood vessels, leading to inflammation and the buildup of fatty deposits (plaques) on the artery walls. This condition, known as atherosclerosis, narrows and hardens the arteries, increasing the risk of heart attack and stroke.",
+    "Lifestyle changes that can mitigate the risk of cardiovascular disease in individuals with type 2 diabetes include adopting a balanced diet rich in fruits, vegetables, whole grains, and lean proteins, engaging in regular physical activity, quitting smoking, and managing stress. Additionally, maintaining a healthy weight and monitoring blood sugar, blood pressure, and cholesterol levels are crucial."
+]
+
 ###########################################################
 ##              GRAPH CONSTRUCTION                       ##
 ###########################################################
