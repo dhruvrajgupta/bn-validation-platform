@@ -12,7 +12,8 @@ from langchain_core.output_parsers.openai_functions import JsonOutputFunctionsPa
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 import functools
 import operator
-from agent_template import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT
+from agent_template import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT, \
+EXPLORING_NEIGHBOURS_PROMPT
 from utils import extract_notebook_rationale_next_steps_chosen_action
 import re
 
@@ -33,6 +34,7 @@ gr_state = {
 nodes_grouped_chunks_afs = {}
 
 def print_state():
+    global state
     print("======================================")
     print("CURRENT STATE:")
     print("======================================")
@@ -49,6 +51,7 @@ def print_state():
     print("======================================\n")
 
 def get_state():
+    global gr_state
     result = f"""======================================
 CURRENT STATE:
 ======================================
@@ -192,6 +195,38 @@ Current Text Chunk:
 
     return more_info
 
+def get_neighbouring_nodes(node: str):
+    neighbouring_nodes = []
+    for chunk_id, chunk_content in corpus_map.items():
+        for af_id, af in chunk_content["atomic_facts"].items():
+            if node in af["nodes_labels"].values():
+                neighbouring_nodes.extend([x for x in af["nodes_labels"].values() if x != node])
+
+    return list(set(neighbouring_nodes))
+
+def preprocess_explore_neighbours():
+    global gr_state
+    current_node = gr_state["node_stack"][-1]
+    neighbour_nodes = get_neighbouring_nodes(current_node)
+    more_info = f"""Question:
+{gr_state["question"]}
+
+Rational Plan:
+{gr_state["rational_plan"]}
+
+Previous Actions:
+{gr_state["previous_actions"]}
+
+Notebook:
+{gr_state["notebook"]}
+
+Neighbours of Current Node:
+{neighbour_nodes}
+"""
+    gr_state["previous_actions"].append(f"Exploring Neighbouring Nodes of Node: {current_node}")
+
+    return more_info
+
 def process_state(result):
     import re
     global gr_state
@@ -225,12 +260,12 @@ def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
         ]
     )
     agent = create_openai_tools_agent(llm, tools, prompt)
-    executor = AgentExecutor(agent=agent, tools=tools, return_intermediate_steps=True, verbose=True)
+    executor = AgentExecutor(agent=agent, tools=tools, return_intermediate_steps=False, verbose=True)
     return executor
 
 def agent_node(agent_state, agent, name):
     global gr_state
-    # print(agent_state)
+    print(json.dumps(gr_state, indent=4))
     if name == "ExploreAtomicFacts":
         more_info = preprocess_explore_atomic_facts()
         agent_state["messages"] = [HumanMessage(content=more_info)]
@@ -241,10 +276,11 @@ def agent_node(agent_state, agent, name):
 
     if name == "SearchMore":
         if gr_state["chunk_queue"]:
-            pass
+            # Read the next chunk in the queue
+            return {"messages": [HumanMessage("Explore Chunks in the Chunk Queue")]}
         else:
             current_node = gr_state["node_stack"][-1]
-            print(f"The chunk queue is empty, so exploring the other nodes related to Node: '{current_node}' ...\n")
+            # print(f"The chunk queue is empty, so exploring the other nodes related to Node: '{current_node}' ...\n")
             gr_state["previous_actions"].append(f"Empty Chunk Queue, so exploring connected nodes to Node: '{current_node}'")
             return {"messages": 
                 [
@@ -252,6 +288,10 @@ def agent_node(agent_state, agent, name):
                     HumanMessage(content=f"Stop and Read Neighbour Nodes")
                 ]
             }
+    
+    if name == "ExploreNeighbours":
+        more_info = preprocess_explore_neighbours()
+        agent_state["messages"] = [HumanMessage(content=more_info)]
 
     result = agent.invoke(agent_state)
 
@@ -263,11 +303,26 @@ def agent_node(agent_state, agent, name):
         matches = re.findall(pattern, chosen_action)
         chunk_ids = json.loads(matches[0])
         gr_state["chunk_queue"].extend(chunk_ids)
+
+    if "read_neighbor_node" in chosen_action:
+        pattern = r"read_neighbor_node\((.*?)\)"
+        matches = re.findall(pattern, chosen_action)
+        node_id = matches[0].strip("'")
+        print(node_id)
+        gr_state["node_stack"].append(node_id)
+        current_node = gr_state["node_stack"][-1]
+        return {"messages": 
+            [
+                HumanMessage(content=f"Explore the Atomic Facts related to Node: '{current_node}' ...\n"),
+            ]
+        }
     
-    gr_state["notebook"] = notebook
+    if notebook:
+        gr_state["notebook"] = notebook
     gr_state["rationale_next_step"]= rationale_next_step
     gr_state["chosen_action"] = chosen_action
-    # print(json.dumps(gr_state, indent=2))
+    # print("-"*50)
+    print(json.dumps(gr_state, indent=4))
     # print(result)
     # print(agent_state)
     return {"messages": [HumanMessage(content=result["output"], name=name)]}
@@ -344,7 +399,7 @@ def main():
     # from langchain_groq import ChatGroq
     # llm = ChatGroq(model="llama3-groq-8b-8192-tool-use-preview")
 
-    members = ["ExploreAtomicFacts", "ExploreChunks", "SearchMore"]
+    members = ["ExploreAtomicFacts", "ExploreChunks", "SearchMore", "ExploreNeighbours"]
 
     # Create Agents
     # nodes_analyzer_agent = create_agent(llm, tools, "You are an expert in analyzing list of nodes.")
@@ -358,6 +413,8 @@ def main():
     search_more_agent = create_agent(llm, tools, "If Chosen Action is search_more() then this agent is executed")
     search_more_agent_node = functools.partial(agent_node, agent=search_more_agent, name="SearchMore")
 
+    exploring_neighbours_agent = create_agent(llm, tools, EXPLORING_NEIGHBOURS_PROMPT)
+    exploring_neighbours_node = functools.partial(agent_node, agent=exploring_neighbours_agent, name="ExploreNeighbours")
 
     #### Create the Workflow Graph ####
 
@@ -365,6 +422,7 @@ def main():
     workflow.add_node("ExploreAtomicFacts", explore_atomic_facts_node)
     workflow.add_node("ExploreChunks", exploring_chunk_node)
     workflow.add_node("SearchMore", search_more_agent_node)
+    workflow.add_node("ExploreNeighbours", exploring_neighbours_node)
     workflow.add_node("supervisor", create_supervisor(members,llm))
 
     for member in members:
@@ -388,12 +446,14 @@ def main():
             HumanMessage(content=get_state()),
             ]
         },
-        {"recursion_limit": 7},debug=True
+        {"recursion_limit": 30},debug=True
     ):
         if "__end__" not in s:
-            print("========")
-            print(s)
-            print("========")
+            # print("========")
+            # # print(s)
+            # print("========")
+            print("="*100)
+            pass
 
     # print(f"INITIAL NODE: {current_node}, Score: {score}\n")
     # call_function("explore_atomic_facts()")
