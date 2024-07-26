@@ -1,6 +1,6 @@
 import os
 import json
-from corpus2 import corpus_map_small, corpus
+from corpus2 import corpus_map_small, corpus, corpus_map
 from prompt_templates_results import get_rational_plan
 from prompt_templates_results import get_initial_nodes
 from typing import TypedDict, Annotated, Sequence, List, Any
@@ -13,25 +13,60 @@ from langchain.agents import AgentExecutor, create_openai_tools_agent
 import functools
 import operator
 from agent_template import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT, \
-EXPLORING_NEIGHBOURS_PROMPT
+EXPLORING_NEIGHBOURS_PROMPT, RATIONAL_PLAN_PROMPT, INITIAL_NODE_SELECTOR_PROMPT
 from utils import extract_notebook_rationale_next_steps_chosen_action
 import re
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "Graph Reader Agent - Small"
 
-corpus_map = corpus_map_small
+# corpus_map = corpus_map_small
+corpus_map = corpus_map
 
 gr_state = {
     "question": "What is the name of the castle in the city where the performer of Never Too Loud was formed?",
-    "rational_plan": get_rational_plan(),
+    # "question": "What are all the places related to Never Too Loud?",
+    # "rational_plan": get_rational_plan(),
+    "rational_plan": "",
     "previous_actions": [],
     "notebook": "",
     "chunk_queue": [],
     "node_stack": []
 }
 
+list_of_key_elements = []
+
 nodes_grouped_chunks_afs = {}
+
+def get_initial_nodes(list_of_selected_nodes: str):
+
+    # im_result = """
+    #     Node: 'Never Too Loud', Score: 100
+    #     Node: 'Danko Jones', Score: 100
+    #     Node: 'Canadian hard rock band', Score: 90
+    #     Node: 'Toronto', Score: 90
+    #     Node: 'Casa Loma', Score: 80
+    #     Node: 'castle-style mansion', Score: 70
+    #     Node: 'midtown Toronto', Score: 70
+    #     Node: 'Canadian', Score: 60
+    #     Node: 'Ontario', Score: 60
+    #     Node: 'Canada', Score: 50
+    # """
+    im_result = list_of_selected_nodes
+
+    result = []
+
+    im_result = [x.strip() for x in im_result.splitlines()]
+    for x in im_result:
+        if x == '':
+            continue
+
+        x = x.split(",")
+        node = x[0].split(":")[1].strip().replace("'","")
+        score = int(x[1].split(":")[1].strip())
+        result.append((node, score))
+
+    return result
 
 def print_state():
     global state
@@ -227,6 +262,16 @@ Neighbours of Current Node:
 
     return more_info
 
+
+def preprocess_inital_node_selection():
+    global gr_state
+    global list_of_key_elements
+    more_info = f"""Question: {gr_state["question"]}
+Plan: {gr_state["rational_plan"]}
+Nodes: {list_of_key_elements}
+"""
+    return more_info
+
 def process_state(result):
     import re
     global gr_state
@@ -265,7 +310,22 @@ def create_agent(llm: ChatOpenAI, tools: list, system_prompt: str):
 
 def agent_node(agent_state, agent, name):
     global gr_state
+    global list_of_key_elements
     print(json.dumps(gr_state, indent=4))
+
+    if name == "RationalPlanner":
+        result = agent.invoke(agent_state)
+        gr_state["rational_plan"] = result["output"]
+        return {"messages": [HumanMessage(content="Rational Plan Generated. Now perform Initial Node Selection.")]}
+    
+    if name == "InitialNodeSelector":
+        more_info = preprocess_inital_node_selection()
+        agent_state["messages"] = [HumanMessage(content=more_info)]
+        result = agent.invoke(agent_state)
+        current_node, score = get_initial_nodes(result["output"])[0]
+        gr_state["node_stack"].append(current_node)
+        return {"messages": [HumanMessage(content="Initial Node Selection Completed. Now perform ExploreAtomicFacts.")]}
+
     if name == "ExploreAtomicFacts":
         more_info = preprocess_explore_atomic_facts()
         agent_state["messages"] = [HumanMessage(content=more_info)]
@@ -380,15 +440,19 @@ def create_supervisor(members: List[str], llm: ChatOpenAI):
 
 def main():
     global gr_state
+    global list_of_key_elements
 
     print(f"\nCORPUS: \n{'='*50}\n{corpus}\n")
     map_nodes_chunks_afs()
 
+    # Get all Nodes
+    list_of_key_elements = [key_element for key_element in nodes_grouped_chunks_afs.keys()]
+
     print(f"\n\nEXPLORATION \n{'='*50}\n")
 
     # Initial Node and Score
-    current_node, score = get_initial_nodes()[0]
-    gr_state["node_stack"].append(current_node)
+    # current_node, score = get_initial_nodes()[0]
+    # gr_state["node_stack"].append(current_node)
     print_state()
 
 
@@ -399,7 +463,7 @@ def main():
     # from langchain_groq import ChatGroq
     # llm = ChatGroq(model="llama3-groq-8b-8192-tool-use-preview")
 
-    members = ["ExploreAtomicFacts", "ExploreChunks", "SearchMore", "ExploreNeighbours"]
+    members = ["ExploreAtomicFacts", "ExploreChunks", "SearchMore", "ExploreNeighbours", "RationalPlanner", "InitialNodeSelector"]
 
     # Create Agents
     # nodes_analyzer_agent = create_agent(llm, tools, "You are an expert in analyzing list of nodes.")
@@ -416,9 +480,15 @@ def main():
     exploring_neighbours_agent = create_agent(llm, tools, EXPLORING_NEIGHBOURS_PROMPT)
     exploring_neighbours_node = functools.partial(agent_node, agent=exploring_neighbours_agent, name="ExploreNeighbours")
 
-    #### Create the Workflow Graph ####
+    rational_plan_agent = create_agent(llm, tools, RATIONAL_PLAN_PROMPT)
+    rational_plan_node = functools.partial(agent_node, agent=rational_plan_agent, name="RationalPlanner")
+    
+    initial_node_selector_agent = create_agent(llm, tools, INITIAL_NODE_SELECTOR_PROMPT)
+    initial_node_selector_node = functools.partial(agent_node, agent=initial_node_selector_agent, name="InitialNodeSelector")    #### Create the Workflow Graph ####
 
     workflow = StateGraph(AgentState)
+    workflow.add_node("RationalPlanner", rational_plan_node)
+    workflow.add_node("InitialNodeSelector", initial_node_selector_node)
     workflow.add_node("ExploreAtomicFacts", explore_atomic_facts_node)
     workflow.add_node("ExploreChunks", exploring_chunk_node)
     workflow.add_node("SearchMore", search_more_agent_node)
