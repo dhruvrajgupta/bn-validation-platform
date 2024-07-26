@@ -224,7 +224,15 @@ Notebook:
 {gr_state["notebook"]}
 
 Current Text Chunk:
-{chunk_content}"""
+{chunk_content}
+
+Visited Node:
+{gr_state["node_stack"]}
+
+INSTRUCTIONS:
+The nodes present in the Visited Node have their Atomic Facts and Chunks already verified.
+Do not perform ExploreAtomicFacts on them.
+"""
     
     gr_state["previous_actions"].append(f"Exploring Chunk: {current_chunk_id}")
 
@@ -363,6 +371,79 @@ def agent_node(agent_state, agent, name):
         matches = re.findall(pattern, chosen_action)
         chunk_ids = json.loads(matches[0])
         gr_state["chunk_queue"].extend(chunk_ids)
+
+    if "read_previous_chunk" in chosen_action:
+        # Get the last read chunk
+        for item in reversed(gr_state["previous_actions"]):
+            if "Exploring Chunk" in item:
+                current_chunk = item.split(":")[-1].strip()
+                break
+        print(current_chunk)
+        # Temp Logic to get the previous_chunk_id
+        import collections
+        sorted_chunks = collections.OrderedDict(sorted(corpus_map.items()))
+        sorted_chunks_ids = [chunk_id for chunk_id in sorted_chunks.keys()]
+        previous_chunk_index = sorted_chunks_ids.index(current_chunk) - 1
+        subsequent_chunk_index = sorted_chunks_ids.index(current_chunk) + 1
+        
+        if previous_chunk_index < 0:
+        # print("There is no previous chunk, so re-reading the current chunk...\n")
+        # TODO: What to do when there is no previous chunk
+        # For now we will read the subsequent chunk
+            subsequent_chunk = sorted_chunks_ids[subsequent_chunk_index]
+            gr_state["chunk_queue"].append(subsequent_chunk)
+            return {"messages": 
+                    [
+                        HumanMessage(content=f"There is no previous chunk, so reading the subsequent chunk: read_chunk({subsequent_chunk})' ..."),
+                        HumanMessage(content=f"Perform Explore ExploreChunk")
+                    ]
+                }
+        
+        previous_chunk = sorted_chunks_ids[previous_chunk_index]
+        more_info = f""""
+CURRENT CHUNK: {current_chunk}
+PREVIOUS CHUNK: {previous_chunk}
+        """
+        gr_state["chunk_queue"].append(previous_chunk)
+        gr_state["previous_actions"].append(f"Reading Previous Chunk of {current_chunk}: Previous Chunk - {previous_chunk}")
+        return {"messages": 
+                    [
+                        HumanMessage(content=more_info),
+                        HumanMessage(content=f"Perform Explore ExploreChunk")
+                    ]
+                }
+    
+    if "read_subsequent_chunk" in chosen_action:
+        # Get the last read chunk
+        for item in reversed(gr_state["previous_actions"]):
+            if "Exploring Chunk" in item:
+                current_chunk = item.split(":")[-1].strip()
+                break
+        print(current_chunk)
+
+        import collections
+        sorted_chunks = collections.OrderedDict(sorted(corpus_map.items()))
+        sorted_chunks_ids = [chunk_id for chunk_id in sorted_chunks.keys()]
+        subsequent_chunk_index = sorted_chunks_ids.index(current_chunk) + 1
+
+        if subsequent_chunk_index >= len(sorted_chunks_ids):
+            # Perform ExploreNeighbours of the last node
+            return {"messages": [HumanMessage(content="There is no subsequent chunk. So exploring the last node's neighbours ...")]}
+
+        subsequent_chunk =  sorted_chunks_ids[sorted_chunks_ids]
+
+        more_info = f""""
+CURRENT CHUNK: {current_chunk}
+SUBSEQUENT CHUNK: {subsequent_chunk}
+        """
+
+        gr_state["previous_actions"].append(f"Reading Subsequent Chunk of {current_chunk}: Subsequent Chunk - {subsequent_chunk}")
+        return {"messages": 
+                    [
+                        HumanMessage(content=more_info),
+                        HumanMessage(content=f"Perform Explore ExploreChunk")
+                    ]
+                }
 
     if "read_neighbor_node" in chosen_action:
         pattern = r"read_neighbor_node\((.*?)\)"
@@ -516,7 +597,7 @@ def main():
             HumanMessage(content=get_state()),
             ]
         },
-        {"recursion_limit": 30},debug=True
+        {"recursion_limit": 40},debug=True
     ):
         if "__end__" not in s:
             # print("========")
