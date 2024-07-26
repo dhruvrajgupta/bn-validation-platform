@@ -1,0 +1,101 @@
+
+
+40percent.csv
+--------------------
+40230 cases patients have the T-state
+        1613 cases patients have the T0 state
+        669 cases patients have the Tis state
+        71 cases patients have the T1 state
+        1076 cases patients have the T1a state
+        561 cases patients have the T1b state
+        5049 cases patients have the T2 state
+        4567 cases patients have the T3 state
+        15956 cases patients have the T4a state
+        2491 cases patients have the T4b state
+        8177 cases patients have the absurd state
+40034 cases patients have the N-state
+        2021 cases patients have the N0 state
+        934 cases patients have the N1 state
+        2026 cases patients have the N2a state
+        3845 cases patients have the N2b state
+        17086 cases patients have the N2c state
+        234 cases patients have the N3 state
+        13888 cases patients have the absurd state
+39787 cases patients have the M-state
+        34339 cases patients have the M0 state
+        5448 cases patients have the M1 state
+
+60percent.csv
+--------------------
+59992 cases patients have the T-state
+        2491 cases patients have the T0 state
+        982 cases patients have the Tis state
+        116 cases patients have the T1 state
+        1606 cases patients have the T1a state
+        865 cases patients have the T1b state
+        7377 cases patients have the T2 state
+        6831 cases patients have the T3 state
+        23798 cases patients have the T4a state
+        3703 cases patients have the T4b state
+        12223 cases patients have the absurd state
+59962 cases patients have the N-state
+        3075 cases patients have the N0 state
+        1380 cases patients have the N1 state
+        2991 cases patients have the N2a state
+        5833 cases patients have the N2b state
+        25667 cases patients have the N2c state
+        347 cases patients have the N3 state
+        20669 cases patients have the absurd state
+59820 cases patients have the M-state
+        51630 cases patients have the M0 state
+        8190 cases patients have the M1 state
+
+80percent.csv
+--------------------
+80107 cases patients have the T-state
+        3274 cases patients have the T0 state
+        1312 cases patients have the Tis state
+        152 cases patients have the T1 state
+        2136 cases patients have the T1a state
+        1143 cases patients have the T1b state
+        9886 cases patients have the T2 state
+        9143 cases patients have the T3 state
+        31806 cases patients have the T4a state
+        4936 cases patients have the T4b state
+        16319 cases patients have the absurd state
+79957 cases patients have the N-state
+        4150 cases patients have the N0 state
+        1863 cases patients have the N1 state
+        3964 cases patients have the N2a state
+        7765 cases patients have the N2b state
+        34361 cases patients have the N2c state
+        451 cases patients have the N3 state
+        27403 cases patients have the absurd state
+79933 cases patients have the M-state
+        69089 cases patients have the M0 state
+        10844 cases patients have the M1 state
+
+100percent.csv
+--------------------
+100000 cases patients have the T-state
+        4114 cases patients have the T0 state
+        1644 cases patients have the Tis state
+        244 cases patients have the T1 state
+        2634 cases patients have the T1a state
+        1414 cases patients have the T1b state
+        12413 cases patients have the T2 state
+        11322 cases patients have the T3 state
+        39738 cases patients have the T4a state
+        6269 cases patients have the T4b state
+        20208 cases patients have the absurd state
+100000 cases patients have the N-state
+        5100 cases patients have the N0 state
+        2365 cases patients have the N1 state
+        4922 cases patients have the N2a state
+        9809 cases patients have the N2b state
+        43108 cases patients have the N2c state
+        581 cases patients have the N3 state
+        34115 cases patients have the absurd state
+100000 cases patients have the M-state
+        86289 cases patients have the M0 state
+        13711 cases patients have the M1 state
