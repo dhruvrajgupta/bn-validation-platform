@@ -50,11 +50,10 @@ def detect_cycles():
         output += f"Edges of the cycle:\n"
         for edges in cycles:
             output += f"{edges}\n"
-
-        return output
+            yield output
 
     except nx.exception.NetworkXNoCycle:
-        return "No cycles detected in the graph."
+        yield "No cycles detected in the graph."
 
 
 # Create Gradio interface
