@@ -38,18 +38,46 @@ def parse_xdsl(file):
         return "", f"Error reading file: {str(e)}"
 
 
+# Function to detect cycles in the graph
+def detect_cycles():
+    if graph is None:
+        return "Graph has not been initialized. Please read the file first."
+
+    try:
+        cycles = nx.find_cycle(graph, orientation='original')
+        output = "Graph has cycles:\n"
+        output += f"{cycles}\n\n"
+        output += f"Edges of the cycle:\n"
+        for edges in cycles:
+            output += f"{edges}\n"
+
+        return output
+
+    except nx.exception.NetworkXNoCycle:
+        return "No cycles detected in the graph."
+
+
 # Create Gradio interface
 read_file_button = gr.Interface(
     fn=parse_xdsl,
     inputs=gr.File(file_types=['.xdsl']),
-    outputs=[gr.Textbox(label="Status Message"), gr.Textbox(label="XDSL File Content"),],
+    outputs=[gr.Textbox(label="Status Message"), gr.Textbox(label="XDSL File Content"), ],
     title="Read XDSL File",
     description="Upload an XDSL file to read and parse its content.",
     allow_flagging="never"
 )
 
+check_cycles_button = gr.Interface(
+    fn=detect_cycles,
+    inputs=None,
+    outputs=gr.Textbox(),
+    title="Check for Cycles",
+    description="Check the parsed graph for cycles.",
+    allow_flagging="never"
+)
+
 app = gr.TabbedInterface(
-    interface_list=[read_file_button],
+    interface_list=[read_file_button, check_cycles_button],
     tab_names=["Read File", "Check Cycles", "Run Pipeline"]
 )
 
