@@ -64,14 +64,14 @@ def run_pipeline(file):
     for xdsl_content in parse_xdsl_gen:
         output += xdsl_content
 
-    output += f"{"="*90}\n\n"
+    output += f"{'='*90}\n\n"
 
     output += "CHECKING CYCLES:\n\n"
     cycle_message = detect_cycles()
     for msg in cycle_message:
         output += msg
 
-    output += f"{"="*90}\n\n"
+    output += f"\n{'='*90}\n\n"
 
     yield output
 
