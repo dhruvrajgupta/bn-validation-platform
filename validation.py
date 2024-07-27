@@ -57,13 +57,23 @@ def detect_cycles():
 
 
 def run_pipeline(file):
-    parse_xdsl_gen = parse_xdsl(file)
+    output = ""
+    output += "READING FILE:\n\n"
+    msg, parse_xdsl_gen = parse_xdsl(file)
+    output += msg
     for xdsl_content in parse_xdsl_gen:
-        yield xdsl_content
+        output += xdsl_content
 
+    output += f"{"="*90}\n\n"
+
+    output += "CHECKING CYCLES:\n\n"
     cycle_message = detect_cycles()
     for msg in cycle_message:
-        yield msg
+        output += msg
+
+    output += f"{"="*90}\n\n"
+
+    yield output
 
 
 # Create Gradio interface
@@ -88,7 +98,7 @@ check_cycles_button = gr.Interface(
 pipeline_button = gr.Interface(
     fn=run_pipeline,
     inputs=gr.File(file_types=['.xdsl']),
-    outputs=[gr.Textbox(label="XDSL File Content")],
+    outputs=[gr.Textbox(label="XDSL File Content", elem_id="widened_textbox")],
     title="Run Pipeline",
     description="Upload an XDSL file to run the entire pipeline: read and check for cycles."
 )
