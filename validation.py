@@ -46,7 +46,7 @@ def detect_cycles():
 
     try:
         cycles = nx.find_cycle(graph, orientation='original')
-        yield show_graph(cycles)
+        cycles_image_save(cycles)
         output = "Graph has cycles:\n"
         output += f"{cycles}\n\n"
         output += f"Edges of the cycle:\n"
@@ -57,7 +57,8 @@ def detect_cycles():
     except nx.exception.NetworkXNoCycle:
         yield "No cycles detected in the graph."
 
-def show_graph(cycles):
+
+def cycles_image_save(cycles):
     # Create a directed graph
     G = nx.DiGraph()
 
@@ -94,8 +95,6 @@ def show_graph(cycles):
     plt.title('Directed Graph')
     plt.savefig("directed_graph.png")
 
-    return "directed_graph.png"
-
 
 def run_pipeline(file):
     output = ""
@@ -105,52 +104,19 @@ def run_pipeline(file):
     for xdsl_content in parse_xdsl_gen:
         output += xdsl_content
 
-    output += f"{'='*90}\n\n"
+    output += f"{'=' * 90}\n\n"
 
     output += "CHECKING CYCLES:\n\n"
     cycle_message = detect_cycles()
     for msg in cycle_message:
-        print(msg)
         output += msg
 
-    output += f"\n{'='*90}\n\n"
+    output += f"\n{'=' * 90}\n\n"
 
     yield output
 
 
-# Create Gradio interface
-read_file_button = gr.Interface(
-    fn=parse_xdsl,
-    inputs=gr.File(file_types=['.xdsl']),
-    outputs=[gr.Textbox(label="Status Message"), gr.Textbox(label="XDSL File Content"), ],
-    title="Read XDSL File",
-    description="Upload an XDSL file to read and parse its content.",
-    allow_flagging="never"
-)
-
-check_cycles_button = gr.Interface(
-    fn=detect_cycles,
-    inputs=None,
-    outputs=gr.Textbox(),
-    title="Check for Cycles",
-    description="Check the parsed graph for cycles.",
-    allow_flagging="never"
-)
-
-pipeline_button = gr.Interface(
-    fn=run_pipeline,
-    inputs=gr.File(file_types=['.xdsl']),
-    outputs=[gr.Textbox(label="XDSL File Content", elem_id="widened_textbox")],
-    title="Run Pipeline",
-    description="Upload an XDSL file to run the entire pipeline: read and check for cycles."
-)
-
-# app = gr.TabbedInterface(
-#     interface_list=[read_file_button, check_cycles_button, pipeline_button],
-#     tab_names=["Read File", "Check Cycles", "Run Pipeline"]
-# )
-
-with gr.Blocks() as app:
+with gr.Blocks() as demo:
     with gr.Tab("Read File"):
         gr.Interface(
             fn=parse_xdsl,
@@ -164,12 +130,11 @@ with gr.Blocks() as app:
         gr.Interface(
             fn=detect_cycles,
             inputs=None,
-            outputs=gr.Textbox(),
+            outputs=[gr.TextArea()],
             title="Check for Cycles",
             description="Check the parsed graph for cycles.",
-            allow_flagging="never"
+            allow_flagging="never",
         )
-        gr.Label("SHow Graph:")
     with gr.Tab("Run Pipeline"):
         gr.Interface(
             fn=run_pipeline,
@@ -180,4 +145,4 @@ with gr.Blocks() as app:
         )
 
 # Launch the interface
-app.launch()
+demo.launch()
