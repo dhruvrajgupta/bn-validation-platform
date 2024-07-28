@@ -1,6 +1,7 @@
 import gradio as gr
 import xmltodict
 import networkx as nx
+import matplotlib.pyplot as plt
 
 # Global variable to store the parsed graph
 graph = None
@@ -45,6 +46,7 @@ def detect_cycles():
 
     try:
         cycles = nx.find_cycle(graph, orientation='original')
+        yield show_graph(cycles)
         output = "Graph has cycles:\n"
         output += f"{cycles}\n\n"
         output += f"Edges of the cycle:\n"
@@ -54,6 +56,45 @@ def detect_cycles():
 
     except nx.exception.NetworkXNoCycle:
         yield "No cycles detected in the graph."
+
+def show_graph(cycles):
+    # Create a directed graph
+    G = nx.DiGraph()
+
+    # Get the nodes from the edges and formatted edges
+    nodes = []
+    edges = []
+    for edge in cycles:
+        node_from = edge[0]
+        node_to = edge[1]
+
+        nodes.append(node_from)
+        nodes.append(node_to)
+        edges.append((node_from, node_to))
+
+    nodes = list(set(nodes))
+
+    G.add_nodes_from(nodes)
+    G.add_edges_from(edges)
+
+    # Draw the directed graph
+    plt.figure(figsize=(10, 6))
+    pos = nx.spring_layout(G)  # Position nodes using Fruchterman-Reingold force-directed algorithm
+    options = {
+        'with_labels': True,
+        'node_color': 'skyblue',
+        'node_size': 2000,
+        'edge_color': 'gray',
+        'font_size': 10,
+        'font_weight': 'normal',
+        'arrowsize': 20,
+        'node_shape': 'o'  # To keep nodes as circles
+    }
+    nx.draw(G, pos, **options)
+    plt.title('Directed Graph')
+    plt.savefig("directed_graph.png")
+
+    return "directed_graph.png"
 
 
 def run_pipeline(file):
@@ -69,6 +110,7 @@ def run_pipeline(file):
     output += "CHECKING CYCLES:\n\n"
     cycle_message = detect_cycles()
     for msg in cycle_message:
+        print(msg)
         output += msg
 
     output += f"\n{'='*90}\n\n"
@@ -103,10 +145,39 @@ pipeline_button = gr.Interface(
     description="Upload an XDSL file to run the entire pipeline: read and check for cycles."
 )
 
-app = gr.TabbedInterface(
-    interface_list=[read_file_button, check_cycles_button, pipeline_button],
-    tab_names=["Read File", "Check Cycles", "Run Pipeline"]
-)
+# app = gr.TabbedInterface(
+#     interface_list=[read_file_button, check_cycles_button, pipeline_button],
+#     tab_names=["Read File", "Check Cycles", "Run Pipeline"]
+# )
+
+with gr.Blocks() as app:
+    with gr.Tab("Read File"):
+        gr.Interface(
+            fn=parse_xdsl,
+            inputs=gr.File(file_types=['.xdsl']),
+            outputs=[gr.Textbox(label="Status Message"), gr.Textbox(label="XDSL File Content"), ],
+            title="Read XDSL File",
+            description="Upload an XDSL file to read and parse its content.",
+            allow_flagging="never"
+        )
+    with gr.Tab("Check Cycles"):
+        gr.Interface(
+            fn=detect_cycles,
+            inputs=None,
+            outputs=gr.Textbox(),
+            title="Check for Cycles",
+            description="Check the parsed graph for cycles.",
+            allow_flagging="never"
+        )
+        gr.Label("SHow Graph:")
+    with gr.Tab("Run Pipeline"):
+        gr.Interface(
+            fn=run_pipeline,
+            inputs=gr.File(file_types=['.xdsl']),
+            outputs=[gr.Textbox(label="XDSL File Content", elem_id="widened_textbox")],
+            title="Run Pipeline",
+            description="Upload an XDSL file to run the entire pipeline: read and check for cycles."
+        )
 
 # Launch the interface
 app.launch()
