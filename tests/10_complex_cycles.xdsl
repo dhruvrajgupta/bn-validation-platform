@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<smile version="1.0" id="ComplexCycles" numsamples="1000" discsamples="10000">
+    <nodes>
+        <cpt id="A">
+            <state id="present" />
+            <state id="absent" />
+            <parents>C</parents>
+            <probabilities>0.5 0.5</probabilities>
+        </cpt>
+        <cpt id="B">
+            <state id="present" />
+            <state id="absent" />
+            <parents>A E</parents>
+            <probabilities>0.5 0.5 0.4 0.6 0.3 0.7 0.2 0.8</probabilities>
+        </cpt>
+        <cpt id="C">
+            <state id="present" />
+            <state id="absent" />
+            <parents>B D</parents>
+            <probabilities>0.7 0.3 0.6 0.4 0.5 0.5 0.4 0.6</probabilities>
+        </cpt>
+        <cpt id="D">
+            <state id="present" />
+            <state id="absent" />
+            <parents>E F</parents>
+            <probabilities>0.6 0.4 0.5 0.5 0.4 0.6 0.3 0.7</probabilities>
+        </cpt>
+        <cpt id="E">
+            <state id="present" />
+            <state id="absent" />
+            <parents>G H</parents>
+            <probabilities>0.6 0.4 0.5 0.5 0.4 0.6 0.3 0.7</probabilities>
+        </cpt>
+        <cpt id="F">
+            <state id="present" />
+            <state id="absent" />
+            <parents>A I</parents>
+            <probabilities>0.8 0.2 0.7 0.3 0.6 0.4 0.5 0.5</probabilities>
+        </cpt>
+        <cpt id="G">
+            <state id="present" />
+            <state id="absent" />
+            <parents>F J</parents>
+            <probabilities>0.5 0.5 0.4 0.6 0.3 0.7 0.2 0.8</probabilities>
+        </cpt>
+        <cpt id="H">
+            <state id="present" />
+            <state id="absent" />
+            <parents>D G</parents>
+            <probabilities>0.7 0.3 0.6 0.4 0.5 0.5 0.4 0.6</probabilities>
+        </cpt>
+        <cpt id="I">
+            <state id="present" />
+            <state id="absent" />
+            <parents>B H</parents>
+            <probabilities>0.6 0.4 0.5 0.5 0.4 0.6 0.3 0.7</probabilities>
+        </cpt>
+        <cpt id="J">
+            <state id="present" />
+            <state id="absent" />
+            <parents>C I</parents>
+            <probabilities>0.6 0.4 0.5 0.5 0.4 0.6 0.3 0.7</probabilities>
+        </cpt>
+    </nodes>
+</smile>
