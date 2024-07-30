@@ -18,12 +18,14 @@ def parse_xdsl(file):
         graph = nx.DiGraph()
 
         nodes = xdsl_dict['smile']['nodes']['cpt']
+        # print(nodes)
         if isinstance(nodes, list):
             for node in nodes:
                 node_id = node['@id']
                 graph.add_node(node_id)
                 if 'parents' in node:
                     parents = node['parents'].split()
+                    # print(parents)
                     for parent in parents:
                         graph.add_edge(parent, node_id)
         else:
@@ -33,6 +35,15 @@ def parse_xdsl(file):
                 parents = nodes['parents'].split()
                 for parent in parents:
                     graph.add_edge(parent, node_id)
+
+        # # Draw the directed graph
+        # plt.figure(figsize=(100, 60))
+        # pos = nx.spring_layout(graph)  # Position nodes using Fruchterman-Reingold force-directed algorithm
+        # nx.draw(graph, pos, with_labels=True, node_color='skyblue', node_size=2000, edge_color='gray', font_size=15,
+        #         font_weight='bold', arrowsize=20)
+        # plt.title('Directed Graph')
+        # plt.savefig("full_directed_graph.png")
+        # # plt.show()
 
         return "File read successfully. Graph has been parsed.", xdsl_content
     except Exception as e:
@@ -44,41 +55,59 @@ def detect_cycles():
     if graph is None:
         return "Graph has not been initialized. Please read the file first."
 
-    try:
-        cycles = nx.find_cycle(graph, orientation='original')
-        cycles_image_save(cycles)
-        output = "Graph has cycles:\n"
-        output += f"{cycles}\n\n"
-        output += f"Edges of the cycle:\n"
-        for edges in cycles:
-            output += f"{edges}\n"
-            yield output
+    def is_sublist(small, big):
+        it = iter(big)
+        x = all(item in it for item in small)
+        return x
 
-    except nx.exception.NetworkXNoCycle:
-        yield "No cycles detected in the graph."
+    def dfs(node, visited, stack):
+        visited.add(node)
+        stack.append(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor, visited, stack)
+            elif neighbor in stack:
+                cycle = stack[stack.index(neighbor):] + [neighbor]
+                cycle_procesed = False
+                # Check if the cycle has already been included before
+                for collected_cycle in all_cycles:
+                    if len(collected_cycle) >= len(cycle):
+                        if is_sublist(cycle, collected_cycle):
+                            cycle_procesed = True
+                            break
+                if not cycle_procesed:
+                    all_cycles.append(cycle + stack[stack.index(neighbor)+1:])
+        stack.pop()
+
+    all_cycles = []
+    for start_node in graph.nodes:
+        visited = set()
+        stack = []
+        dfs(start_node, visited, stack)
+
+    cycles_image_save(all_cycles)
+
+    return all_cycles
 
 
 def cycles_image_save(cycles):
     # Create a directed graph
     G = nx.DiGraph()
 
-    # Get the nodes from the edges and formatted edges
-    nodes = []
-    edges = []
-    for edge in cycles:
-        node_from = edge[0]
-        node_to = edge[1]
+    for cycle in cycles:
+        path_stack = []
+        node_from = cycle[0]
+        path_stack.append(node_from)
+        for node_to in cycle[1:]:
+            if node_to in path_stack:
+                G.add_edge(node_from, node_to)
+                break
 
-        nodes.append(node_from)
-        nodes.append(node_to)
-        edges.append((node_from, node_to))
+            G.add_edge(node_from, node_to)
+            path_stack.append(node_to)
+            node_from = node_to
 
-    nodes = list(set(nodes))
-
-    G.add_nodes_from(nodes)
-    G.add_edges_from(edges)
-
-    # Draw the directed graph
+    # # Draw the directed graph
     plt.figure(figsize=(10, 6))
     pos = nx.spring_layout(G)  # Position nodes using Fruchterman-Reingold force-directed algorithm
     options = {
@@ -92,8 +121,8 @@ def cycles_image_save(cycles):
         'node_shape': 'o'  # To keep nodes as circles
     }
     nx.draw(G, pos, **options)
-    plt.title('Directed Graph')
-    plt.savefig("directed_graph.png")
+    plt.title('All Cycles')
+    plt.savefig("all_cycles.png")
 
 
 def run_pipeline(file):
@@ -107,13 +136,13 @@ def run_pipeline(file):
     output += f"{'=' * 90}\n\n"
 
     output += "CHECKING CYCLES:\n\n"
-    cycle_message = detect_cycles()
-    for msg in cycle_message:
-        output += msg
+    cycles = detect_cycles()
+    for cycle in cycles:
+        output += f"{cycle}\n"
 
     output += f"\n{'=' * 90}\n\n"
 
-    yield output
+    return output
 
 
 with gr.Blocks() as demo:
