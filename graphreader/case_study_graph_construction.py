@@ -1,4 +1,4 @@
-from utils import cluster_key_elements, get_maximum_substring, \
+from graphreader.utils import cluster_key_elements, get_maximum_substring, \
     similarity, get_item_with_max_score
 import json
 from prompt_templates_results import get_atomic_facts_and_key_elements

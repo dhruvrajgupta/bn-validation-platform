@@ -1,4 +1,4 @@
-from utils import paragraph_chunking, extract_notebook_rationale_next_steps_chosen_action
+from graphreader.utils import paragraph_chunking, extract_notebook_rationale_next_steps_chosen_action
 from corpus import corpus, corpus_map_small
 import json
 from typing import List

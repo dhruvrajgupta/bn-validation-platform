@@ -1,4 +1,4 @@
-from utils import paragraph_chunking
+from graphreader.utils import paragraph_chunking
 import json
 
 corpus = (

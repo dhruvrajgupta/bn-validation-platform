@@ -3,7 +3,7 @@ from corpus2 import corpus_map
 from prompt_templates_results import get_initial_nodes, get_rational_plan
 from prompt_templates import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT, EXPLORING_NEIGHBOURS_PROMPT
 from langchain_core.prompts import PromptTemplate
-from utils import ask_llm, extract_notebook_rationale_next_steps_chosen_action, print_state
+from graphreader.utils import ask_llm, extract_notebook_rationale_next_steps_chosen_action, print_state
 import json
 import re
 

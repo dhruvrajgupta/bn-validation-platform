@@ -12,9 +12,9 @@ from langchain_core.output_parsers.openai_functions import JsonOutputFunctionsPa
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 import functools
 import operator
-from agent_template import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT, \
+from graphreader.agent_template import EXPLORING_ATOMIC_FACTS_PROMPT, EXPLORING_CHUNKS_PROMPT, \
 EXPLORING_NEIGHBOURS_PROMPT, RATIONAL_PLAN_PROMPT, INITIAL_NODE_SELECTOR_PROMPT
-from utils import extract_notebook_rationale_next_steps_chosen_action
+from graphreader.utils import extract_notebook_rationale_next_steps_chosen_action
 import re
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
