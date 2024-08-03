@@ -36,14 +36,14 @@ def parse_xdsl(file):
                 for parent in parents:
                     graph.add_edge(parent, node_id)
 
-        # # Draw the directed graph
-        # plt.figure(figsize=(100, 60))
-        # pos = nx.spring_layout(graph)  # Position nodes using Fruchterman-Reingold force-directed algorithm
-        # nx.draw(graph, pos, with_labels=True, node_color='skyblue', node_size=2000, edge_color='gray', font_size=15,
-        #         font_weight='bold', arrowsize=20)
-        # plt.title('Directed Graph')
-        # plt.savefig("full_directed_graph.png")
-        # # plt.show()
+        # Draw the directed graph
+        plt.figure(figsize=(10, 6))
+        pos = nx.spring_layout(graph)  # Position nodes using Fruchterman-Reingold force-directed algorithm
+        nx.draw(graph, pos, with_labels=True, node_color='skyblue', node_size=2000, edge_color='gray', font_size=15,
+                font_weight='bold', arrowsize=20)
+        plt.title('Directed Graph')
+        plt.savefig("full_directed_graph.png")
+        # plt.show()
 
         return "File read successfully. Graph has been parsed.", xdsl_content
     except Exception as e:
@@ -124,6 +124,17 @@ def cycles_image_save(cycles):
     plt.title('All Cycles')
     plt.savefig("all_cycles.png")
 
+def find_redundant_edges():
+    def is_redundant_edge(G, edge):
+        G_prime = G.copy()
+        G_prime.remove_edge(*edge)
+        # Check if there is still a path between the nodes
+        is_redundant = nx.has_path(G_prime, edge[0], edge[1])
+        return is_redundant
+
+    redundant_edges = [edge for edge in graph.edges() if is_redundant_edge(graph, edge)]
+
+    return redundant_edges
 
 def run_pipeline(file):
     output = ""
@@ -132,15 +143,37 @@ def run_pipeline(file):
     output += msg
     for xdsl_content in parse_xdsl_gen:
         output += xdsl_content
+    output += "\n\n"
 
     output += f"{'=' * 90}\n\n"
 
     output += "CHECKING CYCLES:\n\n"
     cycles = detect_cycles()
-    for cycle in cycles:
-        output += f"{cycle}\n"
+    if cycles:
+        output += f"{len(cycles)} cycle/s were found:\n\n"
+    for index, cycle in enumerate(cycles):
+        output += f"Cycle #{index+1}:\n"
+        output += f"{cycle}\n\n"
 
     output += f"\n{'=' * 90}\n\n"
+
+    # if cycles:
+    #     return output
+
+    ## FIND REDUNDANT EDGES
+    output += "FINDING REDUNDANT EDGES:\n\n"
+    redundant_edges = find_redundant_edges()
+    if redundant_edges:
+        output += f"{len(redundant_edges)} edge/s were found:\n\n"
+    for index, edge in enumerate(redundant_edges):
+        output += f"Edge #{index+1}:\n"
+        output += f"{edge}\n"
+        output += f"Multiple Paths:\n"
+        for path in nx.all_simple_paths(graph, edge[0], edge[1]):
+            output += f"{path}\n"
+        output += "\n\n"
+
+    output += f"{'=' * 90}\n\n"
 
     return output
 

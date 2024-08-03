@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<smile version="1.0" id="LaryngealCancer" numsamples="1000" discsamples="10000">
+    <nodes>
+        <cpt id="Smoking">
+            <state id="present" />
+            <state id="absent" />
+            <parents>CellDamage</parents>
+            <probabilities>0.5 0.5</probabilities>
+        </cpt>
+        <cpt id="RespiratoryIssues">
+            <state id="present" />
+            <state id="absent" />
+            <parents>Smoking</parents>
+            <probabilities>0.7 0.3 0.2 0.8</probabilities>
+        </cpt>
+        <cpt id="GeneticMutations">
+            <state id="present" />
+            <state id="absent" />
+            <parents>Smoking</parents>
+            <probabilities>0.6 0.4 0.1 0.9</probabilities>
+        </cpt>
+        <cpt id="CellDamage">
+            <state id="present" />
+            <state id="absent" />
+            <parents>RespiratoryIssues GeneticMutations Smoking</parents>
+            <probabilities>0.9 0.1 0.5 0.5 0.7 0.3 0.1 0.9</probabilities>
+        </cpt>
+        <cpt id="LaryngealCancer">
+            <state id="present" />
+            <state id="absent" />
+            <parents>CellDamage</parents>
+            <probabilities>0.8 0.2 0.1 0.9</probabilities>
+        </cpt>
+    </nodes>
+    <extensions>
+        <genie version="1.0" app="GeNIe 2.3.3926.2 1d4e40af44bc800" name="Laryngeal Cancer Network" faultnameformat="nodestate">
+            <comment>This network represents the factors and outcomes related to laryngeal cancer, including a cycle to illustrate complex interactions.</comment>
+            <node id="Smoking">
+                <name>Smoking</name>
+                <interior color="e5f6f7" />
+                <outline color="0000bb" />
+                <font color="000000" name="Arial" size="8" />
+                <position>100 50 200 100</position>
+                <barchart active="true" width="128" height="64" />
+            </node>
+            <node id="RespiratoryIssues">
+                <name>Respiratory Issues</name>
+                <interior color="e5f6f7" />
+                <outline color="0000bb" />
+                <font color="000000" name="Arial" size="8" />
+                <position>300 50 400 100</position>
+                <barchart active="true" width="128" height="64" />
+            </node>
+            <node id="GeneticMutations">
+                <name>Genetic Mutations</name>
+                <interior color="e5f6f7" />
+                <outline color="0000bb" />
+                <font color="000000" name="Arial" size="8" />
+                <position>100 200 200 250</position>
+                <barchart active="true" width="128" height="64" />
+            </node>
+            <node id="CellDamage">
+                <name>Cell Damage</name>
+                <interior color="e5f6f7" />
+                <outline color="0000bb" />
+                <font color="000000" name="Arial" size="8" />
+                <position>300 200 400 250</position>
+                <barchart active="true" width="128" height="64" />
+            </node>
+            <node id="LaryngealCancer">
+                <name>Laryngeal Cancer</name>
+                <interior color="e5f6f7" />
+                <outline color="0000bb" />
+                <font color="000000" name="Arial" size="8" />
+                <position>200 350 300 400</position>
+                <barchart active="true" width="128" height="64" />
+            </node>
+            <textbox>
+                <caption>This network represents the factors and outcomes related to laryngeal cancer, illustrating the complex interactions involved.</caption>
+                <font color="333399" name="Arial" size="12" bold="true" />
+                <position>400 50 600 150</position>
+            </textbox>
+        </genie>
+    </extensions>
+</smile>
