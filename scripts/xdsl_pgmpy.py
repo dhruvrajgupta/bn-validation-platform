@@ -86,6 +86,8 @@ def build_network(nodes):
 
 # Usage
 xdsl_file_path = "/home/dhruv/Documents/Mstage.xdsl"
+# xdsl_file_path = "/home/dhruv/Documents/validationPaper_TNM-Model_28012016.xdsl"
+
 
 parse_xdsl(xdsl_file_path)
 model = build_network(nodes)
@@ -101,3 +103,19 @@ print("Nodes:", model.nodes())
 print("Edges:", model.edges())
 for cpd in model.get_cpds():
     print(cpd)
+
+
+
+viz = model.to_graphviz()
+viz.draw('Mstate.png', prog='sfdp')
+
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+img = mpimg.imread('Mstate.png')
+
+# Display the image
+plt.figure(figsize=(10, 10))
+plt.imshow(img)
+plt.axis('off')
+plt.show()
