@@ -76,7 +76,7 @@ def detect_cycles():
                             cycle_procesed = True
                             break
                 if not cycle_procesed:
-                    all_cycles.append(cycle + stack[stack.index(neighbor)+1:])
+                    all_cycles.append(cycle + stack[stack.index(neighbor) + 1:])
         stack.pop()
 
     all_cycles = []
@@ -124,8 +124,10 @@ def cycles_image_save(cycles):
     plt.title('All Cycles')
     plt.savefig("all_cycles.png")
 
+
 def find_redundant_edges():
     def is_redundant_edge(G, edge):
+        # Checking if removal of edges still has connectivity
         G_prime = G.copy()
         G_prime.remove_edge(*edge)
         # Check if there is still a path between the nodes
@@ -135,6 +137,24 @@ def find_redundant_edges():
     redundant_edges = [edge for edge in graph.edges() if is_redundant_edge(graph, edge)]
 
     return redundant_edges
+
+#
+# def check_nodes_affected_removal_reachability():
+#     def affects_reachability(graph, node):
+#         original_reachable = dict(nx.all_pairs_shortest_path_length(graph))
+#         graph.remove_node(node)
+#         new_reachable = dict(nx.all_pairs_shortest_path_length(graph))
+#         graph.add_node(node)  # Add the node back
+#         return original_reachable != new_reachable
+#
+#     # Identify redundant nodes based on reachability
+#     redundant_nodes_reachability = []
+#     for node in graph.nodes:
+#         if not affects_reachability(graph.copy(), node):
+#             redundant_nodes_reachability.append(node)
+#
+#     return redundant_nodes_reachability
+#
 
 def run_pipeline(file):
     output = ""
@@ -152,7 +172,7 @@ def run_pipeline(file):
     if cycles:
         output += f"{len(cycles)} cycle/s were found:\n\n"
     for index, cycle in enumerate(cycles):
-        output += f"Cycle #{index+1}:\n"
+        output += f"Cycle #{index + 1}:\n"
         output += f"{cycle}\n\n"
 
     output += f"\n{'=' * 90}\n\n"
@@ -166,7 +186,7 @@ def run_pipeline(file):
     if redundant_edges:
         output += f"{len(redundant_edges)} edge/s were found:\n\n"
     for index, edge in enumerate(redundant_edges):
-        output += f"Edge #{index+1}:\n"
+        output += f"Edge #{index + 1}:\n"
         output += f"{edge}\n"
         output += f"Multiple Paths:\n"
         for path in nx.all_simple_paths(graph, edge[0], edge[1]):
@@ -174,6 +194,36 @@ def run_pipeline(file):
         output += "\n\n"
 
     output += f"{'=' * 90}\n\n"
+
+    ## FIND REDUNDANT NODES
+    output += "FINDING REDUNDANT NODES:\n\n"
+    output += "Fininding Isolated nodes...\n\n"
+
+    # 1. Finding isolated nodes
+    isolated_nodes = list(nx.isolates(graph))
+    if isolated_nodes:
+        output += f"{len(isolated_nodes)} isolated node/s were found:\n"
+        output += f"{isolated_nodes}\n\n"
+
+    # 2. Check if removing a node affects reachability
+    # output += "Checking if removing nodes does not affect reachability...\n\n"
+    # redundant_nodes_reachability = check_nodes_affected_removal_reachability()
+    # output += f"{redundant_nodes_reachability}"
+
+    # redundant_edges = find_redundant_edges()
+    # if redundant_edges:
+    #     output += f"{len(redundant_edges)} edge/s were found:\n\n"
+    # for index, edge in enumerate(redundant_edges):
+    #     output += f"Edge #{index + 1}:\n"
+    #     output += f"{edge}\n"
+    #     output += f"Multiple Paths:\n"
+    #     for path in nx.all_simple_paths(graph, edge[0], edge[1]):
+    #         output += f"{path}\n"
+    #     output += "\n\n"
+    #
+    # output += f"{'=' * 90}\n\n"
+
+
 
     return output
 
