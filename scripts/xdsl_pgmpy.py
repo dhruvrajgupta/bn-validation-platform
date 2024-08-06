@@ -106,16 +106,43 @@ for cpd in model.get_cpds():
 
 
 
-viz = model.to_graphviz()
-viz.draw('Mstate.png', prog='sfdp')
+# viz = model.to_graphviz()
+# viz.draw('Mstate.png', prog='sfdp')
 
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
+# import matplotlib.pyplot as plt
+# import matplotlib.image as mpimg
 
-img = mpimg.imread('Mstate.png')
+# img = mpimg.imread('Mstate.png')
 
-# Display the image
-plt.figure(figsize=(10, 10))
-plt.imshow(img)
-plt.axis('off')
-plt.show()
+# # Display the image
+# plt.figure(figsize=(10, 10))
+# plt.imshow(img)
+# plt.axis('off')
+# plt.show()
+
+# Get all the nodes/random variables in the model
+all_nodes = model.nodes()
+print(f"Nodes: {all_nodes} \n")
+
+# Get all the edges in the model.
+all_edges = model.edges()
+print(f"Edges: {all_edges} \n")
+
+# Get all the CPDs.
+all_cpds = model.get_cpds()
+
+# Get parents of a specific node
+# akt_parents = model.get_parents('Akt')
+# print(f"Parents of Akt: {akt_parents} \n")
+
+# # Get children of a specific node
+# pka_children = model.get_children('PKA')
+# print(f"Children of PKA: {pka_children} \n")
+
+# Get all the leaf nodes of the model
+leaves = model.get_leaves()
+print(f"Leaf nodes in the model: {leaves} \n")
+
+# Get the root nodes of the model
+roots = model.get_roots()
+print(f"Root nodes in the model: {roots} \n")
