@@ -59,3 +59,10 @@ print(g_dist)
 print("After providing evidence of Difficulty=Easy and Intelligence=Intelligent")
 g_dist = infer.query(['Grade'], evidence={'Difficulty': 'Easy', 'Intelligence': 'Intelligent'})
 print(g_dist)
+
+# Predicting values from new data points
+print("Predicting")
+# most probable state of Grade
+print(infer.map_query(['Grade']))
+print(infer.map_query(['Grade'], evidence={'Difficulty': 'Easy', 'Intelligence': 'Intelligent'}))
+print(infer.map_query(['Grade'], evidence={'Difficulty': 'Easy', 'Intelligence': 'Intelligent', 'Letter': 'Good', 'SAT': 'Good'}))
