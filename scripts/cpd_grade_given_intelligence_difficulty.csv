@@ -1,0 +1,5 @@
+Intelligence,Intelligence(Dumb),Intelligence(Dumb),Intelligence(Intelligent),Intelligence(Intelligent)
+Difficulty,Difficulty(Easy),Difficulty(Hard),Difficulty(Easy),Difficulty(Hard)
+Grade(A),0.3,0.05,0.9,0.5
+Grade(B),0.4,0.25,0.08,0.3
+Grade(C),0.3,0.7,0.02,0.2
