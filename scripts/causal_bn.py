@@ -149,3 +149,69 @@ print(
 )
 adj_sets = inference.get_all_backdoor_adjustment_sets("X", "Y")
 print(f"If so, what's the possible backdoor adjustment sets? {adj_sets}")
+
+
+# Game 6
+pgm = PGM(shape=[4, 4])
+
+pgm.add_node(daft.Node("X", r"X", 1, 1))
+pgm.add_node(daft.Node("Y", r"Y", 3, 1))
+pgm.add_node(daft.Node("A", r"A", 1, 3))
+pgm.add_node(daft.Node("B", r"B", 3, 3))
+pgm.add_node(daft.Node("C", r"C", 1, 2))
+pgm.add_node(daft.Node("D", r"D", 2, 2))
+pgm.add_node(daft.Node("E", r"E", 3, 2))
+pgm.add_node(daft.Node("F", r"F", 2, 1))
+
+
+pgm.add_edge("X", "F")
+pgm.add_edge("F", "Y")
+pgm.add_edge("C", "X")
+pgm.add_edge("A", "C")
+pgm.add_edge("A", "D")
+pgm.add_edge("D", "X")
+pgm.add_edge("D", "Y")
+pgm.add_edge("B", "D")
+pgm.add_edge("B", "E")
+pgm.add_edge("E", "Y")
+
+pgm.render()
+plt.show()
+
+graph = convert_pgm_to_pgmpy(pgm)
+inference = CausalInference(graph)
+print(
+    f"Are there are active backdoor paths? {not inference.is_valid_backdoor_adjustment_set('X', 'Y')}"
+)
+bd_adj_sets = inference.get_all_backdoor_adjustment_sets("X", "Y")
+print(f"If so, what's the possible backdoor adjustment sets? {bd_adj_sets}")
+fd_adj_sets = inference.get_all_frontdoor_adjustment_sets("X", "Y")
+print(f"Ehat's the possible front adjustment sets? {fd_adj_sets}")
+
+
+# Game 7
+pgm = PGM(shape=[4, 3])
+
+pgm.add_node(daft.Node("X", r"X", 1, 1))
+pgm.add_node(daft.Node("Y", r"Y", 3, 1))
+pgm.add_node(daft.Node("A", r"A", 2, 1))
+pgm.add_node(daft.Node("B", r"B", 2, 2))
+
+
+pgm.add_edge("X", "A")
+pgm.add_edge("A", "Y")
+pgm.add_edge("B", "X")
+pgm.add_edge("B", "Y")
+
+pgm.render()
+plt.show()
+
+graph = convert_pgm_to_pgmpy(pgm)
+inference = CausalInference(graph)
+print(
+    f"Are there are active backdoor paths? {not inference.is_valid_backdoor_adjustment_set('X', 'Y')}"
+)
+bd_adj_sets = inference.get_all_backdoor_adjustment_sets("X", "Y")
+print(f"If so, what's the possible backdoor adjustment sets? {bd_adj_sets}")
+fd_adj_sets = inference.get_all_frontdoor_adjustment_sets("X", "Y")
+print(f"Ehat's the possible front adjustment sets? {fd_adj_sets}")
