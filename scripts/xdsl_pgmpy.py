@@ -166,7 +166,7 @@ roots = model.get_roots()
 
 df = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
 target = "M_state__patient"
-df = df[[c for c in df.columns if c in model.nodes()]].head()
+df = df[[c for c in df.columns if c in model.nodes()]]
 X = df.loc[:, df.columns != target]
 Y = df[target]
 
@@ -176,3 +176,10 @@ comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
 accuracy = comparison_df['Equal'].mean()
 print("\nAccuracy:")
 print(f"{target} = {accuracy}")
+for state, pred_count in y_pred.value_counts().to_dict().items():
+    state = state[0]
+    actual_state_count = len(comparison_df[comparison_df['Y'] == state])
+    # print(state)
+    # print(pred_count)
+    # print(actual_state_count)
+    print(f"\t{state} = {pred_count/actual_state_count} ({pred_count}/{actual_state_count})")
