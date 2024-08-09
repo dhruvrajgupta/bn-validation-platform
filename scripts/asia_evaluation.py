@@ -1,6 +1,7 @@
 import pandas as pd
 
-df = pd.read_csv("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/ASIA_DATA.csv")
+# df = pd.read_csv("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/ASIA_DATA.csv")
+df = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/scripts/ASIA_DATA.csv")
 x = df.loc[:, df.columns != 'dysp']
 y = df['dysp']
 
@@ -36,5 +37,13 @@ comparison_df = pd.DataFrame({'y': y, 'y_pred': y_pred["dysp"]})
 comparison_df['Equal'] = comparison_df['y'] == comparison_df['y_pred']
 accuracy = comparison_df['Equal'].mean()
 print("\nAccuracy:")
-print(f"{accuracy * 100:.2f}%")
-print(y_pred.value_counts().to_dict())
+print(f"dysp = {accuracy}")
+# print(y_pred.value_counts().to_dict())
+# print(y)
+for state, pred_count in y_pred.value_counts().to_dict().items():
+    state = state[0]
+    actual_state_count = len(comparison_df[comparison_df["y"] == state])
+    # print(state)
+    # print(pred_count)
+    # print(actual_state_count)
+    print(f"\t{state} = {pred_count/actual_state_count} ({pred_count}/{actual_state_count})")
