@@ -164,22 +164,32 @@ leaves = model.get_leaves()
 roots = model.get_roots()
 # print(f"Root nodes in the model: {roots} \n")
 
-df = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
-target = "M_state__patient"
-df = df[[c for c in df.columns if c in model.nodes()]]
-X = df.loc[:, df.columns != target]
-Y = df[target]
+dataset_paths = [
+    "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
+    "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
+    "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
+    "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv"
+]
 
-y_pred = model.predict(X, stochastic=False)
-comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
-comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
-accuracy = comparison_df['Equal'].mean()
-print("\nAccuracy:")
-print(f"{target} = {accuracy}")
-for state, pred_count in y_pred.value_counts().to_dict().items():
-    state = state[0]
-    actual_state_count = len(comparison_df[comparison_df['Y'] == state])
-    # print(state)
-    # print(pred_count)
-    # print(actual_state_count)
-    print(f"\t{state} = {pred_count/actual_state_count} ({pred_count}/{actual_state_count})")
+target = "M_state__patient"
+
+for dataset_path in dataset_paths:
+    df = pd.read_csv(dataset_path)
+    df = df[[c for c in df.columns if c in model.nodes()]]
+    X = df.loc[:, df.columns != target]
+    Y = df[target]
+
+    y_pred = model.predict(X, stochastic=False)
+    comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
+    comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
+    accuracy = comparison_df['Equal'].mean()
+    print(f"Dataset: {dataset_path}")
+    print("\nAccuracy:")
+    print(f"{target} = {accuracy}")
+    for state, pred_count in y_pred.value_counts().to_dict().items():
+        state = state[0]
+        actual_state_count = len(comparison_df[comparison_df['Y'] == state])
+        # print(state)
+        # print(pred_count)
+        # print(actual_state_count)
+        print(f"\t{state} = {pred_count/actual_state_count} ({pred_count}/{actual_state_count})")
