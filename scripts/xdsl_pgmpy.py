@@ -2,6 +2,7 @@ from pgmpy.models import BayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 import xmltodict
 import numpy as np
+import pandas as pd
 
 nodes = {}
 
@@ -146,3 +147,16 @@ print(f"Leaf nodes in the model: {leaves} \n")
 # Get the root nodes of the model
 roots = model.get_roots()
 print(f"Root nodes in the model: {roots} \n")
+
+df = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
+target = "M_state__patient"
+df = df[[c for c in df.columns if c in model.nodes()]].head()
+X = df.loc[:, df.columns != target]
+Y = df[target]
+
+y_pred = model.predict(X, stochastic=False)
+comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
+comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
+accuracy = comparison_df['Equal'].mean()
+print("\nAccuracy:")
+print(f"{target} = {accuracy}")

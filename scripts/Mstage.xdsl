@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smile version="1.0" id="Network3" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="other_location_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.9615384615384616 0.03846153846153846</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="other_location_M_diagnostic__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>other_location_M__patient</parents>
+			<probabilities>0.009900990099009901 0.9504950495049505 0.0396039603960396 0.009900990099009901 0.04950495049504951 0.9405940594059407</probabilities>
+		</cpt>
+		<cpt id="bone_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.9615384615384616 0.03846153846153846</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="peritoneum_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.9714285714285714 0.02857142857142857</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="skin_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.97 0.03</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="hepar_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.9519230769230769 0.04807692307692307</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="distant_lymphnode_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.9615384615384616 0.03846153846153846</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="bone_M_PET_body__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>bone_M__patient</parents>
+			<probabilities>0.009900990099009901 0.9504950495049505 0.0396039603960396 0.01 0.04 0.95</probabilities>
+		</cpt>
+		<cpt id="bone_M_Scinti__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>bone_M__patient</parents>
+			<probabilities>0.0196078431372549 0.9411764705882352 0.0392156862745098 0.02912621359223301 0.03883495145631068 0.9320388349514563</probabilities>
+		</cpt>
+		<cpt id="bone_M_CT_body__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>bone_M__patient</parents>
+			<probabilities>0.05660377358490566 0.8679245283018868 0.07547169811320754 0.05769230769230769 0.0673076923076923 0.875</probabilities>
+		</cpt>
+		<cpt id="bone_M_fracture__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>bone_M__patient</parents>
+			<probabilities>0.3490566037735849 0.6037735849056604 0.04716981132075472 0.2578616352201258 0.2389937106918239 0.5031446540880503</probabilities>
+		</cpt>
+		<cpt id="perit_M_CT_abdomen__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>peritoneum_M__patient</parents>
+			<probabilities>0.04807692307692307 0.9038461538461539 0.04807692307692307 0.04901960784313725 0.04901960784313725 0.9019607843137254</probabilities>
+		</cpt>
+		<cpt id="perit_M_Sono_abdomen__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>peritoneum_M__patient</parents>
+			<probabilities>0.1296296296296297 0.7962962962962963 0.07407407407407407 0.180952380952381 0.08571428571428572 0.7333333333333333</probabilities>
+		</cpt>
+		<cpt id="others_M_Sono_abdomen__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>skin_M__patient</parents>
+			<probabilities>0.04854368932038835 0.8932038834951456 0.05825242718446602 0.04807692307692307 0.08653846153846154 0.8653846153846154</probabilities>
+		</cpt>
+		<cpt id="others_M_CT_abdomen__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>skin_M__patient</parents>
+			<probabilities>0.02830188679245283 0.9056603773584905 0.0660377358490566 0.02941176470588235 0.0392156862745098 0.9313725490196079</probabilities>
+		</cpt>
+		<cpt id="hep_M_CT_abdomen__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>hepar_M__patient</parents>
+			<probabilities>0.02912621359223301 0.8932038834951456 0.07766990291262137 0.02912621359223301 0.07766990291262137 0.8932038834951456</probabilities>
+		</cpt>
+		<cpt id="hep_M_Sono_abdomen__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>hepar_M__patient</parents>
+			<probabilities>0.03883495145631068 0.8737864077669903 0.08737864077669903 0.03883495145631068 0.08737864077669903 0.8737864077669903</probabilities>
+		</cpt>
+		<cpt id="hep_M_CT_GuidedPunction__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>hepar_M__patient</parents>
+			<probabilities>0.05825242718446602 0.9223300970873787 0.01941747572815534 0.01941747572815534 0.05825242718446602 0.9223300970873787</probabilities>
+		</cpt>
+		<cpt id="hep_M_Sono_GuidedPunction__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>hepar_M__patient</parents>
+			<probabilities>0.0679611650485437 0.912621359223301 0.01941747572815534 0.0196078431372549 0.0588235294117647 0.9215686274509803</probabilities>
+		</cpt>
+		<cpt id="distant_lymphnode_PET_thorax__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<state id="MX" />
+			<parents>distant_lymphnode_M__patient</parents>
+			<probabilities>0.8910891089108911 0.0594059405940594 0.04950495049504951 0.04950495049504951 0.900990099009901 0.04950495049504951</probabilities>
+		</cpt>
+		<cpt id="distant_lymphnode_CR_thorax__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<state id="MX" />
+			<parents>distant_lymphnode_M__patient</parents>
+			<probabilities>0.8285714285714285 0.07619047619047618 0.09523809523809523 0.2090909090909091 0.6818181818181818 0.1090909090909091</probabilities>
+		</cpt>
+		<cpt id="distant_lymphnode_endosono__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<state id="MX" />
+			<parents>distant_lymphnode_M__patient</parents>
+			<probabilities>0.8415841584158416 0.06930693069306931 0.08910891089108912 0.1214953271028037 0.7943925233644861 0.08411214953271028</probabilities>
+		</cpt>
+		<cpt id="distant_lymphnode_CT_thorax__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<state id="MX" />
+			<parents>distant_lymphnode_M__patient</parents>
+			<probabilities>0.9019607843137254 0.0588235294117647 0.0392156862745098 0.07766990291262137 0.8737864077669903 0.04854368932038835</probabilities>
+		</cpt>
+		<cpt id="pulmonary_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.9509803921568627 0.04901960784313725</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="pleura_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.98 0.02</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="brain_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.9716981132075472 0.02830188679245283</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="bonemarrow_M__patient">
+			<state id="M0" />
+			<state id="M1" />
+			<probabilities>0.9619047619047619 0.03809523809523809</probabilities>
+			<property id="unobservable">true</property>
+		</cpt>
+		<cpt id="pul_M_CR_thorax__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pulmonary_M__patient</parents>
+			<probabilities>0.1919191919191919 0.7575757575757577 0.05050505050505051 0.3095238095238095 0.2936507936507937 0.3968253968253969</probabilities>
+		</cpt>
+		<cpt id="pul_M_CT_thorax__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pulmonary_M__patient</parents>
+			<probabilities>0.0990990990990991 0.8288288288288288 0.07207207207207207 0.07692307692307693 0.07692307692307693 0.8461538461538461</probabilities>
+		</cpt>
+		<cpt id="pul_M_PET_thorax__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pulmonary_M__patient</parents>
+			<probabilities>0.04807692307692307 0.9038461538461539 0.04807692307692307 0.07476635514018691 0.04672897196261682 0.8785046728971964</probabilities>
+		</cpt>
+		<cpt id="pul_M_bronchoscopy__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pulmonary_M__patient</parents>
+			<probabilities>0.1238095238095238 0.8095238095238095 0.06666666666666667 0.4972677595628416 0.3224043715846995 0.1803278688524591</probabilities>
+		</cpt>
+		<cpt id="pulmonary_M_CT_GuidedPunction__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pulmonary_M__patient</parents>
+			<probabilities>0.009900990099009901 0.9702970297029703 0.0198019801980198 0.08256880733944955 0.05504587155963304 0.8623853211009176</probabilities>
+		</cpt>
+		<cpt id="pulmonary_M_bronchoscopy_GuidedPunction__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pulmonary_M__patient</parents>
+			<probabilities>0.1181818181818182 0.8636363636363636 0.01818181818181818 0.08108108108108109 0.08108108108108109 0.8378378378378379</probabilities>
+		</cpt>
+		<cpt id="pleu_M_CR_thorax__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pleura_M__patient</parents>
+			<probabilities>0.1071428571428572 0.7767857142857143 0.1160714285714286 0.1217391304347826 0.191304347826087 0.6869565217391305</probabilities>
+		</cpt>
+		<cpt id="pleu_M_PET_thorax__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pleura_M__patient</parents>
+			<probabilities>0.04950495049504951 0.8910891089108911 0.0594059405940594 0.03883495145631068 0.0970873786407767 0.8640776699029127</probabilities>
+		</cpt>
+		<cpt id="pleu_M_CT_thorax__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pleura_M__patient</parents>
+			<probabilities>0.0303030303030303 0.9393939393939396 0.0303030303030303 0.03846153846153846 0.09615384615384615 0.8653846153846154</probabilities>
+		</cpt>
+		<cpt id="brain_M_cMRT__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>brain_M__patient</parents>
+			<probabilities>0.02040816326530612 0.9489795918367347 0.03061224489795919 0.0297029702970297 0.04950495049504951 0.9207920792079207</probabilities>
+		</cpt>
+		<cpt id="brain_M_cCT__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>brain_M__patient</parents>
+			<probabilities>0.0297029702970297 0.9207920792079207 0.04950495049504951 0.03883495145631068 0.05825242718446602 0.9029126213592233</probabilities>
+		</cpt>
+		<cpt id="brain_M_PET__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>brain_M__patient</parents>
+			<probabilities>0.2265625 0.6171875 0.15625 0.3387096774193548 0.1532258064516129 0.5080645161290323</probabilities>
+		</cpt>
+		<cpt id="bm_M_PET_body__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>bonemarrow_M__patient</parents>
+			<probabilities>0.0392156862745098 0.9313725490196079 0.02941176470588235 0.04854368932038835 0.03883495145631068 0.912621359223301</probabilities>
+		</cpt>
+		<cpt id="bm_M_CR_body__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>bonemarrow_M__patient</parents>
+			<probabilities>0.2547169811320755 0.6132075471698113 0.1320754716981132 0.2890625 0.2265625 0.484375</probabilities>
+		</cpt>
+		<cpt id="bm_M_Scinti__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>bonemarrow_M__patient</parents>
+			<probabilities>0.06 0.85 0.09 0.02912621359223301 0.05825242718446602 0.912621359223301</probabilities>
+		</cpt>
+		<cpt id="bm_M_CT_body__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>bonemarrow_M__patient</parents>
+			<probabilities>0.0925925925925926 0.8240740740740741 0.08333333333333334 0.0462962962962963 0.1296296296296297 0.8240740740740741</probabilities>
+		</cpt>
+		<cpt id="M_state__patient" diagtype="target" ranked="true">
+			<state id="M0" fault="true" />
+			<state id="M1" fault="true" />
+			<parents>pleura_M__patient peritoneum_M__patient distant_lymphnode_M__patient bone_M__patient skin_M__patient bonemarrow_M__patient brain_M__patient hepar_M__patient pulmonary_M__patient other_location_M__patient</parents>
+			<probabilities>0.99 0.01 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99 0.01 0.99</probabilities>
+			<property id="required">required</property>
+		</cpt>
+		<cpt id="pleu_M_guidedPunction__patient">
+			<state id="MX" />
+			<state id="M0" />
+			<state id="M1" />
+			<parents>pleura_M__patient</parents>
+			<probabilities>0.04901960784313725 0.9313725490196079 0.0196078431372549 0.02941176470588235 0.07843137254901961 0.8921568627450981</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only" name="Network3">
+			<node id="other_location_M__patient">
+				<name>other_location_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6746 3175 6881 3259</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="other_location_M_diagnostic__patient">
+				<name>other_location_M_diagnostic__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6722 3331 6910 3448</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="bone_M__patient">
+				<name>bone_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6171 2673 6264 2731</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="peritoneum_M__patient">
+				<name>peritoneum_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6836 1720 6956 1795</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="skin_M__patient">
+				<name>skin_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6829 2240 6933 2305</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="hepar_M__patient">
+				<name>hepar_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6329 1721 6426 1781</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="distant_lymphnode_M__patient">
+				<name>distant_lymphnode_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5098 2246 5255 2344</position>
+				<barchart active="true" width="179" height="129" />
+			</node>
+			<node id="bone_M_PET_body__patient">
+				<name>bone_M_PET_body__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5984 2799 6129 2889</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="bone_M_Scinti__patient">
+				<name>bone_M_Scinti__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6297 2812 6421 2889</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="bone_M_CT_body__patient">
+				<name>bone_M_CT_body__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6073 2905 6212 2991</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="bone_M_fracture__patient">
+				<name>bone_M_fracture__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6228 2914 6363 2998</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="perit_M_CT_abdomen__patient">
+				<name>perit_M_CT_abdomen__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6700 1880 6857 1978</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="perit_M_Sono_abdomen__patient">
+				<name>perit_M_Sono_abdomen__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>7198 1983 7367 2088</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="others_M_Sono_abdomen__patient">
+				<name>others_M_Sono_abdomen__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>7094 2424 7257 2525</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="others_M_CT_abdomen__patient">
+				<name>others_M_CT_abdomen__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6704 2381 6855 2475</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="hep_M_CT_abdomen__patient">
+				<name>hep_M_CT_abdomen__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6122 1804 6275 1899</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="hep_M_Sono_abdomen__patient">
+				<name>hep_M_Sono_abdomen__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6221 1922 6386 2025</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="hep_M_CT_GuidedPunction__patient">
+				<name>hep_M_CT_GuidedPunction__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6366 1920 6550 2035</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="hep_M_Sono_GuidedPunction__patient">
+				<name>hep_M_Sono_GuidedPunction__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6431 1832 6627 1954</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="distant_lymphnode_PET_thorax__patient">
+				<name>distant_lymphnode_PET_thorax__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4768 2424 4970 2550</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="distant_lymphnode_CR_thorax__patient">
+				<name>distant_lymphnode_CR_thorax__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4946 2486 5144 2609</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="distant_lymphnode_endosono__patient">
+				<name>distant_lymphnode_endosono__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5084 2476 5280 2598</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="distant_lymphnode_CT_thorax__patient">
+				<name>distant_lymphnode_CT_thorax__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5330 2456 5528 2579</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pulmonary_M__patient">
+				<name>pulmonary_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5103 1671 5221 1744</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pleura_M__patient">
+				<name>pleura_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5724 1709 5823 1770</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="brain_M__patient">
+				<name>brain_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6159 3209 6252 3267</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="bonemarrow_M__patient">
+				<name>bonemarrow_M__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6781 2648 6911 2729</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pul_M_CR_thorax__patient">
+				<name>pul_M_CR_thorax__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4896 1827 5033 1912</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pul_M_CT_thorax__patient">
+				<name>pul_M_CT_thorax__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5053 1887 5190 1972</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pul_M_PET_thorax__patient">
+				<name>pul_M_PET_thorax__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5248 1915 5389 2003</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pul_M_bronchoscopy__patient">
+				<name>pul_M_bronchoscopy__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4847 1951 5000 2046</position>
+				<barchart active="true" width="232" height="72" />
+			</node>
+			<node id="pulmonary_M_CT_GuidedPunction__patient">
+				<name>pulmonary_M_CT_GuidedPunction__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5044 2002 5260 2137</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pulmonary_M_bronchoscopy_GuidedPunction__patient">
+				<name>pulmonary_M_bronchoscopy_GuidedPunction__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5214 2045 5485 2214</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pleu_M_CR_thorax__patient">
+				<name>pleu_M_CR_thorax__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5527 1837 5670 1926</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pleu_M_PET_thorax__patient">
+				<name>pleu_M_PET_thorax__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5632 1931 5779 2022</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="pleu_M_CT_thorax__patient">
+				<name>pleu_M_CT_thorax__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5811 1947 5954 2036</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="brain_M_cMRT__patient">
+				<name>brain_M_cMRT__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5986 3356 6110 3433</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="brain_M_cCT__patient">
+				<name>brain_M_cCT__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6585 3404 6701 3476</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="brain_M_PET__patient">
+				<name>brain_M_PET__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6276 3360 6392 3432</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="bm_M_PET_body__patient">
+				<name>bm_M_PET_body__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6595 2780 6730 2864</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="bm_M_CR_body__patient">
+				<name>bm_M_CR_body__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6647 2874 6778 2955</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="bm_M_Scinti__patient">
+				<name>bm_M_Scinti__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>6836 2875 6950 2946</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="bm_M_CT_body__patient">
+				<name>bm_M_CT_body__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>7125 2859 7255 2940</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+			<node id="M_state__patient">
+				<name>M_state__patient</name>
+				<interior color="ff9900" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5284 3126 5377 3184</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="pleu_M_guidedPunction__patient">
+				<name>pleu_M_guidedPunction__patient</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5887 1849 6052 1952</position>
+				<barchart active="true" width="128" height="72" />
+			</node>
+		</genie>
+	</extensions>
+</smile>
