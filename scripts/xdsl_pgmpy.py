@@ -3,6 +3,7 @@ from pgmpy.factors.discrete import TabularCPD
 import xmltodict
 import numpy as np
 import pandas as pd
+import json
 
 nodes = {}
 
@@ -57,15 +58,17 @@ def build_network(nodes):
 
     # Add CPDs
     for node_id, details in nodes.items():
-        states = len(details['states'])
+        node_states_card = len(details['states'])
         parents = details['parents']
         parent_states = [len(nodes[parent]['states']) for parent in parents]
         values = details['probabilities']
 
+        state_names = {}
+
         if parents:
-            num_of_cols = states
+            num_of_cols = node_states_card
             # num_of_cols = int(len(values)/states)
-            num_of_rows = int(len(values)/states)
+            num_of_rows = int(len(values)/node_states_card)
             x = np.array(values)
             x = x.reshape(num_of_rows, num_of_cols)
             su = x.sum(axis=1)
@@ -78,8 +81,21 @@ def build_network(nodes):
             values = np.array(values)
             su = values.sum(axis=0)
 
-        cpd = TabularCPD(variable=node_id, variable_card=states, values=values,
-                         evidence=parents, evidence_card=parent_states)
+        state_names[node_id] = details['states']
+        if parents:
+            for parent in parents:
+                state_names[parent] = nodes[parent]['states']
+
+        print(f"Node_ID: {node_id}")
+        print(f"Node States Cardinality: {node_states_card}")
+        print(f"Evidence / Parents: {parents}")
+        print(f"Evidence Cardinality: {parent_states}")
+        print(f"State Names: {json.dumps(state_names, indent=2)}")
+        print(f"CPD Values: \n{values}")
+        print("-"*50)
+
+        cpd = TabularCPD(variable=node_id, variable_card=node_states_card, values=values,
+                         evidence=parents, evidence_card=parent_states, state_names=state_names)
         model.add_cpds(cpd)
 
     return model
@@ -102,8 +118,8 @@ else:
 # Print the model to verify
 print("Nodes:", model.nodes())
 print("Edges:", model.edges())
-for cpd in model.get_cpds():
-    print(cpd)
+# for cpd in model.get_cpds():
+#     print(cpd)
 
 
 
@@ -123,11 +139,11 @@ for cpd in model.get_cpds():
 
 # Get all the nodes/random variables in the model
 all_nodes = model.nodes()
-print(f"Nodes: {all_nodes} \n")
+# print(f"Nodes: {all_nodes} \n")
 
 # Get all the edges in the model.
 all_edges = model.edges()
-print(f"Edges: {all_edges} \n")
+# print(f"Edges: {all_edges} \n")
 
 # Get all the CPDs.
 all_cpds = model.get_cpds()
@@ -142,11 +158,11 @@ all_cpds = model.get_cpds()
 
 # Get all the leaf nodes of the model
 leaves = model.get_leaves()
-print(f"Leaf nodes in the model: {leaves} \n")
+# print(f"Leaf nodes in the model: {leaves} \n")
 
 # Get the root nodes of the model
 roots = model.get_roots()
-print(f"Root nodes in the model: {roots} \n")
+# print(f"Root nodes in the model: {roots} \n")
 
 df = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
 target = "M_state__patient"
