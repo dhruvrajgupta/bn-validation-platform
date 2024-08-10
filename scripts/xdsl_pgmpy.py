@@ -4,8 +4,117 @@ import xmltodict
 import numpy as np
 import pandas as pd
 import json
+from joblib import Parallel, delayed
+from tqdm.auto import tqdm
 
 nodes = {}
+
+
+# Default predict of pgmpy BayesianNetwork in predict does not handle missing node values
+# https://github.com/pgmpy/pgmpy/pull/1119
+def predict(self, data, stochastic=False, n_jobs=-1):
+    """
+    Predicts states of all the missing variables.
+
+    Parameters
+    ----------
+    data: pandas DataFrame object
+        A DataFrame object with column names same as the variables in the model.
+
+    stochastic: boolean
+        If True, does prediction by sampling from the distribution of predicted variable(s).
+        If False, returns the states with the highest probability value (i.e. MAP) for the
+            predicted variable(s).
+
+    n_jobs: int (default: -1)
+        The number of CPU cores to use. If -1, uses all available cores.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import pandas as pd
+    >>> from pgmpy.models import BayesianNetwork
+    >>> values = pd.DataFrame(np.random.randint(low=0, high=2, size=(1000, 5)),
+    ...                       columns=['A', 'B', 'C', 'D', 'E'])
+    >>> train_data = values[:800]
+    >>> predict_data = values[800:]
+    >>> model = BayesianNetwork([('A', 'B'), ('C', 'B'), ('C', 'D'), ('B', 'E')])
+    >>> model.fit(train_data)
+    >>> predict_data = predict_data.copy()
+    >>> predict_data.drop('E', axis=1, inplace=True)
+    >>> y_pred = model.predict(predict_data)
+    >>> y_pred
+        E
+    800 0
+    801 1
+    802 1
+    803 1
+    804 0
+    ... ...
+    993 0
+    994 0
+    995 1
+    996 1
+    997 0
+    998 0
+    999 0
+    """
+    from pgmpy.inference import VariableElimination
+
+    if set(data.columns) == set(self.nodes()):
+        raise ValueError("No variable missing in data. Nothing to predict")
+
+    elif set(data.columns) - set(self.nodes()):
+        raise ValueError("Data has variables which are not in the model")
+
+    missing_variables = set(self.nodes()) - set(data.columns)
+    model_inference = VariableElimination(self)
+
+    if stochastic:
+        data_unique_indexes = data.groupby(list(data.columns)).apply(
+            lambda t: t.index.tolist()
+        )
+        data_unique = data_unique_indexes.index.to_frame()
+
+        pred_values = Parallel(n_jobs=n_jobs)(
+            delayed(model_inference.query)(
+                variables=missing_variables,
+                evidence=data_point.dropna().to_dict(),
+                show_progress=False,
+            )
+            for index, data_point in tqdm(
+                data_unique.iterrows(), total=data_unique.shape[0]
+            )
+        )
+        predictions = pd.DataFrame()
+        for i, row in enumerate(data_unique_indexes):
+            p = pred_values[i].sample(n=len(row))
+            p.index = row
+            predictions = pd.concat((predictions, p), copy=False)
+
+        return predictions.reindex(data.index)
+
+    else:
+        data_unique = data.drop_duplicates()
+        pred_values = []
+
+        # Send state_names dict from one of the estimated CPDs to the inference class.
+        pred_values = Parallel(n_jobs=n_jobs)(
+            delayed(model_inference.map_query)(
+                variables=missing_variables,
+                evidence=data_point.dropna().to_dict(),
+                show_progress=False,
+            )
+            for index, data_point in tqdm(
+                data_unique.iterrows(), total=data_unique.shape[0]
+            )
+        )
+
+        df_results = pd.DataFrame(pred_values, index=data_unique.index)
+        data_with_results = pd.concat([data_unique, df_results], axis=1)
+        return data.merge(data_with_results, how="left").loc[
+               :, list(missing_variables)
+               ]
 
 
 def parse_xdsl(file_path):
@@ -68,7 +177,7 @@ def build_network(nodes):
         if parents:
             num_of_cols = node_states_card
             # num_of_cols = int(len(values)/states)
-            num_of_rows = int(len(values)/node_states_card)
+            num_of_rows = int(len(values) / node_states_card)
             x = np.array(values)
             x = x.reshape(num_of_rows, num_of_cols)
             su = x.sum(axis=1)
@@ -92,7 +201,7 @@ def build_network(nodes):
         print(f"Evidence Cardinality: {parent_states}")
         print(f"State Names: {json.dumps(state_names, indent=2)}")
         print(f"CPD Values: \n{values}")
-        print("-"*50)
+        print("-" * 50)
 
         cpd = TabularCPD(variable=node_id, variable_card=node_states_card, values=values,
                          evidence=parents, evidence_card=parent_states, state_names=state_names)
@@ -120,7 +229,6 @@ print("Nodes:", model.nodes())
 print("Edges:", model.edges())
 # for cpd in model.get_cpds():
 #     print(cpd)
-
 
 
 # viz = model.to_graphviz()
@@ -165,23 +273,28 @@ roots = model.get_roots()
 # print(f"Root nodes in the model: {roots} \n")
 
 dataset_paths = [
-    "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
-    "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
+    # "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
+    # "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
     "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
-    "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv"
+    # "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv"
 ]
 
 target = "M_state__patient"
 
 for dataset_path in dataset_paths:
-    df = pd.read_csv(dataset_path)
+    df = pd.read_csv(dataset_path).head()
     df = df[[c for c in df.columns if c in model.nodes()]]
+    df = df.replace(to_replace="*", value=np.nan)
+    df = df[df[target].notna()]
+    print(df)
     X = df.loc[:, df.columns != target]
     Y = df[target]
+    print(Y)
 
-    y_pred = model.predict(X, stochastic=False)
+    y_pred = predict(model, data=X, stochastic=False)
     comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
     comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
+    print(comparison_df)
     accuracy = comparison_df['Equal'].mean()
     print(f"Dataset: {dataset_path}")
     print("\nAccuracy:")
@@ -192,4 +305,4 @@ for dataset_path in dataset_paths:
         # print(state)
         # print(pred_count)
         # print(actual_state_count)
-        print(f"\t{state} = {pred_count/actual_state_count} ({pred_count}/{actual_state_count})")
+        print(f"\t{state} = {pred_count / actual_state_count} ({pred_count}/{actual_state_count})")
