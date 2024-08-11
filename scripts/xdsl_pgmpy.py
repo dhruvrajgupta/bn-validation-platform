@@ -111,7 +111,16 @@ def predict(self, data, stochastic=False, n_jobs=-1):
         )
 
         df_results = pd.DataFrame(pred_values, index=data_unique.index)
+        print(df_results)
         data_with_results = pd.concat([data_unique, df_results], axis=1)
+        print(data_with_results)
+
+        x = data.merge(data_with_results, how="left").loc[
+               :, list(missing_variables)
+               ]
+
+        print(x)
+
         return data.merge(data_with_results, how="left").loc[
                :, list(missing_variables)
                ]
@@ -282,10 +291,10 @@ dataset_paths = [
 target = "M_state__patient"
 
 for dataset_path in dataset_paths:
-    df = pd.read_csv(dataset_path).head()
+    df = pd.read_csv(dataset_path)[:30]
     df = df[[c for c in df.columns if c in model.nodes()]]
     df = df.replace(to_replace="*", value=np.nan)
-    df = df[df[target].notna()]
+    # df = df[df[target].notna()]
     print(df)
     X = df.loc[:, df.columns != target]
     Y = df[target]
@@ -293,16 +302,25 @@ for dataset_path in dataset_paths:
 
     y_pred = predict(model, data=X, stochastic=False)
     comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
+    print(comparison_df)
+    print(len(comparison_df))
+    comparison_df = comparison_df.dropna(subset=['Y'])
+    print(comparison_df)
+    print(len(comparison_df))
     comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
     print(comparison_df)
+    print(len(comparison_df))
     accuracy = comparison_df['Equal'].mean()
     print(f"Dataset: {dataset_path}")
     print("\nAccuracy:")
     print(f"{target} = {accuracy}")
-    for state, pred_count in y_pred.value_counts().to_dict().items():
-        state = state[0]
-        actual_state_count = len(comparison_df[comparison_df['Y'] == state])
+    target_state_counts = Y.value_counts().to_dict()
+    for state, actual_state_count in target_state_counts.items():
+        pred_count = len(comparison_df[comparison_df['Equal'] == True])
         # print(state)
         # print(pred_count)
         # print(actual_state_count)
-        print(f"\t{state} = {pred_count / actual_state_count} ({pred_count}/{actual_state_count})")
+        if actual_state_count:
+            print(f"\t{state} = {pred_count / actual_state_count} ({pred_count}/{actual_state_count})")
+        else:
+            print(f"\t{state} = 0.0 ({pred_count}/{actual_state_count})")
