@@ -6,6 +6,7 @@ import pandas as pd
 import json
 from joblib import Parallel, delayed
 from tqdm.auto import tqdm
+from pgmpy.readwrite import BIFWriter
 
 nodes = {}
 
@@ -111,15 +112,15 @@ def predict(self, data, stochastic=False, n_jobs=-1):
         )
 
         df_results = pd.DataFrame(pred_values, index=data_unique.index)
-        print(df_results)
+        # print(df_results)
         data_with_results = pd.concat([data_unique, df_results], axis=1)
-        print(data_with_results)
+        # print(data_with_results)
 
-        x = data.merge(data_with_results, how="left").loc[
-               :, list(missing_variables)
-               ]
+        # x = data.merge(data_with_results, how="left").loc[
+        #        :, list(missing_variables)
+        #        ]
 
-        print(x)
+        # print(x)
 
         return data.merge(data_with_results, how="left").loc[
                :, list(missing_variables)
@@ -204,13 +205,13 @@ def build_network(nodes):
             for parent in parents:
                 state_names[parent] = nodes[parent]['states']
 
-        print(f"Node_ID: {node_id}")
-        print(f"Node States Cardinality: {node_states_card}")
-        print(f"Evidence / Parents: {parents}")
-        print(f"Evidence Cardinality: {parent_states}")
-        print(f"State Names: {json.dumps(state_names, indent=2)}")
-        print(f"CPD Values: \n{values}")
-        print("-" * 50)
+        # print(f"Node_ID: {node_id}")
+        # print(f"Node States Cardinality: {node_states_card}")
+        # print(f"Evidence / Parents: {parents}")
+        # print(f"Evidence Cardinality: {parent_states}")
+        # print(f"State Names: {json.dumps(state_names, indent=2)}")
+        # print(f"CPD Values: \n{values}")
+        # print("-" * 50)
 
         cpd = TabularCPD(variable=node_id, variable_card=node_states_card, values=values,
                          evidence=parents, evidence_card=parent_states, state_names=state_names)
@@ -220,7 +221,7 @@ def build_network(nodes):
 
 
 # Usage
-xdsl_file_path = "/home/dhruv/Documents/Mstage.xdsl"
+xdsl_file_path = "/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/Mstage.xdsl"
 # xdsl_file_path = "/home/dhruv/Documents/validationPaper_TNM-Model_28012016.xdsl"
 
 
@@ -233,9 +234,15 @@ if model.check_model():
 else:
     print("The model is invalid.")
 
+print("\n")
+
+# SAVING THE BEST MODEL
+# writer = BIFWriter(model)
+# writer.write_bif(filename='best_model_M_stage.bif')
+
 # Print the model to verify
-print("Nodes:", model.nodes())
-print("Edges:", model.edges())
+# print("Nodes:", model.nodes())
+# print("Edges:", model.edges())
 # for cpd in model.get_cpds():
 #     print(cpd)
 
@@ -284,39 +291,51 @@ roots = model.get_roots()
 dataset_paths = [
     # "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
     # "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
-    "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
+    # "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
     # "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv"
+]
+
+dataset_paths = [
+    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv",
+    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv",
+    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv",
+    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv",
 ]
 
 target = "M_state__patient"
 
+print(f"Target Node: {target}")
+print("Preforming model test in multiple datasets...\n")
+
 for dataset_path in dataset_paths:
-    df = pd.read_csv(dataset_path)[:30]
+    print(f"\nDataset: {dataset_path}\n")
+    df = pd.read_csv(dataset_path)
     df = df[[c for c in df.columns if c in model.nodes()]]
     df = df.replace(to_replace="*", value=np.nan)
     # df = df[df[target].notna()]
-    print(df)
+    # print(df)
     X = df.loc[:, df.columns != target]
     Y = df[target]
-    print(Y)
+    # print(Y)
 
     y_pred = predict(model, data=X, stochastic=False)
     comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
-    print(comparison_df)
-    print(len(comparison_df))
+    # print(comparison_df)
+    # print(len(comparison_df))
     comparison_df = comparison_df.dropna(subset=['Y'])
-    print(comparison_df)
-    print(len(comparison_df))
+    # print(comparison_df)
+    # print(len(comparison_df))
+    print(f"Number of rows dropped due to unknow NaN values of {target}: {len(Y) - len(comparison_df)}")
     comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
-    print(comparison_df)
-    print(len(comparison_df))
+    # print(comparison_df)
+    # print(len(comparison_df))
     accuracy = comparison_df['Equal'].mean()
-    print(f"Dataset: {dataset_path}")
     print("\nAccuracy:")
     print(f"{target} = {accuracy}")
     target_state_counts = Y.value_counts().to_dict()
     for state, actual_state_count in target_state_counts.items():
-        pred_count = len(comparison_df[comparison_df['Equal'] == True])
+        state_correct_pred = comparison_df[(comparison_df['Equal'] == True) & (comparison_df['Y'] == state)]
+        pred_count = len(state_correct_pred)
         # print(state)
         # print(pred_count)
         # print(actual_state_count)
@@ -324,3 +343,5 @@ for dataset_path in dataset_paths:
             print(f"\t{state} = {pred_count / actual_state_count} ({pred_count}/{actual_state_count})")
         else:
             print(f"\t{state} = 0.0 ({pred_count}/{actual_state_count})")
+    print()
+    print("-"*100)

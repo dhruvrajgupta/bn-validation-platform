@@ -1,0 +1,50 @@
+The model is valid.
+
+
+Target Node: M_state__patient
+Preforming model test in multiple datasets...
+
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 60213
+
+Accuracy:
+M_state__patient = 0.9273883429260814
+	M0 = 0.9636273624741547 (33090/34339)
+	M1 = 0.6989720998531571 (3808/5448)
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 40180
+
+Accuracy:
+M_state__patient = 0.9617352056168506
+	M0 = 0.9805345729227194 (50625/51630)
+	M1 = 0.8432234432234432 (6906/8190)
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 20067
+
+Accuracy:
+M_state__patient = 0.9826729886279759
+	M0 = 0.9910260678255584 (68469/69089)
+	M1 = 0.9294540759867208 (10079/10844)
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 0
+
+Accuracy:
+M_state__patient = 0.9931
+	M0 = 0.9953875928565634 (85891/86289)
+	M1 = 0.9787032309824228 (13419/13711)
+
+----------------------------------------------------------------------------------------------------

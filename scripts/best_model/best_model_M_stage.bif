@@ -1,0 +1,1409 @@
+network unknown {
+}
+variable M_state__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable bm_M_CR_body__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable bm_M_CT_body__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable bm_M_PET_body__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable bm_M_Scinti__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable bone_M_CT_body__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable bone_M_PET_body__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable bone_M_Scinti__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable bone_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable bone_M_fracture__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable bonemarrow_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable brain_M_PET__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable brain_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable brain_M_cCT__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable brain_M_cMRT__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable distant_lymphnode_CR_thorax__patient {
+    type discrete [ 3 ] { M0, M1, MX };
+    property weight = None ;
+}
+variable distant_lymphnode_CT_thorax__patient {
+    type discrete [ 3 ] { M0, M1, MX };
+    property weight = None ;
+}
+variable distant_lymphnode_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable distant_lymphnode_PET_thorax__patient {
+    type discrete [ 3 ] { M0, M1, MX };
+    property weight = None ;
+}
+variable distant_lymphnode_endosono__patient {
+    type discrete [ 3 ] { M0, M1, MX };
+    property weight = None ;
+}
+variable hep_M_CT_GuidedPunction__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable hep_M_CT_abdomen__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable hep_M_Sono_GuidedPunction__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable hep_M_Sono_abdomen__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable hepar_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable other_location_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable other_location_M_diagnostic__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable others_M_CT_abdomen__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable others_M_Sono_abdomen__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable perit_M_CT_abdomen__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable perit_M_Sono_abdomen__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable peritoneum_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable pleu_M_CR_thorax__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable pleu_M_CT_thorax__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable pleu_M_PET_thorax__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable pleu_M_guidedPunction__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable pleura_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable pul_M_CR_thorax__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable pul_M_CT_thorax__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable pul_M_PET_thorax__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable pul_M_bronchoscopy__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable pulmonary_M_CT_GuidedPunction__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable pulmonary_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+variable pulmonary_M_bronchoscopy_GuidedPunction__patient {
+    type discrete [ 3 ] { MX, M0, M1 };
+    property weight = None ;
+}
+variable skin_M__patient {
+    type discrete [ 2 ] { M0, M1 };
+    property weight = None ;
+}
+probability ( M_state__patient | pleura_M__patient, peritoneum_M__patient, distant_lymphnode_M__patient, bone_M__patient, skin_M__patient, bonemarrow_M__patient, brain_M__patient, hepar_M__patient, pulmonary_M__patient, other_location_M__patient ) {
+    ( M0, M0, M0, M0, M0, M0, M0, M0, M0, M0 ) 0.99, 0.01;
+    ( M0, M0, M0, M0, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M0, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M0, M1, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M0, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M0, M1, M1, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M0, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M0, M1, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M0, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M0, M1, M1, M1, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M0, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M0, M1, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M0, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M0, M1, M1, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M0, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M0, M1, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M0, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M0, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M0, M1, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M0, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M0, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M0, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M0, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M0, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M0, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M0, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M0, M1, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M1, M0, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M1, M0, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M1, M0, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M1, M0, M1, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M1, M1, M0, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M1, M1, M0, M1 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M1, M1, M1, M0 ) 0.01, 0.99;
+    ( M1, M1, M1, M1, M1, M1, M1, M1, M1, M1 ) 0.01, 0.99;
+
+}
+probability ( bm_M_CR_body__patient | bonemarrow_M__patient ) {
+    ( M0 ) 0.2547169811320755, 0.6132075471698113, 0.1320754716981132;
+    ( M1 ) 0.2890625, 0.2265625, 0.484375;
+
+}
+probability ( bm_M_CT_body__patient | bonemarrow_M__patient ) {
+    ( M0 ) 0.0925925925925926, 0.8240740740740741, 0.08333333333333334;
+    ( M1 ) 0.0462962962962963, 0.1296296296296297, 0.8240740740740741;
+
+}
+probability ( bm_M_PET_body__patient | bonemarrow_M__patient ) {
+    ( M0 ) 0.0392156862745098, 0.9313725490196079, 0.02941176470588235;
+    ( M1 ) 0.04854368932038835, 0.03883495145631068, 0.912621359223301;
+
+}
+probability ( bm_M_Scinti__patient | bonemarrow_M__patient ) {
+    ( M0 ) 0.06, 0.85, 0.09;
+    ( M1 ) 0.02912621359223301, 0.05825242718446602, 0.912621359223301;
+
+}
+probability ( bone_M_CT_body__patient | bone_M__patient ) {
+    ( M0 ) 0.05660377358490566, 0.8679245283018868, 0.07547169811320754;
+    ( M1 ) 0.05769230769230769, 0.0673076923076923, 0.875;
+
+}
+probability ( bone_M_PET_body__patient | bone_M__patient ) {
+    ( M0 ) 0.009900990099009901, 0.9504950495049505, 0.0396039603960396;
+    ( M1 ) 0.01, 0.04, 0.95;
+
+}
+probability ( bone_M_Scinti__patient | bone_M__patient ) {
+    ( M0 ) 0.0196078431372549, 0.9411764705882352, 0.0392156862745098;
+    ( M1 ) 0.02912621359223301, 0.03883495145631068, 0.9320388349514563;
+
+}
+probability ( bone_M__patient ) {
+    table 0.9615384615384616, 0.03846153846153846 ;
+}
+probability ( bone_M_fracture__patient | bone_M__patient ) {
+    ( M0 ) 0.3490566037735849, 0.6037735849056604, 0.04716981132075472;
+    ( M1 ) 0.2578616352201258, 0.2389937106918239, 0.5031446540880503;
+
+}
+probability ( bonemarrow_M__patient ) {
+    table 0.9619047619047619, 0.03809523809523809 ;
+}
+probability ( brain_M_PET__patient | brain_M__patient ) {
+    ( M0 ) 0.2265625, 0.6171875, 0.15625;
+    ( M1 ) 0.3387096774193548, 0.1532258064516129, 0.5080645161290323;
+
+}
+probability ( brain_M__patient ) {
+    table 0.9716981132075472, 0.02830188679245283 ;
+}
+probability ( brain_M_cCT__patient | brain_M__patient ) {
+    ( M0 ) 0.0297029702970297, 0.9207920792079207, 0.04950495049504951;
+    ( M1 ) 0.03883495145631068, 0.05825242718446602, 0.9029126213592233;
+
+}
+probability ( brain_M_cMRT__patient | brain_M__patient ) {
+    ( M0 ) 0.02040816326530612, 0.9489795918367347, 0.03061224489795919;
+    ( M1 ) 0.0297029702970297, 0.04950495049504951, 0.9207920792079207;
+
+}
+probability ( distant_lymphnode_CR_thorax__patient | distant_lymphnode_M__patient ) {
+    ( M0 ) 0.8285714285714285, 0.07619047619047618, 0.09523809523809523;
+    ( M1 ) 0.2090909090909091, 0.6818181818181818, 0.1090909090909091;
+
+}
+probability ( distant_lymphnode_CT_thorax__patient | distant_lymphnode_M__patient ) {
+    ( M0 ) 0.9019607843137254, 0.0588235294117647, 0.0392156862745098;
+    ( M1 ) 0.07766990291262137, 0.8737864077669903, 0.04854368932038835;
+
+}
+probability ( distant_lymphnode_M__patient ) {
+    table 0.9615384615384616, 0.03846153846153846 ;
+}
+probability ( distant_lymphnode_PET_thorax__patient | distant_lymphnode_M__patient ) {
+    ( M0 ) 0.8910891089108911, 0.0594059405940594, 0.04950495049504951;
+    ( M1 ) 0.04950495049504951, 0.900990099009901, 0.04950495049504951;
+
+}
+probability ( distant_lymphnode_endosono__patient | distant_lymphnode_M__patient ) {
+    ( M0 ) 0.8415841584158416, 0.06930693069306931, 0.08910891089108912;
+    ( M1 ) 0.1214953271028037, 0.7943925233644861, 0.08411214953271028;
+
+}
+probability ( hep_M_CT_GuidedPunction__patient | hepar_M__patient ) {
+    ( M0 ) 0.05825242718446602, 0.9223300970873787, 0.01941747572815534;
+    ( M1 ) 0.01941747572815534, 0.05825242718446602, 0.9223300970873787;
+
+}
+probability ( hep_M_CT_abdomen__patient | hepar_M__patient ) {
+    ( M0 ) 0.02912621359223301, 0.8932038834951456, 0.07766990291262137;
+    ( M1 ) 0.02912621359223301, 0.07766990291262137, 0.8932038834951456;
+
+}
+probability ( hep_M_Sono_GuidedPunction__patient | hepar_M__patient ) {
+    ( M0 ) 0.0679611650485437, 0.912621359223301, 0.01941747572815534;
+    ( M1 ) 0.0196078431372549, 0.0588235294117647, 0.9215686274509803;
+
+}
+probability ( hep_M_Sono_abdomen__patient | hepar_M__patient ) {
+    ( M0 ) 0.03883495145631068, 0.8737864077669903, 0.08737864077669903;
+    ( M1 ) 0.03883495145631068, 0.08737864077669903, 0.8737864077669903;
+
+}
+probability ( hepar_M__patient ) {
+    table 0.9519230769230769, 0.04807692307692307 ;
+}
+probability ( other_location_M__patient ) {
+    table 0.9615384615384616, 0.03846153846153846 ;
+}
+probability ( other_location_M_diagnostic__patient | other_location_M__patient ) {
+    ( M0 ) 0.009900990099009901, 0.9504950495049505, 0.0396039603960396;
+    ( M1 ) 0.009900990099009901, 0.04950495049504951, 0.9405940594059407;
+
+}
+probability ( others_M_CT_abdomen__patient | skin_M__patient ) {
+    ( M0 ) 0.02830188679245283, 0.9056603773584905, 0.0660377358490566;
+    ( M1 ) 0.02941176470588235, 0.0392156862745098, 0.9313725490196079;
+
+}
+probability ( others_M_Sono_abdomen__patient | skin_M__patient ) {
+    ( M0 ) 0.04854368932038835, 0.8932038834951456, 0.05825242718446602;
+    ( M1 ) 0.04807692307692307, 0.08653846153846154, 0.8653846153846154;
+
+}
+probability ( perit_M_CT_abdomen__patient | peritoneum_M__patient ) {
+    ( M0 ) 0.04807692307692307, 0.9038461538461539, 0.04807692307692307;
+    ( M1 ) 0.04901960784313725, 0.04901960784313725, 0.9019607843137254;
+
+}
+probability ( perit_M_Sono_abdomen__patient | peritoneum_M__patient ) {
+    ( M0 ) 0.1296296296296297, 0.7962962962962963, 0.07407407407407407;
+    ( M1 ) 0.180952380952381, 0.08571428571428572, 0.7333333333333333;
+
+}
+probability ( peritoneum_M__patient ) {
+    table 0.9714285714285714, 0.02857142857142857 ;
+}
+probability ( pleu_M_CR_thorax__patient | pleura_M__patient ) {
+    ( M0 ) 0.1071428571428572, 0.7767857142857143, 0.1160714285714286;
+    ( M1 ) 0.1217391304347826, 0.191304347826087, 0.6869565217391305;
+
+}
+probability ( pleu_M_CT_thorax__patient | pleura_M__patient ) {
+    ( M0 ) 0.0303030303030303, 0.9393939393939396, 0.0303030303030303;
+    ( M1 ) 0.03846153846153846, 0.09615384615384615, 0.8653846153846154;
+
+}
+probability ( pleu_M_PET_thorax__patient | pleura_M__patient ) {
+    ( M0 ) 0.04950495049504951, 0.8910891089108911, 0.0594059405940594;
+    ( M1 ) 0.03883495145631068, 0.0970873786407767, 0.8640776699029127;
+
+}
+probability ( pleu_M_guidedPunction__patient | pleura_M__patient ) {
+    ( M0 ) 0.04901960784313725, 0.9313725490196079, 0.0196078431372549;
+    ( M1 ) 0.02941176470588235, 0.0784313725490196, 0.8921568627450981;
+
+}
+probability ( pleura_M__patient ) {
+    table 0.98, 0.02 ;
+}
+probability ( pul_M_CR_thorax__patient | pulmonary_M__patient ) {
+    ( M0 ) 0.1919191919191919, 0.7575757575757577, 0.05050505050505051;
+    ( M1 ) 0.3095238095238095, 0.2936507936507937, 0.3968253968253969;
+
+}
+probability ( pul_M_CT_thorax__patient | pulmonary_M__patient ) {
+    ( M0 ) 0.0990990990990991, 0.8288288288288288, 0.07207207207207207;
+    ( M1 ) 0.07692307692307693, 0.07692307692307693, 0.8461538461538461;
+
+}
+probability ( pul_M_PET_thorax__patient | pulmonary_M__patient ) {
+    ( M0 ) 0.04807692307692307, 0.9038461538461539, 0.04807692307692307;
+    ( M1 ) 0.07476635514018691, 0.04672897196261682, 0.8785046728971964;
+
+}
+probability ( pul_M_bronchoscopy__patient | pulmonary_M__patient ) {
+    ( M0 ) 0.1238095238095238, 0.8095238095238095, 0.06666666666666667;
+    ( M1 ) 0.4972677595628416, 0.3224043715846995, 0.1803278688524591;
+
+}
+probability ( pulmonary_M_CT_GuidedPunction__patient | pulmonary_M__patient ) {
+    ( M0 ) 0.009900990099009901, 0.9702970297029703, 0.0198019801980198;
+    ( M1 ) 0.08256880733944955, 0.05504587155963304, 0.8623853211009176;
+
+}
+probability ( pulmonary_M__patient ) {
+    table 0.9509803921568627, 0.04901960784313725 ;
+}
+probability ( pulmonary_M_bronchoscopy_GuidedPunction__patient | pulmonary_M__patient ) {
+    ( M0 ) 0.1181818181818182, 0.8636363636363636, 0.01818181818181818;
+    ( M1 ) 0.08108108108108109, 0.08108108108108109, 0.8378378378378379;
+
+}
+probability ( skin_M__patient ) {
+    table 0.97, 0.03 ;
+}
