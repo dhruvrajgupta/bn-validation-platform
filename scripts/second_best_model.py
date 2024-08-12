@@ -5,4 +5,4 @@
 # We will perform NOTEARS Structure Learning as it is the 
 # current SOTA Structure Learning method
 # CausalNex library already contains the method
-
+# https://proceedings.neurips.cc/paper_files/paper/2018/file/e347c51419ffb23ca3fd5050202f9c3d-Paper.pdf
