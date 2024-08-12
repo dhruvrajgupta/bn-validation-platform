@@ -11,6 +11,7 @@
 from causalnex.structure import StructureModel
 import warnings
 from pgmpy.readwrite import BIFReader
+import pandas as pd
 
 warnings.filterwarnings("ignore")  # silence warnings
 
@@ -34,3 +35,8 @@ viz = plot_structure(
     all_edge_attributes=EDGE_STYLE.WEAK,
 )
 viz.show("M_State_BN.html")
+
+data = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
+print(data.head())
+data = data[[c for c in data.columns if c in model.nodes()]]
+print(data.head())
