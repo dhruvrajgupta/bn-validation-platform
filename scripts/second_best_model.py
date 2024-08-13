@@ -2,7 +2,7 @@
 # so that it can be compared to the best model aka (LC/Mstage xdsl file)
 # best model will be stored in the 'best_model' folder
 
-# We will perform NOTEARS Structure Learning as it is the 
+# We will perform NOTEARS Structure Learning as it is the
 # current SOTA Structure Learning method
 # CausalNex library already contains the method
 # https://proceedings.neurips.cc/paper_files/paper/2018/file/e347c51419ffb23ca3fd5050202f9c3d-Paper.pdf
@@ -14,6 +14,7 @@ from pgmpy.readwrite import BIFReader
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
+from causalnex.structure.notears import from_pandas
 
 warnings.filterwarnings("ignore")  # silence warnings
 
@@ -43,9 +44,10 @@ viz.show("M_State_BN.html")
 data = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
 # data = pd.read_csv("/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv")
 
-print(data.head())
+# print(data.head())
+data = data[:2000]
 data = data[[c for c in data.columns if c in model.nodes()]]
-print(data.head())
+# print(data.head())
 
 # non_numeric_columns = list(data.select_dtypes(exclude=[np.number]).columns)
 # print(len(non_numeric_columns))
@@ -63,3 +65,17 @@ for col in data:
 # print(le.classes_)
 # print(le.inverse_transform(data.loc[0]))
 # print(categorical_mappings)
+
+sm = from_pandas(data, w_threshold=0.8)
+viz = plot_structure(
+    sm,
+    all_node_attributes=NODE_STYLE.WEAK,
+    all_edge_attributes=EDGE_STYLE.WEAK,
+    plot_options={
+        "width": "100%",
+        "height": "1000px",
+    }
+)
+
+viz.toggle_physics(False)
+viz.show("01_fully_connected.html")
