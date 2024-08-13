@@ -12,6 +12,8 @@ from causalnex.structure import StructureModel
 import warnings
 from pgmpy.readwrite import BIFReader
 import pandas as pd
+import numpy as np
+from sklearn.preprocessing import LabelEncoder
 
 warnings.filterwarnings("ignore")  # silence warnings
 
@@ -19,7 +21,9 @@ sm = StructureModel()
 
 # Learning structure from the best model to get the second best model
 
-reader = BIFReader("/home/dhruv/Desktop/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+# reader = BIFReader("/home/dhruv/Desktop/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+reader = BIFReader("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+
 model = reader.get_model()
 print(model)
 
@@ -36,7 +40,20 @@ viz = plot_structure(
 )
 viz.show("M_State_BN.html")
 
-data = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
+# data = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
+data = pd.read_csv("/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv")
+
 print(data.head())
 data = data[[c for c in data.columns if c in model.nodes()]]
 print(data.head())
+
+# non_numeric_columns = list(data.select_dtypes(exclude=[np.number]).columns)
+# print(len(non_numeric_columns))
+
+le = LabelEncoder()
+
+for col in data:
+    data[col] = le.fit_transform(data[col])
+
+print(data.head(5))
+print(le.classes_)
