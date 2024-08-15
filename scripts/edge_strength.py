@@ -1,6 +1,8 @@
 # Edge Strength based on statistics with datasets using BNLearn python package
 
 import bnlearn as bn
+from utils import parse_xdsl, build_network
+
 
 bif_file = "/home/dhruv/Desktop/bn-validation-platform/scripts/best_model/best_model_M_stage.bif"
 model = bn.import_DAG(bif_file)
@@ -25,3 +27,17 @@ model = bn.import_DAG(bif_file)
 # [bnlearn] >CPD [pulmonary_M_CT_GuidedPunction__patient] does not add up to 1 but is: [1. 1.]
 
 # So manually create the DAG reading the xdsl file
+xdsl_file_path = "/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/Mstage.xdsl"
+
+nodes = parse_xdsl(xdsl_file_path)
+model = build_network(nodes)
+
+if model.check_model():
+    print("The model is valid.")
+else:
+    print("The model is invalid.")
+
+print("\n")
+
+
+# Conver to bnlearn model
