@@ -45,7 +45,7 @@ data = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100perce
 # data = pd.read_csv("/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv")
 
 # print(data.head())
-data = data[:2000]
+data = data[:1000]
 data = data[[c for c in data.columns if c in model.nodes()]]
 # print(data.head())
 
@@ -66,16 +66,26 @@ for col in data:
 # print(le.inverse_transform(data.loc[0]))
 # print(categorical_mappings)
 
-sm = from_pandas(data, w_threshold=0.8)
+sm = from_pandas(data, w_threshold=0.5)
+edge_attributes = {}
+for edge in sm.edges(data=True):
+    print(edge)
+    edge_tuple = (edge[0], edge[1])
+    weight = edge[2]["weight"]
+    # if weight > 0.8:
+    edge_attributes[edge_tuple] = {"width": 5*weight}
+
 viz = plot_structure(
     sm,
     all_node_attributes=NODE_STYLE.WEAK,
     all_edge_attributes=EDGE_STYLE.WEAK,
+    edge_attributes=edge_attributes,
     plot_options={
         "width": "100%",
-        "height": "1000px",
+        "height": "600px",
     }
 )
 
 viz.toggle_physics(False)
+viz.show_buttons(filter_=['physics'])
 viz.show("01_fully_connected.html")
