@@ -103,4 +103,4 @@ viz = plot_structure(
 
 viz.toggle_physics(False)
 viz.show_buttons(filter_=['physics'])
-viz.show("01_fully_connected.html")
+viz.show("SL_M_State_BN.html")
