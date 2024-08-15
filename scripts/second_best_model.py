@@ -15,6 +15,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from causalnex.structure.notears import from_pandas
+from sklearn.preprocessing import MinMaxScaler
 
 warnings.filterwarnings("ignore")  # silence warnings
 
@@ -68,12 +69,26 @@ for col in data:
 
 sm = from_pandas(data, w_threshold=0.5)
 edge_attributes = {}
+
+# Create a dataframe of weights
+edges_weights = {
+    "edges": [],
+    "weight": []
+}
 for edge in sm.edges(data=True):
     print(edge)
     edge_tuple = (edge[0], edge[1])
     weight = edge[2]["weight"]
+    edges_weights["edges"].append(edge_tuple)
+    edges_weights["weight"].append(weight)
     # if weight > 0.8:
     edge_attributes[edge_tuple] = {"width": 5*weight}
+
+edges_weights = pd.DataFrame.from_dict(edges_weights)
+# Normalize weights using MinMaxScaler
+scaler = MinMaxScaler()
+edges_weights['normalized_weight'] = scaler.fit_transform(edges_weights[['weight']])
+print(edges_weights)
 
 viz = plot_structure(
     sm,
