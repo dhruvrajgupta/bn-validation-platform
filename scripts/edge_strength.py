@@ -2,6 +2,7 @@
 import bnlearn
 import bnlearn as bn
 from utils import parse_xdsl, build_network
+import pandas as pd
 
 
 # bif_file = "/home/dhruv/Desktop/bn-validation-platform/scripts/best_model/best_model_M_stage.bif"
@@ -25,10 +26,12 @@ from utils import parse_xdsl, build_network
 # [bnlearn] >CPD [pleu_M_CT_thorax__patient] does not add up to 1 but is: [1. 1.]
 # [bnlearn] >CPD [pul_M_CR_thorax__patient] does not add up to 1 but is: [1. 1.]
 # [bnlearn] >CPD [pulmonary_M_CT_GuidedPunction__patient] does not add up to 1 but is: [1. 1.]
+# These warnings due to floating point precision errors
+
 
 # So manually create the DAG reading the xdsl file
-# xdsl_file_path = "/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/Mstage.xdsl"
-xdsl_file_path = "/home/dhruv/Desktop/bn-validation-platform/scripts/Mstage.xdsl"
+xdsl_file_path = "/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/Mstage.xdsl"
+# xdsl_file_path = "/home/dhruv/Desktop/bn-validation-platform/scripts/Mstage.xdsl"
 
 nodes = parse_xdsl(xdsl_file_path)
 model = build_network(nodes)
@@ -53,13 +56,16 @@ print(type(x))
 model = bnlearn.make_DAG(DAG=model, CPD=cpds)
 print(model.keys())
 
-# dataset_paths = [
-#     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv",
-#     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv",
-#     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv",
-#     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv",
-# ]
-#
-# df = pd.read_csv(dataset_path)
-#
-# model = bnlearn.independence_test(model, )
+dataset_paths = [
+    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv",
+    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv",
+    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv",
+    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv",
+]
+
+df = pd.read_csv(dataset_paths[3])
+
+model = bnlearn.independence_test(model, df, test="chi_square")
+
+print(model.keys())
+print(model['independence_test'])
