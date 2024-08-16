@@ -30,8 +30,8 @@ import pandas as pd
 
 
 # So manually create the DAG reading the xdsl file
-xdsl_file_path = "/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/Mstage.xdsl"
-# xdsl_file_path = "/home/dhruv/Desktop/bn-validation-platform/scripts/Mstage.xdsl"
+# xdsl_file_path = "/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/Mstage.xdsl"
+xdsl_file_path = "/home/dhruv/Desktop/bn-validation-platform/scripts/Mstage.xdsl"
 
 nodes = parse_xdsl(xdsl_file_path)
 model = build_network(nodes)
@@ -46,9 +46,9 @@ print("\n")
 
 # Convert to bnlearn model
 edges_list = [edge for edge in model.edges]
-print(edges_list)
+print(len(edges_list))
 cpds = model.get_cpds()
-print(cpds)
+# print(cpds)
 
 x = model.get_cpds("bm_M_Scinti__patient")
 print(x)
@@ -56,16 +56,24 @@ print(type(x))
 model = bnlearn.make_DAG(DAG=model, CPD=cpds)
 print(model.keys())
 
+# dataset_paths = [
+#     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv",
+#     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv",
+#     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv",
+#     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv",
+# ]
+
 dataset_paths = [
-    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv",
-    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv",
-    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv",
-    "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv",
+    "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
+    "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
+    "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
+    "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv",
 ]
 
 df = pd.read_csv(dataset_paths[3])
 
-model = bnlearn.independence_test(model, df, test="chi_square")
+model = bnlearn.independence_test(model, df, test="g_sq")
+# The G-test is often preferred over the Chi-square test when dealing with smaller sample sizes or when the data involves counts.
 
 print(model.keys())
 print(model['independence_test'])
