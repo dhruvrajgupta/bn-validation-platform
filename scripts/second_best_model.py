@@ -27,8 +27,8 @@ def sl_second_best_model():
 
     # Learning structure from the best model to get the second best model
 
-    reader = BIFReader("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
     # reader = BIFReader("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+    reader = BIFReader("/home/dhruv/Desktop/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
 
     model = reader.get_model()
     print(model)
@@ -46,11 +46,11 @@ def sl_second_best_model():
     )
     viz.show("M_State_BN.html")
 
-    # data = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
-    data = pd.read_csv("/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv")
+    data = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
+    # data = pd.read_csv("/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv")
 
     # print(data.head())
-    data = data[:100]
+    data = data[:2000]
     data = data[[c for c in data.columns if c in model.nodes()]]
     # print(data.head())
 
@@ -115,17 +115,24 @@ def sl_second_best_model():
     # Converting the DAG to bnlearn model
     edges_list = [edge for edge in sm.edges]
     sm = bnlearn.make_DAG(DAG=edges_list)
-    bnlearn.save(model=model, filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest.pkl")
+    bnlearn.save(model=model, filepath="second_best_model/2ndbest.pkl")
     print(sm.keys())
 
 
 def edge_strenght_stats_ds():
-    model = bnlearn.load(filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest.pkl")
+    model = bnlearn.load(filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest.pkl")
+    # dataset_paths = [
+    #     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv",
+    #     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv",
+    #     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv",
+    #     "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv",
+    # ]
+
     dataset_paths = [
-        "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv",
-        "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv",
-        "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv",
-        "/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv",
     ]
     model = bnlearn.make_DAG(DAG=model)
     print(model.keys())
