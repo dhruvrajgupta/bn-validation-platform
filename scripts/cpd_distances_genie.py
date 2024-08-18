@@ -91,8 +91,8 @@ def euclidean_distance(p, q):
             q_row += 1
         print()
 
-    print(np.sqrt(p_q_diff_square_sum))
-    return np.sqrt(p_q_diff_square_sum)
+    print(np.sqrt(p_q_diff_square_sum)/np.sqrt(2))
+    return np.sqrt(p_q_diff_square_sum)/np.sqrt(2)
     # return np.sqrt(np.sum((p - q) ** 2))
 
 euclidean_distance(cpd_p, cpd_q)
