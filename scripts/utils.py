@@ -249,6 +249,13 @@ def euclidean_distance_marginalization(p, q):
     return distance
 
 def euclidean_distance_marginalization_avg(p, q):
+    ##### PROMPT #### DeepSeekCoder
+    # i have two nodes 'P' and 'Q', node 'P' has 2 states where as node 'Q' has 3 states. 
+    # P and Q are part of Directed Acyclic Graph where 'P' --> 'Q'. 'P' and 'Q' both have conditional probability tables. 
+    # I want to find the euclidean distance between conditional probability distribution 'P' and conditional probability distribution 'Q'.
+    ##################
+
+
     # print("="*50)
     # print("MARGINALIZATION")
     #     p_evidence = cpd_p.get_evidence()
