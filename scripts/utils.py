@@ -174,3 +174,159 @@ def euclidean_distance(p, q):
     # return distance
     # print("-"*50)
     return distance
+
+
+def euclidean_distance_marginalization(p, q):
+    # print("="*50)
+    # print("MARGINALIZATION")
+    #     p_evidence = cpd_p.get_evidence()
+    # print(p_evidence)
+    # cpd_p = cpd_p.marginalize(p_evidence, inplace=False)
+    # print(cpd_p)
+    # print(cpd_p.variable)
+
+    # q_evidence = cpd_q.get_evidence()
+    # q_evidence.remove(cpd_p.variable)
+    # print(q_evidence)
+    # if q_evidence:
+    #     cpd_q = cpd_q.marginalize(q_evidence, inplace=False)
+    # print(cpd_q)
+
+    # p_flat = cpd_p.get_values().flatten()
+    # print(p_flat)
+    # q_flat = cpd_q.get_values().flatten()
+    # print(q_flat)
+
+    # if len(p_flat) < len(q_flat):
+    #     p_flat = np.pad(p_flat, (0, len(q_flat) - len(p_flat)), 'constant')
+    # else:
+    #     q_flat = np.pad(q_flat, (0, len(p_flat) - len(q_flat)), 'constant')
+
+    # print(p_flat)
+    # print(q_flat)
+
+    # distance = np.sqrt(np.sum(p_flat - q_flat) ** 2)
+    # print(distance)
+
+
+    # Marginalization of P
+    p_evidence = p.get_evidence()
+    # print(f"P: {p.variable}")
+    # print(f"P evidence: {p_evidence}")
+    p = p.marginalize(variables=p_evidence, inplace=False)
+
+    # print(p)
+
+    q_evidence = q.get_evidence()
+    # print(f"Q: {q.variable}")
+    # print(f"Q evidence: {q_evidence}")
+    q_evidence.remove(p.variable)
+    q = q.marginalize(q_evidence, inplace=False)
+
+    # print(q)
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    # Num of Columns of Q
+    p_repeat = q_vals.shape[1]
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(f"P Flat: {p_flat}")
+
+    q_flat = q_vals.flatten()
+    # print(f"Q Flat: {q_flat}")
+
+    # print(f"Len P Flat: {len(p_flat)}")
+    # print(f"Len Q Flat: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+
+    distance = np.sqrt(np.sum((p_flat - q_flat) ** 2))
+    # print(distance)
+
+    # print("="*50)
+    return distance
+
+def euclidean_distance_marginalization_avg(p, q):
+    # print("="*50)
+    # print("MARGINALIZATION")
+    #     p_evidence = cpd_p.get_evidence()
+    # print(p_evidence)
+    # cpd_p = cpd_p.marginalize(p_evidence, inplace=False)
+    # print(cpd_p)
+    # print(cpd_p.variable)
+
+    # q_evidence = cpd_q.get_evidence()
+    # q_evidence.remove(cpd_p.variable)
+    # print(q_evidence)
+    # if q_evidence:
+    #     cpd_q = cpd_q.marginalize(q_evidence, inplace=False)
+    # print(cpd_q)
+
+    # p_flat = cpd_p.get_values().flatten()
+    # print(p_flat)
+    # q_flat = cpd_q.get_values().flatten()
+    # print(q_flat)
+
+    # if len(p_flat) < len(q_flat):
+    #     p_flat = np.pad(p_flat, (0, len(q_flat) - len(p_flat)), 'constant')
+    # else:
+    #     q_flat = np.pad(q_flat, (0, len(p_flat) - len(q_flat)), 'constant')
+
+    # print(p_flat)
+    # print(q_flat)
+
+    # distance = np.sqrt(np.sum(p_flat - q_flat) ** 2)
+    # print(distance)
+
+
+    # Marginalization of P
+    p_evidence = p.get_evidence()
+    # print(f"P: {p.variable}")
+    # print(f"P evidence: {p_evidence}")
+    p = p.marginalize(variables=p_evidence, inplace=False)
+
+    # print(p)
+
+    q_evidence = q.get_evidence()
+    # print(f"Q: {q.variable}")
+    # print(f"Q evidence: {q_evidence}")
+    q_evidence.remove(p.variable)
+    q = q.marginalize(q_evidence, inplace=False)
+
+    # print(q)
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    # Num of Columns of Q
+    p_repeat = q_vals.shape[1]
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(f"P Flat: {p_flat}")
+
+    q_flat = q_vals.flatten()
+    # print(f"Q Flat: {q_flat}")
+
+    # print(f"Len P Flat: {len(p_flat)}")
+    # print(f"Len Q Flat: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+    
+    sub_square = np.subtract(p_flat, q_flat) ** 2
+    # print(sub_square)
+    num_rows = p_vals.shape[1]
+    num_cols = len(sub_square)//num_rows
+    sub_square = sub_square.reshape(num_rows, num_cols)
+    # print(sub_square)
+    x_sum = np.sum(sub_square, axis=1)
+    # print(x_sum)
+    distance = np.mean(x_sum)
+    # print(mean)
+
+    # distance = np.sqrt(np.sum((p_flat - q_flat) ** 2))
+    # print(distance)
+
+    # print("="*50)
+    return distance

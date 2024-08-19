@@ -1,7 +1,7 @@
 from pgmpy.models import BayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 import numpy as np
-from utils import euclidean_distance
+from utils import euclidean_distance, euclidean_distance_marginalization
 
 # Define the structure of the DAG: O --> P --> Q
 model = BayesianNetwork([('O', 'P'), ('P', 'Q')])
@@ -88,8 +88,9 @@ model.add_cpds(cpd_o, cpd_p, cpd_q)
 #     print(distance)
     # return np.sqrt(np.sum((p - q) ** 2))
 
-euclidean_distance(cpd_p, cpd_q)
+# euclidean_distance(cpd_p, cpd_q)
 # Ans: 0.9797958971132713
+euclidean_distance_marginalization(cpd_p, cpd_q)
 
 ## Euclidean Distance of two CPDs
 model = BayesianNetwork()
@@ -104,5 +105,6 @@ model.add_cpds(p_cpd, q_cpd)
 
 print(p_cpd)
 print(q_cpd)
-euclidean_distance(p_cpd, q_cpd)
+# euclidean_distance(p_cpd, q_cpd)
 # # Ans: 0.5477225575051662
+euclidean_distance_marginalization(p_cpd, q_cpd)
