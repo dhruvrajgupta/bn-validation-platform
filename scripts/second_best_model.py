@@ -21,7 +21,6 @@ import bnlearn
 warnings.filterwarnings("ignore")  # silence warnings
 
 
-
 def sl_second_best_model():
     sm = StructureModel()
 
@@ -86,7 +85,7 @@ def sl_second_best_model():
         edges_weights["edges"].append(edge_tuple)
         edges_weights["weight"].append(weight)
         # if weight > 0.8:
-        edge_attributes[edge_tuple] = {"width": 5*weight}
+        edge_attributes[edge_tuple] = {"width": 5 * weight}
 
     edges_weights = pd.DataFrame.from_dict(edges_weights)
     # Normalize weights using MinMaxScaler
@@ -109,12 +108,12 @@ def sl_second_best_model():
     viz.show_buttons(filter_=['physics'])
     viz.show("SL_M_State_BN.html")
 
-
     # Strength of arrow or edges using data statistics
 
     # Converting the DAG to bnlearn model
     edges_list = [edge for edge in sm.edges]
     sm = bnlearn.make_DAG(DAG=edges_list)
+    # This can have cycles hence saving the original model
     bnlearn.save(model=model, filepath="second_best_model/2ndbest.pkl")
     print(sm.keys())
 
@@ -150,6 +149,48 @@ def edge_strenght_stats_ds():
     edges_weights_df['normalized_weight'] = scaler.fit_transform(edges_weights_df[['g_sq']])
     print(edges_weights_df)
 
+def learn_cpds():
+    model = bnlearn.load(filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest.pkl")
+    model = bnlearn.make_DAG(DAG=model)
+
+    dataset_paths = [
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv",
+    ]
+
+    pgmpy_model = model["model"]
+
+
+    df = pd.read_csv(dataset_paths[3])
+    df = df[[c for c in df.columns if c in pgmpy_model.nodes()]]
+    print(model.keys())
+
+    model = bnlearn.parameter_learning.fit(model, df)
+    # [Uses only 1000 as sample size]
+    bnlearn.save(model, filepath="second_best_model/2ndbest_cpds.pkl")
+
+def cpd_weigts():
+    from cpd_distances_genie import euclidean_distance
+    model = bnlearn.load(filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest.pkl")
+    model = bnlearn.make_DAG(DAG=model)
+
+    print(model.keys())
+    pgmpy_model = model["model"]
+    # print(pgmpy_model.get_cpds())
+    # print(model["model_edges"])
+    for edge in model["model_edges"]:
+        print(edge)
+        p = edge[0]
+        q = edge[1]
+        p = pgmpy_model.get_cpds(p)
+        q = pgmpy_model.get_cpds(q)
+        weight = euclidean_distance(p,q)
+
+
 if __name__ == "__main__":
     # sl_second_best_model()
-    edge_strenght_stats_ds()
+    # edge_strenght_stats_ds()
+    # learn_cpds()
+    cpd_weigts()
