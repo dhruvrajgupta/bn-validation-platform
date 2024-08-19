@@ -105,3 +105,72 @@ def build_network(nodes):
         model.add_cpds(cpd)
 
     return model
+
+def euclidean_distance(p, q):
+    # print("P values:")
+    # print(p.get_values())
+    # print("Q values:")
+    # print(q.get_values())
+    # print()
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    p_row_before = p_vals.shape[0]
+
+    # print("P Transpose:")
+    # print(p_vals)
+    # print("Q Transpose:")
+    # print(q_vals)
+
+    # Match Col of P with Row of Q
+    p_row, p_col = p_vals.shape
+    q_row, q_col = q_vals.shape
+
+    if q_row > p_col:
+        # print("Tiling P to match Q")
+        p_tile_repeat = q_row // p_col
+        p_vals = np.tile(p_vals, (p_tile_repeat, 1))
+    elif q_row < p_col:
+        # Change P to Q
+        euclidean_distance(q, p)
+
+    # print(p_vals)
+    # print(p_vals.shape)
+    # print(q_vals)
+    # print(q_vals.shape)
+
+    # P Repeat = no. of columns of q or no of states of q
+    p_repeat = q_vals.shape[1]
+    # print(f"P repeat: {p_repeat}")
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(p_flat)
+    # print(f"Lenght of P Flat: {len(p_flat)}")
+    
+    # Q repeat = no of rows of p
+    q_repeat = p_row_before
+    # print(f"Q repeat: {q_repeat}")
+    q_tiled = np.tile(q_vals, (q_repeat, 1))
+    # print("Q tiled shape: ",q_tiled.shape)
+    q_flat = q_tiled.flatten()
+    # print(q_flat)
+    # print(f"Q Flat Length: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+    
+    # print()
+    # s = 0
+    # for i in range(len(p_flat)):
+    #     # print(p_flat[i], q_flat[i])
+    #     diff = (p_flat[i] - q_flat[i]) ** 2
+    #     # print(diff)
+    #     s += diff
+    # print(f"Sum: {s}")
+    # print(f"SQRT: {np.sqrt(s)}")
+    # Calculate the Euclidean distance
+    distance = np.sqrt(np.sum((p_flat - q_flat) ** 2))
+    # print(distance)
+    # return distance
+    # print("-"*50)
+    return distance

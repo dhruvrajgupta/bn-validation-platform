@@ -1,6 +1,7 @@
 from pgmpy.models import BayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 import numpy as np
+from utils import euclidean_distance
 
 # Define the structure of the DAG: O --> P --> Q
 model = BayesianNetwork([('O', 'P'), ('P', 'Q')])
@@ -53,49 +54,42 @@ model.add_cpds(cpd_o, cpd_p, cpd_q)
 
 
 
-def euclidean_distance(p, q):
-    print("P values:")
-    print(p.get_values())
-    print("Q values:")
-    print(q.get_values())
-    print()
+# def euclidean_distance(p, q):
+#     print("P values:")
+#     print(p.get_values())
+#     print("Q values:")
+#     print(q.get_values())
+#     print()
 
-    p_vals = p.get_values().transpose()
-    q_vals = q.get_values().transpose()
+#     p_vals = p.get_values().transpose()
+#     q_vals = q.get_values().transpose()
 
-    print("P Transpose:")
-    print(p_vals)
-    print("Q Transpose:")
-    print(q_vals)
+#     print("P Transpose:")
+#     print(p_vals)
+#     # P Repeat = no. of columns of q
+#     p_repeat = q_vals.shape[1]
+#     p_flat = np.repeat(p_vals, p_repeat)
+#     print(p_flat)
+#     print(f"Lenght of P Flat: {len(p_flat)}")
+#     print(f"P repeat: {p_repeat}")
+#     print("Q Transpose:")
+#     print(q_vals)
+#     # Q repeat = no of rows of p
+#     q_repeat = p_vals.shape[0]
+#     print(f"Q repeat: {q_repeat}")
+#     q_tiled = np.tile(q_vals, (q_repeat, 1))
+#     print(q_tiled)
+#     q_flat = q_tiled.flatten()
+#     print(q_flat)
+#     print(f"Q Flat Length: {len(q_flat)}")
 
-    no_of_states_parent_p = cpd_p.get_values().shape[1]
-    print(f"No. of states of P parent: {no_of_states_parent_p}\n")
-
-    print("After Tiling Q with P parent (no.) states:")
-    q_vals = np.tile(q_vals, (no_of_states_parent_p, 1))
-    print(q_vals)
-
-    q_row = 0
-    p_q_diff_square_sum = 0
-    for p_par_state_id in range(p_vals.shape[0]):
-        for p_state_id in range(p_vals.shape[1]):
-            current_p_val = p_vals[p_par_state_id][p_state_id]
-            print(current_p_val)
-            print(q_vals[q_row])
-            for q in q_vals[q_row]:
-                p = current_p_val
-                print(f"p : {p}")
-                print(f"q: {q}")
-                p_q_diff_square_sum += (p - q) ** 2
-                print(f"p_q_diff_square_sum: {p_q_diff_square_sum}")
-            q_row += 1
-        print()
-
-    print(np.sqrt(p_q_diff_square_sum)/np.sqrt(2))
-    return np.sqrt(p_q_diff_square_sum)/np.sqrt(2)
+#     # Calculate the Euclidean distance
+#     distance = np.sqrt(np.sum((p_flat - q_flat) ** 2))
+#     print(distance)
     # return np.sqrt(np.sum((p - q) ** 2))
 
 euclidean_distance(cpd_p, cpd_q)
+# Ans: 0.9797958971132713
 
 ## Euclidean Distance of two CPDs
 model = BayesianNetwork()
@@ -111,4 +105,4 @@ model.add_cpds(p_cpd, q_cpd)
 print(p_cpd)
 print(q_cpd)
 euclidean_distance(p_cpd, q_cpd)
-# Ans: 0.5477225575051662
+# # Ans: 0.5477225575051662

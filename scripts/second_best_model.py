@@ -172,21 +172,23 @@ def learn_cpds():
     bnlearn.save(model, filepath="second_best_model/2ndbest_cpds.pkl")
 
 def cpd_weigts():
-    from cpd_distances_genie import euclidean_distance
-    model = bnlearn.load(filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest.pkl")
+    from utils import euclidean_distance
+    model = bnlearn.load(filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
     model = bnlearn.make_DAG(DAG=model)
 
     print(model.keys())
     pgmpy_model = model["model"]
     # print(pgmpy_model.get_cpds())
     # print(model["model_edges"])
+    count = 0
     for edge in model["model_edges"]:
-        print(edge)
+        # print(edge)
         p = edge[0]
         q = edge[1]
         p = pgmpy_model.get_cpds(p)
         q = pgmpy_model.get_cpds(q)
         weight = euclidean_distance(p,q)
+        print(edge, weight)
 
 
 if __name__ == "__main__":
