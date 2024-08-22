@@ -426,3 +426,70 @@ def j_divergence_distance(p, q):
         j_divergence = (kl_distance_p_q + kl_distance_q_p)/2
         j_divergence_norm = j_divergence/np.sqrt((j_divergence ** 2) + alpha)
         return j_divergence_norm
+
+
+def cdf_distance(p, q):
+
+    # The CDF distance is a good choice when there are ordinal nodes, because it represents the shift of probability
+    # according to the cumulative probability functions of the two distributions.
+    # Ordinal: if the states are ordered from left to right, from less important to most important
+
+    # p = np.array([0,0,1,0])
+    # print(p)
+    # p = np.cumsum(p)
+    # print(p)
+    # q = np.array([0.1, 0, 0, 0.9])
+    # print(q)
+    # q = np.cumsum(q)
+    # print(q)
+    # print(p.shape)
+    # no_elements = p.shape[0]
+    #
+    # cum_diff = np.absolute(np.subtract(p, q))
+    # print(cum_diff)
+    # distance = np.sum(cum_diff)
+    # multiplier = 1/(no_elements - 1)
+
+    # Marginalization of P
+    p_evidence = p.get_evidence()
+    # print(f"P: {p.variable}")
+    # print(f"P evidence: {p_evidence}")
+    p = p.marginalize(variables=p_evidence, inplace=False)
+
+    # print(p)
+
+    q_evidence = q.get_evidence()
+    # print(f"Q: {q.variable}")
+    # print(f"Q evidence: {q_evidence}")
+    q_evidence.remove(p.variable)
+    q = q.marginalize(q_evidence, inplace=False)
+
+    # print(q)
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    # Num of Columns of Q
+    p_repeat = q_vals.shape[1]
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(f"P Flat: {p_flat}")
+
+    q_flat = q_vals.flatten()
+    # # print(f"Q Flat: {q_flat}")
+
+    # print(f"Len P Flat: {len(p_flat)}")
+    # print(f"Len Q Flat: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+
+    p_flat = np.cumsum(p_flat)
+    q_flat = np.cumsum(q_flat)
+
+    no_elements = p_flat.shape[0]
+
+    cum_diff = np.absolute(np.subtract(p_flat, q_flat))
+    distance = np.sum(cum_diff)
+    multiplier = 1 / (no_elements - 1)
+
+    return multiplier * distance

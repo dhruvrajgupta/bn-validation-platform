@@ -173,7 +173,7 @@ def learn_cpds():
 
 def cpd_weigts():
     from utils import euclidean_distance, euclidean_distance_marginalization, euclidean_distance_marginalization_avg, \
-        euclidean_distance_marginalization_avg_normalized, hellinger_distance, j_divergence_distance
+        euclidean_distance_marginalization_avg_normalized, hellinger_distance, j_divergence_distance, cdf_distance
     # model = bnlearn.load(filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
     model = bnlearn.load(filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
     model = bnlearn.make_DAG(DAG=model)
@@ -197,6 +197,7 @@ def cpd_weigts():
         weight_norm = euclidean_distance_marginalization_avg_normalized(p, q)
         hellinger_distance_weight = hellinger_distance(p, q)
         j_divergence_weight = j_divergence_distance(p, q)
+        cdf_weight = cdf_distance(p, q)
         print("Edge: ", edge)
         print("mat manipulation:", weight)
         print("marginalization:", weignt_m)
@@ -204,6 +205,7 @@ def cpd_weigts():
         print("marginalization_avg_norm:", weight_norm)
         print("hellinger:", hellinger_distance_weight)
         print("J divergence:", j_divergence_weight)
+        print("CDF distance: ", cdf_weight)
         print()
         # count += 1
 
