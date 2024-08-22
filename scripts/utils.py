@@ -341,3 +341,41 @@ def euclidean_distance_marginalization_avg(p, q):
 def euclidean_distance_marginalization_avg_normalized(p, q):
     distance = euclidean_distance_marginalization_avg(p, q)
     return distance/np.sqrt(2)
+
+
+def hellinger_distance(p, q):
+    # Marginalization of P
+    p_evidence = p.get_evidence()
+    # print(f"P: {p.variable}")
+    # print(f"P evidence: {p_evidence}")
+    p = p.marginalize(variables=p_evidence, inplace=False)
+
+    # print(p)
+
+    q_evidence = q.get_evidence()
+    # print(f"Q: {q.variable}")
+    # print(f"Q evidence: {q_evidence}")
+    q_evidence.remove(p.variable)
+    q = q.marginalize(q_evidence, inplace=False)
+
+    # print(q)
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    # Num of Columns of Q
+    p_repeat = q_vals.shape[1]
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(f"P Flat: {p_flat}")
+
+    q_flat = q_vals.flatten()
+    # # print(f"Q Flat: {q_flat}")
+
+    # print(f"Len P Flat: {len(p_flat)}")
+    # print(f"Len Q Flat: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+
+    distance = np.sqrt(np.sum(np.subtract(np.sqrt(p_flat), np.sqrt(q_flat)) ** 2))
+    return distance/np.sqrt(2)
