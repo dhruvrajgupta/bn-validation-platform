@@ -337,3 +337,7 @@ def euclidean_distance_marginalization_avg(p, q):
 
     # print("="*50)
     return distance
+
+def euclidean_distance_marginalization_avg_normalized(p, q):
+    distance = euclidean_distance_marginalization_avg(p, q)
+    return distance/np.sqrt(2)

@@ -172,8 +172,10 @@ def learn_cpds():
     bnlearn.save(model, filepath="second_best_model/2ndbest_cpds.pkl")
 
 def cpd_weigts():
-    from utils import euclidean_distance, euclidean_distance_marginalization, euclidean_distance_marginalization_avg
-    model = bnlearn.load(filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
+    from utils import euclidean_distance, euclidean_distance_marginalization, euclidean_distance_marginalization_avg, \
+        euclidean_distance_marginalization_avg_normalized
+    # model = bnlearn.load(filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
+    model = bnlearn.load(filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
     model = bnlearn.make_DAG(DAG=model)
 
     print(model.keys())
@@ -192,9 +194,11 @@ def cpd_weigts():
         weight = euclidean_distance(p,q)
         weignt_m = euclidean_distance_marginalization(p,q)
         weight_avg = euclidean_distance_marginalization_avg(p,q)
-        print(edge, weight)
-        print(edge, weignt_m)
-        print(edge, weight_avg)
+        weight_norm = euclidean_distance_marginalization_avg_normalized(p, q)
+        print("mat manipulation:", edge, weight)
+        print("marginalization:", edge, weignt_m)
+        print("marginalization_avg:", edge, weight_avg)
+        print("marginalization_avg_norm:", edge, weight_norm)
         print()
         # count += 1
 
