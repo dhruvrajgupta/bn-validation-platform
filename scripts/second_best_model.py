@@ -173,7 +173,7 @@ def learn_cpds():
 
 def cpd_weigts():
     from utils import euclidean_distance, euclidean_distance_marginalization, euclidean_distance_marginalization_avg, \
-        euclidean_distance_marginalization_avg_normalized, hellinger_distance
+        euclidean_distance_marginalization_avg_normalized, hellinger_distance, j_divergence_distance
     # model = bnlearn.load(filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
     model = bnlearn.load(filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
     model = bnlearn.make_DAG(DAG=model)
@@ -196,11 +196,14 @@ def cpd_weigts():
         weight_avg = euclidean_distance_marginalization_avg(p,q)
         weight_norm = euclidean_distance_marginalization_avg_normalized(p, q)
         hellinger_distance_weight = hellinger_distance(p, q)
-        print("mat manipulation:", edge, weight)
-        print("marginalization:", edge, weignt_m)
-        print("marginalization_avg:", edge, weight_avg)
-        print("marginalization_avg_norm:", edge, weight_norm)
-        print("hellinger:", edge, hellinger_distance_weight)
+        j_divergence_weight = j_divergence_distance(p, q)
+        print("Edge: ", edge)
+        print("mat manipulation:", weight)
+        print("marginalization:", weignt_m)
+        print("marginalization_avg:", weight_avg)
+        print("marginalization_avg_norm:", weight_norm)
+        print("hellinger:", hellinger_distance_weight)
+        print("J divergence:", j_divergence_weight)
         print()
         # count += 1
 

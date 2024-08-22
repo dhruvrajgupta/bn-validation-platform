@@ -379,3 +379,50 @@ def hellinger_distance(p, q):
 
     distance = np.sqrt(np.sum(np.subtract(np.sqrt(p_flat), np.sqrt(q_flat)) ** 2))
     return distance/np.sqrt(2)
+
+def j_divergence_distance(p, q):
+    # Marginalization of P
+    p_evidence = p.get_evidence()
+    # print(f"P: {p.variable}")
+    # print(f"P evidence: {p_evidence}")
+    p = p.marginalize(variables=p_evidence, inplace=False)
+
+    # print(p)
+
+    q_evidence = q.get_evidence()
+    # print(f"Q: {q.variable}")
+    # print(f"Q evidence: {q_evidence}")
+    q_evidence.remove(p.variable)
+    q = q.marginalize(q_evidence, inplace=False)
+
+    # print(q)
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    # Num of Columns of Q
+    p_repeat = q_vals.shape[1]
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(f"P Flat: {p_flat}")
+
+    q_flat = q_vals.flatten()
+    # # print(f"Q Flat: {q_flat}")
+
+    # print(f"Len P Flat: {len(p_flat)}")
+    # print(f"Len Q Flat: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+
+    kl_distance_p_q = - np.sum(np.multiply(p_flat, np.log2(q_flat))) + np.sum(np.multiply(p_flat, np.log2(p_flat)))
+    kl_distance_q_p = - np.sum(np.multiply(q_flat, np.log2(p_flat))) + np.sum(np.multiply(q_flat, np.log2(q_flat)))
+
+    # Parameter to control smoothness
+    alpha = 10
+
+    if np.any(q_flat == 0):
+        return 1
+    else:
+        j_divergence = (kl_distance_p_q + kl_distance_q_p)/2
+        j_divergence_norm = j_divergence/np.sqrt((j_divergence ** 2) + alpha)
+        return j_divergence_norm
