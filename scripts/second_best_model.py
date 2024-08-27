@@ -209,7 +209,7 @@ def cpd_weigts():
         print()
         # count += 1
 
-def run_evaluation():
+def run_evaluation_second_best():
     # Load the second best model with cpds
     model = bnlearn.load(
         filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
@@ -274,10 +274,14 @@ def run_evaluation():
         print("-" * 100)
 
 
+def comparison_evaluation():
+    pass
+
 
 if __name__ == "__main__":
     # sl_second_best_model()
     # edge_strenght_stats_ds()
     # learn_cpds()
     # cpd_weigts()
-    run_evaluation()
+    # run_evaluation_second_best()
+    comparison_evaluation()
