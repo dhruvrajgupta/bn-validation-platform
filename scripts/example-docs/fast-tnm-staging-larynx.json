@@ -1,0 +1,1063 @@
+[
+    {
+        "type": "Header",
+        "element_id": "a1fffcc54572412047e994d7c107f66c",
+        "text": "Printed by Peter Monroe on 8/26/2024 3:16:43 PM. For personal use only. Not approved for distribution. Copyright © 2024 National Comprehensive Cancer Network, Inc., All Rights Reserved.",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Header",
+        "element_id": "6d79c590b72318260825c8019b72f0fa",
+        "text": "NCCN Guidelines Version 4.2024 Head and Neck Cancers",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Header",
+        "element_id": "8887b813140260594344fd5609709c62",
+        "text": "NCCN Guidelines Index Table of Contents Discussion",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "dc35ae90ec1d394336af879fa21ae15f",
+        "text": "Table 5 American Joint Committee on Cancer (AJCC) TNM Staging System for the Larynx (8th ed., 2017) (Nonepithelial tumors such as those of lymphoid tissue, soft tissue, bone and cartilage, and mucosal melanoma of the lip and oral cavity are not included)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "4ad80579d4c149dbed445e0a0962f8f6",
+        "text": "Primary Tumor (T) TX Primary tumor cannot be assessed Tis Carcinoma in situ",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "e52036e926f87b1b477a1ede9e7223e2",
+        "text": "Glottis T1",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "438e67b362a269c023b380be5bbb85ec",
+        "text": "Tumor limited to the vocal cord(s) (may involve anterior or posterior commissure) with normal mobility",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "e52036e926f87b1b477a1ede9e7223e2",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "4ef47ae4afd743bb4a386acc8ff9af3a",
+        "text": "T1a Tumor limited to one vocal cord T1b Tumor involves both vocal cords",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "e52036e926f87b1b477a1ede9e7223e2",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "7121aa3d56a59e26b4f746563ecc9e70",
+        "text": "Supraglottis T1",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "c5965efb6de11497a67380d7edc71ac8",
+        "text": "Tumor limited to one subsite of supraglottis with normal vocal cord mobility Tumor invades mucosa of more than one adjacent subsite of supraglottis or glottis or region outside the supraglottis (eg, mucosa of base of tongue, vallecula, medial wall of pyriform sinus) without fixation of the larynx Tumor limited to larynx with vocal cord fixation and/ or invades any of the following: postcricoid area, preepiglottic space, paraglottic space, and/or inner cortex of thyroid cartilage Moderately advanced or very advanced",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "7121aa3d56a59e26b4f746563ecc9e70",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "a5fed4c7985f1c2c24e41c845be9347d",
+        "text": "T2",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "b48dfbb1d15dece49fc2cfca7f6b8d2b",
+        "text": "T3",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "f01c85e1481e9ba875ec9faafad81575",
+        "text": "T4",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "2e1e49d384765d7876d40227a9d16ae6",
+        "text": "T2",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "267dcb368157ae4435f9141d3ed49912",
+        "text": "T3",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "13b6901e68f33011ed1b4217fb62f12a",
+        "text": "T4",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "2c707782054be4ccba49cce1cc01c42a",
+        "text": "Tumor extends to supraglottis and/or subglottis, and/or with impaired vocal cord mobility Tumor limited to the larynx with vocal cord fixation and/or invasion of paraglottic space and/or inner cortex of the thyroid cartilage Moderately advanced or very advanced",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "13b6901e68f33011ed1b4217fb62f12a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "7f93ea8d2d84b32b4269e1a7ee952a5a",
+        "text": "T4a Moderately advanced local disease",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "13b6901e68f33011ed1b4217fb62f12a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "1cd8908d8cc4c6e4e19457c923d8e096",
+        "text": "Tumor invades through the outer cortex of the thyroid cartilage and/or invades tissues beyond the larynx (eg, trachea, cricoid cartilage, soft tissues of neck including deep extrinsic muscle of the tongue, strap muscles, thyroid, or esophagus)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "13b6901e68f33011ed1b4217fb62f12a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "336c9282d8c210c909e8b93847638122",
+        "text": "T4b Very advanced local disease",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "13b6901e68f33011ed1b4217fb62f12a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "488fad7eb323f5ba9c3e93415a9e9c5c",
+        "text": "Tumor invades prevertebral space, encases carotid artery, or invades mediastinal structures",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "13b6901e68f33011ed1b4217fb62f12a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "4b7f57c2200e786c6bef8bea3249b176",
+        "text": "T4a Moderately advanced local disease",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "13b6901e68f33011ed1b4217fb62f12a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "915c619760dfae407c3b59e6ef97d122",
+        "text": "Tumor invades through the outer cortex of the thyroid cartilage and/or invades tissues beyond the larynx (eg, trachea, soft tissues of neck including deep extrinsic muscle of the tongue, strap muscles, thyroid, or esophagus) T4b Very advanced local disease",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "13b6901e68f33011ed1b4217fb62f12a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "49c9fbbdf80c4fb9dc5e1c6c3dd2af2e",
+        "text": "Subglottis T1 T2 T3",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "881edaa2d169fa948c944a35d768bfca",
+        "text": "Tumor limited to the subglottis Tumor extends to vocal cord(s) with normal or impaired mobility Tumor limited to larynx with vocal cord fixation and/or inner cortex of the thyroid cartilage Moderately advanced or very advanced",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "49c9fbbdf80c4fb9dc5e1c6c3dd2af2e",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "8156715f34dd663f97ee05ffa920a0e6",
+        "text": "T4",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8887b813140260594344fd5609709c62",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "810deab7d2b3f149887c9c1f2226f233",
+        "text": "Tumor invades prevertebral space, encases carotid artery, or invades mediastinal structures",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8156715f34dd663f97ee05ffa920a0e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "151504555e58c61a9d0c947b44550b83",
+        "text": "T4a Moderately advanced local disease",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8156715f34dd663f97ee05ffa920a0e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "f4351aa4a8181e02610ff9afecf9172b",
+        "text": "Tumor invades cricoid or thyroid cartilage and/or invades tissues beyond the larynx (eg, trachea, soft tissues of neck including deep extrinsic muscles of the tongue, strap muscles, thyroid, or esophagus)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8156715f34dd663f97ee05ffa920a0e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "2e88b8964a7091259d1551d177662a7a",
+        "text": "T4b Very advanced local disease",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8156715f34dd663f97ee05ffa920a0e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "1abdf601959ad7e2fda8a79a616f77f3",
+        "text": "Tumor invades prevertebral space, encases carotid artery, or invades mediastinal structures",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8156715f34dd663f97ee05ffa920a0e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "f66bea2407fc7da71cc3f5b4dc660447",
+        "text": "Continued Used with permission of the American College of Surgeons, Chicago, Illinois. The original source for this information is the AJCC Cancer Staging Manual, Eighth Edition (2017) published by Springer International Publishing. (For complete information and data supporting the staging tables, visit www.springer.com.)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "parent_id": "8156715f34dd663f97ee05ffa920a0e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Footer",
+        "element_id": "031a03fdac4c87604e6da0360b877484",
+        "text": "Version 4.2024, 5/1/2024 © 2024 National Comprehensive Cancer Network® (NCCN®), All rights reserved. NCCN Guidelines® and this illustration may not be reproduced in any form without the express written permission of NCCN.",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Footer",
+        "element_id": "9d8e49e6e198b6e82dbcdbd9d6632035",
+        "text": "ST-8",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 1,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Header",
+        "element_id": "79a475be08e8bc0bfd2e48ee287789c2",
+        "text": "Printed by Peter Monroe on 8/26/2024 3:16:43 PM. For personal use only. Not approved for distribution. Copyright © 2024 National Comprehensive Cancer Network, Inc., All Rights Reserved.",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Header",
+        "element_id": "e046db04a4de038691fce1ca3aabec32",
+        "text": "NCCN Guidelines Version 4.2024 Head and Neck Cancers",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Header",
+        "element_id": "9e31eb33aa1918937e57e25068bf55b4",
+        "text": "NCCN Guidelines Index Table of Contents Discussion",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "e774ad23cae0caa924c1dbc945534ed5",
+        "text": "Table 5 — Continued American Joint Committee on Cancer (AJCC) TNM Staging System for the Larynx (8th ed., 2017) (Nonepithelial tumors such as those of lymphoid tissue, soft tissue, bone, and cartilage are not included)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "9e31eb33aa1918937e57e25068bf55b4",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "c0801338ab2dc66040a963f6189ad718",
+        "text": "Regional Lymph Nodes (N) Clinical N (cN) NX N0 N1 N2",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "9e31eb33aa1918937e57e25068bf55b4",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "d752c3d4355729a516a61000d3577b2e",
+        "text": "Regional lymph nodes cannot be assessed No regional lymph node metastasis Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension ENE(–) Metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(–); or metastases in multiple ipsilateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(–); or metastasis in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(–)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "c0801338ab2dc66040a963f6189ad718",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "c3d77ed06c9cff4e74f77436b8c77887",
+        "text": "N2a Metastasis in a single ipsilateral lymph node, larger than 3 cm but not larger than 6 cm in greatest",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "c0801338ab2dc66040a963f6189ad718",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "b01d669fe0ebe396c9bb0d2866ec9c73",
+        "text": "dimension and ENE(–)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "9e31eb33aa1918937e57e25068bf55b4",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "c563039f9641af4aea7f35500b9b596e",
+        "text": "N2b Metastases in multiple ipsilateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(–) N2c Metastases in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "b01d669fe0ebe396c9bb0d2866ec9c73",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "24a2a9e0e44beced5f235799302dc336",
+        "text": "N3",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "9e31eb33aa1918937e57e25068bf55b4",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "2ba0ea8b86108407f8857db09dbbb0cf",
+        "text": "ENE(–) Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(–); or metastasis in any lymph node(s) with clinically overt ENE(+)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "24a2a9e0e44beced5f235799302dc336",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "a700de4fba1a6a36226ace4cfee7ec3d",
+        "text": "N3a Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(−) N3b Metastasis in any lymph node(s) with clinically overt ENE(+)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "24a2a9e0e44beced5f235799302dc336",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "16db6ae070ee196a540c332985f56637",
+        "text": "Note: A designation of “U” or “L” may be used for any N category to indicate metastasis above the lower border of the cricoid (U) or below the lower border of the cricoid (L). Similarly, clinical and pathological ENE should be recorded as ENE(−) or ENE(+).",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "24a2a9e0e44beced5f235799302dc336",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "6462d9757bf6ce77302153ab729ff406",
+        "text": "Used with permission of the American College of Surgeons, Chicago, Illinois. The original source for this information is the AJCC Cancer Staging Manual, Eighth Edition (2017) published by Springer International Publishing. (For complete information and data supporting the staging tables, visit www.springer.com.)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "parent_id": "24a2a9e0e44beced5f235799302dc336",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Footer",
+        "element_id": "c756bb2880a6f580cfd83178aeaa8d3f",
+        "text": "Version 4.2024, 5/1/2024 © 2024 National Comprehensive Cancer Network® (NCCN®), All rights reserved. NCCN Guidelines® and this illustration may not be reproduced in any form without the express written permission of NCCN.",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "6805da0af50b79c679102f06ccd44d19",
+        "text": "Continued",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Footer",
+        "element_id": "6e531672086f32fb42f6469c8827e1e9",
+        "text": "ST-9",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 2,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Header",
+        "element_id": "b936e3201b46803e91e087ef4cefff30",
+        "text": "Printed by Peter Monroe on 8/26/2024 3:16:43 PM. For personal use only. Not approved for distribution. Copyright © 2024 National Comprehensive Cancer Network, Inc., All Rights Reserved.",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Header",
+        "element_id": "7b2c598b14d5e7b8552dcbfae259d56b",
+        "text": "NCCN Guidelines Version 4.2024 Head and Neck Cancers",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "5354f883774abd2d5867f93ef67214b2",
+        "text": "Table 5 — Continued American Joint Committee on Cancer (AJCC) TNM Staging System for the Larynx (8th ed., 2017) (Nonepithelial tumors such as those of lymphoid tissue, soft tissue, bone, and cartilage are not included)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "7b2c598b14d5e7b8552dcbfae259d56b",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "fc7e795f00cdaeadcbf35e2a9a9023e6",
+        "text": "Pathological N (pN) NX N0 N1 N2",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "7b2c598b14d5e7b8552dcbfae259d56b",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "1ecc99fd64388761250a5595083f6054",
+        "text": "Regional lymph nodes cannot be assessed No regional lymph node metastasis Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension ENE(–) Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(+); or larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(−); or metastases in multiple ipsilateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(−); or in bilateral or contralateral lymph node(s), none larger than 6 cm in greatest dimension and ENE(−)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "fc7e795f00cdaeadcbf35e2a9a9023e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "647fc8d4f6ae7d435ce22d77ec74691a",
+        "text": "N2a Metastasis in a single ipsilateral node, 3 cm or smaller in greatest dimension and ENE(+); or",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "fc7e795f00cdaeadcbf35e2a9a9023e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "1e7733af36a287503e1fbd5d150b9070",
+        "text": "metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(−)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "fc7e795f00cdaeadcbf35e2a9a9023e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "0f21ffb1bf8d309519207ac22f99d517",
+        "text": "N2b Metastases in multiple ipsilateral nodes, none larger than 6 cm in greatest dimension and",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "fc7e795f00cdaeadcbf35e2a9a9023e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "bda299a55c9668537221e7ae26ae3c9e",
+        "text": "ENE(−)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "fc7e795f00cdaeadcbf35e2a9a9023e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "2b4e44872f2f119e73d1d469f8e84e60",
+        "text": "N2c Metastases in bilateral or contralateral lymph node(s), none larger than 6 cm in greatest",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "fc7e795f00cdaeadcbf35e2a9a9023e6",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "11653d1f30713aeae6e31499031c3648",
+        "text": "N3",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "7b2c598b14d5e7b8552dcbfae259d56b",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "5b7609d0eb529a8000ce3aed0b07c0ae",
+        "text": "dimension and ENE(−) Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(−); or metastasis in a single ipsilateral node, larger than 3 cm in greatest dimension and ENE(+); or multiple ipsilateral, contralateral, or bilateral lymph nodes and any with ENE(+); or a single contralateral node of any size and ENE(+)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "11653d1f30713aeae6e31499031c3648",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "54b4a868ce26469fd6c6cd357add566c",
+        "text": "N3a Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(−) N3b Metastasis in a single ipsilateral node, larger than 3 cm in greatest dimension and ENE(+);",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "11653d1f30713aeae6e31499031c3648",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "428618ef6006757c30b0232be19383b7",
+        "text": "or multiple ipsilateral, contralateral, or bilateral lymph nodes any with ENE(+); or a single contralateral node of any size and ENE(+)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "11653d1f30713aeae6e31499031c3648",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "ListItem",
+        "element_id": "9dd0daf14c952db64cb3c3af6b07c5a6",
+        "text": "Note: A designation of “U” or “L” may be used for any N category to indicate metastasis above the lower border of the cricoid (U) or below the lower border of the cricoid (L). Similarly, clinical and pathological ENE should be recorded as ENE(−) or ENE(+).",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "11653d1f30713aeae6e31499031c3648",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Header",
+        "element_id": "5c1c0b450c90b4e458fe7bb0017f2e9a",
+        "text": "NCCN Guidelines Index Table of Contents Discussion",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "3705899e18de2b46f38935e5ef9fcc7c",
+        "text": "Distant Metastasis (M) M0 No distant metastasis M1 Distant metastasis",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "5c1c0b450c90b4e458fe7bb0017f2e9a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "60bce17856de8c1b683ae5428b41f3b5",
+        "text": "Histologic Grade (G) GX Grade cannot be assessed G1 Well differentiated G2 Moderately differentiated G3 Poorly differentiated",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "3705899e18de2b46f38935e5ef9fcc7c",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "f1b1033f287321e373160c0fe0bf51b7",
+        "text": "Prognostic Stage Groups Tis Stage 0 T1 Stage I T2 Stage II T3 Stage III T1 T2 T3 Stage IVA T1 T2 T3 T4a",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "3705899e18de2b46f38935e5ef9fcc7c",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "UncategorizedText",
+        "element_id": "930da2202de5b96e8a1f826a0b0680f3",
+        "text": "M0 N0 M0 N0 M0 N0 M0 N0 M0 N1 M0 N1 M0 N1 M0 N2 M0 N2 N2 M0 N0,N1,N2 M0 M0 M0 M1",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "3705899e18de2b46f38935e5ef9fcc7c",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "ab148ba9bcb17655c5d96fffa5597989",
+        "text": "Stage IVB Any T N3",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "5c1c0b450c90b4e458fe7bb0017f2e9a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "760ed94456a1c066f77571ad775845b9",
+        "text": "Any N T4b Stage IVC Any T Any N",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "5c1c0b450c90b4e458fe7bb0017f2e9a",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "NarrativeText",
+        "element_id": "1789af57699ae636b0fd788715d731ca",
+        "text": "Used with permission of the American College of Surgeons, Chicago, Illinois. The original source for this information is the AJCC Cancer Staging Manual, Eighth Edition (2017) published by Springer International Publishing. (For complete information and data supporting the staging tables, visit www.springer.com.)",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "parent_id": "760ed94456a1c066f77571ad775845b9",
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Footer",
+        "element_id": "6a2462d4f22c7f3df30e8f5d12c1aec0",
+        "text": "Version 4.2024, 5/1/2024 © 2024 National Comprehensive Cancer Network® (NCCN®), All rights reserved. NCCN Guidelines® and this illustration may not be reproduced in any form without the express written permission of NCCN.",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Title",
+        "element_id": "57d76295982e3febad78911080ab31a4",
+        "text": "Continued",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    },
+    {
+        "type": "Footer",
+        "element_id": "bac0bb247dbf0aad3d308ac5eb84c39b",
+        "text": "ST-10",
+        "metadata": {
+            "languages": [
+                "eng"
+            ],
+            "page_number": 3,
+            "filename": "head-and-neck-larynx-tnm-staging.pdf",
+            "filetype": "application/pdf"
+        }
+    }
+]
