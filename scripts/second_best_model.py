@@ -209,9 +209,79 @@ def cpd_weigts():
         print()
         # count += 1
 
+def run_evaluation_second_best():
+    # Load the second best model with cpds
+    model = bnlearn.load(
+        filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
+    model = bnlearn.make_DAG(DAG=model)
+    print(model.keys())
+    sl_model = model["model"]
+
+    dataset_paths = [
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv"
+    ]
+
+    target = "M_state__patient"
+
+    print(f"Target Node: {target}")
+    print("Preforming model test in multiple datasets...\n")
+
+    for dataset_path in dataset_paths:
+        print(f"\nDataset: {dataset_path}\n")
+        df = pd.read_csv(dataset_path)
+        # print(df)
+        df = df[[c for c in df.columns if c in sl_model.nodes()]]
+        # print(df)
+        df = df.replace(to_replace="*", value=np.nan)
+        # # df = df[df[target].notna()]
+        # # print(df)
+        X = df.loc[:, df.columns != target]
+        Y = df[target]
+        # # print(Y)
+        #
+
+        from utils import predict
+
+        y_pred = predict(sl_model, data=X, stochastic=False)
+        comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
+        # print(comparison_df)
+        # print(len(comparison_df))
+        comparison_df = comparison_df.dropna(subset=['Y'])
+        # print(comparison_df)
+        # print(len(comparison_df))
+        print(f"Number of rows dropped due to unknow NaN values of {target}: {len(Y) - len(comparison_df)}")
+        comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
+        # print(comparison_df)
+        # print(len(comparison_df))
+        accuracy = comparison_df['Equal'].mean()
+        print("\nAccuracy:")
+        print(f"{target} = {accuracy}")
+        target_state_counts = Y.value_counts().to_dict()
+        for state, actual_state_count in target_state_counts.items():
+            state_correct_pred = comparison_df[(comparison_df['Equal'] == True) & (comparison_df['Y'] == state)]
+            pred_count = len(state_correct_pred)
+            # print(state)
+            # print(pred_count)
+            # print(actual_state_count)
+            if actual_state_count:
+                print(f"\t{state} = {pred_count / actual_state_count} ({pred_count}/{actual_state_count})")
+            else:
+                print(f"\t{state} = 0.0 ({pred_count}/{actual_state_count})")
+        print()
+        print("-" * 100)
+
+
+def comparison_evaluation():
+    pass
+
 
 if __name__ == "__main__":
     # sl_second_best_model()
     # edge_strenght_stats_ds()
     # learn_cpds()
-    cpd_weigts()
+    # cpd_weigts()
+    # run_evaluation_second_best()
+    comparison_evaluation()

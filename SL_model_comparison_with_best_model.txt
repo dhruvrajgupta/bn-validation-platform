@@ -1,0 +1,216 @@
+I ran the evaluation on the BN whose structure is learnt from data using NOTEARS structure learning algorithm,
+statistically there is an increase in the overall accuracy except 100per which has no change,
+however looking at each of the states closely,
+it tells a different picture.
+
+
+Target Node is : M_state__patient
+
+for M0, on all the 4 datasets, there is an increase in accuracy, however
+for M1,
+there is drop in accuracy for datasets:  40per (significant), 60per (significant), 80per (minor), 100per (minor)
+
+
+COMPARING ACCURACY of SL MODEL vs BEST MODEL
+================================================================================================
+Target Node: M_state__patient
+Preforming model test in multiple datasets...
+
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 60213
+
+BEST MODEL:
+Accuracy:
+M_state__patient = 0.9273883429260814
+    M0 = 0.9636273624741547 (33090/34339)
+    M1 = 0.6989720998531571 (3808/5448)
+
+SL MODEL:
+Accuracy:
+M_state__patient = 0.9384723653454646
+	M0 = 0.9867206383412447 (33883/34339)
+	M1 = 0.6343612334801763 (3456/5448)
+
+Analysis:
+    Overall = change by +0.01108402241
+    MO = change by +0.02309327586
+    M1 = change by -0.06461086637
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 40180
+
+BEST MODEL:
+Accuracy:
+M_state__patient = 0.9617352056168506
+    M0 = 0.9805345729227194 (50625/51630)
+    M1 = 0.8432234432234432 (6906/8190)
+
+SL MODEL:
+Accuracy:
+M_state__patient = 0.9658308258107656
+	M0 = 0.989037381367422 (51064/51630)
+	M1 = 0.8195360195360195 (6712/8190)
+
+Analysis:
+    Overall = change by +0.00409562019
+    MO = change by +0.00850280844
+    M1 = change by -0.02368742368
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 20067
+
+BEST MODEL:
+Accuracy:
+M_state__patient = 0.9826729886279759
+    M0 = 0.9910260678255584 (68469/69089)
+    M1 = 0.9294540759867208 (10079/10844)
+
+SL MODEL:
+Accuracy:
+M_state__patient = 0.9828606457908499
+	M0 = 0.9925603207457048 (68575/69089)
+	M1 = 0.9210623386204353 (9988/10844)
+
+Analysis:
+    Overall = change by +0.00018765716
+    MO = change by +0.00153425292
+    M1 = change by -0.00839173736
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 0
+
+BEST MODEL:
+Accuracy:
+M_state__patient = 0.9931
+    M0 = 0.9953875928565634 (85891/86289)
+    M1 = 0.9787032309824228 (13419/13711)
+
+SL MODEL:
+M_state__patient = 0.9931
+	M0 = 0.9954223597445793 (85894/86289)
+	M1 = 0.9784844285610094 (13416/13711)
+
+Analysis:
+    Overall = change by 0
+    MO = change by +0.00003476688
+    M1 = change by -0.00021880242
+
+----------------------------------------------------------------------------------------------------
+
+================================================================================================
+
+
+
+
+
+Accuracy for Best Model:
+=================================================================================================
+The model is valid.
+
+
+Target Node: M_state__patient
+Preforming model test in multiple datasets...
+
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/40percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 60213
+
+Accuracy:
+M_state__patient = 0.9273883429260814
+    M0 = 0.9636273624741547 (33090/34339)
+    M1 = 0.6989720998531571 (3808/5448)
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/60percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 40180
+
+Accuracy:
+M_state__patient = 0.9617352056168506
+    M0 = 0.9805345729227194 (50625/51630)
+    M1 = 0.8432234432234432 (6906/8190)
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/80percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 20067
+
+Accuracy:
+M_state__patient = 0.9826729886279759
+    M0 = 0.9910260678255584 (68469/69089)
+    M1 = 0.9294540759867208 (10079/10844)
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 0
+
+Accuracy:
+M_state__patient = 0.9931
+    M0 = 0.9953875928565634 (85891/86289)
+    M1 = 0.9787032309824228 (13419/13711)
+
+----------------------------------------------------------------------------------------------------
+
+====================================================================================================
+
+Accuracy for SL model from data:
+====================================================================================================
+Dataset: /home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 60213
+
+Accuracy:
+M_state__patient = 0.9384723653454646
+	M0 = 0.9867206383412447 (33883/34339)
+	M1 = 0.6343612334801763 (3456/5448)
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 40180
+
+Accuracy:
+M_state__patient = 0.9658308258107656
+	M0 = 0.989037381367422 (51064/51630)
+	M1 = 0.8195360195360195 (6712/8190)
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 20067
+
+Accuracy:
+M_state__patient = 0.9828606457908499
+	M0 = 0.9925603207457048 (68575/69089)
+	M1 = 0.9210623386204353 (9988/10844)
+
+----------------------------------------------------------------------------------------------------
+
+Dataset: /home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv
+
+Number of rows dropped due to unknow NaN values of M_state__patient: 0
+
+Accuracy:
+M_state__patient = 0.9931
+	M0 = 0.9954223597445793 (85894/86289)
+	M1 = 0.9784844285610094 (13416/13711)
+
+======================================================================================================
