@@ -275,7 +275,94 @@ def run_evaluation_second_best():
 
 
 def comparison_evaluation():
-    pass
+    # Global dataframe "df"
+    # df = pd.DataFrame()
+    # print(df)
+
+    # LOAD the models
+
+    # Best model is in bif format
+    reader = BIFReader("/home/dhruv/Desktop/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+    best_model = reader.get_model()
+
+    # Second best is in bnlearn pkl format
+    second_best_model = bnlearn.load(filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
+    second_best_model_dict = bnlearn.make_DAG(DAG=second_best_model)
+    second_best_model = second_best_model_dict["model"]
+
+    model_dict = {
+        "best_model": best_model,
+        "second_best_model": second_best_model
+    }
+
+    dataset_paths = [
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
+        "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv",
+    ]
+
+    dataset_id_paths = {
+        "40percent": "/home/dhruv/Desktop/bn-validation-platform/datasets/40percent.csv",
+        "60percent": "/home/dhruv/Desktop/bn-validation-platform/datasets/60percent.csv",
+        "80percent": "/home/dhruv/Desktop/bn-validation-platform/datasets/80percent.csv",
+        "100percent": "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv",
+    }
+
+    for model_id, model in model_dict.items():
+
+        print(f"Perfroming accuracy evaluation on model : {model_id}")
+
+        target = "M_state__patient"
+
+        print(f"Target Node: {target}")
+        print("Preforming model test in multiple datasets...\n")
+
+        for dataset_id, dataset_path in dataset_id_paths.items():
+            print(dataset_id)
+            print(dataset_path)
+            # print(f"\nDataset: {dataset_path}\n")
+            # df = pd.read_csv(dataset_path)
+            # # print(df)
+            # df = df[[c for c in df.columns if c in sl_model.nodes()]]
+            # # print(df)
+            # df = df.replace(to_replace="*", value=np.nan)
+            # # # df = df[df[target].notna()]
+            # # # print(df)
+            # X = df.loc[:, df.columns != target]
+            # Y = df[target]
+            # # # print(Y)
+            # #
+
+            # from utils import predict
+
+            # y_pred = predict(sl_model, data=X, stochastic=False)
+            # comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
+            # # print(comparison_df)
+            # # print(len(comparison_df))
+            # comparison_df = comparison_df.dropna(subset=['Y'])
+            # # print(comparison_df)
+            # # print(len(comparison_df))
+            # print(f"Number of rows dropped due to unknow NaN values of {target}: {len(Y) - len(comparison_df)}")
+            # comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
+            # # print(comparison_df)
+            # # print(len(comparison_df))
+            # accuracy = comparison_df['Equal'].mean()
+            # print("\nAccuracy:")
+            # print(f"{target} = {accuracy}")
+            # target_state_counts = Y.value_counts().to_dict()
+            # for state, actual_state_count in target_state_counts.items():
+            #     state_correct_pred = comparison_df[(comparison_df['Equal'] == True) & (comparison_df['Y'] == state)]
+            #     pred_count = len(state_correct_pred)
+            #     # print(state)
+            #     # print(pred_count)
+            #     # print(actual_state_count)
+            #     if actual_state_count:
+            #         print(f"\t{state} = {pred_count / actual_state_count} ({pred_count}/{actual_state_count})")
+            #     else:
+            #         print(f"\t{state} = 0.0 ({pred_count}/{actual_state_count})")
+            # print()
+            # print("-" * 100)
 
 
 if __name__ == "__main__":
