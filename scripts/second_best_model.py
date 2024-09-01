@@ -274,7 +274,7 @@ def run_evaluation_second_best():
         print("-" * 100)
 
 
-def comparison_evaluation():
+def accuracy_comparison_evaluation():
     # Global dataframe "df"
     # df = pd.DataFrame()
     # print(df)
@@ -375,11 +375,60 @@ def comparison_evaluation():
                     }
             print("-" * 100)
 
-    # import json
+    import json
     # print(json.dumps(result, indent=2))
 
     # Save the result to a json file
     with open("saved_results/comparison_accuracy.json", "w") as file:
+        json.dump(result, file, indent=2)
+
+def edge_cpd_comparison_evaluation():
+    from utils import euclidean_distance_marginalization_avg_normalized, hellinger_distance, j_divergence_distance, cdf_distance
+
+    # Best model is in bif format
+    reader = BIFReader("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+    best_model = reader.get_model()
+
+    # Second best is in bnlearn pkl format
+    second_best_model = bnlearn.load(filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
+    second_best_model_dict = bnlearn.make_DAG(DAG=second_best_model)
+    second_best_model = second_best_model_dict["model"]
+
+    model_dict = {
+        "best_model": best_model,
+        "second_best_model": second_best_model
+    }
+    
+    result = {}
+
+    for model_id, model in model_dict.items():
+        result[model_id] = []
+        for edge in model.edges:
+            p = edge[0]
+            q = edge[1]
+            p = model.get_cpds(p)
+            q = model.get_cpds(q)
+            euclidean_distance = euclidean_distance_marginalization_avg_normalized(p, q)
+            hell_distance = hellinger_distance(p, q)
+            j_div_distance = j_divergence_distance(p, q)
+            cdf_dist = cdf_distance(p, q)
+            print(edge)
+            print(euclidean_distance)
+            print(hell_distance)
+            print(j_div_distance)
+            print(cdf_dist)
+            result[model_id].append({
+                "edge": edge,
+                "euclidean_distance": euclidean_distance,
+                "hell_distance": hell_distance,
+                "j_div_distance": j_div_distance,
+                "cdf_dist": cdf_dist
+            })
+        print()
+
+    # Save the result to a json file
+    import json
+    with open("saved_results/comparison_edge_cpd.json", "w") as file:
         json.dump(result, file, indent=2)
 
 
@@ -389,4 +438,5 @@ if __name__ == "__main__":
     # learn_cpds()
     # cpd_weigts()
     # run_evaluation_second_best()
-    comparison_evaluation()
+    # accuracy_comparison_evaluation()
+    edge_cpd_comparison_evaluation()

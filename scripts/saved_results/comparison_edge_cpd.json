@@ -1,0 +1,886 @@
+{
+  "best_model": [
+    {
+      "edge": [
+        "bone_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.6394814824334477,
+      "hell_distance": 0.8387500013922173,
+      "j_div_distance": 0.8572726185712336,
+      "cdf_dist": 0.9414132612179487
+    },
+    {
+      "edge": [
+        "bone_M__patient",
+        "bone_M_CT_body__patient"
+      ],
+      "euclidean_distance": 0.8180458911849158,
+      "hell_distance": 0.8957399465229107,
+      "j_div_distance": 0.8623152201693361,
+      "cdf_dist": 1.6980043541364296
+    },
+    {
+      "edge": [
+        "bone_M__patient",
+        "bone_M_PET_body__patient"
+      ],
+      "euclidean_distance": 0.9147889399926936,
+      "hell_distance": 1.0006496461104692,
+      "j_div_distance": 0.919532421053722,
+      "cdf_dist": 1.7247098248286363
+    },
+    {
+      "edge": [
+        "bone_M__patient",
+        "bone_M_Scinti__patient"
+      ],
+      "euclidean_distance": 0.8969277845846195,
+      "hell_distance": 0.9776256073012007,
+      "j_div_distance": 0.9074650591069863,
+      "cdf_dist": 1.7152733236685263
+    },
+    {
+      "edge": [
+        "bone_M__patient",
+        "bone_M_fracture__patient"
+      ],
+      "euclidean_distance": 0.5810578252734949,
+      "hell_distance": 0.7817810037386221,
+      "j_div_distance": 0.7832164403504924,
+      "cdf_dist": 1.5194484760522498
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.6399598509062223,
+      "hell_distance": 0.8392380927757324,
+      "j_div_distance": 0.8576296196231712,
+      "cdf_dist": 0.9419016617063491
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "bm_M_CR_body__patient"
+      ],
+      "euclidean_distance": 0.5685106902342042,
+      "hell_distance": 0.7395160958458422,
+      "j_div_distance": 0.7329857218971321,
+      "cdf_dist": 1.545962769541779
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "bm_M_CT_body__patient"
+      ],
+      "euclidean_distance": 0.7681998291948081,
+      "hell_distance": 0.8594545676548278,
+      "j_div_distance": 0.8381000496281903,
+      "cdf_dist": 1.6851322751322748
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "bm_M_PET_body__patient"
+      ],
+      "euclidean_distance": 0.8791940114784919,
+      "hell_distance": 0.9608011607580226,
+      "j_div_distance": 0.8987470311496685,
+      "cdf_dist": 1.7022833210954282
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "bm_M_Scinti__patient"
+      ],
+      "euclidean_distance": 0.8313650582510462,
+      "hell_distance": 0.8913097615859934,
+      "j_div_distance": 0.8594659767294344,
+      "cdf_dist": 1.714127600554785
+    },
+    {
+      "edge": [
+        "brain_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.652890148248192,
+      "hell_distance": 0.8534253460678042,
+      "j_div_distance": 0.8679788143186722,
+      "cdf_dist": 0.9549594634433962
+    },
+    {
+      "edge": [
+        "brain_M__patient",
+        "brain_M_PET__patient"
+      ],
+      "euclidean_distance": 0.596795169373519,
+      "hell_distance": 0.7635815000218892,
+      "j_div_distance": 0.7585350833145361,
+      "cdf_dist": 1.5688650715155203
+    },
+    {
+      "edge": [
+        "brain_M__patient",
+        "brain_M_cCT__patient"
+      ],
+      "euclidean_distance": 0.8861244464566418,
+      "hell_distance": 0.9650229497935979,
+      "j_div_distance": 0.9006679272621004,
+      "cdf_dist": 1.7258325337937714
+    },
+    {
+      "edge": [
+        "brain_M__patient",
+        "brain_M_cMRT__patient"
+      ],
+      "euclidean_distance": 0.9150320916759717,
+      "hell_distance": 0.999290141344196,
+      "j_div_distance": 0.9165823490776086,
+      "cdf_dist": 1.7293152418822935
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.6394814824334477,
+      "hell_distance": 0.8387500013922173,
+      "j_div_distance": 0.8572726185712336,
+      "cdf_dist": 0.9414132612179487
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "distant_lymphnode_CR_thorax__patient"
+      ],
+      "euclidean_distance": 0.7071097058989688,
+      "hell_distance": 0.8472002809041691,
+      "j_div_distance": 0.8282515132516419,
+      "cdf_dist": 1.364102564102564
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "distant_lymphnode_CT_thorax__patient"
+      ],
+      "euclidean_distance": 0.8374016824563513,
+      "hell_distance": 0.9249479255189785,
+      "j_div_distance": 0.8798431411011239,
+      "cdf_dist": 1.3523949684429408
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "distant_lymphnode_PET_thorax__patient"
+      ],
+      "euclidean_distance": 0.8466934617495343,
+      "hell_distance": 0.9185612173577276,
+      "j_div_distance": 0.8756460865036721,
+      "cdf_dist": 1.3624523990860624
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "distant_lymphnode_endosono__patient"
+      ],
+      "euclidean_distance": 0.7608503269434127,
+      "hell_distance": 0.8657596553572128,
+      "j_div_distance": 0.8425616620751029,
+      "cdf_dist": 1.3727975457502612
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.6270600430450004,
+      "hell_distance": 0.8267870036766508,
+      "j_div_distance": 0.848478306978059,
+      "cdf_dist": 0.9285927483974358
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "hep_M_CT_GuidedPunction__patient"
+      ],
+      "euclidean_distance": 0.8606667524487377,
+      "hell_distance": 0.9473651480411791,
+      "j_div_distance": 0.893813741596066,
+      "cdf_dist": 1.6862770724421212
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "hep_M_CT_abdomen__patient"
+      ],
+      "euclidean_distance": 0.8254747097994307,
+      "hell_distance": 0.9130868889128025,
+      "j_div_distance": 0.8745358348506423,
+      "cdf_dist": 1.6959858103061987
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "hep_M_Sono_GuidedPunction__patient"
+      ],
+      "euclidean_distance": 0.8543312632834389,
+      "hell_distance": 0.9398172769368331,
+      "j_div_distance": 0.8903225153287364,
+      "cdf_dist": 1.684144957460206
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "hep_M_Sono_abdomen__patient"
+      ],
+      "euclidean_distance": 0.8028131671843468,
+      "hell_distance": 0.8912469063466802,
+      "j_div_distance": 0.860739073590002,
+      "cdf_dist": 1.690160567587752
+    },
+    {
+      "edge": [
+        "other_location_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.639481482433448,
+      "hell_distance": 0.8387500013922179,
+      "j_div_distance": 0.8572726185712343,
+      "cdf_dist": 0.941413261217949
+    },
+    {
+      "edge": [
+        "other_location_M__patient",
+        "other_location_M_diagnostic__patient"
+      ],
+      "euclidean_distance": 0.9088018507254333,
+      "hell_distance": 0.9989662884869283,
+      "j_div_distance": 0.9190317589360998,
+      "cdf_dist": 1.722848438690023
+    },
+    {
+      "edge": [
+        "peritoneum_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.6525306381273165,
+      "hell_distance": 0.8530009017541601,
+      "j_div_distance": 0.8676693837113688,
+      "cdf_dist": 0.9546000744047618
+    },
+    {
+      "edge": [
+        "peritoneum_M__patient",
+        "perit_M_CT_abdomen__patient"
+      ],
+      "euclidean_distance": 0.87446804527822,
+      "hell_distance": 0.946241708092834,
+      "j_div_distance": 0.8907793751997045,
+      "cdf_dist": 1.719159663865546
+    },
+    {
+      "edge": [
+        "peritoneum_M__patient",
+        "perit_M_Sono_abdomen__patient"
+      ],
+      "euclidean_distance": 0.731048168507901,
+      "hell_distance": 0.8551236852460459,
+      "j_div_distance": 0.8357000853877037,
+      "cdf_dist": 1.6479365079365078
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.6640636940359754,
+      "hell_distance": 0.8677881072790046,
+      "j_div_distance": 0.8784934968694786,
+      "cdf_dist": 0.9660286458333333
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "pleu_M_CR_thorax__patient"
+      ],
+      "euclidean_distance": 0.7191542000942832,
+      "hell_distance": 0.8589442258699664,
+      "j_div_distance": 0.8387083283115256,
+      "cdf_dist": 1.678829192546584
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "pleu_M_CT_thorax__patient"
+      ],
+      "euclidean_distance": 0.8931864933600653,
+      "hell_distance": 0.9963508558765444,
+      "j_div_distance": 0.9146841809922254,
+      "cdf_dist": 1.7293846153846155
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "pleu_M_PET_thorax__patient"
+      ],
+      "euclidean_distance": 0.8626645943054796,
+      "hell_distance": 0.9489856638967951,
+      "j_div_distance": 0.8926168219965646,
+      "cdf_dist": 1.7310287417091226
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "pleu_M_guidedPunction__patient"
+      ],
+      "euclidean_distance": 0.9035419693227601,
+      "hell_distance": 0.9946789587994166,
+      "j_div_distance": 0.9150210652282891,
+      "cdf_dist": 1.7306666666666666
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.6258563304399039,
+      "hell_distance": 0.8256920788322941,
+      "j_div_distance": 0.8476681009740499,
+      "cdf_dist": 0.927335835375817
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pul_M_CR_thorax__patient"
+      ],
+      "euclidean_distance": 0.5915340040692424,
+      "hell_distance": 0.7888072001684842,
+      "j_div_distance": 0.7845862038840525,
+      "cdf_dist": 1.5009421950598418
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pul_M_CT_thorax__patient"
+      ],
+      "euclidean_distance": 0.7601690562393548,
+      "hell_distance": 0.8467183714917365,
+      "j_div_distance": 0.8293201310926328,
+      "cdf_dist": 1.6602054543231006
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pul_M_PET_thorax__patient"
+      ],
+      "euclidean_distance": 0.8207404674566162,
+      "hell_distance": 0.9106711677604693,
+      "j_div_distance": 0.8716705936120653,
+      "cdf_dist": 1.672512369433754
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pul_M_bronchoscopy__patient"
+      ],
+      "euclidean_distance": 0.6290209331230928,
+      "hell_distance": 0.8073465137034371,
+      "j_div_distance": 0.7969587287891815,
+      "cdf_dist": 1.4369481563117044
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pulmonary_M_CT_GuidedPunction__patient"
+      ],
+      "euclidean_distance": 0.8541222205692118,
+      "hell_distance": 0.991956245822178,
+      "j_div_distance": 0.9194656770371853,
+      "cdf_dist": 1.6697082066544482
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pulmonary_M_bronchoscopy_GuidedPunction__patient"
+      ],
+      "euclidean_distance": 0.776256768519112,
+      "hell_distance": 0.8934533282877116,
+      "j_div_distance": 0.869236673341717,
+      "cdf_dist": 1.6431160572337036
+    },
+    {
+      "edge": [
+        "skin_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.650628665193431,
+      "hell_distance": 0.8507876296065082,
+      "j_div_distance": 0.8660561710273885,
+      "cdf_dist": 0.9526953125
+    },
+    {
+      "edge": [
+        "skin_M__patient",
+        "others_M_CT_abdomen__patient"
+      ],
+      "euclidean_distance": 0.891180975969382,
+      "hell_distance": 0.9553943791803748,
+      "j_div_distance": 0.8963037113692411,
+      "cdf_dist": 1.733939326674066
+    },
+    {
+      "edge": [
+        "skin_M__patient",
+        "others_M_Sono_abdomen__patient"
+      ],
+      "euclidean_distance": 0.8441631110269984,
+      "hell_distance": 0.9297472368801022,
+      "j_div_distance": 0.8820550493587462,
+      "cdf_dist": 1.711403286034354
+    }
+  ],
+  "second_best_model": [
+    {
+      "edge": [
+        "bone_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.32792667273341014,
+      "hell_distance": 0.6292752285492699,
+      "j_div_distance": 0.6414515520869971,
+      "cdf_dist": 0.6727343235153348
+    },
+    {
+      "edge": [
+        "bone_M__patient",
+        "bone_M_CT_body__patient"
+      ],
+      "euclidean_distance": 0.7866735977988059,
+      "hell_distance": 0.9145678544525903,
+      "j_div_distance": 0.8732068092597738,
+      "cdf_dist": 1.3965757601944508
+    },
+    {
+      "edge": [
+        "bone_M__patient",
+        "bone_M_PET_body__patient"
+      ],
+      "euclidean_distance": 0.86299417166866,
+      "hell_distance": 1.002689955167656,
+      "j_div_distance": 0.9202733052383878,
+      "cdf_dist": 1.3679012646825388
+    },
+    {
+      "edge": [
+        "bone_M__patient",
+        "bone_M_Scinti__patient"
+      ],
+      "euclidean_distance": 0.8532131479831497,
+      "hell_distance": 0.9855114497646718,
+      "j_div_distance": 0.9108182921150734,
+      "cdf_dist": 1.376592815111283
+    },
+    {
+      "edge": [
+        "bone_M__patient",
+        "bone_M_fracture__patient"
+      ],
+      "euclidean_distance": 0.6078092062268178,
+      "hell_distance": 0.8217118455165687,
+      "j_div_distance": 0.8163374988285315,
+      "cdf_dist": 1.515535392027134
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.3277347433431951,
+      "hell_distance": 0.6287771058644486,
+      "j_div_distance": 0.6405942181811659,
+      "cdf_dist": 0.6725099010730906
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "bm_M_CR_body__patient"
+      ],
+      "euclidean_distance": 0.5948741323133558,
+      "hell_distance": 0.7816309421941329,
+      "j_div_distance": 0.7762111871642947,
+      "cdf_dist": 1.5033718643679013
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "bm_M_CT_body__patient"
+      ],
+      "euclidean_distance": 0.7500590257073169,
+      "hell_distance": 0.8808300520899519,
+      "j_div_distance": 0.852671770421389,
+      "cdf_dist": 1.404948397373084
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "bm_M_PET_body__patient"
+      ],
+      "euclidean_distance": 0.8348916582937885,
+      "hell_distance": 0.9692888086943361,
+      "j_div_distance": 0.9022705826788902,
+      "cdf_dist": 1.38424888440663
+    },
+    {
+      "edge": [
+        "bonemarrow_M__patient",
+        "bm_M_Scinti__patient"
+      ],
+      "euclidean_distance": 0.789659639436448,
+      "hell_distance": 0.9033258134569142,
+      "j_div_distance": 0.8673730288320369,
+      "cdf_dist": 1.3990225628374287
+    },
+    {
+      "edge": [
+        "brain_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.3338254128797316,
+      "hell_distance": 0.6433643006592882,
+      "j_div_distance": 0.6646947168553321,
+      "cdf_dist": 0.6781072608090641
+    },
+    {
+      "edge": [
+        "brain_M__patient",
+        "brain_M_PET__patient"
+      ],
+      "euclidean_distance": 0.6082678753226737,
+      "hell_distance": 0.7930790631591141,
+      "j_div_distance": 0.7882646549334962,
+      "cdf_dist": 1.517692693208428
+    },
+    {
+      "edge": [
+        "brain_M__patient",
+        "brain_M_cCT__patient"
+      ],
+      "euclidean_distance": 0.8239571397542819,
+      "hell_distance": 0.9702278584947069,
+      "j_div_distance": 0.9025437878322666,
+      "cdf_dist": 1.3867507185173444
+    },
+    {
+      "edge": [
+        "brain_M__patient",
+        "brain_M_cMRT__patient"
+      ],
+      "euclidean_distance": 0.8454735960991678,
+      "hell_distance": 1.0013253215178297,
+      "j_div_distance": 0.9169333375686876,
+      "cdf_dist": 1.3806898718538265
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.3275777130815096,
+      "hell_distance": 0.628416064993314,
+      "j_div_distance": 0.6400010886131539,
+      "cdf_dist": 0.6723646865516383
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "distant_lymphnode_CR_thorax__patient"
+      ],
+      "euclidean_distance": 0.712495798191648,
+      "hell_distance": 0.8783017316844365,
+      "j_div_distance": 0.8493026412549647,
+      "cdf_dist": 1.3995500698451355
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "distant_lymphnode_CT_thorax__patient"
+      ],
+      "euclidean_distance": 0.8070296323744077,
+      "hell_distance": 0.9408924404985263,
+      "j_div_distance": 0.887744319716058,
+      "cdf_dist": 1.3843034215678736
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "distant_lymphnode_PET_thorax__patient"
+      ],
+      "euclidean_distance": 0.8073535107510149,
+      "hell_distance": 0.9309672643495261,
+      "j_div_distance": 0.8823881198582496,
+      "cdf_dist": 1.3923844363332127
+    },
+    {
+      "edge": [
+        "distant_lymphnode_M__patient",
+        "distant_lymphnode_endosono__patient"
+      ],
+      "euclidean_distance": 0.7451325024961881,
+      "hell_distance": 0.8897806736136087,
+      "j_div_distance": 0.8576422853688638,
+      "cdf_dist": 1.4045845225912075
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.32150773945027367,
+      "hell_distance": 0.6145451209069728,
+      "j_div_distance": 0.6169856245721776,
+      "cdf_dist": 0.6662920792909124
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "hep_M_CT_GuidedPunction__patient"
+      ],
+      "euclidean_distance": 0.8376807762157666,
+      "hell_distance": 0.9616275652432308,
+      "j_div_distance": 0.9006290236167488,
+      "cdf_dist": 1.3730792327546835
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "hep_M_CT_abdomen__patient"
+      ],
+      "euclidean_distance": 0.8094808306701122,
+      "hell_distance": 0.9312174263009656,
+      "j_div_distance": 0.8842859312971519,
+      "cdf_dist": 1.3700146053138582
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "hep_M_Sono_GuidedPunction__patient"
+      ],
+      "euclidean_distance": 0.8328252968425487,
+      "hell_distance": 0.9540476083843071,
+      "j_div_distance": 0.8974899040366401,
+      "cdf_dist": 1.3761565105320903
+    },
+    {
+      "edge": [
+        "hepar_M__patient",
+        "hep_M_Sono_abdomen__patient"
+      ],
+      "euclidean_distance": 0.7923277313275915,
+      "hell_distance": 0.9115920369906196,
+      "j_div_distance": 0.8726394375869965,
+      "cdf_dist": 1.3786383057990914
+    },
+    {
+      "edge": [
+        "other_location_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.3279247848383295,
+      "hell_distance": 0.6291782140854948,
+      "j_div_distance": 0.6412286925555785,
+      "cdf_dist": 0.6726551155945427
+    },
+    {
+      "edge": [
+        "other_location_M__patient",
+        "other_location_M_diagnostic__patient"
+      ],
+      "euclidean_distance": 0.8659924304648692,
+      "hell_distance": 1.0036870781695697,
+      "j_div_distance": 0.9208495707532972,
+      "cdf_dist": 1.368931884066401
+    },
+    {
+      "edge": [
+        "peritoneum_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.33400029763760375,
+      "hell_distance": 0.6440905183268893,
+      "j_div_distance": 0.666052685374985,
+      "cdf_dist": 0.6784504951324966
+    },
+    {
+      "edge": [
+        "peritoneum_M__patient",
+        "perit_M_CT_abdomen__patient"
+      ],
+      "euclidean_distance": 0.8141278089753505,
+      "hell_distance": 0.9534284574474324,
+      "j_div_distance": 0.8939459603273657,
+      "cdf_dist": 1.3968368739555643
+    },
+    {
+      "edge": [
+        "peritoneum_M__patient",
+        "perit_M_Sono_abdomen__patient"
+      ],
+      "euclidean_distance": 0.7098624956276346,
+      "hell_distance": 0.875225256135425,
+      "j_div_distance": 0.8491889363214163,
+      "cdf_dist": 1.44747192807096
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.3394091659543713,
+      "hell_distance": 0.6582651274307277,
+      "j_div_distance": 0.6897461931629303,
+      "cdf_dist": 0.6833085809410774
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "pleu_M_CR_thorax__patient"
+      ],
+      "euclidean_distance": 0.6926645125724755,
+      "hell_distance": 0.8723561849165659,
+      "j_div_distance": 0.8476358574279733,
+      "cdf_dist": 1.4341261525214735
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "pleu_M_CT_thorax__patient"
+      ],
+      "euclidean_distance": 0.812481111465431,
+      "hell_distance": 0.9942405735168732,
+      "j_div_distance": 0.9126577821303914,
+      "cdf_dist": 1.3851532959281756
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "pleu_M_PET_thorax__patient"
+      ],
+      "euclidean_distance": 0.783694001088441,
+      "hell_distance": 0.9499117431785156,
+      "j_div_distance": 0.8918205983775621,
+      "cdf_dist": 1.399225442153205
+    },
+    {
+      "edge": [
+        "pleura_M__patient",
+        "pleu_M_guidedPunction__patient"
+      ],
+      "euclidean_distance": 0.8204558336799761,
+      "hell_distance": 0.9922562809487621,
+      "j_div_distance": 0.9130588695353979,
+      "cdf_dist": 1.3946166216816875
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.3219571635376604,
+      "hell_distance": 0.6155463369196144,
+      "j_div_distance": 0.6186474999974809,
+      "cdf_dist": 0.6667541254955328
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pul_M_CR_thorax__patient"
+      ],
+      "euclidean_distance": 0.633666434887647,
+      "hell_distance": 0.838807511774672,
+      "j_div_distance": 0.8235108021699886,
+      "cdf_dist": 1.445148039912034
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pul_M_CT_thorax__patient"
+      ],
+      "euclidean_distance": 0.7582430921841301,
+      "hell_distance": 0.8772988251829126,
+      "j_div_distance": 0.8504921237874091,
+      "cdf_dist": 1.4070882217124776
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pul_M_PET_thorax__patient"
+      ],
+      "euclidean_distance": 0.8123528443559856,
+      "hell_distance": 0.9358291030912768,
+      "j_div_distance": 0.8850683960211544,
+      "cdf_dist": 1.3862095827637484
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pul_M_bronchoscopy__patient"
+      ],
+      "euclidean_distance": 0.6669470730623402,
+      "hell_distance": 0.854643950859995,
+      "j_div_distance": 0.8323063244636165,
+      "cdf_dist": 1.4481545855865254
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pulmonary_M_CT_GuidedPunction__patient"
+      ],
+      "euclidean_distance": 0.8481897149830171,
+      "hell_distance": 1.0133687952490689,
+      "j_div_distance": 0.9250821140025348,
+      "cdf_dist": 1.3655419608490407
+    },
+    {
+      "edge": [
+        "pulmonary_M__patient",
+        "pulmonary_M_bronchoscopy_GuidedPunction__patient"
+      ],
+      "euclidean_distance": 0.7758241637243876,
+      "hell_distance": 0.9197251518189631,
+      "j_div_distance": 0.8817680726099897,
+      "cdf_dist": 1.4029545133309254
+    },
+    {
+      "edge": [
+        "skin_M__patient",
+        "M_state__patient"
+      ],
+      "euclidean_distance": 0.33328489931577204,
+      "hell_distance": 0.6421485094874431,
+      "j_div_distance": 0.6627435484826604,
+      "cdf_dist": 0.6776980198849716
+    },
+    {
+      "edge": [
+        "skin_M__patient",
+        "others_M_CT_abdomen__patient"
+      ],
+      "euclidean_distance": 0.8222238489854398,
+      "hell_distance": 0.9582971673896411,
+      "j_div_distance": 0.8975645878128486,
+      "cdf_dist": 1.3913327709711378
+    },
+    {
+      "edge": [
+        "skin_M__patient",
+        "others_M_Sono_abdomen__patient"
+      ],
+      "euclidean_distance": 0.7956383543652572,
+      "hell_distance": 0.9417960809297297,
+      "j_div_distance": 0.8877759298989023,
+      "cdf_dist": 1.3928971062822044
+    }
+  ]
+}
