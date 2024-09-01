@@ -1,0 +1,126 @@
+{
+  "best_model": {
+    "40percent": {
+      "M_state__patient": {
+        "overall": 0.9273883429260814,
+        "states": {
+          "M0": {
+            "accuracy": 0.9636273624741547,
+            "counts": "33090/34339"
+          },
+          "M1": {
+            "accuracy": 0.6989720998531571,
+            "counts": "3808/5448"
+          }
+        }
+      }
+    },
+    "60percent": {
+      "M_state__patient": {
+        "overall": 0.9617352056168506,
+        "states": {
+          "M0": {
+            "accuracy": 0.9805345729227194,
+            "counts": "50625/51630"
+          },
+          "M1": {
+            "accuracy": 0.8432234432234432,
+            "counts": "6906/8190"
+          }
+        }
+      }
+    },
+    "80percent": {
+      "M_state__patient": {
+        "overall": 0.9826729886279759,
+        "states": {
+          "M0": {
+            "accuracy": 0.9910260678255584,
+            "counts": "68469/69089"
+          },
+          "M1": {
+            "accuracy": 0.9294540759867208,
+            "counts": "10079/10844"
+          }
+        }
+      }
+    },
+    "100percent": {
+      "M_state__patient": {
+        "overall": 0.9931,
+        "states": {
+          "M0": {
+            "accuracy": 0.9953875928565634,
+            "counts": "85891/86289"
+          },
+          "M1": {
+            "accuracy": 0.9787032309824228,
+            "counts": "13419/13711"
+          }
+        }
+      }
+    }
+  },
+  "second_best_model": {
+    "40percent": {
+      "M_state__patient": {
+        "overall": 0.9384723653454646,
+        "states": {
+          "M0": {
+            "accuracy": 0.9867206383412447,
+            "counts": "33883/34339"
+          },
+          "M1": {
+            "accuracy": 0.6343612334801763,
+            "counts": "3456/5448"
+          }
+        }
+      }
+    },
+    "60percent": {
+      "M_state__patient": {
+        "overall": 0.9658308258107656,
+        "states": {
+          "M0": {
+            "accuracy": 0.989037381367422,
+            "counts": "51064/51630"
+          },
+          "M1": {
+            "accuracy": 0.8195360195360195,
+            "counts": "6712/8190"
+          }
+        }
+      }
+    },
+    "80percent": {
+      "M_state__patient": {
+        "overall": 0.9828606457908499,
+        "states": {
+          "M0": {
+            "accuracy": 0.9925603207457048,
+            "counts": "68575/69089"
+          },
+          "M1": {
+            "accuracy": 0.9210623386204353,
+            "counts": "9988/10844"
+          }
+        }
+      }
+    },
+    "100percent": {
+      "M_state__patient": {
+        "overall": 0.9931,
+        "states": {
+          "M0": {
+            "accuracy": 0.9954223597445793,
+            "counts": "85894/86289"
+          },
+          "M1": {
+            "accuracy": 0.9784844285610094,
+            "counts": "13416/13711"
+          }
+        }
+      }
+    }
+  }
+}

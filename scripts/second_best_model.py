@@ -309,8 +309,10 @@ def comparison_evaluation():
         "100percent": "/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv",
     }
 
-    for model_id, model in model_dict.items():
+    result = {}
 
+    for model_id, model in model_dict.items():
+        result[model_id] = {}
         print(f"Perfroming accuracy evaluation on model : {model_id}")
 
         target = "M_state__patient"
@@ -319,50 +321,66 @@ def comparison_evaluation():
         print("Preforming model test in multiple datasets...\n")
 
         for dataset_id, dataset_path in dataset_id_paths.items():
-            print(dataset_id)
-            print(dataset_path)
-            # print(f"\nDataset: {dataset_path}\n")
-            # df = pd.read_csv(dataset_path)
-            # # print(df)
-            # df = df[[c for c in df.columns if c in sl_model.nodes()]]
-            # # print(df)
-            # df = df.replace(to_replace="*", value=np.nan)
-            # # # df = df[df[target].notna()]
-            # # # print(df)
-            # X = df.loc[:, df.columns != target]
-            # Y = df[target]
-            # # # print(Y)
-            # #
+            result[model_id][dataset_id] = {}
+            print(f"Dataset ID: {dataset_id}")
+            print(f"Dataset Path: {dataset_path}\n")
+            df = pd.read_csv(dataset_path)
+            # print(df)
+            df = df[[c for c in df.columns if c in model.nodes()]]
+            # print(df)
+            df = df.replace(to_replace="*", value=np.nan)
+            # df = df[df[target].notna()]
+            # print(df)
+            X = df.loc[:, df.columns != target]
+            Y = df[target]
+            # print(Y)
 
-            # from utils import predict
 
-            # y_pred = predict(sl_model, data=X, stochastic=False)
-            # comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
-            # # print(comparison_df)
-            # # print(len(comparison_df))
-            # comparison_df = comparison_df.dropna(subset=['Y'])
-            # # print(comparison_df)
-            # # print(len(comparison_df))
-            # print(f"Number of rows dropped due to unknow NaN values of {target}: {len(Y) - len(comparison_df)}")
-            # comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
-            # # print(comparison_df)
-            # # print(len(comparison_df))
-            # accuracy = comparison_df['Equal'].mean()
-            # print("\nAccuracy:")
-            # print(f"{target} = {accuracy}")
-            # target_state_counts = Y.value_counts().to_dict()
-            # for state, actual_state_count in target_state_counts.items():
-            #     state_correct_pred = comparison_df[(comparison_df['Equal'] == True) & (comparison_df['Y'] == state)]
-            #     pred_count = len(state_correct_pred)
-            #     # print(state)
-            #     # print(pred_count)
-            #     # print(actual_state_count)
-            #     if actual_state_count:
-            #         print(f"\t{state} = {pred_count / actual_state_count} ({pred_count}/{actual_state_count})")
-            #     else:
-            #         print(f"\t{state} = 0.0 ({pred_count}/{actual_state_count})")
-            # print()
-            # print("-" * 100)
+            from utils import predict
+
+            y_pred = predict(model, data=X, stochastic=False)
+            comparison_df = pd.DataFrame({'Y': Y, 'y_pred': y_pred[target]})
+            # print(comparison_df)
+            # print(len(comparison_df))
+            comparison_df = comparison_df.dropna(subset=['Y'])
+            # print(comparison_df)
+            # print(len(comparison_df))
+            print(f"Number of rows dropped due to unknow NaN values of {target}: {len(Y) - len(comparison_df)}")
+            comparison_df['Equal'] = comparison_df['Y'] == comparison_df['y_pred']
+            # print(comparison_df)
+            # print(len(comparison_df))
+            accuracy = comparison_df['Equal'].mean()
+            print("\nAccuracy:")
+            print(f"{target} = {accuracy}")
+            result[model_id][dataset_id] = {target: {"overall": accuracy}}
+            result[model_id][dataset_id][target]["states"] = {}
+            target_state_counts = Y.value_counts().to_dict()
+            for state, actual_state_count in target_state_counts.items():
+                state_correct_pred = comparison_df[(comparison_df['Equal'] == True) & (comparison_df['Y'] == state)]
+                pred_count = len(state_correct_pred)
+                # print(state)
+                # print(pred_count)
+                # print(actual_state_count)
+                if actual_state_count:
+                    print(f"\t{state} = {pred_count / actual_state_count} ({pred_count}/{actual_state_count})")
+                    result[model_id][dataset_id][target]["states"][state] = {
+                        "accuracy": pred_count / actual_state_count,
+                        "counts": f"{pred_count}/{actual_state_count}"
+                    }
+                else:
+                    print(f"\t{state} = 0.0 ({pred_count}/{actual_state_count})")
+                    result[model_id][dataset_id][target]["states"][state] = {
+                        "accuracy": 0.0,
+                        "counts": f"{pred_count}/{actual_state_count}"
+                    }
+            print("-" * 100)
+
+    # import json
+    # print(json.dumps(result, indent=2))
+
+    # Save the result to a json file
+    with open("saved_results/comparison_accuracy.json", "w") as file:
+        json.dump(result, file, indent=2)
 
 
 if __name__ == "__main__":
