@@ -113,3 +113,18 @@ def get_cycles_digraph(all_cycles):
 
     config = Config(width=600, height=600, directed=True, physics=True)
     return agraph(nodes=nodes, edges=edges, config=config)
+
+def print_cycles(cycles):
+    output_list = []
+    for idx, cycle in enumerate(cycles):
+        output = f"Cycle: #{idx+1}\n"
+        output += f'{"-"*20}\n'
+        first_element = cycle[0]
+        cycle.pop(0)
+        till = cycle.index(first_element) + 1
+        cycle.insert(0, first_element)
+        for i in range(till):
+            output += f"{cycle[i]} -> {cycle[i+1]}\n"
+
+        output_list.append(output)  
+    return output_list

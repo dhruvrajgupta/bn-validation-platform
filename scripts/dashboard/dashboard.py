@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from utils.file import parse_xdsl, convert_to_vis, detect_cycles, get_cycles_digraph
+from utils.file import parse_xdsl, convert_to_vis, detect_cycles, get_cycles_digraph, print_cycles
 
 st.set_page_config(layout="wide")
 
@@ -34,12 +34,8 @@ with wip_model:
                 with graph:
                     get_cycles_digraph(cycles)
                 with cycle_list:
-                    for idx, cycle in enumerate(cycles):
-                        output = f"Cycle: #{idx+1}\n"
-                        output += f'{"-"*20}\n'
-                        for i in range(len(cycle)-1):
-                            output += f"{cycle[i]} -> {cycle[i+1]}\n"
-                        st.text(output)
+                    for cycle_print in print_cycles(cycles):
+                        st.text(cycle_print)
 
         else:
             st.write("No cycles detected")
