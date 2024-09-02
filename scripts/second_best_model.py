@@ -489,6 +489,25 @@ def sl_without_threshold():
     with open('horrible_model/sl_without_threshold.pkl', 'wb') as outp:
         pickle.dump(sm, outp, pickle.HIGHEST_PROTOCOL)
 
+def horrible_model_view():
+    import pickle
+    path = "/home/dhruv/Desktop/bn-validation-platform/scripts/horrible_model/sl_without_threshold.pkl"
+    # with open('horrible_model/sl_without_threshold.pkl', 'rb') as inp:
+    with open(path, 'rb') as inp:
+        sm = pickle.load(inp)
+    print(sm)
+
+    from causalnex.plots import plot_structure, NODE_STYLE, EDGE_STYLE
+
+    viz = plot_structure(
+        sm,
+        all_node_attributes=NODE_STYLE.WEAK,
+        all_edge_attributes=EDGE_STYLE.WEAK,
+    )
+    viz.toggle_physics(False)
+    viz.show_buttons(filter_=['physics'])
+    viz.show("SL_horrible_M_State_BN.html")
+
 
 if __name__ == "__main__":
     # sl_second_best_model()
@@ -497,4 +516,5 @@ if __name__ == "__main__":
     # cpd_weigts()
     # run_evaluation_second_best()
     # edge_cpd_comparison_evaluation()
-    sl_without_threshold()
+    # sl_without_threshold()
+    horrible_model_view()
