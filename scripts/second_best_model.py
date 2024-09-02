@@ -375,12 +375,70 @@ def comparison_evaluation():
                     }
             print("-" * 100)
 
-    # import json
+    import json
     # print(json.dumps(result, indent=2))
 
     # Save the result to a json file
     with open("saved_results/comparison_accuracy.json", "w") as file:
         json.dump(result, file, indent=2)
+
+
+def sl_without_threshold():
+    sm = StructureModel()
+
+    # Learning structure from the best model to get the second best model
+
+    # reader = BIFReader("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+    reader = BIFReader("/home/dhruv/Desktop/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+
+    model = reader.get_model()
+    print(model)
+
+    # Create Network to be read by CausalNex
+    for edge in model.edges:
+        sm.add_edge(*edge)
+
+    from causalnex.plots import plot_structure, NODE_STYLE, EDGE_STYLE
+
+    viz = plot_structure(
+        sm,
+        all_node_attributes=NODE_STYLE.WEAK,
+        all_edge_attributes=EDGE_STYLE.WEAK,
+    )
+    viz.show("M_State_BN.html")
+
+    data = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/datasets/100percent.csv")
+    # data = pd.read_csv("/Users/dhruv/Desktop/abcd/bn-validation-platform/datasets/100percent.csv")
+
+    # print(data.head())
+    data = data[:2000]
+    data = data[[c for c in data.columns if c in model.nodes()]]
+    # print(data.head())
+
+    # non_numeric_columns = list(data.select_dtypes(exclude=[np.number]).columns)
+    # print(len(non_numeric_columns))
+
+    le = LabelEncoder()
+    categorical_mappings = {}
+
+    for col in data:
+        data[col] = le.fit_transform(data[col])
+        label_to_integer = dict(zip(le.classes_, range(len(le.classes_))))
+        integer_to_label = dict(enumerate(le.classes_))
+        categorical_mappings[col] = integer_to_label
+
+    # print(data.head(5))
+    # print(le.classes_)
+    # print(le.inverse_transform(data.loc[0]))
+    # print(categorical_mappings)
+
+    sm = from_pandas(data)
+
+
+    # Save the sm model
+    import pickle
+    with open('horrible_model/sl_without_threshold.pkl', 'wb') as outp:
+        pickle.dump(sm, outp, pickle.HIGHEST_PROTOCOL)
 
 
 if __name__ == "__main__":
@@ -389,4 +447,5 @@ if __name__ == "__main__":
     # learn_cpds()
     # cpd_weigts()
     # run_evaluation_second_best()
-    comparison_evaluation()
+    # comparison_evaluation()
+    sl_without_threshold()
