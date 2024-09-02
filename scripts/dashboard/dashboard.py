@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from utils.file import parse_xdsl, convert_to_vis
+from utils.file import parse_xdsl, convert_to_vis, detect_cycles, get_cycles_digraph
 
 st.set_page_config(layout="wide")
 
@@ -22,9 +22,27 @@ with wip_model:
 
         with st.expander(f"View Graph"):
             convert_to_vis(graph)
-            HtmlFile = open("/home/dhruv/Desktop/bn-validation-platform/scripts/dashboard/current_model.html", 'r', encoding='utf-8')
+            HtmlFile = open("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/dashboard/current_model.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
-            st.components.v1.html(source_code, height = 1000,width=1000)
+            st.components.v1.html(source_code, height = 1000, width=1000, scrolling=True)
+
+        cycles = detect_cycles(graph)
+        if len(cycles) > 0:
+            with st.expander(f"View Cycles: {len(cycles)} detected"):
+                graph, cycle_list = st.columns(2)
+
+                with graph:
+                    get_cycles_digraph(cycles)
+                with cycle_list:
+                    for idx, cycle in enumerate(cycles):
+                        output = f"Cycle: #{idx+1}\n"
+                        output += f'{"-"*20}\n'
+                        for i in range(len(cycle)-1):
+                            output += f"{cycle[i]} -> {cycle[i+1]}\n"
+                        st.text(output)
+
+        else:
+            st.write("No cycles detected")
 
 
 with st.sidebar:
