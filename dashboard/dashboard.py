@@ -1,6 +1,7 @@
 import streamlit as st
-import time
-from utils.file import parse_xdsl, convert_to_vis, detect_cycles, get_cycles_digraph, print_cycles, get_horrible_model
+# import time
+from utils.file import parse_xdsl,  get_horrible_model
+from utils.cycles import convert_to_vis, detect_cycles, get_cycles_digraph, print_cycles
 
 st.set_page_config(layout="wide")
 
@@ -25,7 +26,6 @@ with wip_model:
     # graph = get_horrible_model(threshold=0)
 
 
-        # TODO: Divide the colum in graph and its config
         with st.expander(f"View Graph"):
             convert_to_vis(graph)
             HtmlFile = open("/home/dhruv/Desktop/bn-validation-platform/dashboard/current_model.html", 'r', encoding='utf-8')
@@ -47,7 +47,9 @@ with wip_model:
         else:
             st.write("No cycles detected")
 
-        ## DETECT MULTIPLE PATHS ##
+        ## DETECT REDUNDANT EDGES ##
+
+        # 1. Using D-Separation
 
 
 
