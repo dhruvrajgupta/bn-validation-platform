@@ -2,4 +2,4 @@ env/
 __pycache__
 datasets/
 .idea/
-scripts/dashboard/current_model.html
+dashboard/current_model.html
