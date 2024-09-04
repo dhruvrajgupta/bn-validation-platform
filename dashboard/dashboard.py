@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from utils.file import parse_xdsl, convert_to_vis, detect_cycles, get_cycles_digraph, print_cycles
+from utils.file import parse_xdsl, convert_to_vis, detect_cycles, get_cycles_digraph, print_cycles, get_horrible_model
 
 st.set_page_config(layout="wide")
 
@@ -20,12 +20,19 @@ with wip_model:
         graph = parse_xdsl(file_content)
         st.write(graph)
 
+    # Using the SL model for testing purposes
+    # graph is a DiGraph
+    # graph = get_horrible_model(threshold=0)
+
+
+        # TODO: Divide the colum in graph and its config
         with st.expander(f"View Graph"):
             convert_to_vis(graph)
-            HtmlFile = open("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/dashboard/current_model.html", 'r', encoding='utf-8')
+            HtmlFile = open("/home/dhruv/Desktop/bn-validation-platform/dashboard/current_model.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
             st.components.v1.html(source_code, height = 1000, width=1000, scrolling=True)
 
+        ## DETECT CYCLES ##
         cycles = detect_cycles(graph)
         if len(cycles) > 0:
             with st.expander(f"View Cycles: {len(cycles)} detected"):
@@ -40,11 +47,14 @@ with wip_model:
         else:
             st.write("No cycles detected")
 
+        ## DETECT MULTIPLE PATHS ##
 
-with st.sidebar:
-    with st.echo():
-        st.write("This code will be printed to the sidebar.")
 
-    with st.spinner("Loading..."):
-        time.sleep(5)
-    st.success("Done!")
+
+# with st.sidebar:
+#     with st.echo():
+#         st.write("This code will be printed to the sidebar.")
+
+#     with st.spinner("Loading..."):
+#         time.sleep(5)
+#     st.success("Done!")

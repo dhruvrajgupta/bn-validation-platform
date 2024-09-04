@@ -111,7 +111,7 @@ def get_cycles_digraph(all_cycles):
     for edge in cycle_graph.edges:
         edges.append(Edge(source=edge[0], target=edge[1]))
 
-    config = Config(width=600, height=600, directed=True, physics=True)
+    config = Config(width=600, height=600, directed=True, physics=False)
     return agraph(nodes=nodes, edges=edges, config=config)
 
 def print_cycles(cycles):
@@ -126,5 +126,19 @@ def print_cycles(cycles):
         for i in range(till):
             output += f"{cycle[i]} -> {cycle[i+1]}\n"
 
-        output_list.append(output)  
+        output_list.append(output)
     return output_list
+
+def get_horrible_model(threshold=0):
+
+    # DiGraph 45 Nodes and 1980 edges (990 cycles)
+    if threshold == 0:
+        path = "/home/dhruv/Desktop/bn-validation-platform/scripts/horrible_model/sl_without_threshold.pkl"
+
+
+    import pickle
+    with open(path, 'rb') as inp:
+        sm = pickle.load(inp)
+    print(sm)
+
+    return sm
