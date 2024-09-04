@@ -29,7 +29,9 @@ with wip_model:
 
         with st.expander(f"View Graph"):
             convert_to_vis(graph)
-            HtmlFile = open("/home/dhruv/Desktop/bn-validation-platform/dashboard/current_model.html", 'r', encoding='utf-8')
+            path = "./current_model.html"
+
+            HtmlFile = open(path, 'r', encoding='utf-8')
             source_code = HtmlFile.read()
             st.components.v1.html(source_code, height = 1000, width=1000, scrolling=True)
 
