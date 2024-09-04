@@ -1,7 +1,7 @@
 import streamlit as st
 # import time
-from utils.file import xdsl_to_digraph, extract_xdsl_content
-from utils.cycles import convert_to_vis, detect_cycles, get_cycles_digraph, print_cycles
+from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super
+from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 from utils.edges import find_redundant_edges, print_multiple_paths, redundant_edges_digraph
 
 st.set_page_config(layout="wide")
@@ -9,8 +9,17 @@ st.set_page_config(layout="wide")
 super_model, wip_model, bn_info = st.tabs(["Super Model", "Check Valid XDSL", "Bayesian Network Info"])
 
 with super_model:
-    st.header("A cat")
-    st.image("https://static.streamlit.io/examples/cat.jpg", width=200)
+    path = "./../scripts/Mstage.xdsl"
+    with open(path, "r") as file:
+        xdsl_content = file.read()
+        graph = xdsl_to_digraph(xdsl_content)
+        st.session_state["super_graph"] = graph
+
+        convert_to_vis_super(graph)
+        path = "./super_model.html"
+        HtmlFile = open(path, 'r', encoding='utf-8')
+        source_code = HtmlFile.read()
+        st.components.v1.html(source_code, height = 1000, width=1000, scrolling=True)
 
 
 with wip_model:

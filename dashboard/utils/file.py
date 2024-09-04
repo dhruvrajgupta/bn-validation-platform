@@ -80,3 +80,28 @@ def extract_xdsl_content(xdsl_content):
             # import json
             # print(json.dumps(nodes[node_id], indent=2))
     return nodes
+
+def convert_to_vis(graph):
+    from causalnex.plots import plot_structure, NODE_STYLE, EDGE_STYLE
+
+    viz = plot_structure(
+        graph,
+        all_node_attributes=NODE_STYLE.WEAK,
+        all_edge_attributes=EDGE_STYLE.WEAK,
+    )
+    viz.toggle_physics(False)
+    viz.show_buttons(filter_=['physics'])
+    viz.show("current_model.html")
+
+
+def convert_to_vis_super(graph):
+    from causalnex.plots import plot_structure, NODE_STYLE, EDGE_STYLE
+
+    viz = plot_structure(
+        graph,
+        all_node_attributes=NODE_STYLE.WEAK,
+        all_edge_attributes=EDGE_STYLE.WEAK,
+    )
+    viz.toggle_physics(False)
+    viz.show_buttons(filter_=['physics'])
+    viz.show("super_model.html")
