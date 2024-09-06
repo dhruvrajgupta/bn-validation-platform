@@ -386,11 +386,15 @@ def edge_cpd_comparison_evaluation():
     from utils import euclidean_distance_marginalization_avg_normalized, hellinger_distance, j_divergence_distance, cdf_distance
 
     # Best model is in bif format
-    reader = BIFReader("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+    # reader = BIFReader("/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+    reader = BIFReader("/home/dhruv/Desktop/bn-validation-platform/scripts/best_model/best_model_M_stage.bif")
+
     best_model = reader.get_model()
 
     # Second best is in bnlearn pkl format
-    second_best_model = bnlearn.load(filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
+    # second_best_model = bnlearn.load(filepath="/Users/dhruv/Desktop/abcd/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
+    second_best_model = bnlearn.load(filepath="/home/dhruv/Desktop/bn-validation-platform/scripts/second_best_model/2ndbest_cpds.pkl")
+
     second_best_model_dict = bnlearn.make_DAG(DAG=second_best_model)
     second_best_model = second_best_model_dict["model"]
 
@@ -513,8 +517,8 @@ if __name__ == "__main__":
     # sl_second_best_model()
     # edge_strenght_stats_ds()
     # learn_cpds()
-    # cpd_weigts()
+    cpd_weigts()
     # run_evaluation_second_best()
     # edge_cpd_comparison_evaluation()
     # sl_without_threshold()
-    horrible_model_view()
+    # horrible_model_view()

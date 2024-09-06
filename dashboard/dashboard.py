@@ -3,6 +3,7 @@ import streamlit as st
 from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 from utils.edges import find_redundant_edges, print_multiple_paths, redundant_edges_digraph
+from utils.models import get_horrible_model
 
 st.set_page_config(layout="wide")
 
