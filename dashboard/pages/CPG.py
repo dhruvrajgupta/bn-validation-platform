@@ -1,5 +1,21 @@
 import streamlit as st
 import streamlit_antd_components as sac
+from pathlib import Path
+import json
+
+def read_feedback(page):
+    feedback_path = Path("./../dashboard/cpg_pages/feedbacks/"+page.split(',')[-1].strip()+".json")
+    if feedback_path.is_file():
+        with open(feedback_path, 'r') as f:
+            feedback = json.load(f)
+            return feedback
+    else:
+        return []
+
+def write_feedback(page, feedback):
+    feedback_path = Path("./../dashboard/cpg_pages/feedbacks/"+page.split(',')[-1].strip()+".json")
+    with open(feedback_path, 'w') as f:
+        json.dump(feedback, f, indent=4)
 
 with st.sidebar:
     st.markdown("BMI calculator")
@@ -35,12 +51,31 @@ with st.sidebar:
         selected_page = selected_page[0]
 
     html_page = "./../dashboard/cpg_pages/"+selected_page.split(',')[-1].strip()+".html"
+    feedback_path = Path("./../dashboard/feedback_store/"+selected_page.split(',')[-1].strip()+".json")
+    if feedback_path.is_file():
+        with open(feedback_path, 'r') as f:
+            feedback = json.load(f)
+            st.write(feedback)
+    else:
+        feedback = {}
+
 
 
 with st.expander("Page: "+selected_page, expanded=True):
     HtmlFile = open(html_page, 'r', encoding='utf-8')
     source_code = HtmlFile.read()
     st.components.v1.html(source_code, height = 920, width=1280, scrolling=True)
+
+with st.expander("Feedback Log"):
+    page_feedback = read_feedback(selected_page)
+
+    user = st.text_input("User", placeholder="Enter your name")
+    feedback = st.text_area("Feedback", placeholder="Enter your feedback")
+    if st.button("Submit"):
+        page_feedback.append({"user": user, "feedback": feedback})
+        write_feedback(selected_page, page_feedback)
+
+    st.write(page_feedback)
 
 # st.markdown("BMI calculator")
 # st.write('your BMI is 9999')
