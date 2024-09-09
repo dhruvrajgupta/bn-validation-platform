@@ -46,6 +46,10 @@ def redundant_edges_digraph(graph, redundant_edges):
 
 def find_redundant_edges_d_separation(graph, debug=False):
 
+    import time
+    start = time.time()
+    print(f"Start: {start}")
+
     # Function to check for d-separation
     def check_d_separation(model, X, Y, Z):
         # Returns True if X and Y are independent given Z (i.e., d-separated)
@@ -99,7 +103,10 @@ def find_redundant_edges_d_separation(graph, debug=False):
         # Only When all is True the edge is truly redundant given all combination of variables
         is_edge_redundant_given_variables = []
 
+        flag_combi_break = False
         for i in range(len(nodes_cp)):
+            if flag_combi_break:
+                break
             for combination in itertools.combinations(nodes_cp, i):
                 Z = list(combination)
                 if not Z:
@@ -107,8 +114,12 @@ def find_redundant_edges_d_separation(graph, debug=False):
 
                 # Check if the edge is redundant
                 is_redundant = is_edge_redundant(graph.copy(), edge, X, Y, Z)
-                if debug:
-                    print(f"Is the edge {edge} redundant given {list(combination)}? {is_redundant}")
+                if is_redundant == False:
+                    flag_combi_break = True
+                    is_edge_redundant_given_variables.append(is_redundant)
+                    break
+                # if debug:
+                #     print(f"Is the edge {edge} redundant given {list(combination)}? {is_redundant}")
                 is_edge_redundant_given_variables.append(is_redundant)
         
         if debug:
@@ -116,4 +127,10 @@ def find_redundant_edges_d_separation(graph, debug=False):
         if all(is_edge_redundant_given_variables):
             redundant_edges.append(edge)
 
+    end = time.time()
+    print(f"End: {end}")
+    print(f"Time: {end - start}")
+
     return redundant_edges
+
+# find_redundant_edges_d_separation(None, debug=True)

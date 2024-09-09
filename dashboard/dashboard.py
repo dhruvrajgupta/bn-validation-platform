@@ -2,7 +2,7 @@ import streamlit as st
 # import time
 from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super, build_network
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
-from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph
+from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation
 from utils.models import get_horrible_model
 
 st.set_page_config(layout="wide")
@@ -103,6 +103,14 @@ with bn_info:
         if bn_model.check_model():
             st.session_state["bn_model"] = bn_model
         st.write(bn_model)
+
+        redundant_edges_d_separation = find_redundant_edges_d_separation(bn_model, debug=True)
+        st.write(redundant_edges_d_separation)
+        # if redundant_edges_d_separation:
+        #     with st.expander(f"View Redundant Edges (D-separation): {len(redundant_edges_d_separation)} detected"):
+        #         redundant_edges_digraph(bn_model, redundant_edges_d_separation)
+        # else:
+        #     st.success("No D-separation detected.")
     except Exception as e:
         st.error(f"ERROR: \n{str(e)}")
 
