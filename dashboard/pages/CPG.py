@@ -64,7 +64,9 @@ with st.sidebar:
 with st.expander("Page: "+selected_page, expanded=True):
     HtmlFile = open(html_page, 'r', encoding='utf-8')
     source_code = HtmlFile.read()
-    st.components.v1.html(source_code, height = 920, width=1280, scrolling=True)
+    # st.components.v1.html(source_code, height = 920, width=1280, scrolling=True)
+    st.html(source_code)
+
 
 with st.expander("Feedback Log"):
     page_feedback = read_feedback(selected_page)

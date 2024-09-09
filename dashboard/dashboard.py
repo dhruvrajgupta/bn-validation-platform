@@ -1,8 +1,8 @@
 import streamlit as st
 # import time
-from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super
+from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super, build_network
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
-from utils.edges import find_redundant_edges, print_multiple_paths, redundant_edges_digraph
+from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph
 from utils.models import get_horrible_model
 
 st.set_page_config(layout="wide")
@@ -10,13 +10,22 @@ st.set_page_config(layout="wide")
 super_model, wip_model, bn_info = st.tabs(["Super Model", "Check Valid XDSL", "Bayesian Network Info"])
 
 with super_model:
-    path = "./../scripts/Mstage.xdsl"
+    selected_model = st.selectbox("Select a ground truth model", ["Mstage Laryngeal Cancer", "TNM Staging Laryngeal Cancer"])
+
+    model_path_mapping = {
+        "Mstage Laryngeal Cancer": "./ground_truth_models/Mstage.xdsl",
+        "TNM Staging Laryngeal Cancer": "./../scripts/ST-10.xdsl"
+    }
+
+    path = model_path_mapping[selected_model]
+
     with open(path, "r") as file:
         xdsl_content = file.read()
         graph = xdsl_to_digraph(xdsl_content)
         st.session_state["super_graph"] = graph
-
         convert_to_vis_super(graph)
+    
+    with st.expander("View Graph"):
         path = "./super_model.html"
         HtmlFile = open(path, 'r', encoding='utf-8')
         source_code = HtmlFile.read()
@@ -79,12 +88,24 @@ with bn_info:
 
     ## DETECT REDUNDANT EDGES ##
     # 1. Using Multiple Paths
+    redundant_edges_multiple_paths = find_redundant_edges_multiple_paths(graph)
+    if redundant_edges_multiple_paths:
+        with st.expander(f"View Redundant Edges (Multiple Paths): {len(redundant_edges_multiple_paths)} detected"):
+            redundant_edges_digraph(graph, redundant_edges_multiple_paths)
+            st.text(print_multiple_paths(graph, redundant_edges_multiple_paths))
+    else:
+        st.success("No Multiple Paths detected.")
 
-    redundant_edges = find_redundant_edges(graph)
-    if redundant_edges:
-        with st.expander(f"View Redundant Edges: {len(redundant_edges)} detected"):
-            redundant_edges_digraph(graph, redundant_edges)
-            st.text(print_multiple_paths(graph, redundant_edges))
+    # 2. Using D-separation (Needs to be converted into Bayesian Network)
+    try:
+        nodes_contents = extract_xdsl_content(file_content)
+        bn_model = build_network(nodes_contents)
+        if bn_model.check_model():
+            st.session_state["bn_model"] = bn_model
+        st.write(bn_model)
+    except Exception as e:
+        st.error(f"ERROR: \n{str(e)}")
+
 
 
     # nodes_contents = extract_xdsl_content(file_content)

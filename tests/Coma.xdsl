@@ -4,7 +4,6 @@
 		<cpt id="MetastCancer">
 			<state id="present" />
 			<state id="absent" />
-			<parents>IncrSerCal SevHeadaches</parents>
 			<probabilities>0.2 0.8</probabilities>
 		</cpt>
 		<cpt id="BrainTumor">
@@ -16,7 +15,7 @@
 		<cpt id="IncrSerCal">
 			<state id="present" />
 			<state id="absent" />
-			<parents>BrainTumor</parents>
+			<parents>MetastCancer</parents>
 			<probabilities>0.8 0.2 0.2 0.8</probabilities>
 		</cpt>
 		<cpt id="Coma">

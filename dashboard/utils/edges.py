@@ -1,7 +1,7 @@
 import networkx as nx
 from streamlit_agraph import agraph, Node, Edge, Config
 
-def find_redundant_edges(graph):
+def find_redundant_edges_multiple_paths(graph):
     def is_redundant_edge(G, edge):
         # Checking if removal of edges still has connectivity
         G_prime = G.copy()

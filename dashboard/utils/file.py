@@ -1,6 +1,9 @@
 import xmltodict
 import networkx as nx
 import matplotlib.pyplot as plt
+from pgmpy.models import BayesianNetwork
+from pgmpy.factors.discrete import TabularCPD
+import numpy as np
 
 def xdsl_to_digraph(xdsl_content: str) -> nx.DiGraph:
     try:
@@ -105,3 +108,59 @@ def convert_to_vis_super(graph):
     viz.toggle_physics(False)
     viz.show_buttons(filter_=['physics'])
     viz.show("super_model.html")
+
+
+def build_network(nodes):
+    model = BayesianNetwork()
+
+    # Add nodes and edges
+    for node_id, details in nodes.items():
+        model.add_node(node_id)
+        for parent in details['parents']:
+            model.add_edge(parent, node_id)
+
+    # Add CPDs
+    for node_id, details in nodes.items():
+        node_states_card = len(details['states'])
+        parents = details['parents']
+        parent_states = [len(nodes[parent]['states']) for parent in parents]
+        values = details['probabilities']
+
+        state_names = {}
+
+        if parents:
+            num_of_cols = node_states_card
+            # num_of_cols = int(len(values)/states)
+            num_of_rows = int(len(values) / node_states_card)
+            x = np.array(values)
+            x = x.reshape(num_of_rows, num_of_cols)
+            su = x.sum(axis=1)
+            # print(su)
+            x = x.transpose()
+            values = x
+            # values = x.tolist()
+            # values = [values[i:i + states] for i in range(0, len(values), states)]
+        else:
+            values = [[value] for value in values]
+            values = np.array(values)
+            su = values.sum(axis=0)
+            # print(su)
+
+        state_names[node_id] = details['states']
+        if parents:
+            for parent in parents:
+                state_names[parent] = nodes[parent]['states']
+
+        # print(f"Node_ID: {node_id}")
+        # print(f"Node States Cardinality: {node_states_card}")
+        # print(f"Evidence / Parents: {parents}")
+        # print(f"Evidence Cardinality: {parent_states}")
+        # print(f"State Names: {json.dumps(state_names, indent=2)}")
+        # print(f"CPD Values: \n{values}")
+        # print("-" * 50)
+
+        cpd = TabularCPD(variable=node_id, variable_card=node_states_card, values=values,
+                         evidence=parents, evidence_card=parent_states, state_names=state_names)
+        model.add_cpds(cpd)
+
+    return model
