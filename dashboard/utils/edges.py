@@ -1,5 +1,7 @@
 import networkx as nx
 from streamlit_agraph import agraph, Node, Edge, Config
+from pgmpy.models import BayesianNetwork
+import itertools
 
 def find_redundant_edges_multiple_paths(graph):
     def is_redundant_edge(G, edge):
@@ -41,3 +43,77 @@ def redundant_edges_digraph(graph, redundant_edges):
 
     config = Config(width=1000, height=600, directed=True, physics=True)
     return agraph(nodes=nodes, edges=edges, config=config)
+
+def find_redundant_edges_d_separation(graph, debug=False):
+
+    # Function to check for d-separation
+    def check_d_separation(model, X, Y, Z):
+        # Returns True if X and Y are independent given Z (i.e., d-separated)
+        return not model.is_dconnected(X, Y, Z)
+    
+    # Function to check if an edge is redundant
+    def is_edge_redundant(model, edge, X, Y, Z):
+        # Check conditional independence before removing the edge
+        before_removal = check_d_separation(model, X, Y, Z)
+
+        # Remove the edge
+        model.remove_edge(*edge)
+
+        # Check conditional independence after removing the edge
+        after_removal = check_d_separation(model, X, Y, Z)
+
+        # Add the edge back to the model
+        model.add_edge(*edge)
+
+        # If removing the edge does not affect d-separation, it is redundant
+        return before_removal == after_removal
+
+    # graph = BayesianNetwork([
+    #     ('Burglary', 'Alarm'),
+    #     ('Earthquake', 'Alarm'),
+    #     ('Alarm', 'JohnCalls'),
+    #     ('Alarm', 'MaryCalls'),
+    #     ('Burglary', 'Earthquake'), # <-- Redundant Edge
+    #     # Burglary and Earthquake were already independent in the original graph unless conditioned on Alarm.
+    #     # The new edge does not change this independence, as the two variables are still blocked by the collider at the Alarm unless the Alarm is observed.
+    #     # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
+    # ])
+
+    # List of redundant edges
+    redundant_edges = []
+
+    # List of nodes in the graph
+    nodes = [node for node in graph.nodes()]
+    
+    # Checking each edge in the graph
+    for edge in graph.edges():
+        X = edge[0]
+        Y = edge[1]
+
+        # Removing the nodes already in the edge
+        nodes_cp = nodes.copy()
+        nodes_cp.remove(edge[0])
+        nodes_cp.remove(edge[1])
+
+        # Accumulating list that aggregrates is edge redundant given a set of variables
+        # Only When all is True the edge is truly redundant given all combination of variables
+        is_edge_redundant_given_variables = []
+
+        for i in range(len(nodes_cp)):
+            for combination in itertools.combinations(nodes_cp, i):
+                Z = list(combination)
+                if not Z:
+                    continue
+
+                # Check if the edge is redundant
+                is_redundant = is_edge_redundant(graph.copy(), edge, X, Y, Z)
+                if debug:
+                    print(f"Is the edge {edge} redundant given {list(combination)}? {is_redundant}")
+                is_edge_redundant_given_variables.append(is_redundant)
+        
+        if debug:
+            print(f"Is the edge {edge} redundant? {all(is_edge_redundant_given_variables)}")
+        if all(is_edge_redundant_given_variables):
+            redundant_edges.append(edge)
+
+    return redundant_edges
