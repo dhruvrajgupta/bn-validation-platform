@@ -104,8 +104,9 @@ with bn_info:
             st.session_state["bn_model"] = bn_model
         st.write(bn_model)
 
-        redundant_edges_d_separation = find_redundant_edges_d_separation(bn_model, debug=True)
-        st.write(redundant_edges_d_separation)
+        # This Process is computationally expensive. Needs to be made into a background task (eg, TNM Staging Laryngeal Cancer - 54 mins approx)
+        # redundant_edges_d_separation = find_redundant_edges_d_separation(bn_model, debug=True)
+        # st.write(redundant_edges_d_separation)
         # if redundant_edges_d_separation:
         #     with st.expander(f"View Redundant Edges (D-separation): {len(redundant_edges_d_separation)} detected"):
         #         redundant_edges_digraph(bn_model, redundant_edges_d_separation)
