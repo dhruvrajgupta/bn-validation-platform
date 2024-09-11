@@ -2,7 +2,7 @@ import streamlit as st
 # import time
 from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super, build_network
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
-from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation, edge_strength_stats
+from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation, edge_strength_stats, edge_strength_cpds
 from utils.models import get_horrible_model
 import concurrent.futures
 import time
@@ -128,32 +128,39 @@ with bn_info:
 
 
     # 2. Using D-separation (Needs a Bayesian Network)
-    st.button("Compute Redundant Edges (D-separation)", on_click=redundant_edge_d_separation_btn_callback, disabled=st.session_state["d_separation_btn"], type="primary")
+    if "bn_model" in st.session_state:
+        st.button("Compute Redundant Edges (D-separation)", on_click=redundant_edge_d_separation_btn_callback, disabled=st.session_state["d_separation_btn"], type="primary")
 
-    with st.status("Redundant Edges (D-separation)"):
-        if st.session_state["d_separation_btn"]:
-            # redundant_edges_d_separation = run_in_background(long_computation, 5)
-            # This Process is computationally expensive. Needs to be made into a background task (eg, TNM Staging Laryngeal Cancer - 54 mins approx)
-            redundant_edges_d_separation = run_in_background(find_redundant_edges_d_separation, bn_model, True)
+        with st.status("Redundant Edges (D-separation)"):
+            if st.session_state["d_separation_btn"]:
+                # redundant_edges_d_separation = run_in_background(long_computation, 5)
+                # This Process is computationally expensive. Needs to be made into a background task (eg, TNM Staging Laryngeal Cancer - 54 mins approx)
+                redundant_edges_d_separation = run_in_background(find_redundant_edges_d_separation, bn_model, True)
 
-            if redundant_edges_d_separation.done():
-                redundant_edges_d_separation = redundant_edges_d_separation.result()
-            # redundant_edges_d_separation = find_redundant_edges_d_separation(bn_model, debug=True)
-                if redundant_edges_d_separation:
-                    st.error(f"{len(redundant_edges_d_separation)} redundant edges detected")
-                    st.write(redundant_edges_d_separation)
-                else:
-                    st.success("No redundant edges detected.")
-
-
+                if redundant_edges_d_separation.done():
+                    redundant_edges_d_separation = redundant_edges_d_separation.result()
+                # redundant_edges_d_separation = find_redundant_edges_d_separation(bn_model, debug=True)
+                    if redundant_edges_d_separation:
+                        st.error(f"{len(redundant_edges_d_separation)} redundant edges detected")
+                        st.write(redundant_edges_d_separation)
+                    else:
+                        st.success("No redundant edges detected.")
 
 
-    ## EDGE RANKINGS ##
-    # 1. Using Dataset stats (G-Test)
-    with st.status("Edge Strength (G-Test)"):
-        edge_strength = edge_strength_stats(bn_model)
-        st.write(edge_strength)
 
+    if "bn_model" in st.session_state:
+        ## EDGE RANKINGS ##
+        # 1. Using Dataset stats (G-Test)
+        with st.status("Edge Strength (G-Test)"):
+            edge_strength = run_in_background(edge_strength_stats, bn_model)
+            if edge_strength.done():
+                edge_strength = edge_strength.result()
+            st.write(edge_strength)
+
+        with st.expander("Edge Strength (Using CPDs)"):
+            distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=0, horizontal=True)
+            edge_strength = edge_strength_cpds(bn_model, distance_type)
+            st.write(edge_strength)
 
 
     with st.expander(f"Session Info"):

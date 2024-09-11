@@ -4,6 +4,7 @@ from pgmpy.models import BayesianNetwork
 import itertools
 import bnlearn
 import pandas as pd
+import numpy as np
 
 def find_redundant_edges_multiple_paths(graph):
     def is_redundant_edge(G, edge):
@@ -154,3 +155,238 @@ def edge_strength_stats(model):
 
     # print(model.keys())
     return model['independence_test']
+
+def edge_strength_cpds(model, distance_type):
+
+    # TODO: Investigate the distance values
+
+    source_list = []
+    target_list = []
+    distance_list = []
+
+    for edge in model.edges():
+        p = edge[0]
+        q = edge[1]
+
+        source_list.append(p)
+        target_list.append(q)
+
+        p = model.get_cpds(p)
+        q = model.get_cpds(q)
+
+        if distance_type == "Euclidean":
+            distance = euclidean_distance(p, q)
+        elif distance_type == "Hellinger":
+            distance = hellinger_distance(p, q)
+        elif distance_type == "J-Divergence":
+            distance = j_divergence_distance(p, q)
+        elif distance_type == "CDF":
+            distance = cdf_distance(p, q)
+
+        distance_list.append(distance)
+
+    df = pd.DataFrame(data={"source": source_list, "target": target_list, "distance": distance_list})
+    return df
+
+def euclidean_distance(p, q):
+
+    # Marginalization of P
+    p_evidence = p.get_evidence()
+    # print(f"P: {p.variable}")
+    # print(f"P evidence: {p_evidence}")
+    p = p.marginalize(variables=p_evidence, inplace=False)
+
+    # print(p)
+
+    q_evidence = q.get_evidence()
+    # print(f"Q: {q.variable}")
+    # print(f"Q evidence: {q_evidence}")
+    q_evidence.remove(p.variable)
+    q = q.marginalize(q_evidence, inplace=False)
+
+    # print(q)
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    # Num of Columns of Q
+    p_repeat = q_vals.shape[1]
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(f"P Flat: {p_flat}")
+
+    q_flat = q_vals.flatten()
+    # print(f"Q Flat: {q_flat}")
+
+    # print(f"Len P Flat: {len(p_flat)}")
+    # print(f"Len Q Flat: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+
+    sub_square = np.subtract(p_flat, q_flat) ** 2
+    # print(sub_square)
+    num_rows = p_vals.shape[1]
+    num_cols = len(sub_square)//num_rows
+    sub_square = sub_square.reshape(num_rows, num_cols)
+    # print(sub_square)
+    x_sum = np.sum(sub_square, axis=1)
+    # print(x_sum)
+    distance = np.mean(x_sum)
+    # print(mean)
+
+    # distance = np.sqrt(np.sum((p_flat - q_flat) ** 2))
+    # print(distance)
+
+    # print("="*50)
+    return distance/np.sqrt(2)
+
+def hellinger_distance(p, q):
+    # Marginalization of P
+    p_evidence = p.get_evidence()
+    # print(f"P: {p.variable}")
+    # print(f"P evidence: {p_evidence}")
+    p = p.marginalize(variables=p_evidence, inplace=False)
+
+    # print(p)
+
+    q_evidence = q.get_evidence()
+    # print(f"Q: {q.variable}")
+    # print(f"Q evidence: {q_evidence}")
+    q_evidence.remove(p.variable)
+    q = q.marginalize(q_evidence, inplace=False)
+
+    # print(q)
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    # Num of Columns of Q
+    p_repeat = q_vals.shape[1]
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(f"P Flat: {p_flat}")
+
+    q_flat = q_vals.flatten()
+    # # print(f"Q Flat: {q_flat}")
+
+    # print(f"Len P Flat: {len(p_flat)}")
+    # print(f"Len Q Flat: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+
+    distance = np.sqrt(np.sum(np.subtract(np.sqrt(p_flat), np.sqrt(q_flat)) ** 2))
+    return distance/np.sqrt(2)
+
+def j_divergence_distance(p, q):
+    # Marginalization of P
+    p_evidence = p.get_evidence()
+    # print(f"P: {p.variable}")
+    # print(f"P evidence: {p_evidence}")
+    p = p.marginalize(variables=p_evidence, inplace=False)
+
+    # print(p)
+
+    q_evidence = q.get_evidence()
+    # print(f"Q: {q.variable}")
+    # print(f"Q evidence: {q_evidence}")
+    q_evidence.remove(p.variable)
+    q = q.marginalize(q_evidence, inplace=False)
+
+    # print(q)
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    # Num of Columns of Q
+    p_repeat = q_vals.shape[1]
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(f"P Flat: {p_flat}")
+
+    q_flat = q_vals.flatten()
+    # # print(f"Q Flat: {q_flat}")
+
+    # print(f"Len P Flat: {len(p_flat)}")
+    # print(f"Len Q Flat: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+
+    kl_distance_p_q = - np.sum(np.multiply(p_flat, np.log2(q_flat))) + np.sum(np.multiply(p_flat, np.log2(p_flat)))
+    kl_distance_q_p = - np.sum(np.multiply(q_flat, np.log2(p_flat))) + np.sum(np.multiply(q_flat, np.log2(q_flat)))
+
+    # Parameter to control smoothness
+    alpha = 10
+
+    if np.any(q_flat == 0):
+        return 1
+    else:
+        j_divergence = (kl_distance_p_q + kl_distance_q_p)/2
+        j_divergence_norm = j_divergence/np.sqrt((j_divergence ** 2) + alpha)
+        return j_divergence_norm
+
+
+def cdf_distance(p, q):
+
+    # The CDF distance is a good choice when there are ordinal nodes, because it represents the shift of probability
+    # according to the cumulative probability functions of the two distributions.
+    # Ordinal: if the states are ordered from left to right, from less important to most important
+
+    # p = np.array([0,0,1,0])
+    # print(p)
+    # p = np.cumsum(p)
+    # print(p)
+    # q = np.array([0.1, 0, 0, 0.9])
+    # print(q)
+    # q = np.cumsum(q)
+    # print(q)
+    # print(p.shape)
+    # no_elements = p.shape[0]
+    #
+    # cum_diff = np.absolute(np.subtract(p, q))
+    # print(cum_diff)
+    # distance = np.sum(cum_diff)
+    # multiplier = 1/(no_elements - 1)
+
+    # Marginalization of P
+    p_evidence = p.get_evidence()
+    # print(f"P: {p.variable}")
+    # print(f"P evidence: {p_evidence}")
+    p = p.marginalize(variables=p_evidence, inplace=False)
+
+    # print(p)
+
+    q_evidence = q.get_evidence()
+    # print(f"Q: {q.variable}")
+    # print(f"Q evidence: {q_evidence}")
+    q_evidence.remove(p.variable)
+    q = q.marginalize(q_evidence, inplace=False)
+
+    # print(q)
+
+    p_vals = p.get_values().transpose()
+    q_vals = q.get_values().transpose()
+
+    # Num of Columns of Q
+    p_repeat = q_vals.shape[1]
+    p_flat = np.repeat(p_vals, p_repeat)
+    # print(f"P Flat: {p_flat}")
+
+    q_flat = q_vals.flatten()
+    # # print(f"Q Flat: {q_flat}")
+
+    # print(f"Len P Flat: {len(p_flat)}")
+    # print(f"Len Q Flat: {len(q_flat)}")
+
+    if len(p_flat) != len(q_flat):
+        raise Exception("The two distributions number of elements mismatch.")
+
+    p_flat = np.cumsum(p_flat)
+    q_flat = np.cumsum(q_flat)
+
+    no_elements = p_flat.shape[0]
+
+    cum_diff = np.absolute(np.subtract(p_flat, q_flat))
+    distance = np.sum(cum_diff)
+    multiplier = 1 / (no_elements - 1)
+
+    return multiplier * distance
