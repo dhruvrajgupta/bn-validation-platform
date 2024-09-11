@@ -4,8 +4,27 @@ from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, co
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation
 from utils.models import get_horrible_model
+import concurrent.futures
+import time
 
 st.set_page_config(layout="wide")
+
+if "d_separation_btn" not in st.session_state:
+    st.session_state["d_separation_btn"] = False
+
+def long_computation(n):
+    # Dummy long computation
+    time.sleep(n)  # Simulating a long-running computation
+    # return f"Completed after {n} seconds!"
+    return [1,2,3,4,5]
+
+def run_in_background(fn, *args):
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        future = executor.submit(fn, *args)
+        return future
+
+def redundant_edge_d_separation_btn_callback():
+    st.session_state["d_separation_btn"] = True
 
 super_model, wip_model, bn_info = st.tabs(["Super Model", "Check Valid XDSL", "Bayesian Network Info"])
 
@@ -104,14 +123,23 @@ with bn_info:
             st.session_state["bn_model"] = bn_model
         st.write(bn_model)
 
-        # This Process is computationally expensive. Needs to be made into a background task (eg, TNM Staging Laryngeal Cancer - 54 mins approx)
-        # redundant_edges_d_separation = find_redundant_edges_d_separation(bn_model, debug=True)
-        # st.write(redundant_edges_d_separation)
-        # if redundant_edges_d_separation:
-        #     with st.expander(f"View Redundant Edges (D-separation): {len(redundant_edges_d_separation)} detected"):
-        #         redundant_edges_digraph(bn_model, redundant_edges_d_separation)
-        # else:
-        #     st.success("No D-separation detected.")
+        st.button("Compute Redundant Edges (D-separation)", on_click=redundant_edge_d_separation_btn_callback, disabled=st.session_state["d_separation_btn"], type="primary")
+
+        with st.status("Redundant Edges (D-separation)"):
+            if st.session_state["d_separation_btn"]:
+                # redundant_edges_d_separation = run_in_background(long_computation, 5)
+                # This Process is computationally expensive. Needs to be made into a background task (eg, TNM Staging Laryngeal Cancer - 54 mins approx)
+                redundant_edges_d_separation = run_in_background(find_redundant_edges_d_separation, bn_model, True)
+
+                if redundant_edges_d_separation.done():
+                    redundant_edges_d_separation = redundant_edges_d_separation.result()
+                # redundant_edges_d_separation = find_redundant_edges_d_separation(bn_model, debug=True)
+                    if redundant_edges_d_separation:
+                        st.error(f"{len(redundant_edges_d_separation)} redundant edges detected")
+                        st.write(redundant_edges_d_separation)
+                    else:
+                        st.success("No redundant edges detected.")
+
     except Exception as e:
         st.error(f"ERROR: \n{str(e)}")
 
