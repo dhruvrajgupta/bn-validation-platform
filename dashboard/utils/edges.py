@@ -2,6 +2,8 @@ import networkx as nx
 from streamlit_agraph import agraph, Node, Edge, Config
 from pgmpy.models import BayesianNetwork
 import itertools
+import bnlearn
+import pandas as pd
 
 def find_redundant_edges_multiple_paths(graph):
     def is_redundant_edge(G, edge):
@@ -54,7 +56,7 @@ def find_redundant_edges_d_separation(graph, debug=False):
     def check_d_separation(model, X, Y, Z):
         # Returns True if X and Y are independent given Z (i.e., d-separated)
         return not model.is_dconnected(X, Y, Z)
-    
+
     # Function to check if an edge is redundant
     def is_edge_redundant(model, edge, X, Y, Z):
         # Check conditional independence before removing the edge
@@ -88,7 +90,7 @@ def find_redundant_edges_d_separation(graph, debug=False):
 
     # List of nodes in the graph
     nodes = [node for node in graph.nodes()]
-    
+
     # Checking each edge in the graph
     for edge in graph.edges():
         X = edge[0]
@@ -121,7 +123,7 @@ def find_redundant_edges_d_separation(graph, debug=False):
                 # if debug:
                 #     print(f"Is the edge {edge} redundant given {list(combination)}? {is_redundant}")
                 is_edge_redundant_given_variables.append(is_redundant)
-        
+
         if debug:
             print(f"Is the edge {edge} redundant? {all(is_edge_redundant_given_variables)}")
         if all(is_edge_redundant_given_variables):
@@ -133,4 +135,22 @@ def find_redundant_edges_d_separation(graph, debug=False):
 
     return redundant_edges
 
-# find_redundant_edges_d_separation(None, debug=True)
+
+def edge_strength_stats(model):
+    cpds = model.get_cpds()
+    model = bnlearn.make_DAG(DAG=model, CPD=cpds, verbose=0)
+
+    dataset_paths = [
+        "./../datasets/40percent.csv",
+        "./../datasets/60percent.csv",
+        "./../datasets/80percent.csv",
+        "./../datasets/100percent.csv",
+    ]
+
+    df = pd.read_csv(dataset_paths[3])
+
+    model = bnlearn.independence_test(model, df, test="g_sq")
+    # # The G-test is often preferred over the Chi-square test when dealing with smaller sample sizes or when the data involves counts.
+
+    # print(model.keys())
+    return model['independence_test']
