@@ -26,29 +26,58 @@ def run_in_background(fn, *args):
 def redundant_edge_d_separation_btn_callback():
     st.session_state["d_separation_btn"] = True
 
-super_model, wip_model, bn_info = st.tabs(["Super Model", "Check Valid XDSL", "Bayesian Network Info"])
+super_model, wip_model, bn_info = st.tabs(["Ground Truth Model", "Check Valid XDSL", "Bayesian Network Info"])
 
 with super_model:
     selected_model = st.selectbox("Select a ground truth model", ["Mstage Laryngeal Cancer", "TNM Staging Laryngeal Cancer"])
 
     model_path_mapping = {
         "Mstage Laryngeal Cancer": "./ground_truth_models/Mstage.xdsl",
-        "TNM Staging Laryngeal Cancer": "./../scripts/ST-10.xdsl"
+        "TNM Staging Laryngeal Cancer": "./ground_truth_models/validationPaper_TNM-Model_28012016.xdsl"
     }
 
     path = model_path_mapping[selected_model]
 
     with open(path, "r") as file:
         xdsl_content = file.read()
-        graph = xdsl_to_digraph(xdsl_content)
-        st.session_state["super_graph"] = graph
-        convert_to_vis_super(graph)
-    
+        ground_truth_graph = xdsl_to_digraph(xdsl_content)
+        # st.session_state["ground_truth_graph"] = ground_truth_graph
+        convert_to_vis_super(ground_truth_graph)
+
     with st.expander("View Graph"):
         path = "./super_model.html"
         HtmlFile = open(path, 'r', encoding='utf-8')
         source_code = HtmlFile.read()
         st.components.v1.html(source_code, height = 1000, width=1000, scrolling=True)
+
+    # Building the BN for this super graph
+    try:
+        nodes_contents = extract_xdsl_content(xdsl_content)
+        bn_model = build_network(nodes_contents)
+        if bn_model.check_model():
+            st.session_state["ground_truth_bn_model"] = bn_model
+        st.write(bn_model)
+
+    except Exception as e:
+        st.error(f"ERROR: \n{str(e)}")
+
+    if "ground_truth_bn_model" in st.session_state:
+        ## EDGE RANKINGS ##
+        # 1. Using Dataset stats (G-Test)
+        with st.status("Edge Strength (G-Test)"):
+            edge_strength = run_in_background(edge_strength_stats, bn_model)
+            if edge_strength.done():
+                edge_strength = edge_strength.result()
+            st.write(edge_strength)
+
+        with st.expander("Edge Strength (Using CPDs)"):
+            distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=0, horizontal=True)
+            edge_strength = edge_strength_cpds(bn_model, distance_type)
+            st.write(edge_strength)
+
+
+    with st.expander(f"Session Info"):
+        st.write(st.session_state)
 
 
 with wip_model:
