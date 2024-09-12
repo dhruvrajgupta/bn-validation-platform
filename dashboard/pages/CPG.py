@@ -4,8 +4,17 @@ from pathlib import Path
 import json
 
 page_mappings = {
-    "ST-8": 126
+    "ST-8": 126,
+    "ST-9": 127,
+    "ST-10": 128,
 }
+
+def get_page_info(selected_page):
+    topic = selected_page.split(", ")[0].strip()
+    guideline_page_number = selected_page.split(", ")[-1].strip()
+    pdf_page_number = page_mappings[guideline_page_number]
+
+    return topic, guideline_page_number, pdf_page_number
 
 def read_feedback(page):
     feedback_path = Path("./../dashboard/cpg_pages/feedbacks/"+page.split(',')[-1].strip()+".json")
@@ -21,8 +30,15 @@ def write_feedback(page, feedback):
     with open(feedback_path, 'w') as f:
         json.dump(feedback, f, indent=4)
 
+def extracted_information_from_page(pdf_page_number):
+    with open("./../dashboard/cpg_pages/filtered-propositions_duplicate_removed.json", 'r') as f:
+        all_extracted_information = json.load(f)
+
+    page_info = [info["content"] for info in all_extracted_information if info['page'] == pdf_page_number]
+    return page_info
+
 with st.sidebar:
-    st.markdown("BMI calculator")
+    st.markdown("**Guideline Information:**")
 
     selected_page = sac.tree(items=[
         sac.TreeItem('TNM Staging System for the Larynx, ST-8', children=[
@@ -64,27 +80,59 @@ with st.sidebar:
         feedback = {}
 
 
+page, extracted_info, feedback_logs = st.tabs(["Guideline Page", "Extracted Informations", "Feedback Logs"])
 
-with st.expander("Page: "+selected_page, expanded=True):
-    HtmlFile = open(html_page, 'r', encoding='utf-8')
-    source_code = HtmlFile.read()
-    # st.components.v1.html(source_code, height = 920, width=1280, scrolling=True)
-    st.html(source_code)
+with page:
+    topic, guideline_page_number, pdf_page_number = get_page_info(selected_page)
+    with st.container(border=True):
+        topic_col, guideline_page_number_col, pdf_page_number_col = st.columns(3)
+        with topic_col:
+            st.markdown(f"**Topic:** {topic}")
+        with guideline_page_number_col:
+            st.markdown(f"**Guideline Page Number:** {guideline_page_number}")
+        with pdf_page_number_col:
+            st.markdown(f"**PDF Page Number:** {pdf_page_number}")
 
+    with st.container(border=True):
+        HtmlFile = open(html_page, 'r', encoding='utf-8')
+        source_code = HtmlFile.read()
+        # st.components.v1.html(source_code, height = 920, width=1280, scrolling=True)
+        st.html(source_code)
 
-with st.expander("Feedback Log"):
+with extracted_info:
+    topic, guideline_page_number, pdf_page_number = get_page_info(selected_page)
+    with st.container(border=True):
+        topic_col, guideline_page_number_col, pdf_page_number_col = st.columns(3)
+        with topic_col:
+            st.markdown(f"**Topic:** {topic}")
+        with guideline_page_number_col:
+            st.markdown(f"**Guideline Page Number:** {guideline_page_number}")
+        with pdf_page_number_col:
+            st.markdown(f"**PDF Page Number:** {pdf_page_number}")
+
+    st.write(extracted_information_from_page(pdf_page_number))
+
+with feedback_logs:
+    topic, guideline_page_number, pdf_page_number = get_page_info(selected_page)
+    with st.container(border=True):
+        topic_col, guideline_page_number_col, pdf_page_number_col = st.columns(3)
+        with topic_col:
+            st.markdown(f"**Topic:** {topic}")
+        with guideline_page_number_col:
+            st.markdown(f"**Guideline Page Number:** {guideline_page_number}")
+        with pdf_page_number_col:
+            st.markdown(f"**PDF Page Number:** {pdf_page_number}")
+
     page_feedback = read_feedback(selected_page)
-
-    user = st.text_input("User", placeholder="Enter your name")
-    feedback = st.text_area("Feedback", placeholder="Enter your feedback")
-    if st.button("Submit"):
-        page_feedback.append({"user": user, "feedback": feedback})
-        write_feedback(selected_page, page_feedback)
 
     st.write(page_feedback)
 
-# st.markdown("BMI calculator")
-# st.write('your BMI is 9999')
+    with st.container(border=True):
+        user = st.text_input("User", placeholder="Enter your name")
+        feedback = st.text_area("Feedback", placeholder="Enter your feedback")
+        if st.button("Submit"):
+            page_feedback.append({"user": user, "feedback": feedback})
+            write_feedback(selected_page, page_feedback)
 
 with st.expander(f"Session Info"):
     st.write(st.session_state)
