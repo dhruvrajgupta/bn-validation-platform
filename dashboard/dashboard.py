@@ -15,8 +15,11 @@ st.set_page_config(layout="wide")
 if "d_separation_btn" not in st.session_state:
     st.session_state["d_separation_btn"] = False
 
-if "cpd_edge_strength_distance_type" not in st.session_state:
-    st.session_state["cpd_edge_strength_distance_type"] = "Euclidean"
+if "working_model_cpds_distance_type" not in st.session_state:
+    st.session_state["working_model_cpds_distance_type"] = "Euclidean"
+
+if "ground_truth_cpds_distance_type" not in st.session_state:
+    st.session_state["ground_truth_cpds_distance_type"] = "Euclidean"
 
 def long_computation(n):
     # Dummy long computation
@@ -82,8 +85,16 @@ with super_model:
 
 
         with st.expander("Edge Strength (Using CPDs)"):
-            distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=0, horizontal=True)
-            st.session_state["cpd_edge_strength_distance_type"] = distance_type
+            distance_type_name = st.session_state["working_model_cpds_distance_type"]
+            if distance_type_name == "Euclidean":
+                distance_type_index = 0
+            elif distance_type_name == "Hellinger":
+                distance_type_index = 1
+            elif distance_type_name == "J-Divergence":
+                distance_type_index = 2
+            elif distance_type_name == "CDF":
+                distance_type_index = 3
+            distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=distance_type_index, horizontal=True, key="ground_truth_cpds_distance_type")
             edge_strength = edge_strength_cpds(bn_model, distance_type)
             with st.expander("Dataframe"):
                 st.write(edge_strength)
@@ -200,13 +211,29 @@ with bn_info:
             edge_strength = run_in_background(edge_strength_stats, bn_model)
             if edge_strength.done():
                 edge_strength = edge_strength.result()
-            st.write(edge_strength)
+            with st.expander("Dataframe"):
+                st.write(edge_strength)
+            with st.expander("Edge Ramkings"):
+                ranked_edges = g_test_rank_edges(edge_strength)
+                st.write(ranked_edges)
 
         with st.expander("Edge Strength (Using CPDs)"):
-            distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=0, horizontal=True)
-            st.session_state["cpd_edge_strength_distance_type"] = distance_type
+            distance_type_name = st.session_state["ground_truth_cpds_distance_type"]
+            if distance_type_name == "Euclidean":
+                distance_type_index = 0
+            elif distance_type_name == "Hellinger":
+                distance_type_index = 1
+            elif distance_type_name == "J-Divergence":
+                distance_type_index = 2
+            elif distance_type_name == "CDF":
+                distance_type_index = 3
+            distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=0, horizontal=True, key="working_model_cpds_distance_type")
             edge_strength = edge_strength_cpds(bn_model, distance_type)
-            st.write(edge_strength)
+            with st.expander("Dataframe"):
+                st.write(edge_strength)
+            with st.expander("Edge Rankings"):
+                ranked_edges = cpd_rank_edges(edge_strength)
+                st.write(ranked_edges)
 
 
     with st.expander(f"Session Info"):
