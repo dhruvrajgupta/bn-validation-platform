@@ -3,6 +3,10 @@ import streamlit_antd_components as sac
 from pathlib import Path
 import json
 
+page_mappings = {
+    "ST-8": 126
+}
+
 def read_feedback(page):
     feedback_path = Path("./../dashboard/cpg_pages/feedbacks/"+page.split(',')[-1].strip()+".json")
     if feedback_path.is_file():

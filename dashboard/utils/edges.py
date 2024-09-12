@@ -390,3 +390,26 @@ def cdf_distance(p, q):
     multiplier = 1 / (no_elements - 1)
 
     return multiplier * distance
+
+def g_test_rank_edges(dataframe):
+    df = dataframe.copy(deep=True)
+    df = df.drop(['stat_test', 'p_value', 'dof'], axis=1)
+    df = df.sort_values(by='g_sq', ascending=False)
+    df['rank'] = range(1, df.shape[0] + 1)
+
+    # Placing Rank as the first column
+    rank = df['rank']
+    df.drop(labels=['rank'], axis=1, inplace=True)
+    df.insert(0, 'rank', rank)
+    return df
+
+def cpd_rank_edges(dataframe):
+    df = dataframe.copy(deep=True)
+    df = df.sort_values(by='distance', ascending=False)
+    df['rank'] = range(1, df.shape[0] + 1)
+
+    # Placing Rank as the first column
+    rank = df['rank']
+    df.drop(labels=['rank'], axis=1, inplace=True)
+    df.insert(0, 'rank', rank)
+    return df

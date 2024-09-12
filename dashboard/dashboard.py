@@ -2,10 +2,13 @@ import streamlit as st
 # import time
 from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super, build_network
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
-from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation, edge_strength_stats, edge_strength_cpds
+from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation, edge_strength_stats, edge_strength_cpds, \
+    g_test_rank_edges, cpd_rank_edges
 from utils.models import get_horrible_model
 import concurrent.futures
 import time
+# Monkey patch for nested st.expander
+import streamlit_nested_layout
 
 st.set_page_config(layout="wide")
 
@@ -71,13 +74,22 @@ with super_model:
             edge_strength = run_in_background(edge_strength_stats, bn_model)
             if edge_strength.done():
                 edge_strength = edge_strength.result()
-            st.write(edge_strength)
+            with st.expander("Dataframe"):
+                st.write(edge_strength)
+            with st.expander("Edge Rankings"):
+                ranked_edges = g_test_rank_edges(edge_strength)
+                st.write(ranked_edges)
+
 
         with st.expander("Edge Strength (Using CPDs)"):
             distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=0, horizontal=True)
             st.session_state["cpd_edge_strength_distance_type"] = distance_type
             edge_strength = edge_strength_cpds(bn_model, distance_type)
-            st.write(edge_strength)
+            with st.expander("Dataframe"):
+                st.write(edge_strength)
+            with st.expander("Edge Rankings"):
+                ranked_edges = cpd_rank_edges(edge_strength)
+                st.write(ranked_edges)
 
 
     with st.expander(f"Session Info"):
