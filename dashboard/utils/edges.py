@@ -117,12 +117,12 @@ def find_redundant_edges_d_separation(graph, debug=False):
 
                 # Check if the edge is redundant
                 is_redundant = is_edge_redundant(graph.copy(), edge, X, Y, Z)
+                if debug:
+                    print(f"Is the edge {edge} redundant given {list(combination)}? {is_redundant}")
                 if is_redundant == False:
                     flag_combi_break = True
                     is_edge_redundant_given_variables.append(is_redundant)
                     break
-                # if debug:
-                #     print(f"Is the edge {edge} redundant given {list(combination)}? {is_redundant}")
                 is_edge_redundant_given_variables.append(is_redundant)
 
         if debug:
