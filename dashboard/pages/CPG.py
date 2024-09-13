@@ -101,6 +101,7 @@ with page:
 
 with extracted_info:
     topic, guideline_page_number, pdf_page_number = get_page_info(selected_page)
+
     with st.container(border=True):
         topic_col, guideline_page_number_col, pdf_page_number_col = st.columns(3)
         with topic_col:
@@ -110,7 +111,21 @@ with extracted_info:
         with pdf_page_number_col:
             st.markdown(f"**PDF Page Number:** {pdf_page_number}")
 
-    st.write(extracted_information_from_page(pdf_page_number))
+    # Guideline <--> Extracted Information side by side view
+    guideline, extracted_information = st.columns(2)
+    with guideline:
+        with st.container(border=True):
+            HtmlFile = open(html_page, 'r', encoding='utf-8')
+            source_code = HtmlFile.read()
+            # st.components.v1.html(source_code, height = 920, width=1280, scrolling=True)
+            st.html(source_code)
+
+    with extracted_information:
+        info_list = extracted_information_from_page(pdf_page_number)
+        with st.container(border=True):
+            st.markdown("**Extracted Information:**")
+            for id, info in enumerate(info_list):
+                st.info(f"#{id+1}. {info}")
 
 with feedback_logs:
     topic, guideline_page_number, pdf_page_number = get_page_info(selected_page)
