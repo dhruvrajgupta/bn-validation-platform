@@ -4,6 +4,9 @@ from pathlib import Path
 from utils.cpg import split_sequence
 import json
 
+if "extracted_info_current_pagination_page" not in st.session_state:
+    st.session_state["extracted_info_current_pagination_page"] = 1
+
 page_mappings = {
     "ST-8": 126,
     "ST-9": 127,
@@ -123,15 +126,23 @@ with extracted_info:
 
     with extracted_information:
         info_list = extracted_information_from_page(pdf_page_number)
-        split_info_list = split_sequence([info_list], 15)
-
-        page = sac.pagination(align='center', jump=True, show_total=True)
-        print(page)
+        split_info_list = split_sequence(info_list, 10)
 
         with st.container(border=True):
             st.markdown("**Extracted Information:**")
-            for id, info in enumerate(info_list):
-                st.info(f"#{id+1}. {info}")
+            # for id, info in enumerate(info_list):
+            #     st.info(f"#{id+1}. {info}")
+
+            # pagination_page = st.session_state['extracted_info_current_pagination_page']
+            pagination_page = sac.pagination(
+                total=len(info_list),
+                page_size=10,
+                align='center', jump=True, show_total=True,
+                variant='filled',
+                key='extracted_info_current_pagination_page'
+            )
+            for idx, info in enumerate(split_info_list[pagination_page]):
+                st.info(f"#{(pagination_page-1)*10 + idx+1}. {info}")
 
 with feedback_logs:
     topic, guideline_page_number, pdf_page_number = get_page_info(selected_page)

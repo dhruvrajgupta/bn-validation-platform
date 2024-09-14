@@ -15,6 +15,7 @@ def split_sequence(sequence, chunk_size):
         A list of chunks of the given size.
     """
     result = []
+    result.append([])
     for i in range(0, len(sequence), chunk_size):
         result.append(sequence[i: i + chunk_size])
 
