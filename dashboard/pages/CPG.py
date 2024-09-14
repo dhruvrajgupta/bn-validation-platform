@@ -1,6 +1,7 @@
 import streamlit as st
 import streamlit_antd_components as sac
 from pathlib import Path
+from utils.cpg import split_sequence
 import json
 
 page_mappings = {
@@ -122,6 +123,11 @@ with extracted_info:
 
     with extracted_information:
         info_list = extracted_information_from_page(pdf_page_number)
+        split_info_list = split_sequence([info_list], 15)
+
+        page = sac.pagination(align='center', jump=True, show_total=True)
+        print(page)
+
         with st.container(border=True):
             st.markdown("**Extracted Information:**")
             for id, info in enumerate(info_list):
