@@ -73,15 +73,16 @@ with super_model:
     if "ground_truth_bn_model" in st.session_state:
         ## EDGE RANKINGS ##
         # 1. Using Dataset stats (G-Test)
-        with st.status("Edge Strength (G-Test)"):
-            edge_strength = run_in_background(edge_strength_stats, bn_model)
-            if edge_strength.done():
-                edge_strength = edge_strength.result()
-            with st.expander("Dataframe"):
-                st.write(edge_strength)
-            with st.expander("Edge Rankings"):
-                ranked_edges = g_test_rank_edges(edge_strength)
-                st.write(ranked_edges)
+        if st.button("Compute Edge Strength (G-Test)"):
+            with st.status("Edge Strength (G-Test)"):
+                edge_strength = run_in_background(edge_strength_stats, bn_model)
+                if edge_strength.done():
+                    edge_strength = edge_strength.result()
+                with st.expander("Dataframe"):
+                    st.write(edge_strength)
+                with st.expander("Edge Rankings"):
+                    ranked_edges = g_test_rank_edges(edge_strength)
+                    st.write(ranked_edges)
 
 
         with st.expander("Edge Strength (Using CPDs)"):
