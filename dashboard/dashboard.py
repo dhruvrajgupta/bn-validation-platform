@@ -85,7 +85,8 @@ with super_model:
                     st.write(ranked_edges)
 
 
-        with st.expander("Edge Strength (Using CPDs)"):
+        with st.status("Edge Strength (Using CPDs)"):
+            run_in_background(long_computation, 5)
             distance_type_name = st.session_state["working_model_cpds_distance_type"]
             if distance_type_name == "Euclidean":
                 distance_type_index = 0
