@@ -2,6 +2,16 @@ import openai
 
 openai.api_key = "sk-**********************"
 
+
+def get_completion(prompt, model="gpt-4"):
+    messages = [{"role": "user", "content": prompt}]
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages,
+        temperature=0, # this is the degree of randomness of the model's output
+    )
+    return response.choices[0].message["content"]
+
 prompt_1 = f"""
 Perform the following actions:
 1 - You will be provided with text delimited by triple quotes. Extract the cause, effect,signal, condition and action from the given sentence. Enclose the begnining and the end with tags as given in the examples below. Use A for action, C for cause, CO for condition, E for effect and O for others.
