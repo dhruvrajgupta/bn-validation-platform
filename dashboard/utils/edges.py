@@ -75,16 +75,16 @@ def find_redundant_edges_d_separation(graph, debug=False):
         # If removing the edge does not affect d-separation, it is redundant
         return before_removal == after_removal
 
-    # graph = BayesianNetwork([
-    #     ('Burglary', 'Alarm'),
-    #     ('Earthquake', 'Alarm'),
-    #     ('Alarm', 'JohnCalls'),
-    #     ('Alarm', 'MaryCalls'),
-    #     ('Burglary', 'Earthquake'), # <-- Redundant Edge
-    #     # Burglary and Earthquake were already independent in the original graph unless conditioned on Alarm.
-    #     # The new edge does not change this independence, as the two variables are still blocked by the collider at the Alarm unless the Alarm is observed.
-    #     # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
-    # ])
+    graph = BayesianNetwork([
+        ('Burglary', 'Alarm'),
+        ('Earthquake', 'Alarm'),
+        ('Alarm', 'JohnCalls'),
+        ('Alarm', 'MaryCalls'),
+        ('Burglary', 'Earthquake'), # <-- Redundant Edge
+        # Burglary and Earthquake were already independent in the original graph unless conditioned on Alarm.
+        # The new edge does not change this independence, as the two variables are still blocked by the collider at the Alarm unless the Alarm is observed.
+        # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
+    ])
 
     # List of redundant edges
     redundant_edges = []
@@ -134,7 +134,15 @@ def find_redundant_edges_d_separation(graph, debug=False):
     print(f"End: {end}")
     print(f"Time: {end - start}")
 
-    return redundant_edges
+    result = []
+    for edge in redundant_edges:
+        edge_data = {}
+        edge_data['edge'] = edge
+        edge_data['markov_source'] = graph.get_markov_blanket(edge[0])
+        edge_data['markov_target'] = graph.get_markov_blanket(edge[1])
+        result.append(edge_data)
+
+    return result
 
 
 def edge_strength_stats(model):
