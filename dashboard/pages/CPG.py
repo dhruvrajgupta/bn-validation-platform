@@ -1,8 +1,9 @@
 import streamlit as st
 import streamlit_antd_components as sac
 from pathlib import Path
-from utils.cpg import split_sequence
+from utils.cpg import split_sequence, format_annotated_text
 import json
+from annotated_text import annotated_text
 
 if "extracted_info_current_pagination_page" not in st.session_state:
     st.session_state["extracted_info_current_pagination_page"] = 1
@@ -132,7 +133,7 @@ with extracted_info:
             split_info_list = split_sequence(info_list, 10)
 
             with st.container(border=True):
-                st.markdown("**Extracted Information:**")
+                st.markdown("**Extracted Information:** Dense retrieval method by Salim")
                 # for id, info in enumerate(info_list):
                 #     st.info(f"#{id+1}. {info}")
 
@@ -150,9 +151,11 @@ with extracted_info:
     else:
         info_list = extracted_information_from_page(pdf_page_number)
         split_info_list = split_sequence(info_list, 10)
+        with open("./../causality_extraction/laryngeal_cancer_predictions.json", 'r') as f:
+            annotated_information = json.load(f)
 
         with st.container(border=True):
-            st.markdown("**Extracted Information:**")
+            st.markdown("**Extracted Information:** Dense retrieval method by Salim")
             # for id, info in enumerate(info_list):
             #     st.info(f"#{id+1}. {info}")
 
@@ -165,7 +168,10 @@ with extracted_info:
                 key='extracted_info_current_pagination_page'
             )
             for idx, info in enumerate(split_info_list[pagination_page]):
-                st.info(f"#{(pagination_page-1)*10 + idx+1}. {info}")
+                with st.expander(f"#{(pagination_page-1)*10 + idx+1}. {info}"):
+                    st.info(info)
+                    annotated_text(format_annotated_text(annotated_information[(pagination_page-1)*10 + idx]))
+
 
 with feedback_logs:
     topic, guideline_page_number, pdf_page_number = get_page_info(selected_page)

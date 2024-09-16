@@ -25,8 +25,7 @@ keys: Sentence , prediction
 Separate your answers with line breaks.
 
 Text:
-```
-```
+```{text}```
 """
 response = get_completion(prompt_1)
 print("Completion for prompt 1:")

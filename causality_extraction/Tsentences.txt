@@ -1,0 +1,33 @@
+The American Joint Committee on Cancer (AJCC) published the TNM Staging System for the Larynx in 2017.
+The 8th edition of the TNM Staging System for the Larynx was published in 2017.
+The TNM Staging System for the Larynx does not include nonepithelial tumors such as those of lymphoid tissue, soft tissue, bone and cartilage, and mucosal melanoma of the lip and oral cavity.
+The Primary Tumor (T) category in the TNM Staging System for the Larynx has several subcategories.
+TX means the primary tumor cannot be assessed.
+Tis means carcinoma in situ.
+T1 in the supraglottis category means the tumor is limited to one subsite of supraglottis with normal vocal cord mobility.
+T2 in the supraglottis category means the tumor invades mucosa of more than one adjacent subsite of supraglottis or glottis or region outside the supraglottis.
+T3 in the supraglottis category means the tumor is limited to the larynx with vocal cord fixation and/or invades any of the following: postcricoid area, preepiglottic space, paraglottic space, and/or inner cortex of thyroid cartilage.
+T4 in the supraglottis category means the tumor is moderately advanced or very advanced.
+T4a in the supraglottis category means the tumor invades through the outer cortex of the thyroid cartilage and/or invades tissues beyond the larynx.
+T4b in the supraglottis category means the tumor invades prevertebral space, encases carotid artery, or invades mediastinal structures.
+T1 in the glottis category means the tumor is limited to the vocal cord(s) with normal mobility.
+T1a in the glottis category means the tumor is limited to one vocal cord.
+T1b in the glottis category means the tumor involves both vocal cords.
+T2 in the glottis category means the tumor extends to supraglottis and/or subglottis, and/or with impaired vocal cord mobility.
+T3 in the glottis category means the tumor is limited to the larynx with vocal cord fixation and/or invasion of paraglottic space and/or inner cortex of the thyroid cartilage.
+T4 in the glottis category means the tumor is moderately advanced or very advanced.
+T4a in the glottis category means the tumor invades through the outer cortex of the thyroid cartilage and/or invades tissues beyond the larynx.
+T4b in the glottis category means the tumor invades prevertebral space, encases carotid artery, or invades mediastinal structures.
+T1 in the subglottis category means the tumor is limited to the subglottis.
+T2 in the subglottis category means the tumor extends to vocal cord(s) with normal or impaired mobility.
+T3 in the subglottis category means the tumor is limited to the larynx with vocal cord fixation and/or inner cortex of the thyroid cartilage.
+T4 in the subglottis category means the tumor is moderately advanced or very advanced.
+T4a in the subglottis category means the tumor invades cricoid or thyroid cartilage and/or invades tissues beyond the larynx.
+T4b in the subglottis category means the tumor invades prevertebral space, encases carotid artery, or invades mediastinal structures.
+After induction chemotherapy, 54% of patients developed a complete remission in the area of the primary tumour.
+After induction chemotherapy, 43% of patients developed a complete remission in the area of the primary tumour and the locoregional lymphatic drainage pathways.
+After five years, there was no significant difference in survival between the two study arms (30% versus 35% in the surgical arm).
+The 3- and 5-year survival rates with functional larynx were 42% and 35%, respectively.
+In patients who achieved complete remission after induction chemotherapy and subsequently received only radiotherapy, a functional larynx was still present in 58% of patients after 5 years.
+A taxane-containing chemotherapy protocol has proven to be advantageous for functional laryngeal preservation using induction chemotherapy.
+The additional application of docetaxel during induction therapy increased the laryngeal preservation rate 3 years after therapy from 57.5% to 70.3% (p=0.03) in a randomized study.
