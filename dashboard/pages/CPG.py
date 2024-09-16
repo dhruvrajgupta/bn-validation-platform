@@ -115,16 +115,39 @@ with extracted_info:
         with pdf_page_number_col:
             st.markdown(f"**PDF Page Number:** {pdf_page_number}")
 
-    # Guideline <--> Extracted Information side by side view
-    guideline, extracted_information = st.columns(2)
-    with guideline:
-        with st.container(border=True):
-            HtmlFile = open(html_page, 'r', encoding='utf-8')
-            source_code = HtmlFile.read()
-            # st.components.v1.html(source_code, height = 920, width=1280, scrolling=True)
-            st.html(source_code)
+    side_by_side_view = st.toggle("View side by side [Guideline <--> Extracted Information]", value=False)
 
-    with extracted_information:
+    if side_by_side_view:
+        # Guideline <--> Extracted Information side by side view
+        guideline, extracted_information = st.columns(2)
+        with guideline:
+            with st.container(border=True):
+                HtmlFile = open(html_page, 'r', encoding='utf-8')
+                source_code = HtmlFile.read()
+                # st.components.v1.html(source_code, height = 920, width=1280, scrolling=True)
+                st.html(source_code)
+
+        with extracted_information:
+            info_list = extracted_information_from_page(pdf_page_number)
+            split_info_list = split_sequence(info_list, 10)
+
+            with st.container(border=True):
+                st.markdown("**Extracted Information:**")
+                # for id, info in enumerate(info_list):
+                #     st.info(f"#{id+1}. {info}")
+
+                # pagination_page = st.session_state['extracted_info_current_pagination_page']
+                pagination_page = sac.pagination(
+                    total=len(info_list),
+                    page_size=10,
+                    align='center', jump=True, show_total=True,
+                    variant='filled',
+                    key='extracted_info_current_pagination_page'
+                )
+                for idx, info in enumerate(split_info_list[pagination_page]):
+                    st.info(f"#{(pagination_page-1)*10 + idx+1}. {info}")
+
+    else:
         info_list = extracted_information_from_page(pdf_page_number)
         split_info_list = split_sequence(info_list, 10)
 
