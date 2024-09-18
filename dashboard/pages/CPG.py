@@ -154,6 +154,9 @@ with extracted_info:
         with open("./../causality_extraction/laryngeal_cancer_predictions.json", 'r') as f:
             annotated_information = json.load(f)
 
+        with open("./../causality_extraction/mini.json", 'r') as f:
+            annotated_information2 = json.load(f)
+
         with st.container(border=True):
             st.markdown("**Extracted Information:** Dense retrieval method by Salim")
             # for id, info in enumerate(info_list):
@@ -168,9 +171,28 @@ with extracted_info:
                 key='extracted_info_current_pagination_page'
             )
             for idx, info in enumerate(split_info_list[pagination_page]):
-                with st.expander(f"#{(pagination_page-1)*10 + idx+1}. {info}"):
-                    st.info(info)
-                    annotated_text(format_annotated_text(annotated_information[(pagination_page-1)*10 + idx]))
+                # with st.expander(f"#{(pagination_page-1)*10 + idx+1}. {info}"):
+                st.info(info)
+                annotated_text(format_annotated_text(annotated_information[(pagination_page-1)*10 + idx]))
+                annotated_text(format_annotated_text(annotated_information2[(pagination_page-1)*10 + idx]))
+
+    # with st.container(border=True):
+    #     st.markdown("**Extracted Causality:** Causality extraction method by Gopalkrishnan et al.")
+    #     if st.button("Extract Causality"):
+    #         with st.spinner("Extracting causality..."):
+    #             from utils.prompts import EXTRACT_CAUSALITY
+    #             from utils.cpg import ask_llm_response_schema
+    #             prompt = EXTRACT_CAUSALITY.format(text = "\n".join(info_list))
+    #             from pydantic import BaseModel
+    #             from typing import List
+    #             class ABCD(BaseModel):
+    #                 annotated_sentences: List[str]
+    #             val = json.loads(ask_llm_response_schema(prompt, response_format=ABCD))
+    #             extracted_sentences = val["annotated_sentences"]
+
+    #             for idx, sentence in enumerate(extracted_sentences):
+    #                 annotated_text(format_annotated_text(extracted_sentences[idx]))
+
 
 
 with feedback_logs:
