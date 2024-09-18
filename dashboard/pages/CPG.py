@@ -149,15 +149,16 @@ with extracted_info:
                     st.info(f"#{(pagination_page-1)*10 + idx+1}. {info}")
 
     else:
-        info_list = extracted_information_from_page(pdf_page_number)
-        split_info_list = split_sequence(info_list, 10)
-        with open("./../causality_extraction/laryngeal_cancer_predictions.json", 'r') as f:
-            annotated_information = json.load(f)
+        with st.expander("Dense retrieval method by Salim - Causality Extraction", expanded=False):
+            info_list = extracted_information_from_page(pdf_page_number)
+            split_info_list = split_sequence(info_list, 10)
+            with open("./../causality_extraction/laryngeal_cancer_predictions.json", 'r') as f:
+                annotated_information = json.load(f)
 
-        with open("./../causality_extraction/mini.json", 'r') as f:
-            annotated_information2 = json.load(f)
+            with open("./../causality_extraction/mini.json", 'r') as f:
+                annotated_information2 = json.load(f)
 
-        with st.container(border=True):
+            # with st.container(border=True):
             st.markdown("**Extracted Information:** Dense retrieval method by Salim")
             # for id, info in enumerate(info_list):
             #     st.info(f"#{id+1}. {info}")
@@ -172,26 +173,45 @@ with extracted_info:
             )
             for idx, info in enumerate(split_info_list[pagination_page]):
                 # with st.expander(f"#{(pagination_page-1)*10 + idx+1}. {info}"):
-                st.info(info)
-                annotated_text(format_annotated_text(annotated_information[(pagination_page-1)*10 + idx]))
-                annotated_text(format_annotated_text(annotated_information2[(pagination_page-1)*10 + idx]))
+                with st.container(border=True):
+                    st.info(info)
+                    annotated_text(format_annotated_text(annotated_information[(pagination_page-1)*10 + idx]))
+                    annotated_text(format_annotated_text(annotated_information2[(pagination_page-1)*10 + idx]))
 
-    # with st.container(border=True):
-    #     st.markdown("**Extracted Causality:** Causality extraction method by Gopalkrishnan et al.")
-    #     if st.button("Extract Causality"):
-    #         with st.spinner("Extracting causality..."):
-    #             from utils.prompts import EXTRACT_CAUSALITY
-    #             from utils.cpg import ask_llm_response_schema
-    #             prompt = EXTRACT_CAUSALITY.format(text = "\n".join(info_list))
-    #             from pydantic import BaseModel
-    #             from typing import List
-    #             class ABCD(BaseModel):
-    #                 annotated_sentences: List[str]
-    #             val = json.loads(ask_llm_response_schema(prompt, response_format=ABCD))
-    #             extracted_sentences = val["annotated_sentences"]
+        # with st.container(border=True):
+        #     st.markdown("**Extracted Causality:** Causality extraction method by Gopalkrishnan et al.")
+        #     if st.button("Extract Causality"):
+        #         with st.spinner("Extracting causality..."):
+        #             from utils.prompts import EXTRACT_CAUSALITY
+        #             from utils.cpg import ask_llm_response_schema
+        #             prompt = EXTRACT_CAUSALITY.format(text = "\n".join(info_list))
+        #             from pydantic import BaseModel
+        #             from typing import List
+        #             class ABCD(BaseModel):
+        #                 annotated_sentences: List[str]
+        #             val = json.loads(ask_llm_response_schema(prompt, response_format=ABCD))
+        #             extracted_sentences = val["annotated_sentences"]
 
-    #             for idx, sentence in enumerate(extracted_sentences):
-    #                 annotated_text(format_annotated_text(extracted_sentences[idx]))
+        #             for idx, sentence in enumerate(extracted_sentences):
+        #                 annotated_text(format_annotated_text(extracted_sentences[idx]))
+
+    with st.expander("HTML Extraction using GPT-4o"):
+        html_extracted_info = None
+        with open("./../causality_extraction/4ohtml.json", 'r') as f:
+                html_extracted_info = json.load(f)
+
+        split_html_info_list = split_sequence(html_extracted_info, 10)
+
+        html_info_pagination_page = sac.pagination(
+                total=len(html_extracted_info),
+                page_size=10,
+                align='center', jump=True, show_total=True,
+                variant='filled',
+                key='html_extraction'
+            )
+
+        for idx, info in enumerate(split_html_info_list[html_info_pagination_page]):
+                st.info(f"#{(html_info_pagination_page-1)*10 + idx+1}. {info}")
 
 
 
