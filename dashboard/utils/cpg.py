@@ -84,6 +84,8 @@ def ask_llm(prompt: str, stream=False):
         The response from the LLM.
     """
 
+    return
+
     model_name = "gpt-4o-mini"
     temperature = 0
 
@@ -116,5 +118,54 @@ def ask_llm(prompt: str, stream=False):
         print(llm_response)
 
     print(f"\n\nEND OF LLM RESPONSE\n{'-'*50}\n")
+
+    return llm_response
+
+from pydantic import BaseModel
+def ask_llm_response_schema(prompt: str, response_format: BaseModel):
+    """
+    Ask the LLM a question and print the response.
+
+    Parameters
+    ----------
+    prompt : str
+        The question to ask the LLM.
+    stream : bool, optional
+        If True, stream the response from the LLM as it is generated. If False, wait for the
+        entire response to be generated before printing it. Defaults to False.
+
+    Returns
+    -------
+    str
+        The response from the LLM.
+    """
+
+    return
+
+    model_name = "gpt-4o-mini"
+    temperature = 0
+
+    client = OpenAI(
+        # Defaults to os.environ.get("OPENAI_API_KEY")
+    )
+
+    response = client.beta.chat.completions.parse(
+        model=model_name,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=temperature,
+        response_format=response_format
+    )
+
+    print(f"START OF LLM RESPONSE: \n{'-'*20}\n")
+
+    llm_response = response.choices[0].message.content
+    print(llm_response)
+
+    print(f"\n\nEND OF LLM RESPONSE\n{'-'*50}\n")
+
+    # print(response)
 
     return llm_response
