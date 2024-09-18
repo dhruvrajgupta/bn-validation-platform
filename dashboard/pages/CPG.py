@@ -198,7 +198,13 @@ with extracted_info:
     with st.expander("HTML Extraction using GPT-4o"):
         html_extracted_info = None
         with open("./../causality_extraction/4ohtml.json", 'r') as f:
-                html_extracted_info = json.load(f)
+            html_extracted_info = json.load(f)
+
+        with open("./../causality_extraction/4ohtml_pred.json", 'r') as f:
+            html_extracted_info_annotated = json.load(f)
+
+        with open("./../causality_extraction/4ohtml_pred_mini.json", 'r') as f:
+            html_extracted_info_annotated2 = json.load(f)
 
         split_html_info_list = split_sequence(html_extracted_info, 10)
 
@@ -211,7 +217,10 @@ with extracted_info:
             )
 
         for idx, info in enumerate(split_html_info_list[html_info_pagination_page]):
+            with st.container(border=True):
                 st.info(f"#{(html_info_pagination_page-1)*10 + idx+1}. {info}")
+                annotated_text(format_annotated_text(html_extracted_info_annotated[(html_info_pagination_page-1)*10 + idx]))
+                annotated_text(format_annotated_text(html_extracted_info_annotated2[(html_info_pagination_page-1)*10 + idx]))
 
 
 
