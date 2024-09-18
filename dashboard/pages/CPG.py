@@ -222,7 +222,13 @@ with extracted_info:
                 annotated_text(format_annotated_text(html_extracted_info_annotated[(html_info_pagination_page-1)*10 + idx]))
                 annotated_text(format_annotated_text(html_extracted_info_annotated2[(html_info_pagination_page-1)*10 + idx]))
 
+    with st.expander("HTML Segregated Extraction using GPT-4"):
+        seg_list = None
+        with open("./../causality_extraction/4ohtml_seg.json", 'r') as f:
+            seg_list = json.load(f)
 
+        for idx, seg in enumerate(seg_list):
+            st.info(f"{seg}")
 
 with feedback_logs:
     topic, guideline_page_number, pdf_page_number = get_page_info(selected_page)
