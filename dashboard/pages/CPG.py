@@ -12,6 +12,9 @@ page_mappings = {
     "ST-8": 126,
     "ST-9": 127,
     "ST-10": 128,
+    "MS-44": 180,
+    "MS-45": 181,
+    "MS-46": 182
 }
 
 def get_page_info(selected_page):
@@ -228,7 +231,23 @@ with extracted_info:
             seg_list = json.load(f)
 
         for idx, seg in enumerate(seg_list):
-            st.info(f"{seg}")
+            with st.container(border=True):
+                st.markdown(f"**Section Name:** {seg['section_name']}")
+                st.info('\n'.join(seg['paragraph']))
+                if st.button("Extract Causality", key=f"extract_causality_{idx}"):
+                    with st.spinner("Extracting causality..."):
+                        from utils.prompts import EXTRACT_CAUSALITY
+                        from utils.cpg import ask_llm_response_schema
+                        prompt = EXTRACT_CAUSALITY.format(text = "\n".join(seg['paragraph']))
+                        from pydantic import BaseModel
+                        from typing import List
+                        class ABCD(BaseModel):
+                            annotated_sentences: List[str]
+                        val = json.loads(ask_llm_response_schema(prompt, response_format=ABCD))
+                        extracted_sentences = val["annotated_sentences"]
+
+                        for idx, sentence in enumerate(extracted_sentences):
+                            annotated_text(format_annotated_text(sentence))
 
 with feedback_logs:
     topic, guideline_page_number, pdf_page_number = get_page_info(selected_page)
