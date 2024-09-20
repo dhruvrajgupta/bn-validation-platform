@@ -4,3 +4,5 @@ datasets/
 .idea/
 dashboard/current_model.html
 dashboard/super_model.html
+database/
+.streamlit/
