@@ -1,0 +1,47 @@
+{
+    "ST-8": {
+        "page_no": "ST-8",
+        "summary": "This page details the AJCC TNM staging system for laryngeal cancers (8th edition, 2017). It categorizes the primary tumor (T) stages for different regions of the larynx: supraglottis, glottis, and subglottis. Each section describes the progression of tumor invasion, from limited local spread to advanced disease involving surrounding tissues and structures. T1 represents localized tumors, while T4 is divided into T4a for moderately advanced and T4b for very advanced disease, indicating extensive invasion into critical areas such as the thyroid cartilage, prevertebral space, or carotid artery encasement. Non-epithelial tumors are excluded from this staging system.",
+        "sections_info": [
+            {
+                "section_name": "Primary Tumor (T)",
+                "paragraphs": [
+                    "TX of Primary Tumor means Primary tumor cannot be assessed.",
+                    "Tis of Primary Tumor means Carcinoma in situ."
+                ]
+            },
+            {
+                "section_name": "Primary Tumor (T) - Supraglottis",
+                "paragraphs": [
+                    "T1 of the Supraglottis means Tumor limited to one subsite of the supraglottis with normal vocal cord mobility.",
+                    "T2 of the Supraglottis means Tumor invades mucosa of more than one adjacent subsite of supraglottis or glottis or region outside the supraglottis (e.g., mucosa of base of tongue, vallecula, medial wall of pyriform sinus) without fixation of the larynx.",
+                    "T3 of the Supraglottis means Tumor limited to larynx with vocal cord fixation and/or invades any of the following: postcricoid area, preepiglottic space, paraglottic space, and/or inner cortex of thyroid cartilage.",
+                    "T4a of the T4 of the Supraglottis means Moderately advanced local disease. Tumor invades through the outer cortex of the thyroid cartilage and/or invades tissues beyond the larynx (e.g., trachea, soft tissues of neck including deep extrinsic muscle of the tongue, strap muscles, thyroid, or esophagus).",
+                    "T4b of the T4 of the Supraglottis means Very advanced local disease. Tumor invades prevertebral space, encases the carotid artery, or invades mediastinal structures."
+                ]
+            },
+            {
+                "section_name": "Primary Tumor (T) - Glottis",
+                "paragraphs": [
+                    "T1 of the Glottis means Tumor limited to the vocal cord(s) (may involve anterior or posterior commissure) with normal mobility.",
+                    "T1a of the T1 of the Glottis means Tumor limited to one vocal cord.",
+                    "T1b of the T1 of the Glottis means Tumor involves both vocal cords.",
+                    "T2 of the Glottis means Tumor extends to supraglottis and/or subglottis, and/or with impaired vocal cord mobility.",
+                    "T3 of the Glottis means Tumor limited to the larynx with vocal cord fixation and/or invasion of paraglottic space and/or inner cortex of the thyroid cartilage.",
+                    "T4a of the T4 of the Glottis means Moderately advanced local disease. Tumor invades through the outer cortex of the thyroid cartilage and/or invades tissues beyond the larynx (e.g., trachea, cricoid cartilage, soft tissues of neck including deep extrinsic muscle of the tongue, strap muscles, thyroid, or esophagus).",
+                    "T4b of the T4 of the Glottis means Very advanced local disease. Tumor invades prevertebral space, encases the carotid artery, or invades mediastinal structures."
+                ]
+            },
+            {
+                "section_name": "Primary Tumor (T) - Subglottis",
+                "paragraphs": [
+                    "T1 of the Subglottis means Tumor limited to the subglottis.",
+                    "T2 of the Subglottis means Tumor extends to vocal cord(s) with normal or impaired mobility.",
+                    "T3 of the Subglottis means Tumor limited to larynx with vocal cord fixation and/or inner cortex of the thyroid cartilage.",
+                    "T4a of the T4 of the Subglottis means Moderately advanced local disease. Tumor invades cricoid or thyroid cartilage and/or invades tissues beyond the larynx (e.g., trachea, soft tissues of neck including deep extrinsic muscles of the tongue, strap muscles, thyroid, or esophagus).",
+                    "T4b of the T4 of the Subglottis means Very advanced local disease. Tumor invades prevertebral space, encases the carotid artery, or invades mediastinal structures."
+                ]
+            }
+        ]
+    }
+}

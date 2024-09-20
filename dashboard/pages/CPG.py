@@ -4,6 +4,7 @@ from pathlib import Path
 from utils.cpg import split_sequence, format_annotated_text
 import json
 from annotated_text import annotated_text
+from utils.cpg import ask_llm_response_schema, ask_llm
 
 if "extracted_info_current_pagination_page" not in st.session_state:
     st.session_state["extracted_info_current_pagination_page"] = 1
@@ -149,6 +150,55 @@ with extracted_info:
                 )
                 for idx, info in enumerate(split_info_list[pagination_page]):
                     st.info(f"#{(pagination_page-1)*10 + idx+1}. {info}")
+
+            elif extracted_data_method == "HTML Extraction":
+                st.markdown("**Extracted Information:** HTML Extraction")
+
+                with open("./../causality_extraction/extracted_page_info.json", 'r') as f:
+                    html_extracted_info = json.load(f)
+
+                page_info = html_extracted_info[guideline_page_number]
+                st.markdown(f"**Summary:** {page_info['summary']}")
+
+                for section in page_info['sections_info']:
+                    with st.expander(f"**Section Name:** {section['section_name']}"):
+                        for idx, para in enumerate(section['paragraphs']):
+                            with st.expander(f"{para[:100]}..."):
+                                st.info(para)
+
+                                split_para_tab, cause_effect_tab, entity_tab = st.tabs(["Atomic Statements", "Cause-Effect", "Entity"])
+
+                                section["split_paragraphs"] = [None] * len(section['paragraphs'])
+
+                                with split_para_tab:
+                                    if st.button("Split Paragraph into atomic statements", type="primary", key=f"split-para-{section['section_name']}_para_{idx}"):
+                                        with st.spinner("Splitting..."):
+                                            from utils.prompts import ATOMIC_FACTS_AND_KEY_ELEMENTS
+                                            prompt = ATOMIC_FACTS_AND_KEY_ELEMENTS.format(section_name=section['section_name'], section_content=para)
+                                            st.session_state["split_para"] = ask_llm(prompt)
+                                            st.info(st.session_state["split_para"])
+                                    if st.session_state["split_para"]:
+                                        st.info(st.session_state["split_para"])
+
+                                with cause_effect_tab:
+                                    if st.button("Cause-Effect", type="primary", key=f"cause-effect-{section['section_name']}_para_{idx}"):
+                                        with st.spinner("Extracting..."):
+                                            split_para = st.session_state["split_para"]
+                                            from utils.prompts import EXTRACT_CAUSALITY
+                                            from pydantic import BaseModel
+                                            from typing import List
+                                            prompt = EXTRACT_CAUSALITY.format(text=split_para)
+                                            class ABCD(BaseModel):
+                                                annotated_sentences: List[str]
+                                            cause_effect_sentences =json.loads(ask_llm_response_schema(prompt, response_format=ABCD))["annotated_sentences"]
+                                            for idx, sentence in enumerate(cause_effect_sentences):
+                                                annotated_text(format_annotated_text(sentence))
+
+                                # with entity_tab:
+
+                # info_list = extracted_information_from_page(pdf_page_number)
+                # for idx, info in enumerate(info_list):
+                #     st.info(f"#{idx+1}. {info}")
 
     # else:
     #     with st.expander("Dense retrieval method by Salim - Causality Extraction", expanded=False):
