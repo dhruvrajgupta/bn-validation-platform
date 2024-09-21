@@ -1,0 +1,13 @@
+# streamlit
+xmltodict
+networkx
+# matplotlib
+pgmpy
+bnlearn
+streamlit_nested_layout
+causalnex
+pyvis
+streamlit_agraph
+streamlit_antd_components
+openai
+st-annotated-text

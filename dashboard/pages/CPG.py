@@ -26,7 +26,7 @@ def get_page_info(selected_page):
     return topic, guideline_page_number, pdf_page_number
 
 def read_feedback(page):
-    feedback_path = Path("./../dashboard/cpg_pages/feedbacks/"+page.split(',')[-1].strip()+".json")
+    feedback_path = Path("./dashboard/cpg_pages/feedbacks/"+page.split(',')[-1].strip()+".json")
     if feedback_path.is_file():
         with open(feedback_path, 'r') as f:
             feedback = json.load(f)
@@ -35,12 +35,12 @@ def read_feedback(page):
         return []
 
 def write_feedback(page, feedback):
-    feedback_path = Path("./../dashboard/cpg_pages/feedbacks/"+page.split(',')[-1].strip()+".json")
+    feedback_path = Path("./dashboard/cpg_pages/feedbacks/"+page.split(',')[-1].strip()+".json")
     with open(feedback_path, 'w') as f:
         json.dump(feedback, f, indent=4)
 
 def extracted_information_from_page(pdf_page_number):
-    with open("./../dashboard/cpg_pages/filtered-propositions_duplicate_removed.json", 'r') as f:
+    with open("./dashboard/cpg_pages/filtered-propositions_duplicate_removed.json", 'r') as f:
         all_extracted_information = json.load(f)
 
     page_info = [info["content"] for info in all_extracted_information if info['page'] == pdf_page_number]
@@ -79,8 +79,8 @@ with st.sidebar:
     if type(selected_page) is list:
         selected_page = selected_page[0]
 
-    html_page = "./../dashboard/cpg_pages/"+selected_page.split(',')[-1].strip()+".html"
-    feedback_path = Path("./../dashboard/feedback_store/"+selected_page.split(',')[-1].strip()+".json")
+    html_page = "./dashboard/cpg_pages/"+selected_page.split(',')[-1].strip()+".html"
+    feedback_path = Path("./dashboard/feedback_store/"+selected_page.split(',')[-1].strip()+".json")
     if feedback_path.is_file():
         with open(feedback_path, 'r') as f:
             feedback = json.load(f)
@@ -154,7 +154,7 @@ with extracted_info:
             elif extracted_data_method == "HTML Extraction":
                 st.markdown("**Extracted Information:** HTML Extraction")
 
-                with open("./../causality_extraction/extracted_page_info.json", 'r') as f:
+                with open("./causality_extraction/extracted_page_info.json", 'r') as f:
                     html_extracted_info = json.load(f)
 
                 page_info = html_extracted_info[guideline_page_number]
@@ -177,8 +177,8 @@ with extracted_info:
                                             prompt = ATOMIC_FACTS_AND_KEY_ELEMENTS.format(section_name=section['section_name'], section_content=para)
                                             st.session_state["split_para"] = ask_llm(prompt)
                                             st.info(st.session_state["split_para"])
-                                    if st.session_state["split_para"]:
-                                        st.info(st.session_state["split_para"])
+                                    # if st.session_state["split_para"]:
+                                    #     st.info(st.session_state["split_para"])
 
                                 with cause_effect_tab:
                                     if st.button("Cause-Effect", type="primary", key=f"cause-effect-{section['section_name']}_para_{idx}"):
