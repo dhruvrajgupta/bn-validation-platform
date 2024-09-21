@@ -11,3 +11,4 @@ streamlit_agraph
 streamlit_antd_components
 openai
 st-annotated-text
+pymongo
