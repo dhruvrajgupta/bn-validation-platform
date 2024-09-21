@@ -19,4 +19,6 @@ RUN pip install --upgrade pip setuptools wheel \
 
 RUN pip install streamlit
 
+ENV OPENAI_API_KEY=${OPENAI_API_KEY}
+
 COPY ./ /usr/src/app

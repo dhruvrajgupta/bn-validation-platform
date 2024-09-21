@@ -3,6 +3,8 @@ services:
   dashboard:
     image: dashboard:latest
     command: streamlit run dashboard/dashboard.py
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
     volumes:
         - ./:/usr/src/app
     ports:
