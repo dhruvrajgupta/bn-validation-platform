@@ -28,3 +28,8 @@ items = get_data()
 # Print results.
 for item in items:
     st.write(f"{item['name']} has a :{item['pet']}:")
+
+
+from worker import TaskQueue
+
+TaskQueue.delay("test")

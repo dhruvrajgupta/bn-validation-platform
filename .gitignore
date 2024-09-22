@@ -7,3 +7,4 @@ dashboard/super_model.html
 database/
 .streamlit/
 .env
+rabbitmq-data/

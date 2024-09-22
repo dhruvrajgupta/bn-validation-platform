@@ -46,6 +46,30 @@ services:
     logging:
       driver: none
 
+  bnv_rabbitmq:
+    restart: always
+    image: rabbitmq:management
+    volumes:
+      - ./rabbitmq-data:/var/lib/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - bn_network
+
+  bnv_worker:
+    image: dashboard:latest
+    working_dir: /usr/src/app/dashboard
+    command: celery -A worker worker -l info
+    volumes:
+      - ./:/usr/src/app
+    depends_on:
+      - bnv_db
+      - bnv_rabbitmq
+    networks:
+      - bn_network
+
+
 networks:
   bn_network:
     driver: bridge

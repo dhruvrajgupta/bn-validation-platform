@@ -12,3 +12,4 @@ streamlit_antd_components
 openai
 st-annotated-text
 pymongo
+celery
