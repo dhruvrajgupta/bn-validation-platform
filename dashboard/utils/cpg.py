@@ -84,7 +84,7 @@ def ask_llm(prompt: str, stream=False):
         The response from the LLM.
     """
 
-    return
+    # return
 
     model_name = "gpt-4o-mini"
     temperature = 0
@@ -140,7 +140,7 @@ def ask_llm_response_schema(prompt: str, response_format: BaseModel):
         The response from the LLM.
     """
 
-    return
+    # return
 
     model_name = "gpt-4o-mini"
     temperature = 0

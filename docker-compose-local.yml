@@ -69,6 +69,16 @@ services:
     networks:
       - bn_network
 
+  bnv_html_guidelines:
+    image: dashboard:latest
+    working_dir: /usr/src/app/dashboard
+    command: python3 -m http.server 3000 --directory guidelines/
+    volumes:
+      - ./:/usr/src/app
+    depends_on:
+      - bnv_dashboard
+    ports:
+      - 3000:3000
 
 networks:
   bn_network:

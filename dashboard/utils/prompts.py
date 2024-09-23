@@ -119,3 +119,41 @@ SECTION CONTENT:
 {section_content}
 ```
 """
+
+from pydantic import BaseModel
+from typing import List
+
+class SectionData(BaseModel):
+    section_name: str
+    paragraph: List[str]
+
+class ListSectionData(BaseModel):
+    result: List[SectionData]
+
+DATA_EXTRACTOR = """\
+INSTRUCTIONS:
+1. Extract the important contents of this page.
+2. Extract the contents in meaningful sentences so that it can be used for clinical data mining.
+3. Do not summarize.
+4. Output in detail.
+5. Segregate into meaningful sections.
+6. Only extract the information of that specified sections.
+
+HTML PAGE:
+```
+{html_page}
+```
+
+SECTIONS:
+[{sections}]
+
+Output format in JSON:
+[
+   {{
+       "section_name": ... ,
+       "paragraph": []
+   }},
+ ...
+]
+
+"""
