@@ -7,10 +7,10 @@ st.sidebar.markdown("Temperature calculator")
 if not "page_sections_info" in st.session_state:
     st.session_state.page_sections_info = {}
 
-@st.dialog("View Prompt")
+@st.dialog("View Prompt", width="large")
 def show_prompt():
     from utils.prompts import DATA_EXTRACTOR
-    st.code(DATA_EXTRACTOR, wrap_lines=True)
+    st.code(DATA_EXTRACTOR, wrap_lines=True, line_numbers=True)
 
 @st.fragment
 def display_section(selected_section):
@@ -25,7 +25,7 @@ guideline_page, data_extractions = st.tabs(["Guideline Page", "Data Extractions"
 
 with guideline_page:
     with st.container(border=True):
-        st.components.v1.iframe("http://localhost:3000/NCCN_TNMLC/1.html", height = 920, width=1210, scrolling=True)
+        st.markdown("<iframe src='http://localhost:3000/NCCN_TNMLC/1.html' style='width:calc(100%);height:960px; overflow:auto'></iframe>", unsafe_allow_html=True)
 
 with data_extractions:
     html_page, data_extractions = st.columns(2)
@@ -43,8 +43,9 @@ with data_extractions:
         # st.markdown(f"**Guideline HTML:**")
             HtmlFile = open("./dashboard/guidelines/NCCN_TNMLC/1.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
-            st.components.v1.iframe("http://localhost:3000/NCCN_TNMLC/1.html", height = 650, width=580, scrolling=True)
-
+            # st.components.v1.html("<iframe src='http://localhost:3000/NCCN_TNMLC/1.html' style='width:calc(100%);height:calc(100%); overflow:auto'></iframe>", height=960)
+            # st.components.v1.iframe("http://localhost:3000/NCCN_TNMLC/1.html", height = 920, width=calc(100%), scrolling=True)
+            st.markdown("<iframe src='http://localhost:3000/NCCN_TNMLC/1.html' style='width:calc(100%);height:960px; overflow:auto'></iframe>", unsafe_allow_html=True)
     with data_extractions:
         with st.container(border=True):
             # st.markdown(f"**Data Extractions:**")
