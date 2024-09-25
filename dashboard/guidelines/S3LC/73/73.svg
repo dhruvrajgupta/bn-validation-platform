@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg viewBox="0 0 908 1286" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<clipPath id="c0_73"><path d="M-.2 1286.6V-.2H909.3V1286.6Z"/></clipPath>
+<clipPath id="c1_73"><path d="M239.1 188.8V153.6H822.8v35.2Z"/></clipPath>
+<clipPath id="c2_73"><path d="M239.1 267.7V190.4H822.8v77.3Z"/></clipPath>
+<clipPath id="c3_73"><path d="M239.1 297.6V269.4H822.8v28.2Z"/></clipPath>
+<style type="text/css"><![CDATA[
+.g0_73{
+fill: none;
+stroke: #F78C00;
+stroke-width: 8.784;
+stroke-linejoin: round;
+}
+.g1_73{
+fill: none;
+stroke: #F29400;
+stroke-width: 8.784;
+stroke-linejoin: round;
+}
+.g2_73{
+fill: #F7BF66;
+}
+.g3_73{
+fill: #FFF;
+}
+.g4_73{
+fill: #FCEACC;
+}
+]]></style>
+</defs>
+<g clip-path="url(#c0_73)">
+<path d="M-21.2 1185.1H913.7" class="g0_73"/>
+<path d="M-21.2 110.2H913.7" class="g1_73"/>
+</g>
+<path fill-rule="evenodd" d="M132.3 188.5H237.2V153.9H132.3v34.6Z" class="g2_73"/>
+<path fill-rule="evenodd" d="M132.3 188.5H237.2V153.9H132.3v34.6Z" class="g2_73"/>
+<path fill-rule="evenodd" d="M239.5 188.5h583V153.9h-583v34.6Z" class="g2_73"/>
+<path clip-path="url(#c1_73)" fill-rule="evenodd" d="M239.5 188.5h583V153.9h-583v34.6Z" class="g2_73"/>
+<path fill-rule="evenodd" d="M130 153.9h2.3v-2.3H130v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M130 153.9h2.3v-2.3H130v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M132.3 153.9H237.2v-2.3H132.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M237.2 153.9h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M239.5 153.9H822.6v-2.3H239.5v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M822.6 153.9h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M822.6 153.9h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M130 188.5h2.3V153.9H130v34.6Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M237.2 188.5h2.3V153.9h-2.3v34.6Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M822.6 188.5h2.3V153.9h-2.3v34.6Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M132.3 267.4H237.2V190.8H132.3v76.6Z" class="g4_73"/>
+<path fill-rule="evenodd" d="M132.3 248H237.2V190.8H132.3V248Z" class="g4_73"/>
+<path fill-rule="evenodd" d="M239.5 267.4h583V190.8h-583v76.6Z" class="g4_73"/>
+<g clip-path="url(#c2_73)">
+<path fill-rule="evenodd" d="M239.5 219.4h583V190.8h-583v28.6Z" class="g4_73"/>
+<path fill-rule="evenodd" d="M239.5 238.8h583V219.4h-583v19.4Z" class="g4_73"/>
+<path fill-rule="evenodd" d="M239.5 267.4h583V238.8h-583v28.6Z" class="g4_73"/>
+</g>
+<path fill-rule="evenodd" d="M130 190.8h2.3v-2.3H130v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M132.3 190.8H237.2v-2.3H132.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M237.2 190.8h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M239.5 190.8H822.6v-2.3H239.5v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M822.6 190.8h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M130 267.4h2.3V190.8H130v76.6Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M237.2 267.4h2.3V190.8h-2.3v76.6Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M822.6 267.4h2.3V190.8h-2.3v76.6Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M132.3 297.3H237.2V269.7H132.3v27.6Z" class="g4_73"/>
+<path fill-rule="evenodd" d="M132.3 297.3H237.2V269.7H132.3v27.6Z" class="g4_73"/>
+<path fill-rule="evenodd" d="M239.5 297.3h583V269.7h-583v27.6Z" class="g4_73"/>
+<path clip-path="url(#c3_73)" fill-rule="evenodd" d="M239.5 297.3h583V269.7h-583v27.6Z" class="g4_73"/>
+<path fill-rule="evenodd" d="M130 269.7h2.3v-2.3H130v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M132.3 269.7H237.2v-2.3H132.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M237.2 269.7h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M239.5 269.7H822.6v-2.3H239.5v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M822.6 269.7h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M130 297.3h2.3V269.7H130v27.6Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M130 299.6h2.3v-2.3H130v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M130 299.6h2.3v-2.3H130v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M132.3 299.6H237.2v-2.3H132.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M237.2 297.3h2.3V269.7h-2.3v27.6Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M237.2 299.6h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M239.5 299.6H822.6v-2.3H239.5v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M822.6 297.3h2.3V269.7h-2.3v27.6Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M822.6 299.6h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+<path fill-rule="evenodd" d="M822.6 299.6h2.3v-2.3h-2.3v2.3Z" class="g3_73"/>
+</svg>
