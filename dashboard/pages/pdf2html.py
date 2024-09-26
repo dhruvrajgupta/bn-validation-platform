@@ -1,6 +1,31 @@
 import streamlit as st
 import streamlit_antd_components as sac
 
+from utils.db import get_page_info
+from utils.prompts import DATA_EXTRACTOR, ListSectionData
+from utils.cpg import ask_llm, ask_llm_response_schema
+import json
+
+st.set_page_config(layout="wide")
+
+if "page_data" not in st.session_state:
+    st.session_state.page_data = None
+
+if "extract_data_stage" not in st.session_state:
+    st.session_state.extract_data_stage = None
+
+def get_page_info_db(selected_page_no):
+    page_data_info = get_page_info(selected_page_no)
+    if page_data_info:
+        st.session_state.data_source = "Database"
+        st.session_state.page_data = page_data_info
+    else:
+        st.session_state.data_source = None
+        st.session_state.page_data = {
+            "page_no": selected_page_no,
+            "sections_data": None
+        }
+
 guideline_map = {
     "NCCN": {
         "name":  "NCCN Guidelines Head and Neck Cancers v4.2024",
@@ -17,7 +42,38 @@ guideline_map = {
 def code_to_name(guideline_code):
     return guideline_map[guideline_code]["name"]
 
-st.set_page_config(layout="wide")
+@st.dialog("View Prompt", width="large")
+def show_prompt():
+    from utils.prompts import DATA_EXTRACTOR
+    st.code(DATA_EXTRACTOR, wrap_lines=True, line_numbers=True)
+
+@st.fragment
+def display_section():
+    # st.session_state.page_data["sections_data"] = sections_data
+    st.write(st.session_state)
+    section_names = [section['section_name'] for section in st.session_state.page_data['sections_data']]
+    selected_section_placeholder = st.empty()
+    selected_section = selected_section_placeholder.radio("Select Section:", section_names, label_visibility="collapsed", horizontal=True)
+    st.markdown(f"**Section Name:** {selected_section}")
+    paragraph_content = ""
+    for section in st.session_state.page_data['sections_data']:
+        if section['section_name'] == selected_section:
+            paragraph_content = ""
+            for idx, para in enumerate(section['paragraph']):
+                paragraph_content += f"{idx + 1}. {para}\n"
+    st.info(paragraph_content)
+    st.markdown(f"**Data Source:** {st.session_state.data_source}")
+
+def save_to_db_callback():
+    # st.write(selected_page_no)
+    # st.write(st.session_state.page_data["sections_data"])
+    status = save_page_sections_data(selected_page_no, st.session_state.page_data["sections_data"])
+    if status == "Same":
+        st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
+    elif status == "Replaced":
+        st.toast(f"Page: {selected_page_no} replaced in the Database", icon="⚓")
+    elif status == "Added":
+        st.toast(f"Page: {selected_page_no} added to the Database", icon="✅")
 
 with st.sidebar:
     selected_guideline = st.selectbox(
@@ -28,56 +84,10 @@ with st.sidebar:
         placeholder="Select guideline...",
     )
 
-    #### EXAMPLE OF WELL FORMATED TABLE OF CONTENTS ####
-    # selected_page = sac.tree(items=[
-    #     sac.TreeItem('TNM Staging System for the Larynx, ST-8', children=[
-    #         sac.TreeItem('Primary Tumor(T), ST-8', children=[
-    #             sac.TreeItem('Supraglottis, ST-8'),
-    #             sac.TreeItem('Glottis, ST-8'),
-    #             sac.TreeItem('Subglottis, ST-8')
-    #         ]),
-    #         sac.TreeItem('Regional Lymph Nodes(N), ST-9', children=[
-    #             sac.TreeItem('Clinical N (cN), ST-9'),
-    #             sac.TreeItem('Pathalogical N (pN), ST-10'),
-    #         ]),
-    #         sac.TreeItem('Distant Metastasis(M), ST-10'),
-    #         sac.TreeItem('Histologic Grade(G), ST-10'),
-    #         sac.TreeItem('Prognostic Stage Groups, ST-10'),
-    #         sac.TreeItem('Discussion, MS-44', children=[
-    #             sac.TreeItem('Cancer of the Larynx, MS-44', children=[
-    #                 sac.TreeItem('Workup and Staging, MS-44'),
-    #                 sac.TreeItem('Treatment, MS-44'),
-    #                 sac.TreeItem('Treatment (contd.), MS-45'),
-    #                 sac.TreeItem('Radiation Therapy Fractionation, MS-46'),
-    #                 sac.TreeItem('Follow-up/Surveillance, MS-46')
-    #             ])
-    #         ])
-    #     ])
-    # ], label='NCCN Guidelines Head and Neck Cancers v4.2024', index=0, checkbox_strict=False, open_all=True)
-
     items = [sac.TreeItem(f"Page - {i+1}") for i in range(guideline_map[selected_guideline]['no_of_pages'])]
     selected_page = sac.tree(items=items, label=f"**{guideline_map[selected_guideline]['name']}**", index=0, checkbox_strict=False, open_all=True)
     selected_page_no = selected_page.split("-")[-1].strip()
-
-if not "page_sections_info" in st.session_state:
-    st.session_state.page_sections_info = {}
-
-if not "data_source" in st.session_state:
-    st.session_state.data_source = None
-
-@st.dialog("View Prompt", width="large")
-def show_prompt():
-    from utils.prompts import DATA_EXTRACTOR
-    st.code(DATA_EXTRACTOR, wrap_lines=True, line_numbers=True)
-
-@st.fragment
-def display_section(selected_section):
-    st.markdown(f"**Section Name:** {selected_section}")
-    st.info(st.session_state.page_sections_info[selected_section])
-
-# st.markdown("Temperature calculator")
-# temp_var = st.number_input('enter celcius')
-# st.write(f'fahrenheit is: {temp_var*9/5+32}F')
+    # get_page_info_db(selected_page_no)
 
 guideline_page, data_extractions = st.tabs(["Guideline Page", "Data Extractions"])
 
@@ -90,64 +100,60 @@ with data_extractions:
 
     with html_page:
         with st.container(border=True):
-        # HtmlFile = open("./dashboard/guidelines/NCCN_TNMLC/1.html", 'r', encoding='utf-8')
-        # source_code = HtmlFile.read()
-        # # st.components.v1.html(source_code, height = 920, width=1280, scrolling=True)
-        # st.html(source_code)
-        # st.write(f'<iframe src="http://localhost:3000/NCCN_TNMLC/1.html"></iframe>',
-        #     unsafe_allow_html=True)
-        # st.components.v1.html(f'<iframe src="http://localhost:3000/NCCN_TNMLC/1.html" height ="920" width="50%" style="border:0"></iframe>', height = 920, scrolling=True)
-        # st.html(f'<iframe src="http://localhost:3000/NCCN_TNMLC/1.html" height ="920", width="1280",></iframe>')
-        # st.markdown(f"**Guideline HTML:**")
-            HtmlFile = open("./dashboard/guidelines/NCCN_TNMLC/1.html", 'r', encoding='utf-8')
-            source_code = HtmlFile.read()
-            # st.components.v1.html("<iframe src='http://localhost:3000/NCCN_TNMLC/1.html' style='width:calc(100%);height:calc(100%); overflow:auto'></iframe>", height=960)
-            # st.components.v1.iframe("http://localhost:3000/NCCN_TNMLC/1.html", height = 920, width=calc(100%), scrolling=True)
             st.markdown(f"<iframe src='http://localhost:3000/{guideline_map[selected_guideline]['dir_name']}/{selected_page_no}.html' style='width:calc(100%);height:960px; overflow:auto'></iframe>", unsafe_allow_html=True)
     with data_extractions:
         with st.container(border=True):
-            # st.markdown(f"**Data Extractions:**")
-
             col1, col2 = st.columns([0.8, 0.2])
 
             with col1:
-                sections = st.text_input("Sections to be extracted (separated by comma)", placeholder="Primary Tumor (N), Supraglottis, Glottis. Subglottis")
-                # if sections:
-                #     st.info("Sections to be extracted: " + sections)
+                sections = st.text_input("Sections to be extracted (separated by comma)", placeholder="Primary Tumor (N), Supraglottis, Glottis. Subglottis", value="Glottis")
             with col2:
                 if st.button("View Prompt"):
                     show_prompt()
 
-            # with st.container(border=True):
             col1, col2 = st.columns([0.8, 0.2])
             with col1:
                 st.markdown(f"**Extracted Data:**")
             with col2:
                 eb = st.button("Extract Data")
 
-            HtmlFile = open("./dashboard/guidelines/NCCN_TNMLC/1.html", 'r', encoding='utf-8')
-            source_code = HtmlFile.read()
-
-            from utils.prompts import DATA_EXTRACTOR, ListSectionData
-            from utils.cpg import ask_llm, ask_llm_response_schema
-            import json
 
             if eb:
-                with st.spinner(f"Extracting data...{sections}"):
+                with st.spinner(f"Extracting data of sections.....{sections}"):
+                    HtmlFile = open(
+                        f"./dashboard/guidelines/{guideline_map[selected_guideline]['dir_name']}/{selected_page_no}.html",
+                        'r', encoding='utf-8')
+                    source_code = HtmlFile.read()
                     prompt = DATA_EXTRACTOR.format(html_page=source_code, sections=sections)
                     extracted_data = json.loads(ask_llm_response_schema(prompt, response_format=ListSectionData))["result"]
-                    st.session_state.page_sections_info = {}
-                    for section in extracted_data:
-                        paragraph_content = ""
-                        for idx, para in enumerate(section['paragraph']):
-                            paragraph_content += f"{idx+1}. {para}\n"
-                        st.session_state.page_sections_info[section["section_name"]] = paragraph_content
-                        st.session_state.data_source = "GPT-4o-mini"
+            #         st.session_state.page_data = {"page_no": selected_page_no, "sections_data": extracted_data}
+            #         st.session_state.data_source = "GPT-4o-mini"
+                    # for section in extracted_data:
+                    #     paragraph_content = ""
+                    #     for idx, para in enumerate(section['paragraph']):
+                    #         paragraph_content += f"{idx+1}. {para}\n"
+                        # st.info(paragraph_content)
+                    #     st.session_state.page_sections_info[section["section_name"]] = paragraph_content
+                    #     st.session_state.data_source = "GPT-4o-mini"
 
-            if st.session_state.page_sections_info:
-                selected_section = st.radio("Select Section:", list(st.session_state.page_sections_info.keys()), label_visibility="collapsed", horizontal=True)
-                display_section(selected_section)
-                st.markdown(f"**Data Source:** {st.session_state.data_source}")
+            # st.write(st.session_state)
+            if st.session_state.page_data["sections_data"]:
+                # # st.write(st.session_state.page_data)
+                # section_names = [section['section_name'] for section in st.session_state.page_data['sections_data']]
+                # selected_section = st.radio("Select Section:", section_names, label_visibility="collapsed", horizontal=True)
+                # st.write(selected_section)
+                # sections_radio_placeholder = st.empty()
+                # section_name_placeholder = st.empty()
+                # section_info_placeholder = st.empty()
+                # section_data_source_placeholder = st.empty()
+                display_section()
+            else:
+                st.markdown(f"**No Information Present in the Database for Page - {selected_page_no}**")
+
+            from utils.db import save_page_sections_data
+            if st.session_state.page_data["sections_data"]:
+                st.button("Save to Database", type="primary", on_click=save_to_db_callback)
+
 
 with st.expander("Session State"):
     st.write(st.session_state)

@@ -45,6 +45,8 @@ services:
       - bnv_db
     logging:
       driver: none
+    networks:
+      - bn_network
 
   bnv_rabbitmq:
     restart: always
