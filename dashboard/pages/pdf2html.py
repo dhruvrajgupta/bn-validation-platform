@@ -11,9 +11,6 @@ st.set_page_config(layout="wide")
 if "page_data" not in st.session_state:
     st.session_state.page_data = None
 
-if "extract_data_stage" not in st.session_state:
-    st.session_state.extract_data_stage = None
-
 def get_page_info_db(selected_page_no):
     page_data_info = get_page_info(selected_page_no)
     if page_data_info:
@@ -49,8 +46,6 @@ def show_prompt():
 
 @st.fragment
 def display_section():
-    # st.session_state.page_data["sections_data"] = sections_data
-    st.write(st.session_state)
     section_names = [section['section_name'] for section in st.session_state.page_data['sections_data']]
     selected_section_placeholder = st.empty()
     selected_section = selected_section_placeholder.radio("Select Section:", section_names, label_visibility="collapsed", horizontal=True)
@@ -65,8 +60,6 @@ def display_section():
     st.markdown(f"**Data Source:** {st.session_state.data_source}")
 
 def save_to_db_callback():
-    # st.write(selected_page_no)
-    # st.write(st.session_state.page_data["sections_data"])
     status = save_page_sections_data(selected_page_no, st.session_state.page_data["sections_data"])
     if status == "Same":
         st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
@@ -87,7 +80,7 @@ with st.sidebar:
     items = [sac.TreeItem(f"Page - {i+1}") for i in range(guideline_map[selected_guideline]['no_of_pages'])]
     selected_page = sac.tree(items=items, label=f"**{guideline_map[selected_guideline]['name']}**", index=0, checkbox_strict=False, open_all=True)
     selected_page_no = selected_page.split("-")[-1].strip()
-    # get_page_info_db(selected_page_no)
+    get_page_info_db(selected_page_no)
 
 guideline_page, data_extractions = st.tabs(["Guideline Page", "Data Extractions"])
 
@@ -126,26 +119,10 @@ with data_extractions:
                     source_code = HtmlFile.read()
                     prompt = DATA_EXTRACTOR.format(html_page=source_code, sections=sections)
                     extracted_data = json.loads(ask_llm_response_schema(prompt, response_format=ListSectionData))["result"]
-            #         st.session_state.page_data = {"page_no": selected_page_no, "sections_data": extracted_data}
-            #         st.session_state.data_source = "GPT-4o-mini"
-                    # for section in extracted_data:
-                    #     paragraph_content = ""
-                    #     for idx, para in enumerate(section['paragraph']):
-                    #         paragraph_content += f"{idx+1}. {para}\n"
-                        # st.info(paragraph_content)
-                    #     st.session_state.page_sections_info[section["section_name"]] = paragraph_content
-                    #     st.session_state.data_source = "GPT-4o-mini"
+                    st.session_state.page_data = {"page_no": selected_page_no, "sections_data": extracted_data}
+                    st.session_state.data_source = "GPT-4o-mini"
 
-            # st.write(st.session_state)
             if st.session_state.page_data["sections_data"]:
-                # # st.write(st.session_state.page_data)
-                # section_names = [section['section_name'] for section in st.session_state.page_data['sections_data']]
-                # selected_section = st.radio("Select Section:", section_names, label_visibility="collapsed", horizontal=True)
-                # st.write(selected_section)
-                # sections_radio_placeholder = st.empty()
-                # section_name_placeholder = st.empty()
-                # section_info_placeholder = st.empty()
-                # section_data_source_placeholder = st.empty()
                 display_section()
             else:
                 st.markdown(f"**No Information Present in the Database for Page - {selected_page_no}**")
