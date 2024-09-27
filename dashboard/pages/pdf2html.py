@@ -1,8 +1,8 @@
 import streamlit as st
 import streamlit_antd_components as sac
 
-from utils.db import get_page_info
-from utils.prompts import DATA_EXTRACTOR, ListSectionData
+from utils.db import get_page_info, save_page_sections_data
+from utils.prompts import DATA_EXTRACTOR, ListSectionData, EXTRACT_ATOMIC_FACTS, ListAtomicFacts
 from utils.cpg import ask_llm, ask_llm_response_schema
 import json
 
@@ -41,14 +41,14 @@ def code_to_name(guideline_code):
 
 @st.dialog("View Prompt", width="large")
 def show_prompt():
-    from utils.prompts import DATA_EXTRACTOR
     st.code(DATA_EXTRACTOR, wrap_lines=True, line_numbers=True)
 
-@st.fragment
-def display_section():
+# @st.fragment
+def display_section(key=None):
     section_names = [section['section_name'] for section in st.session_state.page_data['sections_data']]
     selected_section_placeholder = st.empty()
-    selected_section = selected_section_placeholder.radio("Select Section:", section_names, label_visibility="collapsed", horizontal=True)
+    selected_section = selected_section_placeholder.radio("Select Section:", section_names, label_visibility="collapsed", horizontal=True, key=key)
+    # st.session_state.selected_section = selected_section
     st.markdown(f"**Section Name:** {selected_section}")
     paragraph_content = ""
     for section in st.session_state.page_data['sections_data']:
@@ -63,10 +63,20 @@ def save_to_db_callback():
     status = save_page_sections_data(selected_page_no, st.session_state.page_data["sections_data"])
     if status == "Same":
         st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
-    elif status == "Replaced":
-        st.toast(f"Page: {selected_page_no} replaced in the Database", icon="⚓")
+    elif status == "Updated":
+        st.toast(f"Page: {selected_page_no} updated in the Database", icon="⚓")
     elif status == "Added":
         st.toast(f"Page: {selected_page_no} added to the Database", icon="✅")
+
+def update_section_data(section_to_update):
+    sections_data = []
+    for section in st.session_state.page_data["sections_data"]:
+        if section["section_name"] == section_to_update["section_name"]:
+            sections_data.append(section_to_update)
+        else:
+            sections_data.append(section)
+
+    st.session_state.page_data["sections_data"] = sections_data
 
 with st.sidebar:
     selected_guideline = st.selectbox(
@@ -82,7 +92,7 @@ with st.sidebar:
     selected_page_no = selected_page.split("-")[-1].strip()
     get_page_info_db(selected_page_no)
 
-guideline_page, data_extractions = st.tabs(["Guideline Page", "Data Extractions"])
+guideline_page, data_extractions, causality = st.tabs(["Guideline Page", "Data Extractions", "Causality"])
 
 with guideline_page:
     with st.container(border=True):
@@ -94,6 +104,7 @@ with data_extractions:
     with html_page:
         with st.container(border=True):
             st.markdown(f"<iframe src='http://localhost:3000/{guideline_map[selected_guideline]['dir_name']}/{selected_page_no}.html' style='width:calc(100%);height:960px; overflow:auto'></iframe>", unsafe_allow_html=True)
+
     with data_extractions:
         with st.container(border=True):
             col1, col2 = st.columns([0.8, 0.2])
@@ -127,9 +138,52 @@ with data_extractions:
             else:
                 st.markdown(f"**No Information Present in the Database for Page - {selected_page_no}**")
 
-            from utils.db import save_page_sections_data
             if st.session_state.page_data["sections_data"]:
                 st.button("Save to Database", type="primary", on_click=save_to_db_callback)
+
+    with causality:
+        with st.container(border=True):
+            if not st.session_state.page_data["sections_data"]:
+                st.markdown("**Please extract sections from the guideline first and save it to the Database.**")
+            else:
+                display_section(key="causality_section")
+                col1, col2 = st.columns([0.8, 0.2])
+                with col1:
+                    st.markdown("**Atomic Facts:**")
+                with col2:
+                    btn_eaf = st.button("Extract Atomic Facts")
+
+                selected_section_data = None
+                for section in st.session_state.page_data["sections_data"]:
+                    if section["section_name"] == st.session_state.causality_section:
+                        selected_section_data = section
+
+                if btn_eaf:
+                    with st.spinner(f"Splitting Paragraphs into Atomic Facts of the section.....{selected_section_data['section_name']}"):
+                        prompt = EXTRACT_ATOMIC_FACTS.format(section_name=section['section_name'],
+                                                                      section_content=selected_section_data["paragraph"])
+                        selected_section_data["atomic_facts"] = json.loads(ask_llm_response_schema(prompt, response_format=ListAtomicFacts))["result"]
+                        update_section_data(selected_section_data)
+                        # st.info(selected_section_data)
+                        # HtmlFile = open(
+                        #     f"./dashboard/guidelines/{guideline_map[selected_guideline]['dir_name']}/{selected_page_no}.html",
+                        #     'r', encoding='utf-8')
+                        # source_code = HtmlFile.read()
+                        # prompt = DATA_EXTRACTOR.format(html_page=source_code, sections=sections)
+                        # extracted_data = json.loads(ask_llm_response_schema(prompt, response_format=ListSectionData))[
+                        #     "result"]
+                        # st.session_state.page_data = {"page_no": selected_page_no, "sections_data": extracted_data}
+                        # st.session_state.data_source = "GPT-4o-mini"
+
+                # DISPLAY OF ATOMIC FACTS
+                if "atomic_facts" not in selected_section_data.keys():
+                    st.info("Please extract the Atomic Facts and save it to the database.")
+                else:
+                    atomic_facts_display = ""
+                    for i, atomic_fact in enumerate(selected_section_data["atomic_facts"]):
+                        atomic_facts_display += f"{i+1}. {atomic_fact} \n"
+                    st.info(atomic_facts_display)
+                    st.button("Save to Database", type="primary", on_click=save_to_db_callback, key="sv_db_af")
 
 
 with st.expander("Session State"):

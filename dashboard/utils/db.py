@@ -23,7 +23,7 @@ def save_page_sections_data(page_no, page_section_data):
     )
 
     if result.matched_count > 0:
-        return "Replaced"
+        return "Updated"
     else:
         return "Added"
 
