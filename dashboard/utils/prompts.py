@@ -90,9 +90,7 @@ SECTION_CONTENT:
 # ```
 # """
 
-class ListAtomicFacts(BaseModel):
-    result: List[str]
-
+# Here Structured Output was not giving good results
 EXTRACT_ATOMIC_FACTS = """\
 You are now an intelligent assistant tasked with meticulously extracting atomic facts from a long text.
 1. Atomic Facts: The smallest, indivisible facts, presented as concise sentences. These include
@@ -106,8 +104,7 @@ important and potentially query-worthy and do not leave out details.
 3. Ensure that the atomic facts you extract are presented in the same language as
 the original text (e.g., English or Chinese).
 4. You should output a total of atomic facts that do not exceed 1024 tokens.
-5. Your answer format for each line should be: [Atomic Facts].
-6. Output should be in JSON format.
+5. Your answer format for each line should be: [Serial Number], [Atomic Facts].
 #####
 Example:
 #####
@@ -117,13 +114,9 @@ SECTION NAME: Primary Tumor - Glottis
 SECTION CONTENT:
 The tumor invades soft tissues ......
 
+
 Assistant:
-{{
-    result = [
-      The tumor in stage T4a of the Glottis invades soft tissues of the neck, including deep extrinsic muscle of the tongue.
-      ....
-    ]
-}}
+1. The tumor in stage T4a of the Glottis invades soft tissues of the neck, including deep extrinsic muscle of the tongue.
 ......
 
 #####

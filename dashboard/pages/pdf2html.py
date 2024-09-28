@@ -163,7 +163,9 @@ with data_extractions:
                     with st.spinner(f"Splitting Paragraphs into Atomic Facts of the section.....{selected_section_data['section_name']}"):
                         prompt = EXTRACT_ATOMIC_FACTS.format(section_name=section['section_name'],
                                                                       section_content=selected_section_data["paragraph"])
-                        selected_section_data["atomic_facts"] = json.loads(ask_llm_response_schema(prompt, response_format=ListAtomicFacts))["result"]
+                        selected_section_data["atomic_facts"] = ask_llm(prompt)
+                        clean_af_list = [af[af.find(".")+1:].strip() for af in selected_section_data["atomic_facts"].splitlines()]
+                        selected_section_data["atomic_facts"] = clean_af_list
                         update_section_data(selected_section_data)
 
                 # DISPLAY OF ATOMIC FACTS
@@ -197,6 +199,7 @@ with data_extractions:
                         st.info("Please extract Cause and Effect and save it to the database.")
                     else:
                         for idx, cause_effect_sentences in enumerate(selected_section_data["cause_effect"]):
+                            cause_effect_sentences = f"{idx+1}. {cause_effect_sentences}"
                             annotated_text(format_annotated_text(cause_effect_sentences))
                         st.button("Save to Database", type="primary", on_click=save_to_db_callback, key="sv_db_ce")
 
