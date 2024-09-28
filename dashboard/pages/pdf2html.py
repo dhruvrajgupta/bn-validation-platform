@@ -1,9 +1,10 @@
 import streamlit as st
 import streamlit_antd_components as sac
+from annotated_text import annotated_text
 
 from utils.db import get_page_info, save_page_sections_data
-from utils.prompts import DATA_EXTRACTOR, ListSectionData, EXTRACT_ATOMIC_FACTS, ListAtomicFacts
-from utils.cpg import ask_llm, ask_llm_response_schema
+from utils.prompts import DATA_EXTRACTOR, ListSectionData, EXTRACT_ATOMIC_FACTS, ListAtomicFacts, EXTRACT_CAUSALITY, ListCauseEffect
+from utils.cpg import ask_llm, ask_llm_response_schema, format_annotated_text
 import json
 
 st.set_page_config(layout="wide")
@@ -164,16 +165,6 @@ with data_extractions:
                                                                       section_content=selected_section_data["paragraph"])
                         selected_section_data["atomic_facts"] = json.loads(ask_llm_response_schema(prompt, response_format=ListAtomicFacts))["result"]
                         update_section_data(selected_section_data)
-                        # st.info(selected_section_data)
-                        # HtmlFile = open(
-                        #     f"./dashboard/guidelines/{guideline_map[selected_guideline]['dir_name']}/{selected_page_no}.html",
-                        #     'r', encoding='utf-8')
-                        # source_code = HtmlFile.read()
-                        # prompt = DATA_EXTRACTOR.format(html_page=source_code, sections=sections)
-                        # extracted_data = json.loads(ask_llm_response_schema(prompt, response_format=ListSectionData))[
-                        #     "result"]
-                        # st.session_state.page_data = {"page_no": selected_page_no, "sections_data": extracted_data}
-                        # st.session_state.data_source = "GPT-4o-mini"
 
                 # DISPLAY OF ATOMIC FACTS
                 if "atomic_facts" not in selected_section_data.keys():
@@ -184,6 +175,32 @@ with data_extractions:
                         atomic_facts_display += f"{i+1}. {atomic_fact} \n"
                     st.info(atomic_facts_display)
                     st.button("Save to Database", type="primary", on_click=save_to_db_callback, key="sv_db_af")
+
+                col1, col2 = st.columns([0.8, 0.2])
+                with col1:
+                    st.markdown("**Cause and Effects:**")
+                with col2:
+                    btn_ce = st.button("Extract Cause & Effects")
+
+                if btn_ce:
+                    with st.spinner(f"Extracting Cause and Effect of section: {selected_section_data['section_name']}"):
+                        prompt = EXTRACT_CAUSALITY.format(section_name=selected_section_data['section_name'], text=selected_section_data["atomic_facts"])
+                        cause_effect_sentences = json.loads(ask_llm_response_schema(prompt, response_format=ListCauseEffect))["result"]
+                        selected_section_data["cause_effect"] = cause_effect_sentences
+                        update_section_data(selected_section_data)
+
+                # DISPLAY CAUSALITY
+                if "atomic_facts" not in selected_section_data.keys():
+                    st.info("Please extract the Atomic Facts first to Extract Causality.")
+                else:
+                    if "cause_effect" not in selected_section_data.keys():
+                        st.info("Please extract Cause and Effect and save it to the database.")
+                    else:
+                        for idx, cause_effect_sentences in enumerate(selected_section_data["cause_effect"]):
+                            annotated_text(format_annotated_text(cause_effect_sentences))
+                        st.button("Save to Database", type="primary", on_click=save_to_db_callback, key="sv_db_ce")
+
+
 
 
 with st.expander("Session State"):
