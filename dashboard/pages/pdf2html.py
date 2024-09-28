@@ -3,7 +3,7 @@ import streamlit_antd_components as sac
 from annotated_text import annotated_text
 
 from utils.db import get_page_info, save_page_sections_data
-from utils.prompts import DATA_EXTRACTOR, ListSectionData, EXTRACT_ATOMIC_FACTS, ListAtomicFacts, EXTRACT_CAUSALITY, ListCauseEffect
+from utils.prompts import DATA_EXTRACTOR, ListSectionData, EXTRACT_ATOMIC_FACTS, EXTRACT_CAUSALITY, ListCauseEffect
 from utils.cpg import ask_llm, ask_llm_response_schema, format_annotated_text
 import json
 

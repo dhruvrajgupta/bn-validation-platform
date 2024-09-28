@@ -93,18 +93,23 @@ SECTION_CONTENT:
 # Here Structured Output was not giving good results
 EXTRACT_ATOMIC_FACTS = """\
 You are now an intelligent assistant tasked with meticulously extracting atomic facts from a long text.
-1. Atomic Facts: The smallest, indivisible facts, presented as concise sentences. These include
-propositions, theories, existences, concepts, and implicit elements like logic, causality, event
+1. Atomic Facts: An atomic fact is a simple, standalone statement that conveys a single piece of information. 
+Each fact should be a clear and concise sentence, free from any unnecessary details or compound structures.
+The smallest, indivisible facts, presented as concise sentences. These include propositions, theories, 
+existences, concepts, and implicit elements like logic, causality, event
 sequences, interpersonal relationships, timelines, etc.
 Requirements:
 #####
-1. You should extract key atomic facts comprehensively, especially those that are
+1. (!! Important !!) Break down the sentences into individual facts. 
+2. Each fact should only contain one subject and one predicate.
+3. Ensure that each fact is easy to understand on its own, without requiring context from the paragraph.
+4. Each fact should be a grammatically complete sentence.
+5. You should extract key atomic facts comprehensively, especially those that are
 important and potentially query-worthy and do not leave out details.
-2. Whenever applicable, mention the specific explicit subject of the atomic fact in relation to the SECTION NAME and SUMMARY
-3. Ensure that the atomic facts you extract are presented in the same language as
+6. Whenever applicable, mention the specific explicit subject of the atomic fact in relation to the SECTION NAME
+7. Ensure that the atomic facts you extract are presented in the same language as
 the original text (e.g., English or Chinese).
-4. You should output a total of atomic facts that do not exceed 1024 tokens.
-5. Your answer format for each line should be: [Serial Number], [Atomic Facts].
+8. Your answer format for each line should be: [Serial Number], [Atomic Facts].
 #####
 Example:
 #####
