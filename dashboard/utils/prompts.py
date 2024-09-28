@@ -7,17 +7,34 @@ class ListCauseEffect(BaseModel):
 # MODIFIED
 # Causality extraction from medical text using Large Language Models (LLMs), Gopalkrishnan et al.
 EXTRACT_CAUSALITY = """\
+You are an advanced text processing assistant with expertise in clinical data mining, specifically designed to analyze oncology clinical practitioner guidelines. 
+Your task is to meticulously extract and tag causes, effects, conditions, and actions from complex clinical texts.
+
 Perform the following actions:
-1 - You will be provided with text delimited by triple quotes. Extract the cause, effect, signal, condition and action from the given sentence. Enclose the begnining and the end with tags as given in the examples below. Use A for action, C for cause, CO for condition and E for effect.
-Example 1: Pregnant persons with gestational diabetes  are at increased risk for maternal and fetal complications, including preeclampsia, fetal macrosomia (which can cause shoulder dystocia and birth injury), and neonatal hypoglycemia.
-Example 2: Gestational diabetes  has also been associated with an increased risk of several long-term health outcomes in pregnant persons and intermediate outcomes in their offspring .
-Example 3: EVIDENCE ASSESSMENT The USPSTF concludes with moderate certainty that there is a moderate net benefit  to screening for gestational diabetes at 24 weeks of gestation or after  to improve maternal and fetal outcomes .
-Example 4: RECOMMENDATION The USPSTF recommends screening for gestational diabetes  in asymptomatic pregnant persons at 24 weeks of gestation or after .
+#####
+1 - You will be provided with text delimited by triple quotes. Extract the cause, effect, condition and action from the given sentence. 
+2. Enclose the begnining and the end with tags as given in the examples below. Use A for action, C for cause, CO for condition and E for effect.
+Cause (C): The reason or origin that leads to an effect. Causes often involve disease conditions, risk factors, or underlying mechanisms.
+Effect (E): The outcome or result of a cause. Effects usually represent clinical outcomes, complications, or results of a specific cause.
+Condition (CO): The circumstance or prerequisite required for an action or effect to occur. Conditions may include patient characteristics, clinical scenarios, or specific diagnostic criteria.
+Action (A): The recommended or described response or activity to address a cause or condition. Actions typically involve clinical interventions, diagnostic procedures, or treatment recommendations.
+
+3. Identify and tag all relevant elements within each sentence, ensuring no critical information is overlooked.
+4. If a sentence contains multiple elements (e.g., both cause and effect), ensure all are tagged accordingly.
+5. Use separate tags for each element, even if they are part of the same sentence.
+6. Each tagged element should be clear and precise, representing standalone information that can be easily understood without additional context.
+7. Maintain an understanding of clinical context to ensure accurate interpretation of complex medical terminology and guidelines.
+8. Prioritize clinical relevance and accuracy when identifying elements in the text.
+9. Output the result in JSON format.
+
+EXAMPLES:
+#####
+Patients with advanced-stage lung cancer have a higher risk of metastasis, particularly if they have a history of smoking. Regular screening and early intervention are recommended for high-risk individuals.
 
 2 - Output should be in JSON format.
 Example Output:
 'result': [
-    '<C> Pregnant persons with gestational diabetes </C> <E> are at increased risk for maternal and fetal complications, including preeclampsia, fetal macrosomia (which can cause shoulder dystocia and birth injury), and neonatal hypoglycemia </E>.',
+    '<C> Patients with advanced-stage lung cancer </C> <E> have a higher risk of metastasis </E>, particularly <CO> if they have a history of smoking </CO>. <A> Regular screening and early intervention </A> are recommended for high-risk individuals.'
     ...
 ]
 
@@ -28,6 +45,8 @@ SECTION_CONTENT:
 ```
 {text}
 ```
+
+Let's think step by step
 """
 
 # '<C> Pregnant persons with gestational diabetes </C> <E> are at increased risk for maternal and fetal complications, including preeclampsia, fetal macrosomia (which can cause shoulder dystocia and birth injury), and neonatal hypoglycemia </E>.',

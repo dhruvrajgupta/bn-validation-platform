@@ -87,7 +87,8 @@ def ask_llm(prompt: str, stream=False):
     # return
 
     model_name = "gpt-4o-mini"
-    temperature = 0
+    # model_name = "gpt-4o-2024-08-06"
+    # temperature = 0
 
     client = OpenAI(
         # Defaults to os.environ.get("OPENAI_API_KEY")
@@ -96,11 +97,11 @@ def ask_llm(prompt: str, stream=False):
     response = client.chat.completions.create(
         model=model_name,
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": "You are an advanced text processing assistant with expertise in clinical data mining, specifically designed to analyze oncology clinical practitioner guidelines."},
             {"role": "user", "content": prompt},
         ],
-        temperature=temperature,
-        stream=stream
+        # temperature=temperature,
+        # stream=stream
     )
 
     print(f"START OF LLM RESPONSE: \n{'-'*20}\n")
@@ -143,6 +144,7 @@ def ask_llm_response_schema(prompt: str, response_format: BaseModel):
     # return
 
     model_name = "gpt-4o-mini"
+    # model_name = "gpt-4o-2024-08-06"
     temperature = 0
 
     client = OpenAI(
@@ -152,10 +154,10 @@ def ask_llm_response_schema(prompt: str, response_format: BaseModel):
     response = client.beta.chat.completions.parse(
         model=model_name,
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": "You are an advanced text processing assistant with expertise in clinical data mining, specifically designed to analyze oncology clinical practitioner guidelines."},
             {"role": "user", "content": prompt},
         ],
-        temperature=temperature,
+        # temperature=temperature,
         response_format=response_format
     )
 
