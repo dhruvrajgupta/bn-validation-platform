@@ -150,10 +150,10 @@ def edge_strength_stats(model):
     model = bnlearn.make_DAG(DAG=model, CPD=cpds, verbose=0)
 
     dataset_paths = [
-        "./../datasets/40percent.csv",
-        "./../datasets/60percent.csv",
-        "./../datasets/80percent.csv",
-        "./../datasets/100percent.csv",
+        "datasets/40percent.csv",
+        "datasets/60percent.csv",
+        "datasets/80percent.csv",
+        "datasets/100percent.csv",
     ]
 
     df = pd.read_csv(dataset_paths[3])

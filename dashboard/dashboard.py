@@ -41,8 +41,8 @@ with super_model:
     selected_model = st.selectbox("Select a ground truth model", ["Mstage Laryngeal Cancer", "TNM Staging Laryngeal Cancer"])
 
     model_path_mapping = {
-        "Mstage Laryngeal Cancer": "./ground_truth_models/Mstage.xdsl",
-        "TNM Staging Laryngeal Cancer": "./ground_truth_models/validationPaper_TNM-Model_28012016.xdsl"
+        "Mstage Laryngeal Cancer": "dashboard/ground_truth_models/Mstage.xdsl",
+        "TNM Staging Laryngeal Cancer": "dashboard/ground_truth_models/validationPaper_TNM-Model_28012016.xdsl"
     }
 
     path = model_path_mapping[selected_model]
@@ -73,7 +73,7 @@ with super_model:
     if "ground_truth_bn_model" in st.session_state:
         ## EDGE RANKINGS ##
         # 1. Using Dataset stats (G-Test)
-        if st.button("Compute Edge Strength (G-Test)"):
+        if st.button("Compute Edge Strength (G-Test)", type="primary"):
             with st.status("Edge Strength (G-Test)"):
                 edge_strength = run_in_background(edge_strength_stats, bn_model)
                 if edge_strength.done():
