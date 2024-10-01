@@ -1,6 +1,5 @@
 import streamlit as st
-# import time
-from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super, build_network
+from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super, build_network, convert_to_vis_markov
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation, edge_strength_stats, edge_strength_cpds, \
     g_test_rank_edges, cpd_rank_edges
@@ -200,6 +199,46 @@ with bn_info:
                 if redundant_edges_d_separation:
                     st.error(f"{len(redundant_edges_d_separation)} redundant edges detected")
                     st.write(redundant_edges_d_separation)
+
+                    # FOR TEMP PURPOSE MARKOV VISUALIZATION
+                    from pgmpy.models import BayesianNetwork
+
+                    graph = BayesianNetwork([
+                        ('Burglary', 'Alarm'),
+                        ('Earthquake', 'Alarm'),
+                        ('Alarm', 'JohnCalls'),
+                        ('Alarm', 'MaryCalls'),
+                        ('Burglary', 'Earthquake'),  # <-- Redundant Edge
+                        # Burglary and Earthquake were already independent in the original graph unless conditioned on Alarm.
+                        # The new edge does not change this independence, as the two variables are still blocked by the collider at the Alarm unless the Alarm is observed.
+                        # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
+                    ])
+
+                    vis_set = []
+                    for r_edges in redundant_edges_d_separation:
+                        markov_source = r_edges["markov_source"]
+                        markov_target = r_edges["markov_target"]
+                        vis_set.extend(markov_source)
+                        vis_set.extend(markov_target)
+
+                    vis_set = set(vis_set)
+                    vis_graph_edges = []
+
+                    for node in vis_set:
+                        for edge in graph.edges():
+                            if node in edge:
+                                if edge not in vis_graph_edges:
+                                    vis_graph_edges.append(edge)
+
+                    vis_graph = BayesianNetwork(vis_graph_edges)
+
+                    convert_to_vis_markov(vis_graph)
+                    path = "./markov.html"
+
+                    HtmlFile = open(path, 'r', encoding='utf-8')
+                    source_code = HtmlFile.read()
+                    st.components.v1.html(source_code, height=1000, width=1000, scrolling=True)
+
                 else:
                     st.success("No redundant edges detected.")
 

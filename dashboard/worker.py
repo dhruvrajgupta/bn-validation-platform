@@ -13,5 +13,5 @@ def task_edge_strength_stats(nodes_contents):
 @app.task
 def task_compute_redundant_edges_d_separation(nodes_contents):
     bn_model = build_network(nodes_contents)
-    redundant_edges = find_redundant_edges_d_separation(bn_model)
+    redundant_edges = find_redundant_edges_d_separation(bn_model, debug=True)
     return redundant_edges

@@ -109,6 +109,18 @@ def convert_to_vis_super(graph):
     viz.show_buttons(filter_=['physics'])
     viz.show("super_model.html")
 
+def convert_to_vis_markov(graph):
+    from causalnex.plots import plot_structure, NODE_STYLE, EDGE_STYLE
+
+    viz = plot_structure(
+        graph,
+        all_node_attributes=NODE_STYLE.WEAK,
+        all_edge_attributes=EDGE_STYLE.WEAK,
+    )
+    viz.toggle_physics(False)
+    viz.show_buttons(filter_=['physics'])
+    viz.show("markov.html")
+
 
 def build_network(nodes):
     model = BayesianNetwork()
