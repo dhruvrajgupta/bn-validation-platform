@@ -41,8 +41,8 @@ with super_model:
     selected_model = st.selectbox("Select a ground truth model", ["Mstage Laryngeal Cancer", "TNM Staging Laryngeal Cancer"])
 
     model_path_mapping = {
-        "Mstage Laryngeal Cancer": "dashboard/ground_truth_models/Mstage.xdsl",
-        "TNM Staging Laryngeal Cancer": "dashboard/ground_truth_models/validationPaper_TNM-Model_28012016.xdsl"
+        "Mstage Laryngeal Cancer": "/usr/src/app/dashboard/ground_truth_models/Mstage.xdsl",
+        "TNM Staging Laryngeal Cancer": "/usr/src/app/dashboard/ground_truth_models/validationPaper_TNM-Model_28012016.xdsl"
     }
 
     path = model_path_mapping[selected_model]
@@ -75,34 +75,34 @@ with super_model:
         # 1. Using Dataset stats (G-Test)
         if st.button("Compute Edge Strength (G-Test)", type="primary"):
             with st.status("Edge Strength (G-Test)"):
-                edge_strength = run_in_background(edge_strength_stats, bn_model)
-                if edge_strength.done():
-                    edge_strength = edge_strength.result()
+                from worker import task_edge_strength_stats
+                import pandas as pd
+                edge_strength = task_edge_strength_stats.delay(nodes_contents)
+                edge_strength = pd.read_json(edge_strength.get(), orient="split")
                 with st.expander("Dataframe"):
                     st.write(edge_strength)
                 with st.expander("Edge Rankings"):
                     ranked_edges = g_test_rank_edges(edge_strength)
                     st.write(ranked_edges)
 
-
-        with st.status("Edge Strength (Using CPDs)"):
-            run_in_background(long_computation, 5)
-            distance_type_name = st.session_state["working_model_cpds_distance_type"]
-            if distance_type_name == "Euclidean":
-                distance_type_index = 0
-            elif distance_type_name == "Hellinger":
-                distance_type_index = 1
-            elif distance_type_name == "J-Divergence":
-                distance_type_index = 2
-            elif distance_type_name == "CDF":
-                distance_type_index = 3
-            distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=distance_type_index, horizontal=True, key="ground_truth_cpds_distance_type")
-            edge_strength = edge_strength_cpds(bn_model, distance_type)
-            with st.expander("Dataframe"):
-                st.write(edge_strength)
-            with st.expander("Edge Rankings"):
-                ranked_edges = cpd_rank_edges(edge_strength)
-                st.write(ranked_edges)
+        if st.button("Compute Edge Strength (Using CPDs)"):
+            with st.status("Edge Strength (Using CPDs)"):
+                distance_type_name = st.session_state["working_model_cpds_distance_type"]
+                if distance_type_name == "Euclidean":
+                    distance_type_index = 0
+                elif distance_type_name == "Hellinger":
+                    distance_type_index = 1
+                elif distance_type_name == "J-Divergence":
+                    distance_type_index = 2
+                elif distance_type_name == "CDF":
+                    distance_type_index = 3
+                distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=distance_type_index, horizontal=True, key="ground_truth_cpds_distance_type")
+                edge_strength = edge_strength_cpds(bn_model, distance_type)
+                with st.expander("Dataframe"):
+                    st.write(edge_strength)
+                with st.expander("Edge Rankings"):
+                    ranked_edges = cpd_rank_edges(edge_strength)
+                    st.write(ranked_edges)
 
 
     with st.expander(f"Session Info"):
@@ -192,32 +192,33 @@ with bn_info:
         with st.status("Redundant Edges (D-separation)"):
             if st.session_state["d_separation_btn"]:
                 # redundant_edges_d_separation = run_in_background(long_computation, 5)
+                from worker import task_compute_redundant_edges_d_separation
                 # This Process is computationally expensive. Needs to be made into a background task (eg, TNM Staging Laryngeal Cancer - 54 mins approx)
-                redundant_edges_d_separation = run_in_background(find_redundant_edges_d_separation, bn_model, True)
+                redundant_edges_d_separation = task_compute_redundant_edges_d_separation.delay(nodes_contents)
+                redundant_edges_d_separation = redundant_edges_d_separation.get()
 
-                if redundant_edges_d_separation.done():
-                    redundant_edges_d_separation = redundant_edges_d_separation.result()
-                # redundant_edges_d_separation = find_redundant_edges_d_separation(bn_model, debug=True)
-                    if redundant_edges_d_separation:
-                        st.error(f"{len(redundant_edges_d_separation)} redundant edges detected")
-                        st.write(redundant_edges_d_separation)
-                    else:
-                        st.success("No redundant edges detected.")
+                if redundant_edges_d_separation:
+                    st.error(f"{len(redundant_edges_d_separation)} redundant edges detected")
+                    st.write(redundant_edges_d_separation)
+                else:
+                    st.success("No redundant edges detected.")
 
 
 
     if "bn_model" in st.session_state:
         ## EDGE RANKINGS ##
         # 1. Using Dataset stats (G-Test)
-        with st.status("Edge Strength (G-Test)"):
-            edge_strength = run_in_background(edge_strength_stats, bn_model)
-            if edge_strength.done():
-                edge_strength = edge_strength.result()
-            with st.expander("Dataframe"):
-                st.write(edge_strength)
-            with st.expander("Edge Ramkings"):
-                ranked_edges = g_test_rank_edges(edge_strength)
-                st.write(ranked_edges)
+        if st.button("Compute Edge Strength (G-Test)", type="primary", key="g_test_btn_wip"):
+            with st.status("Edge Strength (G-Test)"):
+                from worker import task_edge_strength_stats
+                import pandas as pd
+                edge_strength = task_edge_strength_stats.delay(nodes_contents)
+                edge_strength = pd.read_json(edge_strength.get(), orient="split")
+                with st.expander("Dataframe"):
+                    st.write(edge_strength)
+                with st.expander("Edge Rankings"):
+                    ranked_edges = g_test_rank_edges(edge_strength)
+                    st.write(ranked_edges)
 
         with st.expander("Edge Strength (Using CPDs)"):
             distance_type_name = st.session_state["ground_truth_cpds_distance_type"]
