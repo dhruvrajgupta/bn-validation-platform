@@ -104,6 +104,8 @@ def ask_llm(prompt: str, stream=False):
         # stream=stream
     )
 
+    print(f"PROMPT:\n\n{prompt}")
+
     print(f"START OF LLM RESPONSE: \n{'-'*20}\n")
 
     if stream:
@@ -145,11 +147,13 @@ def ask_llm_response_schema(prompt: str, response_format: BaseModel):
 
     model_name = "gpt-4o-mini"
     # model_name = "gpt-4o-2024-08-06"
-    temperature = 0
+    # temperature = 0
 
     client = OpenAI(
         # Defaults to os.environ.get("OPENAI_API_KEY")
     )
+
+    print(f"PROMPT:\n\n{prompt}")
 
     response = client.beta.chat.completions.parse(
         model=model_name,

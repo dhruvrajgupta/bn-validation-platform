@@ -189,3 +189,43 @@ Output format in JSON:
 ]
 
 """
+
+EXTRACT_NODE_DESCRIPTION = """\
+TASK:
+You are working with a Bayesian Network focused on the "TNM staging of laryngeal cancer". 
+Your task is to decode a specific node in this Bayesian Network and then gather detailed information of the node 
+for clinical data mining purposes. You will be give the NodeID, States, and Edges associated with the node.
+NodeID: identifier of the node in the Bayesian Network
+States: State Names this node has in the Bayesian Network
+Edges: Edges for which this node is connected to other nodes in the Network.
+
+NODE INFORMATION:
+NodeID: "{node_id}"
+States: {states}
+Edges:
+{edges}
+
+INSTRUCTIONS: 
+Please provide the following information for the node with ID "{node_id}":
+Label: Provide a clinically relevant label that describes the node.
+Description: Describe the clinical meaning and significance of the node, focusing on how it relates to the  the context of laryngeal cancer.
+Entity Information: 
+For this node, retrieve the following entity information:
+1. MeSH label and description
+2. SNOMED-CT label and description
+3. Wikidata label and description
+
+IMPORTANT NOTES:
+1. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
+2. Do not retrieve the Entity ID of the terms.
+3. If there is no corresponding entity information, output "None" for that particular field.
+4. Output in JSON format.
+
+This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
+
+DESIRED OUTPUT FORMAT: 
+Provide the information in the following JSON structure:
+{{"id":"{node_id}","label":"...","description":"...","entity_information":[{{"ontology_name":"MeSH","label":"...","description":"..."}},{{"ontology_name":"SNOMED-CT","label":"...","description":"..."}},{{"ontology_name":"Wikidata","label":"...","description":"..."}}]}}
+
+If any entity information is not found, replace that field with "None".
+"""

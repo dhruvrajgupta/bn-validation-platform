@@ -399,6 +399,24 @@ def cdf_distance(p, q):
 
     return multiplier * distance
 
+def check_nodes_descriptions(row):
+    from utils.db import get_node_descriptions
+    source_node = row.to_dict()["source"]
+    target_node = row.to_dict()["target"]
+
+    source_node_descriptions = get_node_descriptions(source_node)
+    target_node_descriptions = get_node_descriptions(target_node)
+
+    if not (source_node_descriptions and target_node_descriptions):
+        return False
+
+    if source_node_descriptions["label"] and source_node_descriptions["description"] \
+        and target_node_descriptions["label"] and target_node_descriptions["description"]:
+        return True
+
+    return False
+
+
 def g_test_rank_edges(dataframe):
     df = dataframe.copy(deep=True)
     df = df.drop(['stat_test', 'p_value', 'dof'], axis=1)
@@ -409,6 +427,10 @@ def g_test_rank_edges(dataframe):
     rank = df['rank']
     df.drop(labels=['rank'], axis=1, inplace=True)
     df.insert(0, 'rank', rank)
+
+    ## Add description column if there is descriptions of both the nodes present
+    df['descriptions'] = df.apply(check_nodes_descriptions, axis=1)
+
     return df
 
 def cpd_rank_edges(dataframe):

@@ -1,11 +1,11 @@
 import streamlit as st
+
+from utils.db import get_node_descriptions
 from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super, build_network, convert_to_vis_markov
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation, edge_strength_stats, edge_strength_cpds, \
     g_test_rank_edges, cpd_rank_edges
-from utils.models import get_horrible_model
-import concurrent.futures
-import time
+
 # Monkey patch for nested st.expander
 import streamlit_nested_layout
 
@@ -20,19 +20,19 @@ if "working_model_cpds_distance_type" not in st.session_state:
 if "ground_truth_cpds_distance_type" not in st.session_state:
     st.session_state["ground_truth_cpds_distance_type"] = "Euclidean"
 
-def long_computation(n):
-    # Dummy long computation
-    time.sleep(n)  # Simulating a long-running computation
-    # return f"Completed after {n} seconds!"
-    return [1,2,3,4,5]
-
-def run_in_background(fn, *args):
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        future = executor.submit(fn, *args)
-        return future
+if "node_contents" not in st.session_state:
+    st.session_state["node_contents"] = None
 
 def redundant_edge_d_separation_btn_callback():
     st.session_state["d_separation_btn"] = True
+
+@st.cache_data
+def get_super_model_g_test(nodes_contents):
+    from worker import task_edge_strength_stats
+    import pandas as pd
+    g_test = task_edge_strength_stats.delay(nodes_contents)
+    g_test = pd.read_json(g_test.get(), orient="split")
+    return g_test
 
 super_model, wip_model, bn_info = st.tabs(["Ground Truth Model", "Check Valid XDSL", "Bayesian Network Info"])
 
@@ -61,6 +61,7 @@ with super_model:
     # Building the BN for this super graph
     try:
         nodes_contents = extract_xdsl_content(xdsl_content)
+        st.session_state.node_contents = nodes_contents
         bn_model = build_network(nodes_contents)
         if bn_model.check_model():
             st.session_state["ground_truth_bn_model"] = bn_model
@@ -72,17 +73,40 @@ with super_model:
     if "ground_truth_bn_model" in st.session_state:
         ## EDGE RANKINGS ##
         # 1. Using Dataset stats (G-Test)
-        if st.button("Compute Edge Strength (G-Test)", type="primary"):
-            with st.status("Edge Strength (G-Test)"):
-                from worker import task_edge_strength_stats
-                import pandas as pd
-                edge_strength = task_edge_strength_stats.delay(nodes_contents)
-                edge_strength = pd.read_json(edge_strength.get(), orient="split")
-                with st.expander("Dataframe"):
-                    st.write(edge_strength)
-                with st.expander("Edge Rankings"):
-                    ranked_edges = g_test_rank_edges(edge_strength)
-                    st.write(ranked_edges)
+        if st.checkbox("Compute Edge Strength (G-Test)"):
+            with st.container(border=True):
+                with st.spinner("Edge Strength (G-Test)"):
+                    st.markdown("###### Edge Strength (G-Test)")
+                    super_g_test = get_super_model_g_test(nodes_contents)
+                    g_test_ranked_edges = g_test_rank_edges(super_g_test)
+                    event = st.dataframe(
+                            g_test_ranked_edges,
+                            on_select="rerun",
+                            selection_mode="single-row"
+                        )
+                    selection = event.selection
+                    if len(selection["rows"]):
+                        st.markdown("**Selected Row:**")
+                        selected_row = selection["rows"][0]
+                        st.write(g_test_ranked_edges.iloc[selected_row])
+                        row_content = g_test_ranked_edges.iloc[selected_row].to_dict()
+
+                        if st.checkbox("Show Nodes Descriptions"):
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.markdown("**Source:**")
+                                source_desc = get_node_descriptions(row_content["source"])
+                                if source_desc:
+                                    st.write(source_desc)
+                                else:
+                                    st.write("No descriptions of the node in the database.")
+                            with col2:
+                                st.markdown("**Target:**")
+                                source_desc = get_node_descriptions(row_content["target"])
+                                if source_desc:
+                                    st.write(source_desc)
+                                else:
+                                    st.write("No descriptions of the node in the database.")
 
         if st.button("Compute Edge Strength (Using CPDs)"):
             with st.status("Edge Strength (Using CPDs)"):

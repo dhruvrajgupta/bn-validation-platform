@@ -33,3 +33,36 @@ def get_page_info(page_no):
     pages = db.pages
 
     return pages.find_one({"page_no": page_no})
+
+def get_node_descriptions(node_id):
+    db = init_connection()["bn-validation"]
+    nodes_descriptions = db.nodes_descriptions
+
+    return nodes_descriptions.find_one({"node_id": node_id})
+
+def save_node_desc_data(node_id, label, description, entity_information):
+    db = init_connection()["bn-validation"]
+    nodes_desc = db.nodes_descriptions
+
+    node_dict = {
+        "node_id": node_id,
+        "label": label,
+        "description": description,
+        "entity_information": entity_information
+    }
+
+    print(node_dict)
+
+    if nodes_desc.find_one(node_dict):
+        return "Same"
+
+    result = nodes_desc.replace_one(
+        {"node_id": node_id},
+        node_dict,
+        upsert=True
+    )
+
+    if result.matched_count > 0:
+        return "Updated"
+    else:
+        return "Added"
