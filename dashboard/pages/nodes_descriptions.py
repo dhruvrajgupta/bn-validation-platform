@@ -52,7 +52,11 @@ with ground_truth_model:
         for edge in gt_model.edges():
             if edge[0] == node or edge[1] == node:
                 edges.append(edge)
-        if st.checkbox(node, key=f"gt-{node}"):
+        if node_info_db:
+            status_icon ="✅"
+        else:
+            status_icon = "🚫"
+        if st.checkbox(f"{status_icon} {node}", key=f"gt-{node}"):
             if node_info_db:
                 node_info = st.session_state.gt_node_contents[node]
                 node_info['node_id'] = node
@@ -94,7 +98,11 @@ with wip_model:
         for edge in gt_model.edges():
             if edge[0] == node or edge[1] == node:
                 edges.append(edge)
-        if st.checkbox(node, key=f"bn-{node}"):
+        if node_info_db:
+            status_icon ="✅"
+        else:
+            status_icon = "🚫"
+        if st.checkbox(f"{status_icon} {node}", key=f"bn-{node}"):
             if node_info_db:
                 node_info = st.session_state.bn_node_contents[node]
                 node_info['node_id'] = node
