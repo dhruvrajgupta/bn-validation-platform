@@ -20,8 +20,11 @@ if "working_model_cpds_distance_type" not in st.session_state:
 if "ground_truth_cpds_distance_type" not in st.session_state:
     st.session_state["ground_truth_cpds_distance_type"] = "Euclidean"
 
-if "node_contents" not in st.session_state:
-    st.session_state["node_contents"] = None
+if "gt_node_contents" not in st.session_state:
+    st.session_state["gt_node_contents"] = None
+
+if "bn_node_contents" not in st.session_state:
+    st.session_state["bn_node_contents"] = None
 
 def redundant_edge_d_separation_btn_callback():
     st.session_state["d_separation_btn"] = True
@@ -61,7 +64,7 @@ with super_model:
     # Building the BN for this super graph
     try:
         nodes_contents = extract_xdsl_content(xdsl_content)
-        st.session_state.node_contents = nodes_contents
+        st.session_state.gt_node_contents = nodes_contents
         bn_model = build_network(nodes_contents)
         if bn_model.check_model():
             st.session_state["ground_truth_bn_model"] = bn_model
@@ -199,6 +202,7 @@ with bn_info:
 
     try:
         nodes_contents = extract_xdsl_content(file_content)
+        st.session_state.bn_node_contents = nodes_contents
         bn_model = build_network(nodes_contents)
         if bn_model.check_model():
             st.session_state["bn_model"] = bn_model

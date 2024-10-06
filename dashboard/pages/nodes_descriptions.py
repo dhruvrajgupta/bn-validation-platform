@@ -52,16 +52,16 @@ with ground_truth_model:
         for edge in gt_model.edges():
             if edge[0] == node or edge[1] == node:
                 edges.append(edge)
-        if st.checkbox(node):
+        if st.checkbox(node, key=f"gt-{node}"):
             if node_info_db:
-                node_info = st.session_state.node_contents[node]
+                node_info = st.session_state.gt_node_contents[node]
                 node_info['node_id'] = node
                 node_info['edges'] = edges
                 node_info['label'] = node_info_db['label']
                 node_info['description'] = node_info_db['description']
                 node_info['entity_information'] = node_info_db['entity_information']
             else:
-                node_info = st.session_state.node_contents[node]
+                node_info = st.session_state.gt_node_contents[node]
                 node_info['node_id'] = node
                 node_info['edges'] = edges
                 node_info['label'] = None
@@ -84,7 +84,47 @@ with ground_truth_model:
                 st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[node, label, description, ent_info], key=f"sv-db-{node}")
 
 with wip_model:
-    pass
+    wip_model = st.session_state["bn_model"]
+    nodes = wip_model.nodes()
+    for node in nodes:
+        # Get information of the node from the database
+        from utils.db import get_node_descriptions
+        node_info_db = get_node_descriptions(node)
+        edges = []
+        for edge in gt_model.edges():
+            if edge[0] == node or edge[1] == node:
+                edges.append(edge)
+        if st.checkbox(node, key=f"bn-{node}"):
+            if node_info_db:
+                node_info = st.session_state.bn_node_contents[node]
+                node_info['node_id'] = node
+                node_info['edges'] = edges
+                node_info['label'] = node_info_db['label']
+                node_info['description'] = node_info_db['description']
+                node_info['entity_information'] = node_info_db['entity_information']
+            else:
+                node_info = st.session_state.bn_node_contents[node]
+                node_info['node_id'] = node
+                node_info['edges'] = edges
+                node_info['label'] = None
+                node_info['description'] = None
+                node_info['entity_information'] = None
+
+            if st.button("Get Information using GPT", key=f"gpt-for-{node}"):
+                with st.spinner(f"Extracting Node information for '{node_info['node_id']}'..."):
+                    node_info = get_desc_from_gpt(node, node_info)
+            with st.container(border=True):
+                st.markdown(f"**ID:** {node_info['node_id']}")
+                st.markdown(f"**STATES:** {node_info['states']}")
+                st.markdown(f"**EDGES:** {node_info['edges']}")
+                # st.write(node_info)
+                label = st.text_input("**Label:**", value=str(node_info["label"]), key=f"lbl-{node}")
+                description = st.text_area("**Description:**", value=str(node_info['description']), key=f"desc-{node}")
+                st.markdown("**Entity Information:**")
+                ent_info = st.data_editor(node_info['entity_information'], use_container_width=True, key=f"ent-{node}")
+
+                st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[node, label, description, ent_info], key=f"sv-db-{node}")
+
 
 with st.expander("Session Info"):
     st.json(st.session_state, expanded=False)
