@@ -194,16 +194,11 @@ EXTRACT_NODE_DESCRIPTION = """\
 TASK:
 You are working with a Bayesian Network focused on the "TNM staging of laryngeal cancer". 
 Your task is to decode a specific node in this Bayesian Network and then gather detailed information of the node 
-for clinical data mining purposes. You will be give the NodeID, States, and Edges associated with the node.
+for clinical data mining purposes.
 NodeID: identifier of the node in the Bayesian Network
-States: State Names this node has in the Bayesian Network
-Edges: Edges for which this node is connected to other nodes in the Network.
 
 NODE INFORMATION:
 NodeID: "{node_id}"
-States: {states}
-Edges:
-{edges}
 
 INSTRUCTIONS: 
 Please provide the following information for the node with ID "{node_id}":
