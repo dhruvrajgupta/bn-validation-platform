@@ -7,8 +7,7 @@ def get_desc_from_gpt(node_id, node_info):
     from typing import List
     from utils.cpg import ask_llm_response_schema
     from utils.prompts import EXTRACT_NODE_DESCRIPTION
-    prompt = EXTRACT_NODE_DESCRIPTION.format(node_id=node_id, states=node_info['states'],
-                                             edges=node_info['edges'])
+    prompt = EXTRACT_NODE_DESCRIPTION.format(node_id=node_id, states=node_info['states'])
 
     class ENTITY_INFO(BaseModel):
         ontology_name: str

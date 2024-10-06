@@ -195,10 +195,12 @@ TASK:
 You are working with a Bayesian Network focused on the "TNM staging of laryngeal cancer". 
 Your task is to decode a specific node in this Bayesian Network and then gather detailed information of the node 
 for clinical data mining purposes.
-NodeID: identifier of the node in the Bayesian Network
+NodeID: identifier of the node in the Bayesian Network.
+States: states of the node in the Bayesian Network.
 
 NODE INFORMATION:
 NodeID: "{node_id}"
+States: "{states}"
 
 INSTRUCTIONS: 
 Please provide the following information for the node with ID "{node_id}":
