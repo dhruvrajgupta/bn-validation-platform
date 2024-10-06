@@ -68,7 +68,7 @@ with super_model:
         bn_model = build_network(nodes_contents)
         if bn_model.check_model():
             st.session_state["ground_truth_bn_model"] = bn_model
-        st.write(bn_model)
+        st.info(bn_model)
 
     except Exception as e:
         st.error(f"ERROR: \n{str(e)}")
@@ -111,8 +111,9 @@ with super_model:
                                 else:
                                     st.write("No descriptions of the node in the database.")
 
-        if st.button("Compute Edge Strength (Using CPDs)"):
-            with st.status("Edge Strength (Using CPDs)"):
+        if st.checkbox("Compute Edge Strength (Using CPDs)"):
+            with st.container(border=True):
+                st.markdown("**Edge Strength (Using CPDs)**")
                 distance_type_name = st.session_state["working_model_cpds_distance_type"]
                 if distance_type_name == "Euclidean":
                     distance_type_index = 0
@@ -124,11 +125,10 @@ with super_model:
                     distance_type_index = 3
                 distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=distance_type_index, horizontal=True, key="ground_truth_cpds_distance_type")
                 edge_strength = edge_strength_cpds(bn_model, distance_type)
-                with st.expander("Dataframe"):
-                    st.write(edge_strength)
-                with st.expander("Edge Rankings"):
-                    ranked_edges = cpd_rank_edges(edge_strength)
-                    st.write(ranked_edges)
+                # with st.expander("Dataframe"):
+                #     st.write(edge_strength)
+                ranked_edges = cpd_rank_edges(edge_strength)
+                st.write(ranked_edges)
 
 
     with st.expander(f"Session Info"):
