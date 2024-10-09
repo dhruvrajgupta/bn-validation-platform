@@ -66,3 +66,29 @@ def save_node_desc_data(node_id, label, description, entity_information):
         return "Updated"
     else:
         return "Added"
+
+
+#### FOR NETWORKS OR MODELS ####
+def save_model(name, type, model_content):
+    db = init_connection()["bn-validation"]
+    models = db.models
+
+    if models.find_one({"name": name}):
+        return "Present"
+
+    models_dict = {
+        "name": name,
+        "type": type,
+        "model_content": model_content
+    }
+
+    if models.insert_one(models_dict):
+        return "Succeded"
+    else:
+        return "Failed"
+
+def get_models(type):
+    db = init_connection()["bn-validation"]
+    models = db.models
+
+    return list(models.find({"type": type}))
