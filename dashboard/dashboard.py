@@ -1,12 +1,16 @@
 import streamlit as st
 
-from utils.db import get_node_descriptions
+st.set_page_config(
+    layout="wide",
+    page_title="Dashboard"
+)
+
+from utils.db import get_node_descriptions, get_models, get_model_by_name
 from utils.file import xdsl_to_digraph, extract_xdsl_content, convert_to_vis, convert_to_vis_super, build_network, convert_to_vis_markov
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation, edge_strength_stats, edge_strength_cpds, \
     g_test_rank_edges, cpd_rank_edges
 
-st.set_page_config(layout="wide")
 
 if "d_separation_btn" not in st.session_state:
     st.session_state["d_separation_btn"] = False
@@ -37,32 +41,14 @@ def get_super_model_g_test(nodes_contents):
 super_model, wip_model, bn_info = st.tabs(["Ground Truth Model", "Check Valid XDSL", "Bayesian Network Info"])
 
 with super_model:
-    selected_model = st.selectbox("Select a ground truth model", ["Mstage Laryngeal Cancer", "TNM Staging Laryngeal Cancer"])
+    ground_truth_models = get_models("Ground Truth")
+    model_names = [model['name'] for model in ground_truth_models]
+    selected_gt_model = st.selectbox("Select a ground truth model", model_names)
 
-    model_path_mapping = {
-        "Mstage Laryngeal Cancer": "/usr/src/app/dashboard/ground_truth_models/Mstage.xdsl",
-        "TNM Staging Laryngeal Cancer": "/usr/src/app/dashboard/ground_truth_models/validationPaper_TNM-Model_28012016.xdsl"
-    }
+    selected_gt_model_dict = get_model_by_name(selected_gt_model)
 
-    path = model_path_mapping[selected_model]
-
-    with open(path, "r") as file:
-        xdsl_content = file.read()
-        ground_truth_graph = xdsl_to_digraph(xdsl_content)
-        # st.session_state["ground_truth_graph"] = ground_truth_graph
-        convert_to_vis_super(ground_truth_graph)
-
-    # Building the BN for this super graph
-    try:
-        nodes_contents = extract_xdsl_content(xdsl_content)
-        st.session_state.gt_node_contents = nodes_contents
-        bn_model = build_network(nodes_contents)
-        if bn_model.check_model():
-            st.session_state["ground_truth_bn_model"] = bn_model
-        st.write(bn_model)
-
-    except Exception as e:
-        st.error(f"ERROR: \n{str(e)}")
+    selected_gt_model_graph = xdsl_to_digraph(selected_gt_model_dict['file_content'])
+    convert_to_vis_super(selected_gt_model_graph)
 
     with st.expander("View Graph"):
         path = "./super_model.html"
@@ -70,62 +56,70 @@ with super_model:
         source_code = HtmlFile.read()
         st.components.v1.html(source_code, height = 1000, width=1000, scrolling=True)
 
-    if "ground_truth_bn_model" in st.session_state:
-        ## EDGE RANKINGS ##
-        # 1. Using Dataset stats (G-Test)
-        if st.checkbox("Compute Edge Strength (G-Test)"):
-            with st.container(border=True):
-                with st.spinner("Edge Strength (G-Test)"):
-                    st.markdown("###### Edge Strength (G-Test)")
-                    super_g_test = get_super_model_g_test(nodes_contents)
-                    g_test_ranked_edges = g_test_rank_edges(super_g_test)
-                    event = st.dataframe(
-                            g_test_ranked_edges,
-                            on_select="rerun",
-                            selection_mode="single-row"
-                        )
-                    selection = event.selection
-                    if len(selection["rows"]):
-                        st.markdown("**Selected Row:**")
-                        selected_row = selection["rows"][0]
-                        st.write(g_test_ranked_edges.iloc[selected_row])
-                        row_content = g_test_ranked_edges.iloc[selected_row].to_dict()
+    # Building the BN for this super graph
+    try:
+        nodes_contents = selected_gt_model_dict['nodes_content']
+        bn_model = build_network(nodes_contents)
+        st.write(bn_model)
 
-                        if st.checkbox("Show Nodes Descriptions"):
-                            col1, col2 = st.columns(2)
-                            with col1:
-                                st.markdown("**Source:**")
-                                source_desc = get_node_descriptions(row_content["source"])
-                                if source_desc:
-                                    st.write(source_desc)
-                                else:
-                                    st.write("No descriptions of the node in the database.")
-                            with col2:
-                                st.markdown("**Target:**")
-                                source_desc = get_node_descriptions(row_content["target"])
-                                if source_desc:
-                                    st.write(source_desc)
-                                else:
-                                    st.write("No descriptions of the node in the database.")
+    except Exception as e:
+        st.error(f"ERROR: \n{str(e)}")
 
-        if st.checkbox("Compute Edge Strength (Using CPDs)"):
-            with st.container(border=True):
-                st.markdown("**Edge Strength (Using CPDs)**")
-                distance_type_name = st.session_state["working_model_cpds_distance_type"]
-                if distance_type_name == "Euclidean":
-                    distance_type_index = 0
-                elif distance_type_name == "Hellinger":
-                    distance_type_index = 1
-                elif distance_type_name == "J-Divergence":
-                    distance_type_index = 2
-                elif distance_type_name == "CDF":
-                    distance_type_index = 3
-                distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=distance_type_index, horizontal=True, key="ground_truth_cpds_distance_type")
-                edge_strength = edge_strength_cpds(bn_model, distance_type)
-                # with st.expander("Dataframe"):
-                #     st.write(edge_strength)
-                ranked_edges = cpd_rank_edges(edge_strength)
-                st.write(ranked_edges)
+    ##### EDGE RANKINGS #####
+
+    # 1. Using Dataset stats (G-Test)
+    if st.checkbox("Compute Edge Strength (G-Test)"):
+        with st.container(border=True):
+            with st.spinner("Edge Strength (G-Test)"):
+                st.markdown("###### Edge Strength (G-Test)")
+                super_g_test = get_super_model_g_test(nodes_contents)
+                g_test_ranked_edges = g_test_rank_edges(super_g_test)
+                event = st.dataframe(
+                        g_test_ranked_edges,
+                        on_select="rerun",
+                        selection_mode="single-row"
+                    )
+                selection = event.selection
+                if len(selection["rows"]):
+                    st.markdown("**Selected Row:**")
+                    selected_row = selection["rows"][0]
+                    st.write(g_test_ranked_edges.iloc[selected_row])
+                    row_content = g_test_ranked_edges.iloc[selected_row].to_dict()
+
+                    if st.checkbox("Show Nodes Descriptions"):
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.markdown("**Source:**")
+                            source_desc = get_node_descriptions(row_content["source"])
+                            if source_desc:
+                                st.write(source_desc)
+                            else:
+                                st.write("No descriptions of the node in the database.")
+                        with col2:
+                            st.markdown("**Target:**")
+                            source_desc = get_node_descriptions(row_content["target"])
+                            if source_desc:
+                                st.write(source_desc)
+                            else:
+                                st.write("No descriptions of the node in the database.")
+
+    # 2. Using CPDs of the Bayesian Network
+    if st.checkbox("Compute Edge Strength (Using CPDs)"):
+        with st.container(border=True):
+            st.markdown("**Edge Strength (Using CPDs)**")
+            distance_type_name = st.session_state["working_model_cpds_distance_type"]
+            if distance_type_name == "Euclidean":
+                distance_type_index = 0
+            elif distance_type_name == "Hellinger":
+                distance_type_index = 1
+            elif distance_type_name == "J-Divergence":
+                distance_type_index = 2
+            elif distance_type_name == "CDF":
+                distance_type_index = 3
+            distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=distance_type_index, horizontal=True, key="ground_truth_cpds_distance_type")
+            edge_strength = edge_strength_cpds(bn_model, distance_type)
+            ranked_edges = cpd_rank_edges(edge_strength)
+            st.write(ranked_edges)
 
 
     with st.expander(f"Session Info"):

@@ -69,7 +69,7 @@ def save_node_desc_data(node_id, label, description, entity_information):
 
 
 #### FOR NETWORKS OR MODELS ####
-def save_model(name, type, model_content):
+def save_model(name, type, nodes_content, file_content):
     db = init_connection()["bn-validation"]
     models = db.models
 
@@ -79,7 +79,8 @@ def save_model(name, type, model_content):
     models_dict = {
         "name": name,
         "type": type,
-        "model_content": model_content
+        "nodes_content": nodes_content,
+        "file_content": file_content
     }
 
     if models.insert_one(models_dict):
@@ -92,3 +93,9 @@ def get_models(type):
     models = db.models
 
     return list(models.find({"type": type}))
+
+def get_model_by_name(name):
+    db = init_connection()["bn-validation"]
+    models = db.models
+
+    return models.find_one({"name": name})
