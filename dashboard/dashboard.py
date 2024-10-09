@@ -6,9 +6,6 @@ from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 from utils.edges import find_redundant_edges_multiple_paths, print_multiple_paths, redundant_edges_digraph, find_redundant_edges_d_separation, edge_strength_stats, edge_strength_cpds, \
     g_test_rank_edges, cpd_rank_edges
 
-# Monkey patch for nested st.expander
-import streamlit_nested_layout
-
 st.set_page_config(layout="wide")
 
 if "d_separation_btn" not in st.session_state:
@@ -55,12 +52,6 @@ with super_model:
         # st.session_state["ground_truth_graph"] = ground_truth_graph
         convert_to_vis_super(ground_truth_graph)
 
-    with st.expander("View Graph"):
-        path = "./super_model.html"
-        HtmlFile = open(path, 'r', encoding='utf-8')
-        source_code = HtmlFile.read()
-        st.components.v1.html(source_code, height = 1000, width=1000, scrolling=True)
-
     # Building the BN for this super graph
     try:
         nodes_contents = extract_xdsl_content(xdsl_content)
@@ -68,10 +59,16 @@ with super_model:
         bn_model = build_network(nodes_contents)
         if bn_model.check_model():
             st.session_state["ground_truth_bn_model"] = bn_model
-        st.info(bn_model)
+        st.write(bn_model)
 
     except Exception as e:
         st.error(f"ERROR: \n{str(e)}")
+
+    with st.expander("View Graph"):
+        path = "./super_model.html"
+        HtmlFile = open(path, 'r', encoding='utf-8')
+        source_code = HtmlFile.read()
+        st.components.v1.html(source_code, height = 1000, width=1000, scrolling=True)
 
     if "ground_truth_bn_model" in st.session_state:
         ## EDGE RANKINGS ##
