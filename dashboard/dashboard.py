@@ -129,9 +129,6 @@ def main():
                 if st.checkbox("Compute Edge Strength (Using CPDs)", key="gt_cpd_rank"):
                     frag_edge_cpd_rank(bn_model, key="gt")
 
-    with st.expander(f"Session Info"):
-        st.write(st.session_state)
-
 
     ##### WORK IN PROGRESS TAB #####
     with wip_model:
@@ -237,18 +234,14 @@ def main():
                 if st.checkbox("Compute Edge Strength (Using CPDs)", key="wip_cpd_rank"):
                     frag_edge_cpd_rank(bn_model, key="wip")
 
-
-            with st.expander(f"Session Info"):
-                st.write(st.session_state)
-
-
     ##### CHECK VALID XDSL TAB #####
     with check_valid_xdsl:
         with st.container(border=True):
             frag_new_model()
 
-        with st.expander(f"Session Info"):
-            st.write(st.session_state)
+
+    with st.expander(f"Session Info"):
+        st.write(st.session_state)
 
 # with st.sidebar:
 #     with st.echo():
