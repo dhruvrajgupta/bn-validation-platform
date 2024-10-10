@@ -15,20 +15,11 @@ from utils.edges import find_redundant_edges_multiple_paths, print_multiple_path
 from pgmpy.models import BayesianNetwork
 
 
-if "d_separation_btn" not in st.session_state:
-    st.session_state["d_separation_btn"] = False
+if "wip_cpds_distance_type" not in st.session_state:
+    st.session_state["wip_cpds_distance_type"] = "Euclidean"
 
-if "working_model_cpds_distance_type" not in st.session_state:
-    st.session_state["working_model_cpds_distance_type"] = "Euclidean"
-
-if "ground_truth_cpds_distance_type" not in st.session_state:
-    st.session_state["ground_truth_cpds_distance_type"] = "Euclidean"
-
-if "gt_node_contents" not in st.session_state:
-    st.session_state["gt_node_contents"] = None
-
-if "bn_node_contents" not in st.session_state:
-    st.session_state["bn_node_contents"] = None
+if "gt_cpds_distance_type" not in st.session_state:
+    st.session_state["gt_cpds_distance_type"] = "Euclidean"
 
 @st.cache_data
 def get_super_model_g_test(nodes_contents):
@@ -82,6 +73,17 @@ def frag_g_test(nodes_contents, key):
                         else:
                             st.write("No descriptions of the node in the database.")
 
+@st.fragment
+def frag_edge_cpd_rank(key):
+    with st.container(border=True):
+        st.markdown("**Edge Strength (Using CPDs)**")
+        distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"],
+                                 index=0, horizontal=True, key=f"{key}_cpds_distance_type")
+
+        edge_strength = edge_strength_cpds(bn_model, distance_type)
+        ranked_edges = cpd_rank_edges(edge_strength)
+        st.write(ranked_edges)
+
 super_model, check_valid_xdsl, wip_model = st.tabs(["Ground Truth Model", "Check Valid XDSL", "Work In Progress Models"])
 
 ##### GROUND TRUTH MODEL TAB #####
@@ -118,22 +120,8 @@ with super_model:
             frag_g_test(nodes_contents, key="gt_g_test")
 
         # 2. Using CPDs of the Bayesian Network
-        if st.checkbox("Compute Edge Strength (Using CPDs)"):
-            with st.container(border=True):
-                st.markdown("**Edge Strength (Using CPDs)**")
-                distance_type_name = st.session_state["working_model_cpds_distance_type"]
-                if distance_type_name == "Euclidean":
-                    distance_type_index = 0
-                elif distance_type_name == "Hellinger":
-                    distance_type_index = 1
-                elif distance_type_name == "J-Divergence":
-                    distance_type_index = 2
-                elif distance_type_name == "CDF":
-                    distance_type_index = 3
-                distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=distance_type_index, horizontal=True, key="ground_truth_cpds_distance_type")
-                edge_strength = edge_strength_cpds(bn_model, distance_type)
-                ranked_edges = cpd_rank_edges(edge_strength)
-                st.write(ranked_edges)
+        if st.checkbox("Compute Edge Strength (Using CPDs)", key="gt_cpd_rank"):
+            frag_edge_cpd_rank(key="gt")
 
 
     with st.expander(f"Session Info"):
@@ -318,24 +306,9 @@ with wip_model:
         if st.checkbox("Compute Edge Strength (G-Test) "):
             frag_g_test(nodes_contents, key="wip_g_test")
 
-        #
-        # with st.expander("Edge Strength (Using CPDs)"):
-        #     distance_type_name = st.session_state["ground_truth_cpds_distance_type"]
-        #     if distance_type_name == "Euclidean":
-        #         distance_type_index = 0
-        #     elif distance_type_name == "Hellinger":
-        #         distance_type_index = 1
-        #     elif distance_type_name == "J-Divergence":
-        #         distance_type_index = 2
-        #     elif distance_type_name == "CDF":
-        #         distance_type_index = 3
-        #     distance_type = st.radio("Type of Distance:", ["Euclidean", "Hellinger", "J-Divergence", "CDF"], index=0, horizontal=True, key="working_model_cpds_distance_type")
-        #     edge_strength = edge_strength_cpds(bn_model, distance_type)
-        #     with st.expander("Dataframe"):
-        #         st.write(edge_strength)
-        #     with st.expander("Edge Rankings"):
-        #         ranked_edges = cpd_rank_edges(edge_strength)
-        #         st.write(ranked_edges)
+        # 2. Using CPDs of the Bayesian Network
+        if st.checkbox("Compute Edge Strength (Using CPDs)", key="wip_cpd_rank"):
+            frag_edge_cpd_rank(key="wip")
 
 
     with st.expander(f"Session Info"):
