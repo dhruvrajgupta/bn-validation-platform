@@ -13,3 +13,4 @@ openai
 st-annotated-text
 pymongo
 celery
+streamlit-aggrid

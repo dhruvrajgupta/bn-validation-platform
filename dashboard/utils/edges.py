@@ -6,6 +6,15 @@ import bnlearn
 import pandas as pd
 import numpy as np
 
+# Timestamp to Human readable format
+def convert_to_preferred_format(sec):
+   sec = sec % (24 * 3600)
+   hour = sec // 3600
+   sec %= 3600
+   min = sec // 60
+   sec %= 60
+   return "%02d hrs %02d minutes %02d seconds" % (hour, min, sec)
+
 def find_redundant_edges_multiple_paths(graph):
     def is_redundant_edge(G, edge):
         # Checking if removal of edges still has connectivity
@@ -132,7 +141,7 @@ def find_redundant_edges_d_separation(graph, debug=False):
 
     end = time.time()
     print(f"End: {end}")
-    print(f"Time: {end - start}")
+    print(f"Total time taken: {convert_to_preferred_format(end - start)}")
 
     result = []
     for edge in redundant_edges:
