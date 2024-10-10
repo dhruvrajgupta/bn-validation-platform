@@ -99,7 +99,6 @@ def main():
         
         if not selected_gt_model:
             st.write("**Please select a Ground Truth Model.**")
-            st.stop()
         else:
             selected_gt_model_graph = xdsl_to_digraph(selected_gt_model_dict['file_content'])
             convert_to_vis_super(selected_gt_model_graph)
@@ -142,106 +141,105 @@ def main():
 
         if not selected_wip_model:
             st.write("**Please select a Work in Progress Model.**")
-            st.stop()
+        else:
+            selected_wip_model_dict = get_model_by_name(selected_wip_model)
 
-        selected_wip_model_dict = get_model_by_name(selected_wip_model)
+            ## First get the bayesian network of the xdsl file
+            try:
+                nodes_contents = extract_xdsl_content(selected_wip_model_dict['file_content'])
+                bn_model = build_network(nodes_contents)
+                st.info(bn_model)
 
-        ## First get the bayesian network of the xdsl file
-        try:
-            nodes_contents = extract_xdsl_content(selected_wip_model_dict['file_content'])
-            bn_model = build_network(nodes_contents)
-            st.info(bn_model)
+            except Exception as e:
+                st.error(f"ERROR: \n{str(e)}")
 
-        except Exception as e:
-            st.error(f"ERROR: \n{str(e)}")
+            ## DETECT REDUNDANT EDGES ##
+            st.markdown("#### Redundant Edges")
+            # 1. Using Multiple Paths
+            with st.container(border=True):
+                st.markdown("**Multiple Paths**")
+                selected_wip_model_graph = xdsl_to_digraph(selected_wip_model_dict['file_content'])
+                redundant_edges_multiple_paths = find_redundant_edges_multiple_paths(selected_wip_model_graph)
+                if redundant_edges_multiple_paths:
+                    if st.checkbox(f"Edges with multiple paths - :red[{len(redundant_edges_multiple_paths)} detected]"):
+                        with st.container(border=True):
+                            redundant_edges_digraph(selected_wip_model_graph, redundant_edges_multiple_paths)
+                            st.text(print_multiple_paths(selected_wip_model_graph, redundant_edges_multiple_paths))
+                else:
+                    st.success("No Multiple Paths detected.")
 
-        ## DETECT REDUNDANT EDGES ##
-        st.markdown("#### Redundant Edges")
-        # 1. Using Multiple Paths
-        with st.container(border=True):
-            st.markdown("**Multiple Paths**")
-            selected_wip_model_graph = xdsl_to_digraph(selected_wip_model_dict['file_content'])
-            redundant_edges_multiple_paths = find_redundant_edges_multiple_paths(selected_wip_model_graph)
-            if redundant_edges_multiple_paths:
-                if st.checkbox(f"Edges with multiple paths - :red[{len(redundant_edges_multiple_paths)} detected]"):
-                    with st.container(border=True):
-                        redundant_edges_digraph(selected_wip_model_graph, redundant_edges_multiple_paths)
-                        st.text(print_multiple_paths(selected_wip_model_graph, redundant_edges_multiple_paths))
-            else:
-                st.success("No Multiple Paths detected.")
+            # 2. Using D-separation (Needs a Bayesian Network)
+            with st.container(border=True):
+                st.markdown("**Using D-Separation technique**")
 
-        # 2. Using D-separation (Needs a Bayesian Network)
-        with st.container(border=True):
-            st.markdown("**Using D-Separation technique**")
+                if bn_model:
+                    st.write("**:blue[Computing Redundant edges using D-Separation very computationally expensive. Use only when needed. !!]**")
 
-            if bn_model:
-                st.write("**:blue[Computing Redundant edges using D-Separation very computationally expensive. Use only when needed. !!]**")
+                    if st.checkbox("Click the checkbox to run computations for finding redundant edges using D-separation"):
+                        with st.spinner("Running finding Redundant Edges (D-separation) ..."):
+                            from worker import task_compute_redundant_edges_d_separation
+                            # This Process is computationally expensive. Needs to be made into a background task (worker) (eg, TNM Staging Laryngeal Cancer - 54 mins approx)
+                            redundant_edges_d_separation = task_compute_redundant_edges_d_separation.delay(nodes_contents)
+                            redundant_edges_d_separation = redundant_edges_d_separation.get()
 
-                if st.checkbox("Click the checkbox to run computations for finding redundant edges using D-separation"):
-                    with st.spinner("Running finding Redundant Edges (D-separation) ..."):
-                        from worker import task_compute_redundant_edges_d_separation
-                        # This Process is computationally expensive. Needs to be made into a background task (worker) (eg, TNM Staging Laryngeal Cancer - 54 mins approx)
-                        redundant_edges_d_separation = task_compute_redundant_edges_d_separation.delay(nodes_contents)
-                        redundant_edges_d_separation = redundant_edges_d_separation.get()
+                            if redundant_edges_d_separation:
+                                st.error(f"{len(redundant_edges_d_separation)} redundant edges detected")
+                                st.json(redundant_edges_d_separation, expanded=False)
 
-                        if redundant_edges_d_separation:
-                            st.error(f"{len(redundant_edges_d_separation)} redundant edges detected")
-                            st.json(redundant_edges_d_separation, expanded=False)
+                                # FOR TEMP PURPOSE MARKOV VISUALIZATION
+                                bn_model = BayesianNetwork([
+                                    ('Burglary', 'Alarm'),
+                                    ('Earthquake', 'Alarm'),
+                                    ('Alarm', 'JohnCalls'),
+                                    ('Alarm', 'MaryCalls'),
+                                    ('Burglary', 'Earthquake'),  # <-- Redundant Edge
+                                    # Burglary and Earthquake were already independent in the original graph unless conditioned on Alarm.
+                                    # The new edge does not change this independence, as the two variables are still blocked by the collider at the Alarm unless the Alarm is observed.
+                                    # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
+                                ])
 
-                            # FOR TEMP PURPOSE MARKOV VISUALIZATION
-                            bn_model = BayesianNetwork([
-                                ('Burglary', 'Alarm'),
-                                ('Earthquake', 'Alarm'),
-                                ('Alarm', 'JohnCalls'),
-                                ('Alarm', 'MaryCalls'),
-                                ('Burglary', 'Earthquake'),  # <-- Redundant Edge
-                                # Burglary and Earthquake were already independent in the original graph unless conditioned on Alarm.
-                                # The new edge does not change this independence, as the two variables are still blocked by the collider at the Alarm unless the Alarm is observed.
-                                # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
-                            ])
+                                vis_set = []
+                                for r_edges in redundant_edges_d_separation:
+                                    markov_source = r_edges["markov_source"]
+                                    markov_target = r_edges["markov_target"]
+                                    vis_set.extend(markov_source)
+                                    vis_set.extend(markov_target)
 
-                            vis_set = []
-                            for r_edges in redundant_edges_d_separation:
-                                markov_source = r_edges["markov_source"]
-                                markov_target = r_edges["markov_target"]
-                                vis_set.extend(markov_source)
-                                vis_set.extend(markov_target)
+                                vis_set = set(vis_set)
+                                vis_graph_edges = []
 
-                            vis_set = set(vis_set)
-                            vis_graph_edges = []
+                                for node in vis_set:
+                                    for edge in bn_model.edges():
+                                        if node in edge:
+                                            if edge not in vis_graph_edges:
+                                                vis_graph_edges.append(edge)
 
-                            for node in vis_set:
-                                for edge in bn_model.edges():
-                                    if node in edge:
-                                        if edge not in vis_graph_edges:
-                                            vis_graph_edges.append(edge)
+                                vis_graph = BayesianNetwork(vis_graph_edges)
 
-                            vis_graph = BayesianNetwork(vis_graph_edges)
+                                convert_to_vis_markov(vis_graph)
+                                path = "./markov.html"
 
-                            convert_to_vis_markov(vis_graph)
-                            path = "./markov.html"
+                                HtmlFile = open(path, 'r', encoding='utf-8')
+                                source_code = HtmlFile.read()
+                                st.components.v1.html(source_code, height=1000, width=1000, scrolling=True)
 
-                            HtmlFile = open(path, 'r', encoding='utf-8')
-                            source_code = HtmlFile.read()
-                            st.components.v1.html(source_code, height=1000, width=1000, scrolling=True)
+                            else:
+                                st.success("No redundant edges detected.")
 
-                        else:
-                            st.success("No redundant edges detected.")
+            ## EDGE RANKINGS ##
+            st.markdown("#### Edge Rankings")
+            with st.container(border=True):
+                # 1. Using Dataset stats (G-Test)
+                if st.checkbox("Compute Edge Strength (G-Test) "):
+                    frag_g_test(nodes_contents, key="wip_g_test")
 
-        ## EDGE RANKINGS ##
-        st.markdown("#### Edge Rankings")
-        with st.container(border=True):
-            # 1. Using Dataset stats (G-Test)
-            if st.checkbox("Compute Edge Strength (G-Test) "):
-                frag_g_test(nodes_contents, key="wip_g_test")
-
-            # 2. Using CPDs of the Bayesian Network
-            if st.checkbox("Compute Edge Strength (Using CPDs)", key="wip_cpd_rank"):
-                frag_edge_cpd_rank(bn_model, key="wip")
+                # 2. Using CPDs of the Bayesian Network
+                if st.checkbox("Compute Edge Strength (Using CPDs)", key="wip_cpd_rank"):
+                    frag_edge_cpd_rank(bn_model, key="wip")
 
 
-        with st.expander(f"Session Info"):
-            st.write(st.session_state)
+            with st.expander(f"Session Info"):
+                st.write(st.session_state)
 
 
     ##### CHECK VALID XDSL TAB #####
