@@ -36,9 +36,9 @@ def get_page_info(page_no):
 
 def get_node_descriptions(node_id):
     db = init_connection()["bn-validation"]
-    nodes_descriptions = db.nodes_descriptions
+    node_descriptions = db.nodes_descriptions
 
-    return nodes_descriptions.find_one({"node_id": node_id})
+    return node_descriptions.find_one({"node_id": node_id})
 
 def save_node_desc_data(node_id, label, description, entity_information):
     db = init_connection()["bn-validation"]
