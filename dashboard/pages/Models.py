@@ -51,35 +51,36 @@ def frag_new_model():
         else:
             st.success('No cycles detected, can proceed with Saving model as **"Work In Progress"**. After saving more Information on the **"Work In Progress"** tab.')
 
-        ##### SECTION FOR SAVING THE WIP MODEL #####
-        if st.checkbox("View contents of XDSL file"):
-            with st.container(border=True):
-                st.json(nodes_contents, expanded=False)
+            ##### SECTION FOR SAVING THE WIP MODEL #####
+            if st.checkbox("View contents of XDSL file"):
+                with st.container(border=True):
+                    st.json(nodes_contents, expanded=False)
 
-        with st.form(key="save-network", border=False):
-            name = st.text_input("Name *")
-            type = st.radio("Type of Network *", ["Ground Truth", "Work In Progress"], index=None)
+            with st.form(key="save-network", border=False):
+                name = st.text_input("Name *")
+                type = st.radio("Type of Network *", ["Ground Truth", "Work In Progress"], index=None)
 
-            submitted = st.form_submit_button("Submit")
+                submitted = st.form_submit_button("Submit")
 
-            if submitted:
-                if not name:
-                    st.caption(":red[Please enter Name.]")
-                if not type:
-                    st.caption(":red[Please select the the type of Network.]")
+                if submitted:
+                    if not name:
+                        st.caption(":red[Please enter Name.]")
+                    if not type:
+                        st.caption(":red[Please select the the type of Network.]")
 
-                if name and type:
-                    ##### Save to Database #####
-                    status = save_model(name, type, nodes_contents, file_content)
+                    if name and type:
+                        ##### Save to Database #####
+                        status = save_model(name, type, nodes_contents, file_content)
 
-                    if status == "Present":
-                        st.caption(":red[A model already exists with the same name, Please choose a different name for the model.]")
-                    elif status == "Failed":
-                        st.toast(f'Error in saving **"{name}"** model of type **"{type}"**.', icon="❌")
-                    elif status == "Succeded":
-                        st.toast(f'**"{name}"** model of type **"{type}"** has been saved.', icon="✅")
-                        uploaded_file = None
-
+                        if status == "Present":
+                            st.caption(":red[A model already exists with the same name, Please choose a different name for the model.]")
+                        elif status == "Failed":
+                            st.toast(f'Error in saving **"{name}"** model of type **"{type}"**.', icon="❌")
+                        elif status == "Succeded":
+                            st.toast(f'**"{name}"** model of type **"{type}"** has been saved.', icon="✅")
+                            import time
+                            time.sleep(1)
+                            streamlit_js_eval(js_expressions="parent.window.location.reload()")
 def main():
 
     with st.container(border=True):
