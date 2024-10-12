@@ -217,6 +217,7 @@ IMPORTANT NOTES:
 2. Do not retrieve the Entity ID of the terms.
 3. If there is no corresponding entity information, output "None" for that particular field.
 4. Output in JSON format.
+5. The description of node should also display each states of the node and what it represents.
 
 This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
 
