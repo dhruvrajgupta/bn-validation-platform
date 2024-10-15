@@ -229,7 +229,7 @@ If any entity information is not found, replace that field with "None".
 """
 
 EDGE_RATIONALITY = """\
-Verify whether the relationship between Node1 and Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
+You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between Node1 and Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
 
 Input:
 Node1:
