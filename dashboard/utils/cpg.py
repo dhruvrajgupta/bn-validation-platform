@@ -87,7 +87,7 @@ def ask_llm(prompt: str, stream=False):
     # return
 
     model_name = "gpt-4o-mini"
-    # model_name = "gpt-4o-2024-08-06"
+    # model_name = "gpt-4o"
     # temperature = 0
 
     client = OpenAI(

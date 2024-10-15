@@ -129,7 +129,11 @@ def main():
             except Exception as e:
                 st.error(f"ERROR: \n{str(e)}")
 
-            display_edge_rationality(wip_model_bn, model_type="WIP Model")
+            from utils.models import reverse_bayesian_network
+
+            rep = reverse_bayesian_network(wip_model_bn)
+
+            display_edge_rationality(rep, model_type="WIP Model")
 
 
     with st.expander("Session State", expanded=False):

@@ -80,6 +80,7 @@ def frag_new_model():
                             st.toast(f'**"{name}"** model of type **"{type}"** has been saved.', icon="✅")
                             import time
                             time.sleep(1)
+                            from streamlit_js_eval import streamlit_js_eval
                             streamlit_js_eval(js_expressions="parent.window.location.reload()")
 def main():
 
