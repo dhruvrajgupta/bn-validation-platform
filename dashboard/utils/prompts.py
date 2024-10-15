@@ -254,6 +254,7 @@ Instructions:
 10. Explanation should be corresponding to the edge taken into consideration.
 11. Explanation of E2 should follow the same context as E1.
 12. Explanation should mention the corresponding nodes.
+13. In place of Node1 mention {source_node_id}, and in place of Node2 mention {target_node_id}.
 13. Use the following structure to present your response:
 
 **Relationship Verification:**
