@@ -5,7 +5,7 @@ import pymongo
 def init_connection():
     return pymongo.MongoClient(**st.secrets["mongo"])
 
-
+#### FOR GUIDELINES PAGES ####
 def save_page_sections_data(page_no, page_section_data):
     db = init_connection()["bn-validation"]
     pages = db.pages
@@ -34,6 +34,8 @@ def get_page_info(page_no):
 
     return pages.find_one({"page_no": page_no})
 
+
+#### FOR NODES OF MODELS ####
 def get_node_descriptions(node_id):
     db = init_connection()["bn-validation"]
     node_descriptions = db.nodes_descriptions
@@ -99,3 +101,34 @@ def get_model_by_name(name):
     models = db.models
 
     return models.find_one({"name": name})
+
+
+#### FOR EDGES OF MODELS ####
+def get_edge_rationality(edge):
+    db = init_connection()["bn-validation"]
+    edges_rationality = db.edges_rationality
+
+    return edges_rationality.find_one({"edge": edge})
+
+def save_edge_rationality(edge, edge_rationality_info):
+    db = init_connection()["bn-validation"]
+    edges_rationality = db.edges_rationality
+
+    edge_dict = {
+        "edge": edge,
+        "edge_rationality_info": edge_rationality_info
+    }
+
+    if edges_rationality.find_one(edge_dict):
+        return "Same"
+
+    result = edges_rationality.replace_one(
+        {"edge": edge},
+        edge_dict,
+        upsert=True
+    )
+
+    if result.matched_count > 0:
+        return "Updated"
+    else:
+        return "Added"
