@@ -192,7 +192,7 @@ Output format in JSON:
 
 EXTRACT_NODE_DESCRIPTION = """\
 TASK:
-You are working with a Bayesian Network focused on the "TNM staging of laryngeal cancer". 
+You are working with a Bayesian Network focused on the "Metastasis Staging of TNM staging of laryngeal cancer".
 Your task is to decode a specific node in this Bayesian Network and then gather detailed information of the node 
 for clinical data mining purposes.
 NodeID: identifier of the node in the Bayesian Network.
@@ -205,7 +205,7 @@ States: "{states}"
 INSTRUCTIONS: 
 Please provide the following information for the node with ID "{node_id}":
 Label: Provide a clinically relevant label that describes the node.
-Description: Describe the clinical meaning and significance of the node, focusing on how it relates to the  the context of laryngeal cancer.
+Description: Describe the clinical meaning and significance of the node, focusing on how it relates to the context of Metastasis Staging of TNM Staging of laryngeal cancer in details. Describe the methods used to determine the node.
 Entity Information: 
 For this node, retrieve the following entity information:
 1. MeSH label and description
@@ -229,27 +229,32 @@ If any entity information is not found, replace that field with "None".
 """
 
 EDGE_RATIONALITY = """\
-Verify whether the relationship between the source and target nodes is a valid edge in the TNM Staging of Laryngeal Cancer Bayesian Network. Use the provided details of the source and target nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the source and target.
+Verify whether the relationship between Node1 and Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
 
 Input:
-Source:
+Node1:
 id: {source_node_id}
 label: {source_node_label}
 description: {source_node_description}
-Target:
+Node2:
 id: {target_node_id}
 label: {target_node_label}
 description: {target_node_description}
 
 Instructions:
-1. Extract the relevant information for both the source and target nodes based on the provided details in the above Input.
-2. Determine if there is a valid relationship between the source node and the target node according to the TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
-3. State the evidences of the validity of the relationship between the source node and the target node.
-4. Analyze the causal direction between the source and target:
-5. Evaluate the likelihood of the relationship flowing from Source to Target.
-6. Evaluate the likelihood of the relationship flowing from Target to Source.
+1. Extract the relevant information for both Node1 and Node2 nodes based on the provided details in the above Input.
+2. Determine if there is a valid relationship between Node1 and Node2 for Metastasis Staging of TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
+3. State the evidences of the validity of the relationship between Node1 and Node2.
+4. Analyze the causal direction between Node1 and Node2:
+5. Evaluate the likelihood of the relationship flowing from Node1 to Node2.
+6. Evaluate the likelihood of the relationship flowing from Node2 to Node1.
 7. Assign a probability to each possible direction based on your analysis of clinical guidelines and known relationships in the staging framework.
-8. Use the following structure to present your response:
+8. The edge should follow Cause --> Effect direction.
+9. Evaluations should be based on facts and not interpretations.
+10. Explanation should be corresponding to the edge taken into consideration.
+11. Explanation of E2 should follow the same context as E1.
+12. Explanation should mention the corresponding nodes.
+13. Use the following structure to present your response:
 
 **Relationship Verification:**
 Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
@@ -261,9 +266,11 @@ Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
 
 **Causal Direction Analysis:**
 - **E1** - (`{source_node_id}`, `{target_node_id}`):
+    - Causal Direction: ...
     - Probability of (`{source_node_id}`, `{target_node_id}`): ...
     - Explanation: ...
 - **E2** - (`{target_node_id}`, `{source_node_id}`):
+    - Causal Direction: ...
     - Probability of (`{target_node_id}`, `{source_node_id}`): ...
     - Explanation: ...
 
@@ -272,29 +279,31 @@ Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
 Example:
 Input:
 
-Source:
-id: N1
-label: Regional Lymph Nodes
-description: Tumor spread to nearby lymph nodes
-Target:
-id: T3
-label: Tumor Size
-description: Tumor is larger and extends to adjacent tissues
+Node1:
+id: Smoking
+label: Patient Smoking History
+description: Whether or not the patient has ever smoked.
+Node2:
+id: Lung_Cancer
+label: Lung Cancer Status
+description: Whether or not the patient has lung cancer.
 Output:
 
 **Relationship Verification:**
-Is the edge between (`N1`) and (`T3`) valid?.
+Is the edge between (`Smoking`) and (`Lung_Cancer`) valid?.
 
 **Evidences from Clinical Practitioner's Guidelines:**
 - ...
 - ...
 
 **Causal Direction Analysis:**
-- **E1** - (`N1`, `T3`):
-    - Probability of (`N1`, `T3`): 30%
+- **E1** - (`Smoking`, `Lung_Cancer`):
+    - Causal Direction: Cause --> Effect
+    - Probability of (`Smoking`, `Lung_Cancer`): 90%
     - Explanation: ...
-- **E2** - (`T3`, `N1`):
-    - Probability of (`T3`, `N1`): 70%
+- **E2** - (`Lung_Cancer`, `Smoking`):
+    - Causal Direction: Effect --> Cause
+    - Probability of (`Lung_Cancer`, `Smoking`): 10%
     - Explanation: ...
 
 **More probable direction:** "Tumor size increases the likelihood of lymph node involvement."
