@@ -18,9 +18,46 @@ def display_node_information(node, source_target):
         if node_desc:
             st.markdown(f"**Label :** {node_desc['label']}")
             st.markdown(f"**Description :** {node_desc['description']}")
-            st.data_editor(node_desc['entity_information'], use_container_width=True, disabled=True, key=f"DE - Entity - {source_target} - {node}")
+            st.data_editor(node_desc['entity_information'], use_container_width=True, disabled=True, key=f"DataEditor - Entity - {source_target} - {node}")
         else:
             st.markdown("**No information on the node is available in our database.**")
+
+def display_edge_rationality(bn_model, model_type):
+    edges = bn_model.edges()
+    for edge in edges:
+        edge_rationality_info = get_edge_rationality(edge)
+
+        if edge_rationality_info:
+            status_icon ="✅"
+        else:
+            status_icon = "🚫"
+
+        if st.checkbox(f"{status_icon} {edge[0]} --> {edge[1]}", key=f"{model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})"):
+            source = edge[0]
+            target = edge[1]
+            with st.container(border=True):
+                col1, col2 = st.columns(2)
+                with col1:
+                    display_node_information(source, "SOURCE")
+                with col2:
+                    display_node_information(target, source_target="TARGET")
+
+                if st.button("Get Edge Rationality using GPT", key=f"GPT - {model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})"):
+                    with st.spinner(f"Extracting Node information for edge '{edge}' ..."):
+                        edge_rationality_info = get_edge_rationality_from_gpt(edge)
+
+                if not edge_rationality_info:
+                    st.markdown("**No information on the edge rationality is available in our database.**")
+                else:
+                    with st.container(border=True):
+                        if isinstance(edge_rationality_info, dict):
+                            edge_rationality_info = edge_rationality_info["edge_rationality_info"]
+                            st.write(edge_rationality_info)
+                        else:
+                            pass
+                            st.write(edge_rationality_info)
+                    st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[edge, edge_rationality_info], key=f"Save to DB - {model_type} - Edge Rationality - ({edge[0]}, {edge[1]})")
+
 
 def get_edge_rationality_from_gpt(edge):
     from typing import List
@@ -73,38 +110,7 @@ def main():
             except Exception as e:
                 st.error(f"ERROR: \n{str(e)}")
 
-            edges = gt_model_bn.edges()
-            for edge in edges:
-                edge_rationality_info = get_edge_rationality(edge)
-
-                if edge_rationality_info:
-                    status_icon ="✅"
-                else:
-                    status_icon = "🚫"
-
-                if st.checkbox(f"{status_icon} {edge[0]} --> {edge[1]}", key=f"GT Model - Edge Rationality - ({edge[0]})-->({edge[1]})"):
-                    source = edge[0]
-                    target = edge[1]
-                    with st.container(border=True):
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            display_node_information(source, "SOURCE")
-                        with col2:
-                            display_node_information(target, source_target="TARGET")
-
-                        if st.button("Get Edge Rationality using GPT", key=f"GPT - GT Model - Edge Rationality - ({edge[0]})-->({edge[1]})"):
-                            with st.spinner(f"Extracting Node information for edge '{edge}' ..."):
-                                edge_rationality_info = get_edge_rationality_from_gpt(edge)
-
-                        if not edge_rationality_info:
-                            st.markdown("**No information on the edge rationality is available in our database.**")
-                        else:
-                            with st.container(border=True):
-                                if type(edge_rationality_info) == dict:
-                                    st.write(edge_rationality_info["edge_rationality_info"])
-                                else:
-                                    st.write(edge_rationality_info)
-                            st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[edge, edge_rationality_info], key=f"Save to DB GT Model - Edge Rationality - ({edge[0]}, {edge[1]})")
+            display_edge_rationality(gt_model_bn, model_type="GT Model")
 
     with wip_model:
         ground_truth_models = get_models("Work In Progress")
@@ -122,6 +128,12 @@ def main():
                 st.info(wip_model_bn)
             except Exception as e:
                 st.error(f"ERROR: \n{str(e)}")
+
+            display_edge_rationality(wip_model_bn, model_type="WIP Model")
+
+
+    with st.expander("Session State", expanded=False):
+        st.json(st.session_state, expanded=False)
 
 if __name__ == "__main__":
     main()
