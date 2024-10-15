@@ -244,21 +244,30 @@ description: {target_node_description}
 Instructions:
 1. Extract the relevant information for both the source and target nodes based on the provided details in the above Input.
 2. Determine if there is a valid relationship between the source node and the target node according to the TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
-3. Analyze the causal direction between the source and target:
-4. Evaluate the likelihood of the relationship flowing from Source to Target.
-5. Evaluate the likelihood of the relationship flowing from Target to Source.
-6. Assign a probability to each possible direction based on your analysis of clinical guidelines and known relationships in the staging framework.
-7. Use the following structure to present your response:
+3. State the evidences of the validity of the relationship between the source node and the target node.
+4. Analyze the causal direction between the source and target:
+5. Evaluate the likelihood of the relationship flowing from Source to Target.
+6. Evaluate the likelihood of the relationship flowing from Target to Source.
+7. Assign a probability to each possible direction based on your analysis of clinical guidelines and known relationships in the staging framework.
+8. Use the following structure to present your response:
 
-Relationship Verification:
-Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid according to the TNM Staging of Laryngeal Cancer Bayesian Network and NCCN Clinical Guidelines?
-Possible relation: [describe the possible relationship].
-Causal Direction Analysis:
-Evaluate the causal direction between:
-(`{source_node_id}`, `{target_node_id}`)
-(`{target_node_id}`, `{source_node_id}`)
-Assign probabilities to each direction based on TNM staging criteria and the clinical guidelines.
-Which is more probable?
+**Relationship Verification:**
+Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
+
+**Evidences from NCCN Clinical Practitioner's Guidelines:**
+- ...
+- ...
+...
+
+**Causal Direction Analysis:**
+- **E1** - (`{source_node_id}`, `{target_node_id}`):
+    - Probability of (`{source_node_id}`, `{target_node_id}`): ...
+    - Explanation: ...
+- **E2** - (`{target_node_id}`, `{source_node_id}`):
+    - Probability of (`{target_node_id}`, `{source_node_id}`): ...
+    - Explanation: ...
+
+**More probable direction:** ...
 
 Example:
 Input:
@@ -273,16 +282,20 @@ label: Tumor Size
 description: Tumor is larger and extends to adjacent tissues
 Output:
 
-Relationship Verification:
+**Relationship Verification:**
+Is the edge between (`N1`) and (`T3`) valid?.
 
-Valid relationship between (`N1`) and (`T3`) based on TNM staging criteria. The tumor size impacts lymph node involvement.
-Possible relation: "Tumor size affects spread to regional lymph nodes."
-Causal Direction Analysis:
-E1 - (`N1`, `T3`):
-- Probability of (`N1`, `T3`): 30%
-- Explanation: ...
-E2 - (`T3`, `N1`):
-- Probability of (`T3`, `N1`): 70%
-- Explanation: ...
-More probable direction: "Tumor size increases the likelihood of lymph node involvement."
+**Evidences from Clinical Practitioner's Guidelines:**
+- ...
+- ...
+
+**Causal Direction Analysis:**
+- **E1** - (`N1`, `T3`):
+    - Probability of (`N1`, `T3`): 30%
+    - Explanation: ...
+- **E2** - (`T3`, `N1`):
+    - Probability of (`T3`, `N1`): 70%
+    - Explanation: ...
+
+**More probable direction:** "Tumor size increases the likelihood of lymph node involvement."
 """
