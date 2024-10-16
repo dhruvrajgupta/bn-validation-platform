@@ -42,7 +42,7 @@ def get_node_descriptions(node_id):
 
     return node_descriptions.find_one({"node_id": node_id})
 
-def save_node_desc_data(node_id, label, description, entity_information):
+def save_node_desc_data(node_id, label, description, node_states_description, entity_information):
     db = init_connection()["bn-validation"]
     nodes_desc = db.nodes_descriptions
 
@@ -50,6 +50,7 @@ def save_node_desc_data(node_id, label, description, entity_information):
         "node_id": node_id,
         "label": label,
         "description": description,
+        "node_states_description": node_states_description,
         "entity_information": entity_information
     }
 
