@@ -189,12 +189,28 @@ Output format in JSON:
 ]
 
 """
+class StateDescription(BaseModel):
+    state_name: str
+    state_description: str
+
+class EntityInformation(BaseModel):
+    ontology_name: str
+    label: str
+    description: str
+
+class NodeDescription(BaseModel):
+    id: str
+    label: str
+    description: str
+    node_states_description: List[StateDescription]
+    entity_information: List[EntityInformation]
 
 EXTRACT_NODE_DESCRIPTION = """\
 TASK:
 You are working with a Bayesian Network focused on the "Metastasis Staging of TNM staging of laryngeal cancer".
 Your task is to decode a specific node in this Bayesian Network and then gather detailed information of the node 
 for clinical data mining purposes.
+
 NodeID: identifier of the node in the Bayesian Network.
 States: states of the node in the Bayesian Network.
 
@@ -202,110 +218,57 @@ NODE INFORMATION:
 NodeID: "{node_id}"
 States: "{states}"
 
+##########
 INSTRUCTIONS: 
-Please provide the following information for the node with ID "{node_id}":
-Label: Provide a clinically relevant label that describes the node.
-Description: Describe the clinical meaning and significance of the node, focusing on how it relates to the context of Metastasis Staging of TNM Staging of laryngeal cancer in details. Describe the methods used to determine the node.
-Entity Information: 
+1. Please provide the following information for the node with ID "{node_id}":
+1. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
+2. Do not retrieve the Entity ID of the terms.
+3. If there is no corresponding entity information, output "None" for that particular field.
+4. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
+5. Output in JSON format.
+
+##########
+OUTPUT VARIABLES DEFINITIONS:
+label: Provide a clinically relevant label that describes the node.
+description: Describe the clinical meaning and significance of the node, focusing on how it relates to the context of Metastasis Staging of TNM Staging of laryngeal cancer in details. Describe the methods used to determine the node.
+node_state_description: A List of states of the node along with its description.
+state_name: Name of the state.
+state_description: Description of the state of the node and what it represents.
+entity_information: 
 For this node, retrieve the following entity information:
 1. MeSH label and description
 2. SNOMED-CT label and description
 3. Wikidata label and description
 
-IMPORTANT NOTES:
-1. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
-2. Do not retrieve the Entity ID of the terms.
-3. If there is no corresponding entity information, output "None" for that particular field.
-4. Output in JSON format.
-5. The description of node should also display each states of the node and what it represents.
-
-This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
-
 DESIRED OUTPUT FORMAT: 
 Provide the information in the following JSON structure:
-{{"id":"{node_id}","label":"...","description":"...","entity_information":[{{"ontology_name":"MeSH","label":"...","description":"..."}},{{"ontology_name":"SNOMED-CT","label":"...","description":"..."}},{{"ontology_name":"Wikidata","label":"...","description":"..."}}]}}
+{{
+   "id":"{node_id}",
+   "label":"...",
+   "description":"...",
+   "node_states_description": [
+        "state_name": ... ,
+        "state_description": ... ,
+   ],
+   "entity_information":[
+      {{
+         "ontology_name":"MeSH",
+         "label":"...",
+         "description":"..."
+      }},
+      {{
+         "ontology_name":"SNOMED-CT",
+         "label":"...",
+         "description":"..."
+      }},
+      {{
+         "ontology_name":"Wikidata",
+         "label":"...",
+         "description":"..."
+      }}
+   ]
+}}
+
 
 If any entity information is not found, replace that field with "None".
-"""
-
-EDGE_RATIONALITY = """\
-You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between Node1 and Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
-
-Input:
-Node1:
-id: {source_node_id}
-label: {source_node_label}
-description: {source_node_description}
-Node2:
-id: {target_node_id}
-label: {target_node_label}
-description: {target_node_description}
-
-Instructions:
-1. Extract the relevant information for both Node1 and Node2 nodes based on the provided details in the above Input.
-2. Determine if there is a valid relationship between Node1 and Node2 for Metastasis Staging of TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
-3. State the evidences of the validity of the relationship between Node1 and Node2.
-4. Analyze the causal direction between Node1 and Node2:
-5. Evaluate the likelihood of the relationship flowing from Node1 to Node2.
-6. Evaluate the likelihood of the relationship flowing from Node2 to Node1.
-7. Assign a probability to each possible direction based on your analysis of clinical guidelines and known relationships in the staging framework.
-8. The edge should follow Cause --> Effect direction.
-9. Evaluations should be based on facts and not interpretations.
-10. Explanation should be corresponding to the edge taken into consideration.
-11. Explanation of E2 should follow the same context as E1.
-12. Explanation should mention the corresponding nodes.
-13. In place of Node1 mention {source_node_id}, and in place of Node2 mention {target_node_id}.
-13. Use the following structure to present your response:
-
-**Relationship Verification:**
-Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
-
-**Evidences from NCCN Clinical Practitioner's Guidelines:**
-- ...
-- ...
-...
-
-**Causal Direction Analysis:**
-- **E1** - (`{source_node_id}`, `{target_node_id}`):
-    - Causal Direction: ...
-    - Probability of (`{source_node_id}`, `{target_node_id}`): ...
-    - Explanation: ...
-- **E2** - (`{target_node_id}`, `{source_node_id}`):
-    - Causal Direction: ...
-    - Probability of (`{target_node_id}`, `{source_node_id}`): ...
-    - Explanation: ...
-
-**More probable direction:** ...
-
-Example:
-Input:
-
-Node1:
-id: Smoking
-label: Patient Smoking History
-description: Whether or not the patient has ever smoked.
-Node2:
-id: Lung_Cancer
-label: Lung Cancer Status
-description: Whether or not the patient has lung cancer.
-Output:
-
-**Relationship Verification:**
-Is the edge between (`Smoking`) and (`Lung_Cancer`) valid?.
-
-**Evidences from Clinical Practitioner's Guidelines:**
-- ...
-- ...
-
-**Causal Direction Analysis:**
-- **E1** - (`Smoking`, `Lung_Cancer`):
-    - Causal Direction: Cause --> Effect
-    - Probability of (`Smoking`, `Lung_Cancer`): 90%
-    - Explanation: ...
-- **E2** - (`Lung_Cancer`, `Smoking`):
-    - Causal Direction: Effect --> Cause
-    - Probability of (`Lung_Cancer`, `Smoking`): 10%
-    - Explanation: ...
-
-**More probable direction:** "Tumor size increases the likelihood of lymph node involvement."
 """

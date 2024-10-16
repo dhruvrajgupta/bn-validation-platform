@@ -1,0 +1,202 @@
+from enum import Enum
+from pydantic import BaseModel
+from typing import List, Optional
+
+EDGE_RATIONALITY = """\
+You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between Node1 and Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
+
+Input:
+Node1:
+id: {source_node_id}
+label: {source_node_label}
+description: {source_node_description}
+Node2:
+id: {target_node_id}
+label: {target_node_label}
+description: {target_node_description}
+
+Instructions:
+1. Extract the relevant information for both Node1 and Node2 nodes based on the provided details in the above Input.
+2. Determine if there is a valid relationship between Node1 and Node2 for Metastasis Staging of TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
+3. State the evidences of the validity of the relationship between Node1 and Node2.
+4. Analyze the causal direction between Node1 and Node2:
+5. Evaluate the likelihood of the relationship flowing from Node1 to Node2.
+6. Evaluate the likelihood of the relationship flowing from Node2 to Node1.
+7. Assign a probability to each possible direction based on your analysis of clinical guidelines and known relationships in the staging framework.
+8. The edge should follow Cause --> Effect direction.
+9. Evaluations should be based on facts and not interpretations.
+10. Explanation should be corresponding to the edge taken into consideration.
+11. Explanation of E2 should follow the same context as E1.
+12. Explanation should mention the corresponding nodes.
+13. In place of Node1 mention {source_node_id}, and in place of Node2 mention {target_node_id}.
+13. Use the following structure to present your response:
+
+**Relationship Verification:**
+Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
+
+**Evidences from NCCN Clinical Practitioner's Guidelines:**
+- ...
+- ...
+...
+
+**Causal Direction Analysis:**
+- **E1** - (`{source_node_id}`, `{target_node_id}`):
+    - Causal Direction: ...
+    - Probability of (`{source_node_id}`, `{target_node_id}`): ...
+    - Explanation: ...
+- **E2** - (`{target_node_id}`, `{source_node_id}`):
+    - Causal Direction: ...
+    - Probability of (`{target_node_id}`, `{source_node_id}`): ...
+    - Explanation: ...
+
+**More probable direction:** ...
+
+Example:
+Input:
+
+Node1:
+id: Smoking
+label: Patient Smoking History
+description: Whether or not the patient has ever smoked.
+Node2:
+id: Lung_Cancer
+label: Lung Cancer Status
+description: Whether or not the patient has lung cancer.
+Output:
+
+**Relationship Verification:**
+Is the edge between (`Smoking`) and (`Lung_Cancer`) valid?.
+
+**Evidences from Clinical Practitioner's Guidelines:**
+- ...
+- ...
+
+**Causal Direction Analysis:**
+- **E1** - (`Smoking`, `Lung_Cancer`):
+    - Causal Direction: Cause --> Effect
+    - Probability of (`Smoking`, `Lung_Cancer`): 90%
+    - Explanation: ...
+- **E2** - (`Lung_Cancer`, `Smoking`):
+    - Causal Direction: Effect --> Cause
+    - Probability of (`Lung_Cancer`, `Smoking`): 10%
+    - Explanation: ...
+
+**More probable direction:** "Tumor size increases the likelihood of lymph node involvement."
+"""
+
+
+######
+# Rahim et al. - 2019 - A Clinical Decision Support System based on Ontology
+# Causal Relations: causes
+# Inverse Causal Relation: is caused by
+######
+
+
+class CausalDirectionCategory(str, Enum):
+    POSITIVE: "positive"
+    NEGATIVE: "Negative"
+    UNKNOWN: "Unknown"
+
+class CausalDistanceCategory(str, Enum):
+    DISTAL: "Distal"
+    PROXIMAL: "Proximal"
+    UNKNOWN: "Unknown"
+
+class CausalFactor(BaseModel):
+    necessary: bool
+    sufficient: bool
+
+class ProbabilityType(BaseModel):
+    VERY_LOW: "Very Low"
+    LOW: "Low"
+    MODERATE: "Moderate"
+    HIGH: "High"
+    VERY_HIGH: "Very High"
+
+class VerificationSource(BaseModel):
+    guideline_name: str
+    facts_and_recommendations: List[str]
+
+class CausalInfo(BaseModel):
+    causal_direction: CausalDirectionCategory
+    causal_factor: CausalFactor
+    causal_distance: CausalDistanceCategory
+    probability_type: ProbabilityType
+    verification_source: VerificationSource
+
+class EdgeVerification(BaseModel):
+    edge: str
+    is_valid: List[str]
+    explanation: List[str]
+    causal_info: Optional[CausalInfo]
+
+VERIFY_EDGE = """\
+You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between {source} and {target} nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of {source} and {target} nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes {source} and {target}.
+
+##########
+INSTRUCTIONS:
+1. Extract the relevant information for both {source} and {target} nodes based on the provided details in the INPUT.
+2. Determine if the edge given in input is valid for Metastasis Staging of TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
+3. State the evidences of the validity of the edge.
+4. Analyze the causal direction of the edge.
+5. Evaluate the likelihood the edge based on your analysis of clinical guidelines and known relationships in the staging framework.
+6. Evaluations should be based on facts and recommendations, not interpretations.
+7. Explanations should be corresponding to the edge taken into consideration.
+8. Explanations should mention the corresponding nodes.
+9. Verify the evaluations and explanations from Clinical Practitioner's Guidelines.
+10. Output in JSON format.
+
+##########
+OUTPUT VARIABLES DEFINITTIONS:
+edge - The edge which needs to be verified.
+is_valid - Whether the edge is valid based on the cross referencing Clinical Practitioner's Guidelines.
+explanation - Explanation of what the edge represents and its validity.
+causal_info - Contains other informations related to edge causality.
+causal_direction - Either Positive or Negative or Unknown. A positive influence direction indicates that both factors change in the same direction (e.g. an increase causes an increase effect). A negative influence direction indicates the opposite changes (e.g. an increase causes a decrease effect).
+causal_factor - Is necessary or sufficient condition for an effect to occur. Exposure is a term commonly used in epidemiology to denote any condition that is considered as a possible cause of disease. Exposure is considered necessary when it always precedes the effects (e.g. symptoms) and always presents when the effects occur. A sufficient cause is a causal factor whose presence or occurrence guarantees the occurrence of symptom.
+causal_distance - Either Distal or Proximal or Unknown. The distal factors lie towards the beginning of causal chain (i.e. indirect causal factors). The the proximal factors lie towards the end of the chain (i.e. cause directly or almost directly the effect).
+probability_type - Either very low, low, moderate, high or very high. Determines the likelihood of the edge based on the guidelines.
+verification_source - Facts and recommendations from corresponding guidelines that determine the validity of the causal relationship of edge.
+
+
+##########
+DESIRED OUTPUT FORMAT:
+Provide the information in the following JSON structure:
+{
+    "edge": `({source})` {causal_relation} `(target)`,
+    "is_valid": ... ,
+    "explanation": [ ... ] ,
+    "causal_info": {
+        "causal_direction": ... ,
+        "causal_factor": {
+            "necessary": ... ,
+            "sufficient": ... ,
+        },
+        "causal_distance": ... ,
+        "probability_type": ... ,
+        "verification_source": [
+            {
+                "guideline_name": ... ,
+                "facts_and_recommendations": [ ... ]
+            }
+        ]
+    }
+}
+
+##########
+INPUT:
+Edge: `({source})` {causal_relation} `(target)`
+
+Node 1:
+id: {source_id}
+label: {source_label}
+description: {source_description}
+
+Node 2:
+id: {target_id}
+label: {target_label}
+description: {target_description}
+
+LET'S TAKE A DEEP BREATH.
+LET'S THINK STEP BY STEP.
+"""
