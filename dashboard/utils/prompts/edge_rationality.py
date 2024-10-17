@@ -85,6 +85,79 @@ Is the edge between (`Smoking`) and (`Lung_Cancer`) valid?.
 """
 
 
+# Focusing on verifying only only one edge, no flipping
+
+EDGE_RATIONALITY2 = """\
+You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between Node1 and Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
+
+Input:
+Node1:
+id: {source_node_id}
+label: {source_node_label}
+description: {source_node_description}
+Node2:
+id: {target_node_id}
+label: {target_node_label}
+description: {target_node_description}
+
+Instructions:
+1. Extract the relevant information for both Node1 and Node2 nodes based on the provided details in the above Input.
+2. Determine if there is a valid relationship between Node1 and Node2 for Metastasis Staging of TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
+3. State the evidences of the validity of the relationship between Node1 and Node2.
+4. Analyze the causal direction between Node1 and Node2:
+5. Evaluate the likelihood of the relationship flowing from Node1 to Node2 based on your analysis of clinical guidelines and known relationships in the staging framework.
+6. The edge should follow Cause --> Effect direction.
+7. Evaluations should be based on facts and not interpretations.
+8. Explanation should be corresponding to the edge taken into consideration.
+9. Explanation should mention the corresponding nodes.
+10. Use the following structure to present your response:
+
+**Relationship Verification:**
+Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
+
+**Evidences from NCCN Clinical Practitioner's Guidelines:**
+- ...
+- ...
+...
+
+**Causal Direction Analysis:**
+- **Edge** - (`{source_node_id}`, `{target_node_id}`):
+    - Causal Direction: ...
+    - Probability of (`{source_node_id}`, `{target_node_id}`): ...
+    - Explanation: ...
+
+**More probable direction:** ...
+
+Example:
+Input:
+
+Node1:
+id: Smoking
+label: Patient Smoking History
+description: Whether or not the patient has ever smoked.
+Node2:
+id: Lung_Cancer
+label: Lung Cancer Status
+description: Whether or not the patient has lung cancer.
+Output:
+
+**Relationship Verification:**
+Is the edge between (`Smoking`) and (`Lung_Cancer`) valid?.
+
+**Evidences from Clinical Practitioner's Guidelines:**
+- ...
+- ...
+
+**Causal Direction Analysis:**
+- **Edge** - (`Smoking`, `Lung_Cancer`):
+    - Causal Direction: Cause --> Effect
+    - Probability of (`Smoking`, `Lung_Cancer`): 90%
+    - Explanation: ...
+
+**More probable direction:** "Tumor size increases the likelihood of lymph node involvement."
+"""
+
+
 ######
 # Rahim et al. - 2019 - A Clinical Decision Support System based on Ontology
 # Causal Relations: causes
@@ -93,27 +166,27 @@ Is the edge between (`Smoking`) and (`Lung_Cancer`) valid?.
 
 
 class CausalDirectionCategory(str, Enum):
-    POSITIVE: "positive"
-    NEGATIVE: "Negative"
-    UNKNOWN: "Unknown"
+    POSITIVE =  "positive"
+    NEGATIVE =  "Negative"
+    UNKNOWN =  "Unknown"
 
 class CausalDistanceCategory(str, Enum):
-    DISTAL: "Distal"
-    PROXIMAL: "Proximal"
-    UNKNOWN: "Unknown"
+    DISTAL = "Distal"
+    PROXIMAL = "Proximal"
+    UNKNOWN =  "Unknown"
 
 class CausalFactor(BaseModel):
     necessary: bool
     sufficient: bool
 
-class ProbabilityType(BaseModel):
-    VERY_LOW: "Very Low"
-    LOW: "Low"
-    MODERATE: "Moderate"
-    HIGH: "High"
-    VERY_HIGH: "Very High"
+class ProbabilityType(str, Enum):
+    VERY_LOW = "Very Low"
+    LOW = "Low"
+    MODERATE = "Moderate"
+    HIGH = "High"
+    VERY_HIGH = "Very High"
 
-class VerificationSource(BaseModel):
+class EvidencesSource(BaseModel):
     guideline_name: str
     facts_and_recommendations: List[str]
 
@@ -122,20 +195,20 @@ class CausalInfo(BaseModel):
     causal_factor: CausalFactor
     causal_distance: CausalDistanceCategory
     probability_type: ProbabilityType
-    verification_source: VerificationSource
+    evidences_source: EvidencesSource
 
 class EdgeVerification(BaseModel):
     edge: str
-    is_valid: List[str]
+    is_valid: bool
     explanation: List[str]
     causal_info: Optional[CausalInfo]
 
 VERIFY_EDGE = """\
-You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between {source} and {target} nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of {source} and {target} nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes {source} and {target}.
+You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between {source_id} and {target_id} nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of {source_id} and {target_id} nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes {source_id} and {target_id}.
 
 ##########
 INSTRUCTIONS:
-1. Extract the relevant information for both {source} and {target} nodes based on the provided details in the INPUT.
+1. Extract the relevant information for both {source_id} and {target_id} nodes based on the provided details in the INPUT.
 2. Determine if the edge given in input is valid for Metastasis Staging of TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
 3. State the evidences of the validity of the edge.
 4. Analyze the causal direction of the edge.
@@ -156,36 +229,36 @@ causal_direction - Either Positive or Negative or Unknown. A positive influence 
 causal_factor - Is necessary or sufficient condition for an effect to occur. Exposure is a term commonly used in epidemiology to denote any condition that is considered as a possible cause of disease. Exposure is considered necessary when it always precedes the effects (e.g. symptoms) and always presents when the effects occur. A sufficient cause is a causal factor whose presence or occurrence guarantees the occurrence of symptom.
 causal_distance - Either Distal or Proximal or Unknown. The distal factors lie towards the beginning of causal chain (i.e. indirect causal factors). The the proximal factors lie towards the end of the chain (i.e. cause directly or almost directly the effect).
 probability_type - Either very low, low, moderate, high or very high. Determines the likelihood of the edge based on the guidelines.
-verification_source - Facts and recommendations from corresponding guidelines that determine the validity of the causal relationship of edge.
+evidences_source - Evidences, Facts and recommendations from corresponding guidelines that determine the validity of the causal relationship of edge.
 
 
 ##########
 DESIRED OUTPUT FORMAT:
 Provide the information in the following JSON structure:
-{
-    "edge": `({source})` {causal_relation} `(target)`,
+{{
+    "edge": `({source_id})` {causal_relation_type} `(target_id)`,
     "is_valid": ... ,
     "explanation": [ ... ] ,
-    "causal_info": {
+    "causal_info": {{
         "causal_direction": ... ,
-        "causal_factor": {
+        "causal_factor": {{
             "necessary": ... ,
             "sufficient": ... ,
-        },
+        }},
         "causal_distance": ... ,
         "probability_type": ... ,
         "verification_source": [
-            {
+            {{
                 "guideline_name": ... ,
                 "facts_and_recommendations": [ ... ]
-            }
+            }}
         ]
-    }
-}
+    }}
+}}
 
 ##########
 INPUT:
-Edge: `({source})` {causal_relation} `(target)`
+Edge: `({source_id})` {causal_relation_type} `({target_id})`
 
 Node 1:
 id: {source_id}

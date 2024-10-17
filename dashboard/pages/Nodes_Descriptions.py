@@ -19,7 +19,7 @@ WIKIDATA_LINK = "https://www.wikidata.org/w/index.php?go=Go&title=Special%3ASear
 def get_desc_from_gpt(node_id, node_info):
     from typing import List
     from utils.cpg import ask_llm_response_schema
-    from utils.prompts import EXTRACT_NODE_DESCRIPTION, NodeDescription
+    from utils.prompts2 import EXTRACT_NODE_DESCRIPTION, NodeDescription
     prompt = EXTRACT_NODE_DESCRIPTION.format(node_id=node_id, states=node_info['states'])
 
     gpt_node_info = json.loads(ask_llm_response_schema(prompt, response_format=NodeDescription))
@@ -73,7 +73,7 @@ def display_node_descriptions(bn_model, model_type):
                     'entity_information': None
                 }
 
-            st.json(node_info, expanded=False)
+            # st.json(node_info, expanded=False)
 
             with st.container(border=True):
                 if st.button("Get Information using GPT", key=f"{model_type} - GPT Node Info for : {node}"):

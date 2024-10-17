@@ -189,14 +189,15 @@ Output format in JSON:
 ]
 
 """
+from typing import Optional
 class StateDescription(BaseModel):
     state_name: str
     state_description: str
 
 class EntityInformation(BaseModel):
-    ontology_name: str
-    label: str
-    description: str
+    ontology_name: Optional[str]
+    label: Optional[str]
+    description: Optional[str]
 
 class NodeDescription(BaseModel):
     id: str
@@ -207,9 +208,8 @@ class NodeDescription(BaseModel):
 
 EXTRACT_NODE_DESCRIPTION = """\
 TASK:
-You are working with a Bayesian Network focused on the "Metastasis Staging of TNM staging of laryngeal cancer".
-Your task is to decode a specific node in this Bayesian Network and then gather detailed information of the node 
-for clinical data mining purposes.
+You’re an expert in clinical informatics with extensive knowledge of Bayesian Networks, particularly focused on staging systems for cancer, including the TNM staging of laryngeal cancer. Your specialty lies in decoding complex nodes within these networks to extract detailed and clinically relevant information for data mining purposes.
+Your task is to gather detailed information for a specific node in the Bayesian Network concerning "Metastasis Staging of TNM staging of laryngeal cancer".
 
 NodeID: identifier of the node in the Bayesian Network.
 States: states of the node in the Bayesian Network.
@@ -223,9 +223,8 @@ INSTRUCTIONS:
 1. Please provide the following information for the node with ID "{node_id}":
 1. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
 2. Do not retrieve the Entity ID of the terms.
-3. If there is no corresponding entity information, output "None" for that particular field.
-4. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
-5. Output in JSON format.
+3. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
+4. Output in JSON format.
 
 ##########
 OUTPUT VARIABLES DEFINITIONS:
@@ -268,7 +267,4 @@ Provide the information in the following JSON structure:
       }}
    ]
 }}
-
-
-If any entity information is not found, replace that field with "None".
 """
