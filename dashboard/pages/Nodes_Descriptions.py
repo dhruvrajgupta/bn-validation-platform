@@ -15,6 +15,13 @@ MESH_LINK = "https://meshb.nlm.nih.gov/search?searchMethod=FullWord&searchInFiel
 SNOMED_CT_LINK = "https://browser.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/2024-10-01/descriptions?&limit=100&active=true&conceptActive=true&lang=english&searchMode=WHOLE_WORD&groupByConcept=true&"
 WIKIDATA_LINK = "https://www.wikidata.org/w/index.php?go=Go&title=Special%3ASearch&ns0=1&ns120=1&"
 
+from pgmpy.factors.discrete.CPD import TabularCPD
+def print_full(cpd):
+    backup = TabularCPD._truncate_strtable
+    TabularCPD._truncate_strtable = lambda self, x: x
+    st.write(cpd)
+    TabularCPD._truncate_strtable = backup
+
 # @st.cache_data
 def get_desc_from_gpt(node_id, node_info):
     from typing import List
@@ -104,6 +111,9 @@ def display_node_descriptions(bn_model, model_type):
 
                 ent_info = st.data_editor(node_info['entity_information'], use_container_width=True,
                                           key=f"{model_type} - Entity Information - {node}")
+
+                st.write("**Condtional Probability Table :**")
+                print_full(bn_model.get_cpds(node))
 
                 st.button("Save to Database", type="primary", on_click=save_to_db_callback,
                           args=[node, label, description, node_states_description, ent_info], key=f"{model_type} - Save to DB - {node}")
