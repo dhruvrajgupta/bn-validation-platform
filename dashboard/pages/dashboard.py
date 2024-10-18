@@ -101,7 +101,7 @@ def frag_new_model():
     if file_content:
         with st.expander(f"View Graph"):
             convert_to_vis(wip_model_graph)
-            path = "./current_model.html"
+            path = "../current_model.html"
 
             HtmlFile = open(path, 'r', encoding='utf-8')
             source_code = HtmlFile.read()
@@ -188,7 +188,7 @@ def main():
                 st.error(f"ERROR: \n{str(e)}")
 
             with st.expander("View Graph"):
-                path = "./super_model.html"
+                path = "../super_model.html"
                 HtmlFile = open(path, 'r', encoding='utf-8')
                 source_code = HtmlFile.read()
                 st.components.v1.html(source_code, height = 1000, width=1000, scrolling=True)

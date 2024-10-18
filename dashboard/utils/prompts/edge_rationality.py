@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 EDGE_RATIONALITY = """\
-You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between Node1 and Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
+You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the edge Node1 causes Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
 
 Input:
 Node1:
@@ -17,22 +17,22 @@ description: {target_node_description}
 
 Instructions:
 1. Extract the relevant information for both Node1 and Node2 nodes based on the provided details in the above Input.
-2. Determine if there is a valid relationship between Node1 and Node2 for Metastasis Staging of TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
-3. State the evidences of the validity of the relationship between Node1 and Node2.
+2. Determine if the edge Node1 causes Node2 is valid by cross referencing NCCN Clinical Practitioner’s Guidelines.
+3. State the evidences of the validity of the edge Node1 causes Node2.
 4. Analyze the causal direction between Node1 and Node2:
-5. Evaluate the likelihood of the relationship flowing from Node1 to Node2.
-6. Evaluate the likelihood of the relationship flowing from Node2 to Node1.
-7. Assign a probability to each possible direction based on your analysis of clinical guidelines and known relationships in the staging framework.
+5. Evaluate the likelihood of edge Node1 causes Node2.
+6. Evaluate the likelihood of edge Node2 causes Node1.
+7. Assign a probability to each edge based on your analysis of clinical guidelines and known relationships in the staging framework.
 8. The edge should follow Cause --> Effect direction.
 9. Evaluations should be based on facts and not interpretations.
 10. Explanation should be corresponding to the edge taken into consideration.
-11. Explanation of E2 should follow the same context as E1.
+11. Explanation of E2 should follow the same scenario as E1.
 12. Explanation should mention the corresponding nodes.
 13. In place of Node1 mention {source_node_id}, and in place of Node2 mention {target_node_id}.
 13. Use the following structure to present your response:
 
 **Relationship Verification:**
-Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
+Is the edge (`{source_node_id}`) causes (`{target_node_id}`) valid?
 
 **Evidences from NCCN Clinical Practitioner's Guidelines:**
 - ...
@@ -40,13 +40,13 @@ Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
 ...
 
 **Causal Direction Analysis:**
-- **E1** - (`{source_node_id}`, `{target_node_id}`):
+- **E1** - (`{source_node_id}`) causes (`{target_node_id}`):
     - Causal Direction: ...
-    - Probability of (`{source_node_id}`, `{target_node_id}`): ...
+    - Probability of (`{source_node_id}`) causes (`{target_node_id}`): ...
     - Explanation: ...
-- **E2** - (`{target_node_id}`, `{source_node_id}`):
+- **E2** - (`{target_node_id}`) causes (`{source_node_id}`):
     - Causal Direction: ...
-    - Probability of (`{target_node_id}`, `{source_node_id}`): ...
+    - Probability of (`{target_node_id}`) causes (`{source_node_id}`): ...
     - Explanation: ...
 
 **More probable direction:** ...
@@ -65,30 +65,31 @@ description: Whether or not the patient has lung cancer.
 Output:
 
 **Relationship Verification:**
-Is the edge between (`Smoking`) and (`Lung_Cancer`) valid?.
+Is the edge (`Smoking`) causes (`Lung_Cancer`) valid?.
 
 **Evidences from Clinical Practitioner's Guidelines:**
 - ...
 - ...
 
 **Causal Direction Analysis:**
-- **E1** - (`Smoking`, `Lung_Cancer`):
+- **E1** - (`Smoking`) causes (`Lung_Cancer`):
     - Causal Direction: Cause --> Effect
-    - Probability of (`Smoking`, `Lung_Cancer`): 90%
+    - Probability of (`Smoking`) causes (`Lung_Cancer`): 90%
     - Explanation: ...
-- **E2** - (`Lung_Cancer`, `Smoking`):
+- **E2** - (`Lung_Cancer`) causes (`Smoking`):
     - Causal Direction: Effect --> Cause
-    - Probability of (`Lung_Cancer`, `Smoking`): 10%
+    - Probability of (`Lung_Cancer`) causes (`Smoking`): 10%
     - Explanation: ...
 
 **More probable direction:** "Tumor size increases the likelihood of lymph node involvement."
 """
 
+# just leave percentage and send screenshot
 
 # Focusing on verifying only only one edge, no flipping
 
 EDGE_RATIONALITY2 = """\
-You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between Node1 and Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
+You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the edge Node1 causes Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
 
 Input:
 Node1:
@@ -102,10 +103,10 @@ description: {target_node_description}
 
 Instructions:
 1. Extract the relevant information for both Node1 and Node2 nodes based on the provided details in the above Input.
-2. Determine if there is a valid relationship between Node1 and Node2 for Metastasis Staging of TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
-3. State the evidences of the validity of the relationship between Node1 and Node2.
+2. Determine if the edge Node1 causes Node2 is valid by cross referencing NCCN Clinical Practitioner’s Guidelines.
+3. State the evidences of the validity of the edge Node1 causes Node2.
 4. Analyze the causal direction between Node1 and Node2:
-5. Evaluate the likelihood of the relationship flowing from Node1 to Node2 based on your analysis of clinical guidelines and known relationships in the staging framework.
+5. Evaluate the likelihood of edge Node1 causes Node2.
 6. The edge should follow Cause --> Effect direction.
 7. Evaluations should be based on facts and not interpretations.
 8. Explanation should be corresponding to the edge taken into consideration.
@@ -113,7 +114,7 @@ Instructions:
 10. Use the following structure to present your response:
 
 **Relationship Verification:**
-Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
+Is the edge (`{source_node_id}`) causes (`{target_node_id}`) valid?
 
 **Evidences from NCCN Clinical Practitioner's Guidelines:**
 - ...
@@ -121,9 +122,9 @@ Is the edge between (`{source_node_id}`) and (`{target_node_id}`) valid?
 ...
 
 **Causal Direction Analysis:**
-- **Edge** - (`{source_node_id}`, `{target_node_id}`):
+- **Edge** - (`{source_node_id}`) causes (`{target_node_id}`):
     - Causal Direction: ...
-    - Probability of (`{source_node_id}`, `{target_node_id}`): ...
+    - Probability of (`{source_node_id}`) causes (`{target_node_id}`): ...
     - Explanation: ...
 
 **More probable direction:** ...
@@ -142,21 +143,21 @@ description: Whether or not the patient has lung cancer.
 Output:
 
 **Relationship Verification:**
-Is the edge between (`Smoking`) and (`Lung_Cancer`) valid?.
+Is the edge (`Smoking`) causes (`Lung_Cancer`) valid?.
 
 **Evidences from Clinical Practitioner's Guidelines:**
 - ...
 - ...
 
 **Causal Direction Analysis:**
-- **Edge** - (`Smoking`, `Lung_Cancer`):
+- **Edge** - (`Smoking`) causes (`Lung_Cancer`):
     - Causal Direction: Cause --> Effect
-    - Probability of (`Smoking`, `Lung_Cancer`): 90%
+    - Probability of (`Smoking`) causes (`Lung_Cancer`): 90%
     - Explanation: ...
 
 **More probable direction:** "Tumor size increases the likelihood of lymph node involvement."
 """
-
+# use just percent symbol
 
 ######
 # Rahim et al. - 2019 - A Clinical Decision Support System based on Ontology
@@ -178,7 +179,7 @@ class CausalDistanceCategory(str, Enum):
 class CausalFactor(BaseModel):
     necessary: bool
     sufficient: bool
-
+# Better naming for the type
 class ProbabilityType(str, Enum):
     VERY_LOW = "Very Low"
     LOW = "Low"
@@ -204,7 +205,7 @@ class EdgeVerification(BaseModel):
     causal_info: Optional[CausalInfo]
 
 VERIFY_EDGE = """\
-You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the relationship between {source_id} and {target_id} nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of {source_id} and {target_id} nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes {source_id} and {target_id}.
+You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify edge {source_id} causes {target_id} nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of {source_id} and {target_id} nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes {source_id} and {target_id}.
 
 ##########
 INSTRUCTIONS:
@@ -212,7 +213,7 @@ INSTRUCTIONS:
 2. Determine if the edge given in input is valid for Metastasis Staging of TNM Staging of Laryngeal Cancer and the NCCN Clinical Practitioner’s Guidelines.
 3. State the evidences of the validity of the edge.
 4. Analyze the causal direction of the edge.
-5. Evaluate the likelihood the edge based on your analysis of clinical guidelines and known relationships in the staging framework.
+5. Evaluate the likelihood of the edge based on your analysis of clinical guidelines and known relationships in the staging framework.
 6. Evaluations should be based on facts and recommendations, not interpretations.
 7. Explanations should be corresponding to the edge taken into consideration.
 8. Explanations should mention the corresponding nodes.
@@ -224,7 +225,7 @@ OUTPUT VARIABLES DEFINITTIONS:
 edge - The edge which needs to be verified.
 is_valid - Whether the edge is valid based on the cross referencing Clinical Practitioner's Guidelines.
 explanation - Explanation of what the edge represents and its validity.
-causal_info - Contains other informations related to edge causality.
+causal_info - Contains other information related to edge causality.
 causal_direction - Either Positive or Negative or Unknown. A positive influence direction indicates that both factors change in the same direction (e.g. an increase causes an increase effect). A negative influence direction indicates the opposite changes (e.g. an increase causes a decrease effect).
 causal_factor - Is necessary or sufficient condition for an effect to occur. Exposure is a term commonly used in epidemiology to denote any condition that is considered as a possible cause of disease. Exposure is considered necessary when it always precedes the effects (e.g. symptoms) and always presents when the effects occur. A sufficient cause is a causal factor whose presence or occurrence guarantees the occurrence of symptom.
 causal_distance - Either Distal or Proximal or Unknown. The distal factors lie towards the beginning of causal chain (i.e. indirect causal factors). The the proximal factors lie towards the end of the chain (i.e. cause directly or almost directly the effect).
@@ -273,3 +274,5 @@ description: {target_description}
 LET'S TAKE A DEEP BREATH.
 LET'S THINK STEP BY STEP.
 """
+
+# and reflect on your answer

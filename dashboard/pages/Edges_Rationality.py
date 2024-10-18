@@ -44,21 +44,37 @@ def display_edge_rationality(bn_model, model_type):
 
                 if st.button("Get Edge Rationality using GPT", key=f"GPT - {model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})"):
                     with st.spinner(f"Extracting Node information for edge '{edge}' ..."):
-                        edge_rationality_info = get_edge_rationality_from_gpt(edge)
+                        edge_rationality_info1 = get_edge_rationality_from_gpt(edge, "first")
 
-                if not edge_rationality_info:
-                    st.markdown("**No information on the edge rationality is available in our database.**")
-                else:
-                    with st.container(border=True):
-                        if isinstance(edge_rationality_info, dict):
-                            edge_rationality_info = edge_rationality_info["edge_rationality_info"]
-                            st.write(edge_rationality_info)
-                        else:
-                            st.write(edge_rationality_info)
-                    st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[edge, edge_rationality_info], key=f"Save to DB - {model_type} - Edge Rationality - ({edge[0]}, {edge[1]})")
+                        with st.container(border=True):
+                            st.markdown("#### First")
+                            st.markdown(edge_rationality_info1)
+
+                        edge_rationality_info2 = get_edge_rationality_from_gpt(edge, "second")
+
+                        with st.container(border=True):
+                            st.markdown("#### Second")
+                            st.markdown(edge_rationality_info2)
+
+                        edge_rationality_info3 = get_edge_rationality_from_gpt(edge, "third")
+
+                        with st.container(border=True):
+                            st.markdown("#### Third")
+                            st.json(edge_rationality_info3, expanded=False)
+
+                # if not edge_rationality_info:
+                #     st.markdown("**No information on the edge rationality is available in our database.**")
+                # else:
+                #     with st.container(border=True):
+                #         if isinstance(edge_rationality_info, dict):
+                #             edge_rationality_info = edge_rationality_info["edge_rationality_info"]
+                #             st.write(edge_rationality_info)
+                #         else:
+                #             st.write(edge_rationality_info)
+                #     st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[edge, edge_rationality_info], key=f"Save to DB - {model_type} - Edge Rationality - ({edge[0]}, {edge[1]})")
 
 
-def get_edge_rationality_from_gpt(edge):
+def get_edge_rationality_from_gpt(edge, setup_type):
     from typing import List
     from utils.cpg import ask_llm
     from utils.prompts.edge_rationality import EDGE_RATIONALITY
@@ -66,83 +82,91 @@ def get_edge_rationality_from_gpt(edge):
     source_node_info = get_node_descriptions(edge[0])
     target_node_info = get_node_descriptions(edge[1])
 
-    prompt = EDGE_RATIONALITY.format(
-        source_node_id = source_node_info['node_id'],
-        source_node_label = source_node_info['label'],
-        source_node_description = source_node_info['description'],
-        target_node_id = target_node_info['node_id'],
-        target_node_label = target_node_info['label'],
-        target_node_description = target_node_info['description']
-    )
+    if setup_type == "first":
 
-    gpt_edge_rationality = ask_llm(prompt)
+        prompt = EDGE_RATIONALITY.format(
+            source_node_id = source_node_info['node_id'],
+            source_node_label = source_node_info['label'],
+            source_node_description = source_node_info['description'],
+            target_node_id = target_node_info['node_id'],
+            target_node_label = target_node_info['label'],
+            target_node_description = target_node_info['description']
+        )
+
+        gpt_edge_rationality = ask_llm(prompt)
+
+    elif setup_type == "second":
+
+        # Separated Prompts
+        from utils.prompts.edge_rationality import EDGE_RATIONALITY2
+
+        prompt = EDGE_RATIONALITY2.format(
+            source_node_id = source_node_info['node_id'],
+            source_node_label = source_node_info['label'],
+            source_node_description = source_node_info['description'],
+            target_node_id = target_node_info['node_id'],
+            target_node_label = target_node_info['label'],
+            target_node_description = target_node_info['description']
+        )
+
+        gpt_edge_rationality1 = ask_llm(prompt)
+
+        source_node_info = get_node_descriptions(edge[1])
+        target_node_info = get_node_descriptions(edge[0])
+
+        prompt = EDGE_RATIONALITY2.format(
+            source_node_id=source_node_info['node_id'],
+            source_node_label=source_node_info['label'],
+            source_node_description=source_node_info['description'],
+            target_node_id=target_node_info['node_id'],
+            target_node_label=target_node_info['label'],
+            target_node_description=target_node_info['description']
+        )
+
+        gpt_edge_rationality2 = ask_llm(prompt)
+
+        gpt_edge_rationality = gpt_edge_rationality1 + "\n"*5 + gpt_edge_rationality2
 
 
-    # Separated Prompts
-    # from utils.prompts.edge_rationality import EDGE_RATIONALITY2
-    #
-    # prompt = EDGE_RATIONALITY2.format(
-    #     source_node_id = source_node_info['node_id'],
-    #     source_node_label = source_node_info['label'],
-    #     source_node_description = source_node_info['description'],
-    #     target_node_id = target_node_info['node_id'],
-    #     target_node_label = target_node_info['label'],
-    #     target_node_description = target_node_info['description']
-    # )
-    #
-    # gpt_edge_rationality1 = ask_llm(prompt)
-    #
-    # source_node_info = get_node_descriptions(edge[1])
-    # target_node_info = get_node_descriptions(edge[0])
-    #
-    # prompt = EDGE_RATIONALITY2.format(
-    #     source_node_id=source_node_info['node_id'],
-    #     source_node_label=source_node_info['label'],
-    #     source_node_description=source_node_info['description'],
-    #     target_node_id=target_node_info['node_id'],
-    #     target_node_label=target_node_info['label'],
-    #     target_node_description=target_node_info['description']
-    # )
-    #
-    # gpt_edge_rationality2 = ask_llm(prompt)
-    #
-    # gpt_edge_rationality = gpt_edge_rationality1 + "\n"*5 + gpt_edge_rationality2
+    elif setup_type == "third":
 
-    ## Structured with Causality Decomposition
-    # from utils.cpg import ask_llm_response_schema
-    # from utils.prompts.edge_rationality import VERIFY_EDGE, EdgeVerification
-    # import json
-    #
-    # prompt = VERIFY_EDGE.format(
-    #     source_id=source_node_info['node_id'],
-    #     source_label=source_node_info['label'],
-    #     source_description=source_node_info['description'],
-    #     target_id=target_node_info['node_id'],
-    #     target_label=target_node_info['label'],
-    #     target_description=target_node_info['description'],
-    #     causal_relation_type="causes"
-    # )
-    #
-    # gpt_edge_rationality1 = json.loads(ask_llm_response_schema(prompt, response_format=EdgeVerification))
-    #
-    # st.json(gpt_edge_rationality1, expanded=False)
-    #
-    # source_node_info = get_node_descriptions(edge[1])
-    # target_node_info = get_node_descriptions(edge[0])
-    #
-    # prompt = VERIFY_EDGE.format(
-    #     source_id=source_node_info['node_id'],
-    #     source_label=source_node_info['label'],
-    #     source_description=source_node_info['description'],
-    #     target_id=target_node_info['node_id'],
-    #     target_label=target_node_info['label'],
-    #     target_description=target_node_info['description'],
-    #     causal_relation_type="causes"
-    # )
-    #
-    # gpt_edge_rationality2 = json.loads(ask_llm_response_schema(prompt, response_format=EdgeVerification))
-    #
-    # st.json(gpt_edge_rationality2, expanded=False)
+        ## Structured with Causality Decomposition
+        from utils.cpg import ask_llm_response_schema
+        from utils.prompts.edge_rationality import VERIFY_EDGE, EdgeVerification
+        import json
+
+        prompt = VERIFY_EDGE.format(
+            source_id=source_node_info['node_id'],
+            source_label=source_node_info['label'],
+            source_description=source_node_info['description'],
+            target_id=target_node_info['node_id'],
+            target_label=target_node_info['label'],
+            target_description=target_node_info['description'],
+            causal_relation_type="causes"
+        )
+
+        gpt_edge_rationality1 = json.loads(ask_llm_response_schema(prompt, response_format=EdgeVerification))
+
+        # st.json(gpt_edge_rationality1, expanded=False)
+
+        source_node_info = get_node_descriptions(edge[1])
+        target_node_info = get_node_descriptions(edge[0])
+
+        prompt = VERIFY_EDGE.format(
+            source_id=source_node_info['node_id'],
+            source_label=source_node_info['label'],
+            source_description=source_node_info['description'],
+            target_id=target_node_info['node_id'],
+            target_label=target_node_info['label'],
+            target_description=target_node_info['description'],
+            causal_relation_type="causes"
+        )
+
+        gpt_edge_rationality2 = json.loads(ask_llm_response_schema(prompt, response_format=EdgeVerification))
+
+        # st.json(gpt_edge_rationality2, expanded=False)
+
+        gpt_edge_rationality = [ gpt_edge_rationality1, gpt_edge_rationality2 ]
 
     return gpt_edge_rationality
 
