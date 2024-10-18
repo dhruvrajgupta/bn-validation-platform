@@ -27,3 +27,7 @@ st.markdown(
     - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
 """
 )
+
+with st.expander("**Nodes and their descriptions**"):
+    st.write("Something")
+    pass

@@ -2,7 +2,7 @@ version: "2.3"
 services:
   bnv_dashboard:
     image: dashboard:latest
-    command: streamlit run dashboard/dashboard.py
+    command: streamlit run dashboard/👋_Instructions_Manual.py
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     volumes:
