@@ -1,6 +1,8 @@
 import streamlit as st
+from streamlit_js_eval import streamlit_js_eval
+import time
 
-from utils.db import save_model, get_models
+from utils.db import save_model, get_models, get_model_dataset_file, update_model_label_description
 from utils.file import extract_xdsl_content, xdsl_to_digraph, convert_to_vis
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 
@@ -8,6 +10,8 @@ st.set_page_config(
     layout="wide",
     page_title="Models"
 )
+
+# TODO: Validation as separate for Better Validation Refactorization
 
 @st.fragment
 def frag_new_model():
@@ -59,6 +63,10 @@ def frag_new_model():
             with st.form(key="save-network", border=False):
                 name = st.text_input("Name *")
                 type = st.radio("Type of Network *", ["Ground Truth", "Work In Progress"], index=None)
+                label = st.text_input("Label for the Network *", placeholder="Please give a proper label for the Network. This is essential for Bayesian Network Validation")
+                description = st.text_area("Description for the Network *", placeholder="Please give a proper description for the Network. This is essential for Bayesian Network Validation")
+                uploaded_dataset_file = st.file_uploader("Upload the Dataset :", type=["csv"])
+
 
                 submitted = st.form_submit_button("Submit")
 
@@ -66,11 +74,15 @@ def frag_new_model():
                     if not name:
                         st.caption(":red[Please enter Name.]")
                     if not type:
-                        st.caption(":red[Please select the the type of Network.]")
+                        st.caption(":red[Please select the type of Network.]")
+                    if not label:
+                        st.caption(":red[Please enter the label for the Network.]")
+                    if not description:
+                        st.caption(":red[Please enter the description for the Network.]")
 
-                    if name and type:
+                    if name and type and label and description:
                         ##### Save to Database #####
-                        status = save_model(name, type, nodes_contents, file_content)
+                        status = save_model(name, type, nodes_contents, file_content, label, description, uploaded_dataset_file)
 
                         if status == "Present":
                             st.caption(":red[A model already exists with the same name, Please choose a different name for the model.]")
@@ -78,9 +90,7 @@ def frag_new_model():
                             st.toast(f'Error in saving **"{name}"** model of type **"{type}"**.', icon="❌")
                         elif status == "Succeded":
                             st.toast(f'**"{name}"** model of type **"{type}"** has been saved.', icon="✅")
-                            import time
                             time.sleep(1)
-                            from streamlit_js_eval import streamlit_js_eval
                             streamlit_js_eval(js_expressions="parent.window.location.reload()")
 def main():
 
@@ -94,12 +104,47 @@ def main():
         existing_models = get_models(type=model_type)
 
         for model in existing_models:
-            with st.container(border=True):
+            with st.form(key=f"Update Label and Description of Network - {model['type']} - {model['name']}"):
                 st.write(f"**Name :** {model['name']}")
+                label = st.text_input("Label for the Network *", placeholder="Please give a proper label for the Network. This is essential for Bayesian Network Validation", value=model['label'])
+                description = st.text_area("Description for the Network *",
+                                           placeholder="Please give a proper description for the Network. This is essential for Bayesian Network Validation", value=model['description'])
+                if "dataset_file" in model.keys():
+                    st.write(f"**Dataset filename :** {model['dataset_filename']}")
                 st.write("**Nodes Contents :**")
                 st.json(model['nodes_content'], expanded=False)
+
                 if st.checkbox("**View file content**", key=f"view_file_content - {model['name']}"):
-                    st.code(model['file_content'], language="xmlDoc", line_numbers=True)
+                    with st.spinner("Loading the XDSL file contents ..."):
+                        st.code(model['file_content'], language="xmlDoc", line_numbers=True)
+
+                if "dataset_file" in model.keys():
+                    if st.checkbox("**View the Dataset file**"):
+                        with st.spinner("Loading the dataset file ..."):
+                            csv_df = get_model_dataset_file(model['name'])
+                            st.dataframe(csv_df)
+
+                update_network = st.form_submit_button("Update Model")
+
+                if update_network:
+                    if not label:
+                        st.caption(":red[Please enter the label for the Network.]")
+                    if not description:
+                        st.caption(":red[Please enter the description for the Network.]")
+
+                    if label and description:
+                        ##### Update the Database #####
+
+                        status = update_model_label_description(model['name'], model['type'], label, description)
+
+                        if status == "Same":
+                            st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
+                        elif status == "Updated":
+                            st.toast(f"Model: {model['name']} updated in the Database", icon="⚓")
+                            time.sleep(1)
+                            streamlit_js_eval(js_expressions="parent.window.location.reload()")
+
+
 
     with st.expander("Session State", expanded=False):
         st.json(st.session_state, expanded=False)

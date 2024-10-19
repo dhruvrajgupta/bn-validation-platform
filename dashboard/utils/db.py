@@ -1,5 +1,8 @@
 import streamlit as st
 import pymongo
+import gridfs
+from io import BytesIO
+import pandas as pd
 
 @st.cache_resource
 def init_connection():
@@ -54,8 +57,6 @@ def save_node_desc_data(node_id, label, description, node_states_description, en
         "entity_information": entity_information
     }
 
-    print(node_dict)
-
     if nodes_desc.find_one(node_dict):
         return "Same"
 
@@ -72,24 +73,77 @@ def save_node_desc_data(node_id, label, description, node_states_description, en
 
 
 #### FOR NETWORKS OR MODELS ####
-def save_model(name, type, nodes_content, file_content):
+def save_model(name, type, nodes_content, file_content, label, description, uploaded_dataset_file):
     db = init_connection()["bn-validation"]
     models = db.models
 
     if models.find_one({"name": name}):
         return "Present"
 
-    models_dict = {
+    model_dict = {
         "name": name,
         "type": type,
         "nodes_content": nodes_content,
-        "file_content": file_content
+        "file_content": file_content,
+        "label": label,
+        "description": description
     }
 
-    if models.insert_one(models_dict):
+    if uploaded_dataset_file is not None:
+        fs = gridfs.GridFS(db)
+        dataset_file_data = BytesIO(uploaded_dataset_file.getvalue())
+        dataset_file_data.seek(0)
+        dataset_file_id = fs.put(dataset_file_data, filename=uploaded_dataset_file.name)
+        model_dict["dataset_file"] = dataset_file_id
+        model_dict["dataset_filename"] = uploaded_dataset_file.name
+
+    if models.insert_one(model_dict):
         return "Succeded"
     else:
         return "Failed"
+
+def get_model_dataset_file(name):
+    db = init_connection()["bn-validation"]
+    models = db.models
+
+    model_dict = models.find_one({"name": name})
+
+    if "dataset_file" in model_dict.keys():
+        fs = gridfs.GridFS(db)
+
+        # File content
+        file_data_from_fs = fs.get(model_dict["dataset_file"])
+        file_content = file_data_from_fs.read()
+
+        file_data_io = BytesIO(file_content)
+        df_from_fs = pd.read_csv(file_data_io)
+
+        return df_from_fs
+
+    else:
+        return None
+
+def update_model_label_description(name, type, label, description):
+    db = init_connection()["bn-validation"]
+    models = db.models
+
+    model_dict = {
+        "name": name,
+        "type": type,
+        "label": label,
+        "description": description
+    }
+
+    if models.find_one(model_dict):
+        return "Same"
+
+    result = models.update_one(
+        {"name": name, "type": type},
+        {"$set": {"label": label, "description": description}}
+    )
+
+    if result.modified_count > 0:
+        return "Updated"
 
 def get_models(type):
     db = init_connection()["bn-validation"]
