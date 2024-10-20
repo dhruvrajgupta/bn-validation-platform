@@ -7,9 +7,6 @@ st.set_page_config(
 )
 
 st.write("# Welcome to Bayesian Network Validation Dashboard! 👋")
-
-st.sidebar.success("Select a demo above.")
-
 st.markdown(
     """
     Streamlit is an open-source app framework built specifically for
@@ -30,4 +27,3 @@ st.markdown(
 
 with st.expander("**Nodes and their descriptions**"):
     st.write("Something")
-    pass
