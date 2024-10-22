@@ -253,10 +253,14 @@ else:
 if not model_selected_flag:
     st.write("**Please select a Model.**")
 else:
-    # st.json(model, expanded=False)
     try:
         nodes_contents = model['nodes_content']
         model_bn = build_network(nodes_contents)
+
+        if model_type == "Work In Progress":
+            from utils.models import reverse_bayesian_network
+            model_bn = reverse_bayesian_network(model_bn)
+
         st.info(model_bn)
     except Exception as e:
         st.error(f"ERROR: \n{str(e)}")
