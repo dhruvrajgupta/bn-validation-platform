@@ -142,12 +142,12 @@ else:
     # st.json(model, expanded=False)
     try:
         nodes_contents = model['nodes_content']
-        gt_model_bn = build_network(nodes_contents)
-        st.info(gt_model_bn)
+        model_bn = build_network(nodes_contents)
+        st.info(model_bn)
     except Exception as e:
         st.error(f"ERROR: \n{str(e)}")
 
-    display_node_descriptions(gt_model_bn, "GT Model")
+    display_node_descriptions(model_bn, model_type)
 
 with st.expander("Session Info"):
     st.json(st.session_state, expanded=False)
