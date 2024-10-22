@@ -6,10 +6,6 @@ from utils.db import save_model, get_models, get_model_dataset_file, update_mode
 from utils.file import extract_xdsl_content, xdsl_to_digraph, convert_to_vis
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 
-st.set_page_config(
-    layout="wide"
-)
-
 file_content = None
 save_flag = False
 
