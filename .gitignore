@@ -8,3 +8,4 @@ database/
 .streamlit/
 .env
 rabbitmq-data/
+dashboard/pyvis_htmls

@@ -107,7 +107,7 @@ def convert_to_vis_super(graph):
     )
     viz.toggle_physics(False)
     viz.show_buttons(filter_=['physics'])
-    viz.show("super_model.html")
+    viz.show("dashboard/pyvis_htmls/super_model.html")
 
 def convert_to_vis_markov(graph):
     from causalnex.plots import plot_structure, NODE_STYLE, EDGE_STYLE
