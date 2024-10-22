@@ -1,27 +1,27 @@
 import streamlit as st
 
-from utils.file import xdsl_to_digraph, convert_to_vis_super, build_network
 from utils.db import get_models, get_model_by_name, update_model_label_description
+from utils.file import xdsl_to_digraph, convert_to_vis, build_network
 from utils.components import frag_edge_cpd_rank
 
 #### START OF PAGE
 
-st.markdown("#### Ground Truth Model")
+st.markdown("#### Work In Progress Model")
 
-model_type = "Ground Truth"
+model_type = "Work In Progress"
 available_models = get_models(type=model_type)
 
 model_names = [model['name'] for model in available_models]
 
-selected_model = st.selectbox("Select a ground truth model", model_names,
-                                 key="Selected GT Model", index=None)
+selected_model = st.selectbox("Select a work in progress model", model_names,
+                                 key="Selected WIP Model", index=None)
 model = get_model_by_name(selected_model)
 
 if not model:
-    st.write("**Please select a Ground Truth Model.**")
+    st.write("**Please select a Work in Progress Model.**")
 else:
-    selected_gt_model_graph = xdsl_to_digraph(model['file_content'])
-    convert_to_vis_super(selected_gt_model_graph)
+    selected_wip_model_graph = xdsl_to_digraph(model['file_content'])
+    convert_to_vis(selected_wip_model_graph)
 
     # Building the BN for this super graph
     try:
@@ -33,7 +33,7 @@ else:
         st.error(f"ERROR: \n{str(e)}")
 
     with st.expander("View Graph"):
-        path = "dashboard/pyvis_htmls/super_model.html"
+        path = "dashboard/pyvis_htmls/current_model.html"
         HtmlFile = open(path, 'r', encoding='utf-8')
         source_code = HtmlFile.read()
         st.components.v1.html(source_code, height=1000, width=1000, scrolling=True)

@@ -94,7 +94,7 @@ def convert_to_vis(graph):
     )
     viz.toggle_physics(False)
     viz.show_buttons(filter_=['physics'])
-    viz.show("current_model.html")
+    viz.show("dashboard/pyvis_htmls/current_model.html")
 
 
 def convert_to_vis_super(graph):
