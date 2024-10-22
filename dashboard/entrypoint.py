@@ -10,15 +10,15 @@ instructions_manual = st.Page("page_views/👋_Instructions_Manual.py", default=
 ## Models
 new_model = st.Page("page_views/models/new_model.py", title="New Model")
 gt_model = st.Page("page_views/models/label_descriptions_nodes_contents.py", title="Label, Descriptions and Nodes Contents")
-# label_descriptions_nodes_contents = st.Page("page_views/models/label_description_nodes_contents.py", title="Label and Descriptions")
 
 ## Nodes
-
+nodes_descriptions = st.Page("page_views/nodes_descriptions.py", title="Nodes Descriptions")
 
 pg = st.navigation(
     {
         "Instructions Manual": [instructions_manual],
         "Models": [new_model, gt_model],
+        "Nodes Descriptions": [nodes_descriptions]
     }
 )
 

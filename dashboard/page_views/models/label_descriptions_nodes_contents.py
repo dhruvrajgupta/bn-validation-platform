@@ -15,20 +15,20 @@ model_names = [model['name'] for model in available_models]
 
 if model_type == "Ground Truth":
     selected_model = st.selectbox("Select a ground truth model", model_names,
-                                     key="Selected GT Model")
+                                     key="Selected GT Model", index=None)
     model = get_model_by_name(selected_model)
     if model:
         model_selected_flag = True
 
 else:
     selected_model = st.selectbox("Select a work in progress model", model_names,
-                                  key="Selected WIP Model")
+                                  key="Selected WIP Model", index=None)
     model = get_model_by_name(selected_model)
     if model:
         model_selected_flag = True
 
 if not model_selected_flag:
-    st.write("**Please select a Ground Truth Model.**")
+    st.write("**Please select a Model.**")
 else:
     with st.form(key=f"Update Label and Description of Network - {model['type']} - {model['name']}"):
         st.write(f"**Name :** {model['name']}")
