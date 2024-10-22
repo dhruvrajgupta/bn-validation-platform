@@ -237,7 +237,7 @@ evidences_source - Evidences, Facts and recommendations from corresponding guide
 DESIRED OUTPUT FORMAT:
 Provide the information in the following JSON structure:
 {{
-    "edge": `({source_id})` {causal_relation_type} `(target_id)`,
+    "edge": `({source_id})` causes `(target_id)`,
     "is_valid": ... ,
     "explanation": [ ... ] ,
     "causal_info": {{
@@ -259,7 +259,7 @@ Provide the information in the following JSON structure:
 
 ##########
 INPUT:
-Edge: `({source_id})` {causal_relation_type} `({target_id})`
+Edge: `({source_id})` causes `({target_id})`
 
 Node 1:
 id: {source_id}
