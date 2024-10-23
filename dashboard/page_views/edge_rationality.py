@@ -25,7 +25,7 @@ def display_node_information(node, source_target, edge):
         else:
             st.markdown("**No information on the node is available in our database.**")
 
-def get_edge_rationality_from_gpt(edge):
+def get_edge_rationality_from_gpt(edge, model_label, model_description):
     from utils.cpg import ask_llm
     from utils.prompts.edge_rationality import EDGE_RATIONALITY
 
@@ -46,7 +46,9 @@ def get_edge_rationality_from_gpt(edge):
         source_node_description = source_node_info['description'],
         target_node_id = target_node_info['node_id'],
         target_node_label = target_node_info['label'],
-        target_node_description = target_node_info['description']
+        target_node_description = target_node_info['description'],
+        model_label = model_label,
+        model_description = model_description
     )
 
     gpt_edge_rationality = ask_llm(prompt)
@@ -64,7 +66,9 @@ def get_edge_rationality_from_gpt(edge):
         source_node_description = source_node_info['description'],
         target_node_id = target_node_info['node_id'],
         target_node_label = target_node_info['label'],
-        target_node_description = target_node_info['description']
+        target_node_description = target_node_info['description'],
+        model_label = model_label,
+        model_description = model_description
     )
 
     gpt_edge_rationality1 = ask_llm(prompt)
@@ -79,7 +83,9 @@ def get_edge_rationality_from_gpt(edge):
         source_node_description=source_node_info['description'],
         target_node_id=target_node_info['node_id'],
         target_node_label=target_node_info['label'],
-        target_node_description=target_node_info['description']
+        target_node_description=target_node_info['description'],
+        model_label = model_label,
+        model_description = model_description
     )
 
     gpt_edge_rationality2 = ask_llm(prompt)
@@ -87,6 +93,8 @@ def get_edge_rationality_from_gpt(edge):
 
 
     # elif setup_type == "third":
+    source_node_info = get_node_descriptions(edge[0])
+    target_node_info = get_node_descriptions(edge[1])
 
     ## Structured with Causality Decomposition
     from utils.cpg import ask_llm_response_schema
@@ -100,7 +108,9 @@ def get_edge_rationality_from_gpt(edge):
         source_description=source_node_info['description'],
         target_id=target_node_info['node_id'],
         target_label=target_node_info['label'],
-        target_description=target_node_info['description']
+        target_description=target_node_info['description'],
+        model_label = model_label,
+        model_description = model_description
     )
 
     gpt_edge_rationality1 = json.loads(ask_llm_response_schema(prompt, response_format=EdgeVerification))
@@ -118,7 +128,9 @@ def get_edge_rationality_from_gpt(edge):
         target_id=target_node_info['node_id'],
         target_label=target_node_info['label'],
         target_description=target_node_info['description'],
-        causal_relation_type="causes"
+        # causal_relation_type="causes",
+        model_label = model_label,
+        model_description = model_description
     )
 
     gpt_edge_rationality2 = json.loads(ask_llm_response_schema(prompt, response_format=EdgeVerification))
@@ -132,7 +144,7 @@ def display_third_er(data):
     with st.container(border=True):
         # Edge Information
         # st.markdown("##### Edge")
-        st.markdown(f"**Edge Relationship:** `{data['edge']}`")
+        st.markdown(f"**Edge Relationship:** {data['edge']}")
         st.markdown(f"**Is Valid:** {data['is_valid']}")
 
         # Explanations Section
@@ -158,7 +170,7 @@ def display_third_er(data):
         for fact in evidence_source['facts_and_recommendations']:
             st.markdown(f"- {fact}")
 
-def display_edge_rationality(bn_model, model_type):
+def display_edge_rationality(bn_model, model_type, model_label, model_description):
     edges = bn_model.edges()
     for edge in edges:
         edge_rationality_info = get_edge_rationality(edge)
@@ -186,7 +198,7 @@ def display_edge_rationality(bn_model, model_type):
 
                 if btn_er_info_gpt:
                     with st.spinner(f"Extracting Node information for edge '{edge}' ..."):
-                        edge_rationality_info = get_edge_rationality_from_gpt(edge)
+                        edge_rationality_info = get_edge_rationality_from_gpt(edge, model_label, model_description)
                         # st.json(edge_rationality_info, expanded=False)
 
 
@@ -265,4 +277,4 @@ else:
     except Exception as e:
         st.error(f"ERROR: \n{str(e)}")
 
-    display_edge_rationality(model_bn, model_type=model_type)
+    display_edge_rationality(model_bn, model_type, model['label'], model['description'])

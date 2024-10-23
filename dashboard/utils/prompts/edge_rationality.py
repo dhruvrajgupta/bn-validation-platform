@@ -3,7 +3,10 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 EDGE_RATIONALITY = """\
-You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the edge Node1 causes Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
+You are an expert clinician on the "{model_label}" whose description is "{model_description}". 
+Your task is to verify whether the edge Node1 causes Node2 nodes is a valid edge in the "{model_label}" Bayesian Network. 
+Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. 
+Then, assess the probable causal relationship between the nodes Node1 and Node2.
 
 Input:
 Node1:
@@ -22,7 +25,7 @@ Instructions:
 4. Analyze the causal direction between Node1 and Node2:
 5. Evaluate the likelihood of edge Node1 causes Node2.
 6. Evaluate the likelihood of edge Node2 causes Node1.
-7. Assign a probability to each edge based on your analysis of clinical guidelines and known relationships in the staging framework.
+7. Assign a probability to each edge based on your analysis of clinical guidelines and its corresponding relationships.
 8. The edge should follow Cause --> Effect direction.
 9. Evaluations should be based on facts and not interpretations.
 10. Explanation should be corresponding to the edge taken into consideration.
@@ -74,14 +77,18 @@ Is the edge (`Smoking`) causes (`Lung_Cancer`) valid?.
 **Causal Direction Analysis:**
 - **E1** - (`Smoking`) causes (`Lung_Cancer`):
     - Causal Direction: Cause --> Effect
-    - Probability of (`Smoking`) causes (`Lung_Cancer`): 90%
+    - Probability of (`Smoking`) causes (`Lung_Cancer`): ... %
     - Explanation: ...
 - **E2** - (`Lung_Cancer`) causes (`Smoking`):
     - Causal Direction: Effect --> Cause
-    - Probability of (`Lung_Cancer`) causes (`Smoking`): 10%
+    - Probability of (`Lung_Cancer`) causes (`Smoking`): ... %
     - Explanation: ...
 
 **More probable direction:** "Tumor size increases the likelihood of lymph node involvement."
+
+LET'S TAKE A DEEP BREATH.
+LET'S THINK STEP BY STEP.
+REFLECT ON YOUR ANSWER.
 """
 
 # just leave percentage and send screenshot
@@ -89,7 +96,10 @@ Is the edge (`Smoking`) causes (`Lung_Cancer`) valid?.
 # Focusing on verifying only only one edge, no flipping
 
 EDGE_RATIONALITY2 = """\
-You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify whether the edge Node1 causes Node2 nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes Node1 and Node2.
+You are an expert clinician on the {model_label} whose description is {model_description}. 
+Your task is to verify whether the edge Node1 causes Node2 nodes is a valid edge in the "{model_label}" Bayesian Network. 
+Use the provided details of Node1 and Node2 nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. 
+Then, assess the probable causal relationship between the nodes Node1 and Node2.
 
 Input:
 Node1:
@@ -152,10 +162,14 @@ Is the edge (`Smoking`) causes (`Lung_Cancer`) valid?.
 **Causal Direction Analysis:**
 - **Edge** - (`Smoking`) causes (`Lung_Cancer`):
     - Causal Direction: Cause --> Effect
-    - Probability of (`Smoking`) causes (`Lung_Cancer`): 90%
+    - Probability of (`Smoking`) causes (`Lung_Cancer`): ... %
     - Explanation: ...
 
 **More probable direction:** "Tumor size increases the likelihood of lymph node involvement."
+
+LET'S TAKE A DEEP BREATH.
+LET'S THINK STEP BY STEP.
+REFLECT ON YOUR ANSWER.
 """
 # use just percent symbol
 
@@ -205,7 +219,10 @@ class EdgeVerification(BaseModel):
     causal_info: Optional[CausalInfo]
 
 VERIFY_EDGE = """\
-You are an expert clinician on the Metastasis Staging of TNM Staging of Laryngeal Cancer. Your task is to verify edge {source_id} causes {target_id} nodes is a valid edge in the "Metastasis Staging of TNM Staging of Laryngeal Cancer" Bayesian Network. Use the provided details of {source_id} and {target_id} nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. Then, assess the probable causal relationship between the nodes {source_id} and {target_id}.
+You are an expert clinician on the "{model_label}" whose description is "{model_description}". 
+Your task is to verify edge {source_id} causes {target_id} nodes is a valid edge in the "{model_label}" Bayesian Network. 
+Use the provided details of {source_id} and {target_id} nodes and cross-reference with the NCCN Clinical Practitioner’s Guidelines. 
+Then, assess the probable causal relationship between the nodes {source_id} and {target_id}.
 
 ##########
 INSTRUCTIONS:
@@ -273,6 +290,7 @@ description: {target_description}
 
 LET'S TAKE A DEEP BREATH.
 LET'S THINK STEP BY STEP.
+REFLECT ON YOUR ANSWER.
 """
 
 # and reflect on your answer
