@@ -219,7 +219,7 @@ NodeID: "{node_id}"
 States: "{states}"
 
 ##########
-INSTRUCTIONS: 
+INSTRUCTIONS:
 1. Please provide the following information for the node with ID "{node_id}":
 1. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
 2. Do not retrieve the Entity ID of the terms.
@@ -233,13 +233,13 @@ description: Describe the clinical meaning and significance of the node, focusin
 node_state_description: A List of states of the node along with its description.
 state_name: Name of the state.
 state_description: Description of the state of the node and what it represents.
-entity_information: 
+entity_information:
 For this node, retrieve the following entity information:
 1. MeSH label and description
 2. SNOMED-CT label and description
 3. Wikidata label and description
 
-DESIRED OUTPUT FORMAT: 
+DESIRED OUTPUT FORMAT:
 Provide the information in the following JSON structure:
 {{
    "id":"{node_id}",

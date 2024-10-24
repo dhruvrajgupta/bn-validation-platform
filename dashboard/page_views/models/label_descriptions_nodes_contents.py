@@ -37,7 +37,7 @@ else:
                               value=model['label'])
         description = st.text_area("Description for the Network *",
                                    placeholder="Please give a proper description for the Network. This is essential for Bayesian Network Validation",
-                                   value=model['description'])
+                                   value=model['description'], height=400)
         if "dataset_file" in model.keys():
             st.write(f"**Dataset filenames :** {model['dataset_filename']}")
         st.write("**Nodes Contents :**")

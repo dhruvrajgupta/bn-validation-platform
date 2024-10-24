@@ -25,7 +25,7 @@ with st.container(border=True):
     if file_content:
         with st.expander(f"View Graph"):
             convert_to_vis(wip_model_graph)
-            path = "./current_model.html"
+            path = "dashboard/pyvis_htmls/current_model.html"
 
             HtmlFile = open(path, 'r', encoding='utf-8')
             source_code = HtmlFile.read()
@@ -60,7 +60,7 @@ if save_flag:
         name = st.text_input("Name *")
         type = st.radio("Type of Network *", ["Ground Truth", "Work In Progress"], index=None)
         label = st.text_input("Label for the Network *", placeholder="Please give a proper label for the Network. This is essential for Bayesian Network Validation")
-        description = st.text_area("Description for the Network *", placeholder="Please give a proper description for the Network. This is essential for Bayesian Network Validation")
+        description = st.text_area("Description for the Network *", placeholder="Please give a proper description for the Network. This is essential for Bayesian Network Validation", height=400)
         uploaded_dataset_file = st.file_uploader("Upload the Dataset :", type=["csv"])
 
 

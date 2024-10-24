@@ -52,6 +52,7 @@ def extract_xdsl_content(xdsl_content):
     nodes = {}
     xdsl_dict = xmltodict.parse(xdsl_content)
     nodes_contents = xdsl_dict['smile']['nodes']['cpt']
+    additional_nodes_contents = xdsl_dict['smile']['extensions']['genie']['node']
 
     if isinstance(nodes_contents, list):
         for node in nodes_contents:
@@ -82,6 +83,30 @@ def extract_xdsl_content(xdsl_content):
             }
             # import json
             # print(json.dumps(nodes[node_id], indent=2))
+
+        if isinstance(additional_nodes_contents, list):
+            for node_info in additional_nodes_contents:
+                # print(node_info)
+                node_id = node_info['@id']
+                node_color = node_info['interior']['@color']
+                # print(node_color)
+                # print(node_id)
+                # print()
+                if node_color == "ff9900":
+                    node_type = 'Patient Situation'
+                    observability = "Unobserved"
+                elif node_color == "ffff00":
+                    node_type = 'Examination Result'
+                    observability = "Observed"
+                elif node_color == "ff00ff":
+                    node_type = 'Decision Node'
+                    observability = "Needs to be Predicted"
+                else:
+                    node_type = 'Unknown'
+
+                nodes[node_id]['node_type'] = node_type
+                nodes[node_id]['observability'] = observability
+
     return nodes
 
 def convert_to_vis(graph):

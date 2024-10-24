@@ -1,0 +1,83 @@
+from typing import Optional, List
+from pydantic import BaseModel
+
+class StateDescription(BaseModel):
+    state_name: str
+    state_description: str
+
+class EntityInformation(BaseModel):
+    ontology_name: Optional[str]
+    label: Optional[str]
+    description: Optional[str]
+
+class NodeDescription(BaseModel):
+    id: str
+    label: str
+    description: str
+    node_states_description: List[StateDescription]
+    entity_information: List[EntityInformation]
+
+EXTRACT_NODE_DESCRIPTION = """\
+TASK:
+You’re an expert in clinical informatics with extensive knowledge of Bayesian Networks, particularly focused on staging systems for cancer, including the TNM staging of laryngeal cancer. Your specialty lies in decoding complex nodes within these networks to extract detailed and clinically relevant information for data mining purposes.
+Your task is to gather detailed information for a specific node in the Bayesian Network concerning "Metastasis Staging of TNM staging of laryngeal cancer".
+
+NodeID: identifier of the node in the Bayesian Network.
+States: states of the node in the Bayesian Network.
+
+NODE INFORMATION:
+NodeID: `{node_id}`
+Node Type: `{node_type}`
+Observability: `{node_observability}`
+States: `{states}`
+
+##########
+INSTRUCTIONS: 
+1. Please provide the following information for the node with ID "`{node_id}`":
+1. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
+2. Do not retrieve the Entity ID of the terms.
+3. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
+4. Output in JSON format.
+
+##########
+OUTPUT VARIABLES DEFINITIONS:
+label: Provide a clinically relevant label that describes the node.
+description: Describe the clinical meaning and significance of the node, focusing on how it relates to the context of Metastasis Staging of TNM Staging of laryngeal cancer in details. Describe the methods used to determine the node.
+node_state_description: A List of states of the node along with its description.
+state_name: Name of the state.
+state_description: Description of the state of the node and what it represents.
+entity_information: 
+For this node, retrieve the following entity information:
+1. MeSH label and description
+2. SNOMED-CT label and description
+3. Wikidata label and description
+
+DESIRED OUTPUT FORMAT: 
+Provide the information in the following JSON structure:
+{{
+   "id":"{node_id}",
+   "label":"...",
+   "description":"...",
+   "node_states_description": [
+        "state_name": ... ,
+        "state_description": ... ,
+   ],
+   "entity_information":[
+      {{
+         "ontology_name":"MeSH",
+         "label":"...",
+         "description":"..."
+      }},
+      {{
+         "ontology_name":"SNOMED-CT",
+         "label":"...",
+         "description":"..."
+      }},
+      {{
+         "ontology_name":"Wikidata",
+         "label":"...",
+         "description":"..."
+      }}
+   ]
+}}
+"""
