@@ -11,10 +11,14 @@ Then, assess the probable causal relationship between the nodes Node1 and Node2.
 Input:
 Node1:
 id: {source_node_id}
+type: {source_node_type}
+observability: {source_node_observability}
 label: {source_node_label}
 description: {source_node_description}
 Node2:
 id: {target_node_id}
+type: {target_node_type}
+observability: {target_node_observability}
 label: {target_node_label}
 description: {target_node_description}
 
@@ -59,10 +63,14 @@ Input:
 
 Node1:
 id: Smoking
+type: Examination Result
+observability: Observed
 label: Patient Smoking History
 description: Whether or not the patient has ever smoked.
 Node2:
 id: Lung_Cancer
+type: Decision Node
+observability: Needs to be Predicted
 label: Lung Cancer Status
 description: Whether or not the patient has lung cancer.
 Output:
@@ -104,10 +112,14 @@ Then, assess the probable causal relationship between the nodes Node1 and Node2.
 Input:
 Node1:
 id: {source_node_id}
+type: {source_node_type}
+observability: {source_node_observability}
 label: {source_node_label}
 description: {source_node_description}
 Node2:
 id: {target_node_id}
+type: {target_node_type}
+observability: {target_node_observability}
 label: {target_node_label}
 description: {target_node_description}
 
@@ -144,10 +156,14 @@ Input:
 
 Node1:
 id: Smoking
+type: Examination Result
+observability: Observed
 label: Patient Smoking History
 description: Whether or not the patient has ever smoked.
 Node2:
 id: Lung_Cancer
+type: Decision Node
+observability: Needs to be Predicted
 label: Lung Cancer Status
 description: Whether or not the patient has lung cancer.
 Output:
@@ -280,11 +296,15 @@ Edge: `({source_id})` causes `({target_id})`
 
 Node 1:
 id: {source_id}
+type: {source_node_type}
+observability: {source_node_observability}
 label: {source_label}
 description: {source_description}
 
 Node 2:
 id: {target_id}
+type: {target_node_type}
+observability: {target_node_observability}
 label: {target_label}
 description: {target_description}
 

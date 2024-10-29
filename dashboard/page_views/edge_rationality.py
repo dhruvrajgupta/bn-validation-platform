@@ -16,9 +16,11 @@ def save_to_db_callback(edge, edge_rationality_info):
 def display_node_information(node, source_target, edge):
     with st.container(border=True):
         st.markdown(f"**{source_target} :**  ")
-        st.markdown(f"**ID :** {node}")
+        st.markdown(f"**ID :** `{node}`")
         node_desc = get_node_descriptions(node)
         if node_desc:
+            st.markdown(f"**Type :** `{node_desc['type']}`")
+            st.markdown(f"**Observability :** `{node_desc['observability']}`")
             st.markdown(f"**Label :** {node_desc['label']}")
             st.markdown(f"**Description :** {node_desc['description']}")
             st.data_editor(node_desc['entity_information'], use_container_width=True, disabled=True, key=f"DataEditor - Entity - {source_target} - {node} - of edge {edge}")
@@ -42,9 +44,13 @@ def get_edge_rationality_from_gpt(edge, model_label, model_description):
 
     prompt = EDGE_RATIONALITY.format(
         source_node_id = source_node_info['node_id'],
+        source_node_type = source_node_info['type'],
+        source_node_observability = source_node_info['observability'],
         source_node_label = source_node_info['label'],
         source_node_description = source_node_info['description'],
         target_node_id = target_node_info['node_id'],
+        target_node_type = target_node_info['type'],
+        target_node_observability = target_node_info['observability'],
         target_node_label = target_node_info['label'],
         target_node_description = target_node_info['description'],
         model_label = model_label,
@@ -62,9 +68,13 @@ def get_edge_rationality_from_gpt(edge, model_label, model_description):
 
     prompt = EDGE_RATIONALITY2.format(
         source_node_id = source_node_info['node_id'],
+        source_node_type = source_node_info['type'],
+        source_node_observability = source_node_info['observability'],
         source_node_label = source_node_info['label'],
         source_node_description = source_node_info['description'],
         target_node_id = target_node_info['node_id'],
+        target_node_type = target_node_info['type'],
+        target_node_observability = target_node_info['observability'],
         target_node_label = target_node_info['label'],
         target_node_description = target_node_info['description'],
         model_label = model_label,
@@ -79,9 +89,13 @@ def get_edge_rationality_from_gpt(edge, model_label, model_description):
 
     prompt = EDGE_RATIONALITY2.format(
         source_node_id=source_node_info['node_id'],
+        source_node_type = source_node_info['type'],
+        source_node_observability = source_node_info['observability'],
         source_node_label=source_node_info['label'],
         source_node_description=source_node_info['description'],
         target_node_id=target_node_info['node_id'],
+        target_node_type=target_node_info['type'],
+        target_node_observability=target_node_info['observability'],
         target_node_label=target_node_info['label'],
         target_node_description=target_node_info['description'],
         model_label = model_label,
@@ -104,9 +118,13 @@ def get_edge_rationality_from_gpt(edge, model_label, model_description):
 
     prompt = VERIFY_EDGE.format(
         source_id=source_node_info['node_id'],
+        source_node_type = source_node_info['type'],
+        source_node_observability = source_node_info['observability'],
         source_label=source_node_info['label'],
         source_description=source_node_info['description'],
         target_id=target_node_info['node_id'],
+        target_node_type = target_node_info['type'],
+        target_node_observability = target_node_info['observability'],
         target_label=target_node_info['label'],
         target_description=target_node_info['description'],
         model_label = model_label,
@@ -123,9 +141,13 @@ def get_edge_rationality_from_gpt(edge, model_label, model_description):
 
     prompt = VERIFY_EDGE.format(
         source_id=source_node_info['node_id'],
+        source_node_type = source_node_info['type'],
+        source_node_observability = source_node_info['observability'],
         source_label=source_node_info['label'],
         source_description=source_node_info['description'],
         target_id=target_node_info['node_id'],
+        target_node_type = target_node_info['type'],
+        target_node_observability = target_node_info['observability'],
         target_label=target_node_info['label'],
         target_description=target_node_info['description'],
         # causal_relation_type="causes",
