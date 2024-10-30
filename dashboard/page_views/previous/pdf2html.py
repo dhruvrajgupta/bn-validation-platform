@@ -7,7 +7,7 @@ from utils.prompts2 import DATA_EXTRACTOR, ListSectionData, EXTRACT_ATOMIC_FACTS
 from utils.cpg import ask_llm, ask_llm_response_schema, format_annotated_text
 import json
 
-st.set_page_config(layout="wide")
+# st.set_page_config(layout="wide")
 
 if "page_data" not in st.session_state:
     st.session_state.page_data = None
