@@ -89,7 +89,7 @@ def display_node_descriptions(bn_model, model_type, nodes_contents):
                 description = st.text_area("**Description:**", value=str(node_info["description"]), height=250)
                 st.markdown("**Node States & Descriptions**")
                 node_states_description = st.data_editor(node_info['node_states_description'],
-                                                            key=f"{model_type} - {node_info['node_id']} - STATES - DESC")
+                                                            key=f"{model_type} - {node_info['node_id']} - STATES - DESC", use_container_width=True)
                 st.markdown("**Entity Information:**")
 
                 if node_info['entity_information']:
