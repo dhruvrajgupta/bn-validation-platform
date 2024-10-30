@@ -169,6 +169,9 @@ def get_model_by_name(name):
 
     model = models.find_one({"name": name})
 
+    if not model:
+        return None
+
     ## Get file content
     fs = gridfs.GridFS(db)
     file_content = fs.get(model["file_content_id"]).read()
