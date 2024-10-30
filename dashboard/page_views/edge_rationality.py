@@ -4,6 +4,13 @@ from utils.db import get_models, get_model_by_name, get_node_descriptions, get_e
 from utils.file import build_network
 from utils.edges import edge_dependency_check
 
+def display_invalid_edges(bn_model, nodes_contents):
+    count = 1
+    for edge in bn_model.edges():
+        if not edge_dependency_check(edge, nodes_contents):
+            st.markdown(f"{count}. {edge[0]} &emsp; **---->** &emsp; {edge[1]}")
+            count += 1
+
 def save_to_db_callback(edge, edge_rationality_info):
     from utils.db import save_edge_rationality
     status = save_edge_rationality(edge, edge_rationality_info)
@@ -209,7 +216,7 @@ def display_edge_rationality(bn_model, model_type, model_label, model_descriptio
         else:
             status_icon = "🚫"
 
-        if st.checkbox(f"{status_icon} {edge[0]} --> {edge[1]}", key=f"{model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})"):
+        if st.checkbox(f"{status_icon} {edge[0]} &emsp; **---->** &emsp; {edge[1]}", key=f"{model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})"):
             source = edge[0]
             target = edge[1]
             with st.container(border=True):
@@ -305,4 +312,9 @@ else:
     except Exception as e:
         st.error(f"ERROR: \n{str(e)}")
 
-    display_edge_rationality(model_bn, model_type, model['label'], model['description'])
+    with st.container(border=True):
+        st.markdown("**Valid Edges based on Edge Dependencies schema**")
+        display_edge_rationality(model_bn, model_type, model['label'], model['description'])
+
+    with st.expander("**Invalid Edges based on Edge Dependencies schema**"):
+        display_invalid_edges(model_bn, nodes_contents)
