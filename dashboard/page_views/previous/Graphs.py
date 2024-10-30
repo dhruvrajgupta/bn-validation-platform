@@ -4,10 +4,10 @@ from utils.db import get_models, get_model_by_name
 from utils.file import build_network
 from st_link_analysis import st_link_analysis, NodeStyle, EdgeStyle
 
-st.set_page_config(
-    layout="wide",
-    page_title="Models"
-)
+# st.set_page_config(
+#     layout="wide",
+#     page_title="Models"
+# )
 
 model_type = st.radio("Type of Model", ["Ground Truth", "Work In Progress"], horizontal=True,
                       label_visibility="collapsed")
