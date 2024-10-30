@@ -23,13 +23,23 @@ nodes_descriptions = st.Page("page_views/nodes_descriptions.py", title="Nodes De
 ## Edge Rationality
 edge_rationality = st.Page("page_views/edge_rationality.py", title="Edge Rationality")
 
+## Previous
+CPG = st.Page("page_views/previous/CPG.py", title="CPG")
+dashboard = st.Page("page_views/previous/dashboard.py", title="Dashboard")
+Edges_Rationality = st.Page("page_views/previous/Edges_Rationality.py", title="Edges Rationality")
+Graphs = st.Page("page_views/previous/Graphs.py", title="Graphs")
+Models = st.Page("page_views/previous/Models.py", title="Models")
+Nodes_Descriptions = st.Page("page_views/previous/Nodes_Descriptions.py", title="Nodes Descriptions")
+pdf2html = st.Page("page_views/previous/pdf2html.py", title="PDF2HTML")
+
 pg = st.navigation(
     {
         "Instructions Manual": [instructions_manual],
         "Dashboard": [ground_truth_model, work_in_progress_model, comparison],
         "Models": [new_model, label_descriptions, file_contents],
         "Nodes Descriptions": [nodes_descriptions],
-        "Edge Rationality": [edge_rationality]
+        "Edge Rationality": [edge_rationality],
+        "Previous": [CPG, dashboard, Edges_Rationality, Graphs, Models, Nodes_Descriptions, pdf2html],
     }
 )
 
