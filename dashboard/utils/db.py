@@ -3,6 +3,7 @@ import pymongo
 import gridfs
 from io import BytesIO
 import pandas as pd
+import json
 
 @st.cache_resource
 def init_connection():
@@ -82,17 +83,26 @@ def save_model(name, type, nodes_content, file_content, label, description, uplo
     if models.find_one({"name": name}):
         return "Present"
 
+    fs = gridfs.GridFS(db)
+
+    # Save file_content using GridFS
+    file_content_data = BytesIO(file_content.getvalue())
+    file_content_data.seek(0)
+    file_content_id = fs.put(file_content_data, filename=file_content.name)
+
+    nodes_content_data = json.dumps(nodes_content, ensure_ascii=False)
+    nodes_content_id = fs.put(nodes_content_data.encode("utf-8"), filename=file_content.name)
+
     model_dict = {
         "name": name,
         "type": type,
-        "nodes_content": nodes_content,
-        "file_content": file_content,
+        "nodes_content_id": nodes_content_id,
+        "file_content_id": file_content_id,
         "label": label,
         "description": description
     }
 
     if uploaded_dataset_file is not None:
-        fs = gridfs.GridFS(db)
         dataset_file_data = BytesIO(uploaded_dataset_file.getvalue())
         dataset_file_data.seek(0)
         dataset_file_id = fs.put(dataset_file_data, filename=uploaded_dataset_file.name)
@@ -157,7 +167,21 @@ def get_model_by_name(name):
     db = init_connection()["bn-validation"]
     models = db.models
 
-    return models.find_one({"name": name})
+    model = models.find_one({"name": name})
+
+    if not model:
+        return None
+
+    ## Get file content
+    fs = gridfs.GridFS(db)
+    file_content = fs.get(model["file_content_id"]).read()
+    model["file_content"] = file_content
+
+    ## Get nodes content
+    nodes_content = fs.get(model["nodes_content_id"]).read()
+    model["nodes_content"] = json.loads(nodes_content)
+
+    return model
 
 
 #### FOR EDGES OF MODELS ####
