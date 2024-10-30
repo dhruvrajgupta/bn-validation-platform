@@ -2,6 +2,7 @@ import streamlit as st
 
 from utils.db import get_models, get_model_by_name, get_node_descriptions, get_edge_rationality
 from utils.file import build_network
+from utils.edges import edge_dependency_check
 
 def save_to_db_callback(edge, edge_rationality_info):
     from utils.db import save_edge_rationality
@@ -195,6 +196,11 @@ def display_third_er(data):
 def display_edge_rationality(bn_model, model_type, model_label, model_description):
     edges = bn_model.edges()
     for edge in edges:
+
+        # Only consider edges that have passed rule based validation checks
+        if not edge_dependency_check(edge, nodes_contents):
+            continue
+
         edge_rationality_info = get_edge_rationality(edge)
         # st.write(edge_rationality_info)
 
