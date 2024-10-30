@@ -62,3 +62,12 @@ else:
             st.json(schema_validation_result["valid"], expanded=False)
             st.markdown("**Invalid Edges:**")
             st.json(schema_validation_result["invalid"], expanded=False)
+
+    ##### NODE TYPES #####
+    st.markdown("#### Node Types")
+    with st.container(border=True):
+        if st.checkbox("Check Node Types"):
+            node_type = st.radio("Select Node Type:", ["Patient Situation", "Examination Result", "Decision Node", "Unknown"], index=0, horizontal=True)
+            from utils.nodes import get_nodes_by_type
+            nodes_by_type = get_nodes_by_type(node_type, nodes_contents)
+            st.write(nodes_by_type)
