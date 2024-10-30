@@ -6,10 +6,10 @@ from utils.db import save_model, get_models, get_model_dataset_file, update_mode
 from utils.file import extract_xdsl_content, xdsl_to_digraph, convert_to_vis
 from utils.cycles import detect_cycles, get_cycles_digraph, print_cycles
 
-st.set_page_config(
-    layout="wide",
-    page_title="Models"
-)
+# st.set_page_config(
+#     layout="wide",
+#     page_title="Models"
+# )
 
 # TODO: Validation as separate for Better Validation Refactorization
 
@@ -92,63 +92,63 @@ def frag_new_model():
                             st.toast(f'**"{name}"** model of type **"{type}"** has been saved.', icon="✅")
                             time.sleep(1)
                             streamlit_js_eval(js_expressions="parent.window.location.reload()")
-def main():
+# def main():
 
-    with st.container(border=True):
-        frag_new_model()
+with st.container(border=True):
+    frag_new_model()
 
-    with st.container(border=True):
-        st.write("**Existing Models :**")
+with st.container(border=True):
+    st.write("**Existing Models :**")
 
-        model_type = st.radio("Type of Model", ["Ground Truth", "Work In Progress"], horizontal=True, label_visibility="collapsed")
-        existing_models = get_models(type=model_type)
+    model_type = st.radio("Type of Model", ["Ground Truth", "Work In Progress"], horizontal=True, label_visibility="collapsed")
+    existing_models = get_models(type=model_type)
 
-        for model in existing_models:
-            with st.form(key=f"Update Label and Description of Network - {model['type']} - {model['name']}"):
-                st.write(f"**Name :** {model['name']}")
-                label = st.text_input("Label for the Network *", placeholder="Please give a proper label for the Network. This is essential for Bayesian Network Validation", value=model['label'])
-                description = st.text_area("Description for the Network *",
-                                           placeholder="Please give a proper description for the Network. This is essential for Bayesian Network Validation", value=model['description'])
-                if "dataset_file" in model.keys():
-                    st.write(f"**Dataset filename :** {model['dataset_filename']}")
-                st.write("**Nodes Contents :**")
-                st.json(model['nodes_content'], expanded=False)
+    for model in existing_models:
+        with st.form(key=f"Update Label and Description of Network - {model['type']} - {model['name']}"):
+            st.write(f"**Name :** {model['name']}")
+            label = st.text_input("Label for the Network *", placeholder="Please give a proper label for the Network. This is essential for Bayesian Network Validation", value=model['label'])
+            description = st.text_area("Description for the Network *",
+                                        placeholder="Please give a proper description for the Network. This is essential for Bayesian Network Validation", value=model['description'])
+            if "dataset_file" in model.keys():
+                st.write(f"**Dataset filename :** {model['dataset_filename']}")
+            st.write("**Nodes Contents :**")
+            st.json(model['nodes_content'], expanded=False)
 
-                if st.checkbox("**View file content**", key=f"view_file_content - {model['name']}"):
-                    with st.spinner("Loading the XDSL file contents ..."):
-                        st.code(model['file_content'], language="xmlDoc", line_numbers=True)
+            if st.checkbox("**View file content**", key=f"view_file_content - {model['name']}"):
+                with st.spinner("Loading the XDSL file contents ..."):
+                    st.code(model['file_content'], language="xmlDoc", line_numbers=True)
 
-                if "dataset_file" in model.keys():
-                    if st.checkbox("**View the Dataset file**"):
-                        with st.spinner("Loading the dataset file ..."):
-                            csv_df = get_model_dataset_file(model['name'])
-                            st.dataframe(csv_df)
+            if "dataset_file" in model.keys():
+                if st.checkbox("**View the Dataset file**"):
+                    with st.spinner("Loading the dataset file ..."):
+                        csv_df = get_model_dataset_file(model['name'])
+                        st.dataframe(csv_df)
 
-                update_network = st.form_submit_button("Update Model")
+            update_network = st.form_submit_button("Update Model")
 
-                if update_network:
-                    if not label:
-                        st.caption(":red[Please enter the label for the Network.]")
-                    if not description:
-                        st.caption(":red[Please enter the description for the Network.]")
+            if update_network:
+                if not label:
+                    st.caption(":red[Please enter the label for the Network.]")
+                if not description:
+                    st.caption(":red[Please enter the description for the Network.]")
 
-                    if label and description:
-                        ##### Update the Database #####
+                if label and description:
+                    ##### Update the Database #####
 
-                        status = update_model_label_description(model['name'], model['type'], label, description)
+                    status = update_model_label_description(model['name'], model['type'], label, description)
 
-                        if status == "Same":
-                            st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
-                        elif status == "Updated":
-                            st.toast(f"Model: {model['name']} updated in the Database", icon="⚓")
-                            time.sleep(1)
-                            streamlit_js_eval(js_expressions="parent.window.location.reload()")
-
-
-
-    with st.expander("Session State", expanded=False):
-        st.json(st.session_state, expanded=False)
+                    if status == "Same":
+                        st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
+                    elif status == "Updated":
+                        st.toast(f"Model: {model['name']} updated in the Database", icon="⚓")
+                        time.sleep(1)
+                        streamlit_js_eval(js_expressions="parent.window.location.reload()")
 
 
-if __name__ == "__main__":
-    main()
+
+with st.expander("Session State", expanded=False):
+    st.json(st.session_state, expanded=False)
+
+
+# if __name__ == "__main__":
+#     main()
