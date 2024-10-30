@@ -6,10 +6,10 @@ import urllib.parse
 from utils.db import get_models, get_model_by_name, get_node_descriptions
 from utils.file import build_network
 
-st.set_page_config(
-    layout="wide",
-    page_title="Node Descriptions"
-)
+# st.set_page_config(
+#     layout="wide",
+#     page_title="Node Descriptions"
+# )
 
 MESH_LINK = "https://meshb.nlm.nih.gov/search?searchMethod=FullWord&searchInField=termDescriptor&sort=&size=20&searchType=exactMatch&from=0&"
 SNOMED_CT_LINK = "https://browser.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/2024-10-01/descriptions?&limit=100&active=true&conceptActive=true&lang=english&searchMode=WHOLE_WORD&groupByConcept=true&"
@@ -119,50 +119,50 @@ def display_node_descriptions(bn_model, model_type):
                           args=[node, label, description, node_states_description, ent_info], key=f"{model_type} - Save to DB - {node}")
 
 
-def main():
-    ground_truth_model, wip_model = st.tabs(['Ground Truth Model', "WIP Model"])
+# def main():
+ground_truth_model, wip_model = st.tabs(['Ground Truth Model', "WIP Model"])
 
-    with ground_truth_model:
-        ground_truth_models = get_models("Ground Truth")
-        model_names = [model['name'] for model in ground_truth_models]
-        selected_gt_model = st.selectbox("Select a ground truth model", model_names, key="select_gt_models", index=None)
+with ground_truth_model:
+    ground_truth_models = get_models("Ground Truth")
+    model_names = [model['name'] for model in ground_truth_models]
+    selected_gt_model = st.selectbox("Select a ground truth model", model_names, key="select_gt_models", index=None)
 
-        selected_gt_model_dict = get_model_by_name(selected_gt_model)
-        
-        if not selected_gt_model:
-            st.write("**Please select a Ground Truth Model.**")
-        else:
-            try:
-                nodes_contents = selected_gt_model_dict['nodes_content']
-                gt_model_bn = build_network(nodes_contents)
-                st.info(gt_model_bn)
-            except Exception as e:
-                st.error(f"ERROR: \n{str(e)}")
+    selected_gt_model_dict = get_model_by_name(selected_gt_model)
 
-            display_node_descriptions(gt_model_bn, "GT Model")
+    if not selected_gt_model:
+        st.write("**Please select a Ground Truth Model.**")
+    else:
+        try:
+            nodes_contents = selected_gt_model_dict['nodes_content']
+            gt_model_bn = build_network(nodes_contents)
+            st.info(gt_model_bn)
+        except Exception as e:
+            st.error(f"ERROR: \n{str(e)}")
 
-    with wip_model:
-        ground_truth_models = get_models("Work In Progress")
-        model_names = [model['name'] for model in ground_truth_models]
-        selected_wip_model = st.selectbox("Select a work in progress model", model_names, key="select_wip_models", index=None)
+        display_node_descriptions(gt_model_bn, "GT Model")
 
-        selected_wip_model_dict = get_model_by_name(selected_wip_model)
+with wip_model:
+    ground_truth_models = get_models("Work In Progress")
+    model_names = [model['name'] for model in ground_truth_models]
+    selected_wip_model = st.selectbox("Select a work in progress model", model_names, key="select_wip_models", index=None)
 
-        if not selected_wip_model:
-            st.write("**Please select a Work In Progress Model.**")
-        else:
-            try:
-                nodes_contents = selected_wip_model_dict['nodes_content']
-                wip_model_bn = build_network(nodes_contents)
-                st.info(wip_model_bn)
-            except Exception as e:
-                st.error(f"ERROR: \n{str(e)}")
+    selected_wip_model_dict = get_model_by_name(selected_wip_model)
 
-            display_node_descriptions(wip_model_bn, "WIP Model")
+    if not selected_wip_model:
+        st.write("**Please select a Work In Progress Model.**")
+    else:
+        try:
+            nodes_contents = selected_wip_model_dict['nodes_content']
+            wip_model_bn = build_network(nodes_contents)
+            st.info(wip_model_bn)
+        except Exception as e:
+            st.error(f"ERROR: \n{str(e)}")
+
+        display_node_descriptions(wip_model_bn, "WIP Model")
 
 
-    with st.expander("Session Info"):
-        st.json(st.session_state, expanded=False)
+with st.expander("Session Info"):
+    st.json(st.session_state, expanded=False)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
