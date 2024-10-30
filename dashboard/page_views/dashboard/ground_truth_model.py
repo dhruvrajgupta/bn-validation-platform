@@ -3,6 +3,7 @@ import streamlit as st
 from utils.file import xdsl_to_digraph, convert_to_vis_super, build_network
 from utils.db import get_models, get_model_by_name, update_model_label_description
 from utils.components import frag_edge_cpd_rank
+from utils.edges import edge_schema_validation_check
 
 #### START OF PAGE
 
@@ -50,3 +51,14 @@ else:
         # 2. Using CPDs of the Bayesian Network
         if st.checkbox("Compute Edge Strength (Using CPDs)", key="gt_cpd_rank"):
             frag_edge_cpd_rank(bn_model, key="Ground Truth Model")
+
+
+    ##### EDGE SCHEMA VALIDATION CHECK #####
+    st.markdown("#### Edge Schema Validation Check")
+    with st.container(border=True):
+        if st.checkbox("Check Schema Valid Edges"):
+            schema_validation_result = edge_schema_validation_check(bn_model, nodes_contents)
+            st.markdown("**Valid Edges:**")
+            st.json(schema_validation_result["valid"], expanded=False)
+            st.markdown("**Invalid Edges:**")
+            st.json(schema_validation_result["invalid"], expanded=False)

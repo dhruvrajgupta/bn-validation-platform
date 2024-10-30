@@ -452,3 +452,64 @@ def cpd_rank_edges(dataframe):
     df.drop(labels=['rank'], axis=1, inplace=True)
     df.insert(0, 'rank', rank)
     return df
+
+# Cypko et al (2017), Validation workflow for a clinical Bayesian network model in multidisciplinary decision making in head and neck oncology treatment.
+def edge_dependency_check(edge, nodes_contents):
+    source_node = edge[0]
+    target_node = edge[1]
+
+    source_node_type = nodes_contents[source_node]["node_type"]
+    target_node_type = nodes_contents[target_node]["node_type"]
+
+    if source_node_type == "Patient Situation" and target_node_type == "Examination Result":
+        return True
+
+    if source_node_type == "Patient Situation" and target_node_type == "Decision Node":
+        return True
+
+    if source_node_type == "Patient Situation" and target_node_type == "Patient Situation":
+        return True
+
+    if source_node_type == "Decision Node" and target_node_type == "Decision Node":
+        return True
+
+    if source_node_type == "Decision Node" and target_node_type == "Patient Situation":
+        return True
+
+    print()
+    print(f"{source_node} -> {nodes_contents[source_node]['node_type']}")
+    print(f"{target_node} -> {nodes_contents[target_node]['node_type']}")
+    print()
+
+    return False
+
+
+def edge_schema_validation_check(bn_model, nodes_contents):
+
+    # Node Types:
+    # 1. Patient Situation
+    # 2. Examination Result
+    # 3. Decision Node
+
+    result = {
+        "valid": [],
+        "invalid": []
+    }
+
+    # count = 0
+
+    for edge in bn_model.edges():
+        if edge_dependency_check(edge, nodes_contents):
+            result["valid"].append(edge)
+        else:
+            result["invalid"].append(edge)
+
+        # count += 1
+        # if count == 4:
+        #     break
+
+    # import json
+    # print(json.dumps(result, indent=4))
+    # print(result)
+
+    return result
