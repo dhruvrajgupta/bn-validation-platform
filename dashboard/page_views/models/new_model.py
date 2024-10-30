@@ -11,10 +11,10 @@ save_flag = False
 
 st.write("#### New Model")
 with st.container(border=True):
-    uploaded_file = st.file_uploader("Choose a file", type=["xdsl"])
+    uploaded_file_content = st.file_uploader("Choose a file", type=["xdsl"])
 
-    if uploaded_file:
-        file_content = uploaded_file.read().decode("utf-8")
+    if uploaded_file_content:
+        file_content = uploaded_file_content.read().decode("utf-8")
         nodes_contents = extract_xdsl_content(file_content)
         wip_model_graph = xdsl_to_digraph(file_content)
 
@@ -78,7 +78,7 @@ if save_flag:
 
             if name and type and label and description:
                 ##### Save to Database #####
-                status = save_model(name, type, nodes_contents, file_content, label, description, uploaded_dataset_file)
+                status = save_model(name, type, nodes_contents, uploaded_file_content, label, description, uploaded_dataset_file)
 
                 if status == "Present":
                     st.caption(":red[A model already exists with the same name, Please choose a different name for the model.]")
