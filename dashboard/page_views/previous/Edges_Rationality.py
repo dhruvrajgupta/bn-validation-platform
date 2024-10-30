@@ -4,10 +4,10 @@ from utils.db import get_models, get_model_by_name, get_node_descriptions, get_e
 from utils.file import build_network
 
 
-st.set_page_config(
-    layout="wide",
-    page_title="Edges Rationality"
-)
+# st.set_page_config(
+#     layout="wide",
+#     page_title="Edges Rationality"
+# )
 
 @st.fragment
 def display_node_information(node, source_target):
@@ -180,54 +180,54 @@ def save_to_db_callback(edge, edge_rationality_info):
     elif status == "Added":
         st.toast(f"Edge Rationality: {edge} added to the Database", icon="✅")
 
-def main():
-    ground_truth_model, wip_model = st.tabs(['Ground Truth Model', "WIP Model"])
+# def main():
+ground_truth_model, wip_model = st.tabs(['Ground Truth Model', "WIP Model"])
 
-    with ground_truth_model:
-        ground_truth_models = get_models("Ground Truth")
-        model_names = [model['name'] for model in ground_truth_models]
-        selected_gt_model = st.selectbox("Select a ground truth model", model_names, key="select_gt_models", index=None)
+with ground_truth_model:
+    ground_truth_models = get_models("Ground Truth")
+    model_names = [model['name'] for model in ground_truth_models]
+    selected_gt_model = st.selectbox("Select a ground truth model", model_names, key="select_gt_models", index=None)
 
-        selected_gt_model_dict = get_model_by_name(selected_gt_model)
+    selected_gt_model_dict = get_model_by_name(selected_gt_model)
 
-        if not selected_gt_model:
-            st.write("**Please select a Ground Truth Model.**")
-        else:
-            try:
-                nodes_contents = selected_gt_model_dict['nodes_content']
-                gt_model_bn = build_network(nodes_contents)
-                st.info(gt_model_bn)
-            except Exception as e:
-                st.error(f"ERROR: \n{str(e)}")
+    if not selected_gt_model:
+        st.write("**Please select a Ground Truth Model.**")
+    else:
+        try:
+            nodes_contents = selected_gt_model_dict['nodes_content']
+            gt_model_bn = build_network(nodes_contents)
+            st.info(gt_model_bn)
+        except Exception as e:
+            st.error(f"ERROR: \n{str(e)}")
 
-            display_edge_rationality(gt_model_bn, model_type="GT Model")
+        display_edge_rationality(gt_model_bn, model_type="GT Model")
 
-    with wip_model:
-        ground_truth_models = get_models("Work In Progress")
-        model_names = [model['name'] for model in ground_truth_models]
-        selected_wip_model = st.selectbox("Select a work in progress model", model_names, key="select_wip_models", index=None)
+with wip_model:
+    ground_truth_models = get_models("Work In Progress")
+    model_names = [model['name'] for model in ground_truth_models]
+    selected_wip_model = st.selectbox("Select a work in progress model", model_names, key="select_wip_models", index=None)
 
-        selected_wip_model_dict = get_model_by_name(selected_wip_model)
+    selected_wip_model_dict = get_model_by_name(selected_wip_model)
 
-        if not selected_wip_model:
-            st.write("**Please select a Work In Progress Model.**")
-        else:
-            try:
-                nodes_contents = selected_wip_model_dict['nodes_content']
-                wip_model_bn = build_network(nodes_contents)
-                st.info(wip_model_bn)
-            except Exception as e:
-                st.error(f"ERROR: \n{str(e)}")
+    if not selected_wip_model:
+        st.write("**Please select a Work In Progress Model.**")
+    else:
+        try:
+            nodes_contents = selected_wip_model_dict['nodes_content']
+            wip_model_bn = build_network(nodes_contents)
+            st.info(wip_model_bn)
+        except Exception as e:
+            st.error(f"ERROR: \n{str(e)}")
 
-            from utils.models import reverse_bayesian_network
+        from utils.models import reverse_bayesian_network
 
-            rep = reverse_bayesian_network(wip_model_bn)
+        rep = reverse_bayesian_network(wip_model_bn)
 
-            display_edge_rationality(rep, model_type="WIP Model")
+        display_edge_rationality(rep, model_type="WIP Model")
 
 
-    with st.expander("Session State", expanded=False):
-        st.json(st.session_state, expanded=False)
+with st.expander("Session State", expanded=False):
+    st.json(st.session_state, expanded=False)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
