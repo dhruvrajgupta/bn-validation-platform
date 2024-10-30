@@ -462,24 +462,44 @@ def edge_dependency_check(edge, nodes_contents):
     target_node_type = nodes_contents[target_node]["node_type"]
 
     if source_node_type == "Patient Situation" and target_node_type == "Examination Result":
+        print()
+        print(f"{source_node} -> {nodes_contents[source_node]['node_type']}")
+        print(f"{target_node} -> {nodes_contents[target_node]['node_type']}")
+        print()
         return True
 
     if source_node_type == "Patient Situation" and target_node_type == "Decision Node":
+        print()
+        print(f"{source_node} -> {nodes_contents[source_node]['node_type']}")
+        print(f"{target_node} -> {nodes_contents[target_node]['node_type']}")
+        print()
         return True
 
     if source_node_type == "Patient Situation" and target_node_type == "Patient Situation":
+        print()
+        print(f"{source_node} -> {nodes_contents[source_node]['node_type']}")
+        print(f"{target_node} -> {nodes_contents[target_node]['node_type']}")
+        print()
         return True
 
     if source_node_type == "Decision Node" and target_node_type == "Decision Node":
+        print()
+        print(f"{source_node} -> {nodes_contents[source_node]['node_type']}")
+        print(f"{target_node} -> {nodes_contents[target_node]['node_type']}")
+        print()
         return True
 
     if source_node_type == "Decision Node" and target_node_type == "Patient Situation":
+        print()
+        print(f"{source_node} -> {nodes_contents[source_node]['node_type']}")
+        print(f"{target_node} -> {nodes_contents[target_node]['node_type']}")
+        print()
         return True
 
-    print()
-    print(f"{source_node} -> {nodes_contents[source_node]['node_type']}")
-    print(f"{target_node} -> {nodes_contents[target_node]['node_type']}")
-    print()
+    # print()
+    # print(f"{source_node} -> {nodes_contents[source_node]['node_type']}")
+    # print(f"{target_node} -> {nodes_contents[target_node]['node_type']}")
+    # print()
 
     return False
 
