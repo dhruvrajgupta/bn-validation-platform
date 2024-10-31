@@ -1,7 +1,7 @@
 import streamlit as st
 
 from utils.file import xdsl_to_digraph, convert_to_vis_super, build_network
-from utils.db import get_models, get_model_by_name, update_model_label_description
+from utils.db import get_models, get_model_by_name, update_model_label_description, get_node_descriptions
 from utils.components import frag_edge_cpd_rank
 from utils.edges import edge_schema_validation_check
 
@@ -72,3 +72,33 @@ else:
             from utils.nodes import get_nodes_by_type
             nodes_by_type = get_nodes_by_type(node_type, nodes_contents)
             st.write(nodes_by_type)
+
+
+    ##### NODE TO ENTITY MAPPINGS
+    nodes_having_entity = []
+    nodes_not_having_entity = []
+    st.markdown("#### Node to Entity Mappings")
+    with st.container(border=True):
+        if st.checkbox("Check Entity to Node Mappings"):
+            for node in bn_model.nodes():
+                node_desc = get_node_descriptions(node)
+
+                if node_desc is None:
+                    nodes_not_having_entity.append(node)
+                    continue
+
+                if node_desc['entity_information']:
+                    nodes_having_entity.append(node_desc)
+                else:
+                    nodes_not_having_entity.append(node)
+
+            with st.container(border=True):
+                st.markdown("**Nodes having entity information:**")
+                for node_desc in nodes_having_entity:
+                    st.markdown(f"**{node_desc['node_id']}**")
+                    for entity_info in node_desc['entity_information']:
+                        st.markdown(f"- **{entity_info['ontology_name']} :** {entity_info['label']}")
+
+            with st.container(border=True):
+                st.markdown("**Nodes not having entity information:**")
+                st.json(nodes_not_having_entity, expanded=False)

@@ -103,6 +103,7 @@ def extract_xdsl_content(xdsl_content):
                     observability = "Needs to be Predicted"
                 else:
                     node_type = 'Unknown'
+                    observability = "Unknown"
 
                 nodes[node_id]['node_type'] = node_type
                 nodes[node_id]['observability'] = observability
