@@ -94,6 +94,17 @@ else:
 
             with st.container(border=True):
                 st.markdown("**Nodes having entity information:**")
+                ontology_name = st.radio("Select Ontology Name:", ["MeSH", "SNOMED-CT", "Wikidata"], index=0, horizontal=True)
+                st.markdown("**Selected Ontology Name:** &emsp; " + ontology_name)
+
+                from utils.nodes import get_distinct_entities, get_nodes_by_entity
+                distinct_entities = get_distinct_entities(ontology_name, nodes_having_entity)
+
+                for entity in distinct_entities:
+                    with st.container(border=True):
+                        st.markdown(f"**Entity Name:** &emsp; {entity}")
+                        st.write(get_nodes_by_entity(entity, nodes_having_entity))
+
                 for node_desc in nodes_having_entity:
                     st.markdown(f"**{node_desc['node_id']}**")
                     for entity_info in node_desc['entity_information']:
