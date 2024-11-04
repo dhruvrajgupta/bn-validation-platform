@@ -241,21 +241,26 @@ def display_edge_rationality(bn_model, model_type, model_label, model_descriptio
                 if not edge_rationality_info:
                     st.markdown("**No information on the edge rationality is available in our database.**")
                 else:
-                    with st.container(border=True):
+                    type = st.radio("Select the type of edge rationality", ("First", "Second", "Third"), key=f"{model_type} - Edge Rationality - Rationality Type ({edge[0]})-->({edge[1]})", horizontal=True)
+
+                # with st.container(border=True):
+                    if type == "First":
                         st.markdown("#### First")
                         st.markdown(edge_rationality_info["first"])
-                    #
-                    # edge_rationality_info2 = get_edge_rationality_from_gpt(edge, "second")
-                    #
-                    with st.container(border=True):
+                #
+                # edge_rationality_info2 = get_edge_rationality_from_gpt(edge, "second")
+                #
+                # with st.container(border=True):
+                    if type == "Second":
                         st.markdown("#### Second")
                         st.markdown(edge_rationality_info["second"][0])
                         st.markdown("---")
                         st.markdown(edge_rationality_info["second"][1])
-                    #
-                    # edge_rationality_info3 = get_edge_rationality_from_gpt(edge, "third")
-                    #
-                    with st.container(border=True):
+                #
+                # edge_rationality_info3 = get_edge_rationality_from_gpt(edge, "third")
+                #
+                # with st.container(border=True):
+                    if type == "Third":
                         st.markdown("#### Third")
                         col1, col2 = st.columns(2)
                         with col1:
