@@ -64,6 +64,15 @@ else:
             st.json(schema_validation_result["invalid"], expanded=False)
 
 
+    ##### NODE RANKINGS #####
+    st.markdown("#### Node Rankings")
+    with st.container(border=True):
+        # 1. PageRank
+        if st.checkbox("Compute Node Strength (PageRank)"):
+            from utils.nodes import compute_page_rank
+            st.dataframe(compute_page_rank(bn_model))
+
+
     ##### NODE TYPES #####
     st.markdown("#### Node Types")
     with st.container(border=True):

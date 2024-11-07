@@ -314,3 +314,20 @@ REFLECT ON YOUR ANSWER.
 """
 
 # and reflect on your answer
+
+# message_list = [
+#     {
+#         "role": 'user',
+#         "content": [
+#             {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": get_base64_encoded_image("../images/best_practices/nine_dogs.jpg")}},
+#             {"type": "text", "text": "You have perfect vision and pay great attention to detail which makes you an expert at counting objects in images. How many dogs are in this picture? Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part of the image."}
+#         ]
+#     }
+# ]
+#
+# response = client.messages.create(
+#     model=MODEL_NAME,
+#     max_tokens=2048,
+#     messages=message_list
+# )
+# print(response.content[0].text)
