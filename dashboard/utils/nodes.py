@@ -86,3 +86,27 @@ def show_pagerank_distribution(pagerank_df):
 
     print(fig)
     return fig
+
+def source_connected_nodes(bn_model, node_id):
+    nodes_list = []
+    for edge in bn_model.edges():
+        source_node = edge[0]
+        if source_node == node_id:
+            nodes_list.append(edge[1])
+
+    if nodes_list:
+        return nodes_list
+    else:
+        return None
+
+def target_connected_nodes(bn_model, node_id):
+    nodes_list = []
+    for edge in bn_model.edges():
+        source_node = edge[1]
+        if source_node == node_id:
+            nodes_list.append(edge[0])
+
+    if nodes_list:
+        return nodes_list
+    else:
+        return None

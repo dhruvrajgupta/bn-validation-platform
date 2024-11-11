@@ -50,9 +50,11 @@ def xdsl_to_digraph(xdsl_content: str) -> nx.DiGraph:
 
 def extract_xdsl_content(xdsl_content):
     nodes = {}
+    additional_nodes_contents = None
     xdsl_dict = xmltodict.parse(xdsl_content)
     nodes_contents = xdsl_dict['smile']['nodes']['cpt']
-    additional_nodes_contents = xdsl_dict['smile']['extensions']['genie']['node']
+    if xdsl_dict['smile'].get('extensions'):
+        additional_nodes_contents = xdsl_dict['smile']['extensions']['genie']['node']
 
     if isinstance(nodes_contents, list):
         for node in nodes_contents:
@@ -98,7 +100,7 @@ def extract_xdsl_content(xdsl_content):
                 elif node_color == "ffff00":
                     node_type = 'Examination Result'
                     observability = "Observed"
-                elif node_color == "ff00ff":
+                elif node_color == "ff00ff" or node_color == "cc99ff":
                     node_type = 'Decision Node'
                     observability = "Needs to be Predicted"
                 else:

@@ -29,7 +29,8 @@ def save_to_db_callback(node_id, node_type, node_observability, label, descripti
         st.toast(f"Node: {node_id} added to the Database", icon="✅")
 
 def get_desc_from_gpt(node_id, node_info):
-    prompt = EXTRACT_NODE_DESCRIPTION.format(node_id=node_id, node_type=node_info['node_type'], node_observability=node_info['observability'], states=node_info['states'])
+    prompt = EXTRACT_NODE_DESCRIPTION.format(node_id=node_id, node_type=node_info['node_type'],
+                                             node_observability=node_info['observability'], states=node_info['states'])
 
     gpt_node_info = json.loads(ask_llm_response_schema(prompt, response_format=NodeDescription))
 
@@ -85,6 +86,9 @@ def display_node_descriptions(bn_model, model_type, nodes_contents):
                 st.markdown(f"**TYPE:** `{node_info['node_type']}`")
                 st.markdown(f"**OBSERVABILITY:** `{node_info['observability']}`")
                 st.markdown(f"**STATES:** `{node_info['states']}`")
+                # from utils.nodes import source_connected_nodes, target_connected_nodes
+                # st.markdown(f"**INCOMING EDGES NODES:** `{source_connected_nodes(bn_model, node_info['node_id'])}`")
+                # st.markdown(f"**OUTGOING EDGES NODES:** `{target_connected_nodes(bn_model, node_info['node_id'])}`")
                 label = st.text_input("**Label:**", value=str(node_info["label"]))
                 description = st.text_area("**Description:**", value=str(node_info["description"]), height=250)
                 st.markdown("**Node States & Descriptions**")

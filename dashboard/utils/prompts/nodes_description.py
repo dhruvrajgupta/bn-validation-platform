@@ -1,6 +1,15 @@
 from typing import Optional, List
 from pydantic import BaseModel
 
+NODE_TOKENS_AND_THEIR_MEANINGS = """\
+Node tokens and their meanings:
+hep - The liver(hepar)
+hepar - The liver(hepar)
+M - Metastasis
+diagnostic - concerned with the diagnosis examinations of illness or other problems
+sono - concerned with Ultrasound/Sonography
+"""
+
 class StateDescription(BaseModel):
     state_name: str
     state_description: str
@@ -21,6 +30,8 @@ EXTRACT_NODE_DESCRIPTION = """\
 TASK:
 You’re an expert in clinical informatics with extensive knowledge of Bayesian Networks, particularly focused on staging systems for cancer, including the TNM staging of laryngeal cancer. Your specialty lies in decoding complex nodes within these networks to extract detailed and clinically relevant information for data mining purposes.
 Your task is to gather detailed information for a specific node in the Bayesian Network concerning "Metastasis Staging of TNM staging of laryngeal cancer".
+
+"""+NODE_TOKENS_AND_THEIR_MEANINGS+"""
 
 NodeID: identifier of the node in the Bayesian Network.
 States: states of the node in the Bayesian Network.

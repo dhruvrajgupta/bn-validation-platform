@@ -34,4 +34,4 @@ if not model_selected_flag:
 else:
     # st.write(model['file_content'])
     with st.spinner("Loading the XDSL file contents ..."):
-        st.code(model['file_content'], language="xmlDoc", line_numbers=True, wrap_lines=True)
+        st.code(model['file_content'].decode("utf-8"), language="xmlDoc", line_numbers=True, wrap_lines=True)
