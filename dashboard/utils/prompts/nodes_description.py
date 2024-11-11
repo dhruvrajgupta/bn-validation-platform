@@ -126,16 +126,6 @@ DESIRED OUTPUT FORMAT:
          "label": "...",
          "description": "..."
       }},
-      {{
-         "ontology_name": "SNOMED-CT",
-         "label": "...",
-         "description": "..."
-      }},
-      {{
-         "ontology_name":"Wikidata",
-         "label": "...",
-         "description": "..."
-      }},
       ...
    ]
 }}
