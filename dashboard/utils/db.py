@@ -46,7 +46,7 @@ def get_node_descriptions(node_id):
 
     return node_descriptions.find_one({"node_id": node_id})
 
-def save_node_desc_data(node_id, node_type, node_observability, label, description, node_states_description, entity_information):
+def save_node_desc_data(node_id, node_type, node_observability, label, description, node_states_description, entity_information, thinking):
     db = init_connection()["bn-validation"]
     nodes_desc = db.nodes_descriptions
 
@@ -57,7 +57,8 @@ def save_node_desc_data(node_id, node_type, node_observability, label, descripti
         "label": label,
         "description": description,
         "node_states_description": node_states_description,
-        "entity_information": entity_information
+        "entity_information": entity_information,
+        "thinking": thinking
     }
 
     if nodes_desc.find_one(node_dict):

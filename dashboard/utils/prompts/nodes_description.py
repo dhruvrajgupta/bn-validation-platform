@@ -14,22 +14,18 @@ class StateDescription(BaseModel):
     state_name: str
     state_description: str
 
-class EntityInformation(BaseModel):
-    ontology_name: Optional[str]
-    label: Optional[str]
-    description: Optional[str]
-
 class NodeDescription(BaseModel):
+    thinking: str
     id: str
     label: str
     description: str
     node_states_description: List[StateDescription]
-    entity_information: List[EntityInformation]
 
 EXTRACT_NODE_DESCRIPTION = """\
 TASK:
-You’re an expert in clinical informatics with extensive knowledge of Bayesian Networks, particularly focused on staging systems for cancer, including the TNM staging of laryngeal cancer. Your specialty lies in decoding complex nodes within these networks to extract detailed and clinically relevant information for data mining purposes.
-Your task is to gather detailed information for a specific node in the Bayesian Network concerning "Metastasis Staging of TNM staging of laryngeal cancer".
+You’re an expert in clinical informatics with extensive knowledge of Bayesian Networks, particularly focused on "{model_label}" whose description is "{model_description}". 
+Your specialty lies in decoding complex nodes within these networks to extract detailed and clinically relevant information for data mining purposes.
+Your task is to gather detailed information for a specific node in the given Bayesian Network.
 
 """+NODE_TOKENS_AND_THEIR_MEANINGS+"""
 
@@ -45,10 +41,9 @@ States: `{states}`
 ##########
 INSTRUCTIONS: 
 1. Please provide the following information for the node with ID "`{node_id}`":
-1. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
-2. Do not retrieve the Entity ID of the terms.
-3. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
-4. Output in JSON format.
+label, description, node_states_description, state_name, state_description
+2. The NodeID is composed of node tokens. Node tokens are obtained by splitting the node ID using `_`.
+3. Node label should include all the node tokens meanings.
 
 ##########
 OUTPUT VARIABLES DEFINITIONS:
@@ -57,38 +52,96 @@ description: Describe the clinical meaning and significance of the node, focusin
 node_state_description: A List of states of the node along with its description.
 state_name: Name of the state.
 state_description: Description of the state of the node and what it represents.
-entity_information: 
-For this node, retrieve the following entity information:
-1. MeSH label and description
-2. SNOMED-CT label and description
-3. Wikidata label and description
+
 
 DESIRED OUTPUT FORMAT: 
+<thinking>
+...
+</thinking>
+<answer>
 Provide the information in the following JSON structure:
 {{
+   "thinking": "...",
    "id":"{node_id}",
    "label":"...",
    "description":"...",
    "node_states_description": [
         "state_name": ... ,
         "state_description": ... ,
-   ],
+   ]
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
+
+class EntityInformation(BaseModel):
+    ontology_name: Optional[str]
+    label: Optional[str]
+    description: Optional[str]
+
+class EntityInformationResult(BaseModel):
+    thinking: str
+    entity_information: List[EntityInformation]
+
+ENTITY_INFORMATION = """\
+TASK:
+You’re an expert in clinical informatics with extensive knowledge of Entity Linking.
+
+Node Label: label of the node in the Bayesian Network.
+
+NODE INFORMATION:
+NodeID: `{node_id}`
+Node Label: `{node_label}`
+
+
+##########
+INSTRUCTIONS:
+1. Please provide the following information for the node label "`{node_label}`".
+2. Extract all the important entities in the node label.
+3. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
+4. Do not retrieve the Entity ID of the terms.
+5. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
+6. Each Entity label should have their corresponding descriptions.
+7. Do not output entity information for the Node token 'patient'
+
+For each entity, retrieve the following entity information:
+1. MeSH label and description
+2. SNOMED-CT label and description
+3. Wikidata label and description
+
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "thinking":"...",
    "entity_information":[
       {{
-         "ontology_name":"MeSH",
-         "label":"...",
-         "description":"..."
+         "ontology_name": "MeSH",
+         "label": "...",
+         "description": "..."
       }},
       {{
-         "ontology_name":"SNOMED-CT",
-         "label":"...",
-         "description":"..."
+         "ontology_name": "SNOMED-CT",
+         "label": "...",
+         "description": "..."
       }},
       {{
          "ontology_name":"Wikidata",
-         "label":"...",
-         "description":"..."
-      }}
+         "label": "...",
+         "description": "..."
+      }},
+      ...
    ]
 }}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """
