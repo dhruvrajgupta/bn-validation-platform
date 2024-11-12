@@ -4,7 +4,7 @@ import streamlit as st
 import json
 from pgmpy.factors.discrete.CPD import TabularCPD
 
-from utils.db import get_models, get_model_by_name, get_node_descriptions, save_node_desc_data
+from utils.db import get_models, get_model_by_name, get_node_descriptions, save_node_desc_data, get_distinct_entities
 from utils.file import build_network
 from utils.cpg import ask_llm_response_schema
 from utils.prompts.nodes_description import EXTRACT_NODE_DESCRIPTION, NodeDescription, \
@@ -42,7 +42,12 @@ def get_desc_from_gpt(node_id, node_info, model):
     node_info['description'] = gpt_node_info['description']
     node_info['node_states_description'] = gpt_node_info['node_states_description']
 
-    prompt = ENTITY_INFORMATION.format(node_id=node_id, node_label=node_info['label'])
+    distinct_entities = get_distinct_entities()
+
+    prompt = ENTITY_INFORMATION.format(node_id=node_id, node_label=node_info['label'],
+                                       mesh_entities=distinct_entities["MeSH"],
+                                       snomed_ct_entities=distinct_entities["SNOMED-CT"],
+                                       wikidata_entities=distinct_entities["Wikidata"])
     gpt_entity_info = json.loads(ask_llm_response_schema(prompt, response_format=EntityInformationResult))
     thinking.append(gpt_entity_info['thinking'])
 

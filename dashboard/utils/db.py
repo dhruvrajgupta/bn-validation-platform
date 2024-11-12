@@ -43,8 +43,21 @@ def get_page_info(page_no):
 def get_node_descriptions(node_id):
     db = init_connection()["bn-validation"]
     node_descriptions = db.nodes_descriptions
+    entities = db.entities
 
-    return node_descriptions.find_one({"node_id": node_id})
+    db_entity_objects = []
+
+    node_description = node_descriptions.find_one({"node_id": node_id})
+    if node_description:
+        for ontology_name, entity_list in node_description["entity_information"].items():
+            for entity_id in entity_list:
+                entity = get_entity_by_id(entity_id)
+                del entity["_id"]
+                db_entity_objects.append(entity)
+
+        node_description["entity_information"] = db_entity_objects
+
+    return node_description
 
 def save_node_desc_data(node_id, node_type, node_observability, label, description, node_states_description, entity_information, thinking):
     db = init_connection()["bn-validation"]
@@ -60,6 +73,30 @@ def save_node_desc_data(node_id, node_type, node_observability, label, descripti
         "entity_information": entity_information,
         "thinking": thinking
     }
+
+    new_entities_labels = []
+
+    processed_entity_information = {
+        "MeSH": [],
+        "SNOMED-CT": [],
+        "Wikidata": []
+    }
+
+    for entity in entity_information:
+        # Process Entity Information
+        # 1. Check whether the entity already exists in the db
+        # 2. If present then store the ID
+        # 3. Else create a new entity and store the ID
+        check_entity = search_entity(entity["label"], entity["ontology_name"])
+
+        if check_entity:
+            processed_entity_information[entity["ontology_name"]].append(check_entity["_id"])
+        else:
+            new_entity_id = save_entity(entity)
+            new_entities_labels.append(entity["label"])
+            processed_entity_information[entity["ontology_name"]].append(new_entity_id)
+
+    node_dict["entity_information"] = processed_entity_information
 
     if nodes_desc.find_one(node_dict):
         return "Same"
@@ -214,3 +251,49 @@ def save_edge_rationality(edge, edge_rationality_info):
         return "Updated"
     else:
         return "Added"
+
+
+#### GET DISTINCT ENTITIES ####
+def get_distinct_entities():
+    db = init_connection()["bn-validation"]
+    entities = db.entities
+
+    result = {}
+    query = {"ontology_name": "MeSH"}
+    distinct_labels = entities.distinct("label", query)
+    result["MeSH"] = distinct_labels
+
+    query = {"ontology_name": "SNOMED-CT"}
+    distinct_labels = entities.distinct("label", query)
+    result["SNOMED-CT"] = distinct_labels
+
+    query = {"ontology_name": "Wikidata"}
+    distinct_labels = entities.distinct("label", query)
+    result["Wikidata"] = distinct_labels
+
+    return result
+
+def save_entity(entity):
+    db = init_connection()["bn-validation"]
+    entities = db.entities
+
+    result = entities.insert_one(entity)
+    return result.inserted_id
+
+def search_entity(entity_label, ontology_name):
+    db = init_connection()["bn-validation"]
+    entities = db.entities
+
+    # Performing Search with Case Insensitive
+    return entities.find_one({
+        "label": {"$regex": entity_label, "$options": "i"},
+        "ontology_name": ontology_name
+    })
+
+def get_entity_by_id(id):
+    db = init_connection()["bn-validation"]
+    entities = db.entities
+
+    return entities.find_one({
+        "_id": id
+    })

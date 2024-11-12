@@ -96,16 +96,22 @@ NODE INFORMATION:
 NodeID: `{node_id}`
 Node Label: `{node_label}`
 
+Existing Entity labels:
+MeSH: `{mesh_entities}`
+SNOMED-CT: `{snomed_ct_entities}`
+Wikidata: `{wikidata_entities}`
+
 
 ##########
 INSTRUCTIONS:
 1. Please provide the following information for the node label "`{node_label}`".
 2. Extract all the important entities in the node label.
-3. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
-4. Do not retrieve the Entity ID of the terms.
-5. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
-6. Each Entity label should have their corresponding descriptions.
-7. Do not output entity information for the Node token 'patient'
+3. If the entity labels already exist, then use the existing entity.
+4. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
+5. Do not retrieve the Entity ID of the terms.
+6. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
+7. Each Entity label should have their corresponding descriptions.
+8. Do not output entity information for the Node token 'patient'.
 
 For each entity, retrieve the following entity information:
 1. MeSH label and description
