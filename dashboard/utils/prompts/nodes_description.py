@@ -4,7 +4,6 @@ from pydantic import BaseModel
 NODE_TOKENS_AND_THEIR_MEANINGS = """\
 Node tokens and their meanings:
 hep - The liver(hepar)
-hepar - The liver(hepar)
 M - Metastasis
 diagnostic - concerned with the diagnosis examinations of illness or other problems
 sono - concerned with Ultrasound/Sonography
@@ -44,6 +43,7 @@ INSTRUCTIONS:
 label, description, node_states_description, state_name, state_description
 2. The NodeID is composed of node tokens. Node tokens are obtained by splitting the node ID using `_`.
 3. Node label should include all the node tokens meanings.
+4. The Node label should provide concise information of all information present in the node description.
 
 ##########
 OUTPUT VARIABLES DEFINITIONS:
@@ -77,6 +77,11 @@ Output inside <answer> tag in JSON format. Only output valid JSON.
 DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """
 
+# Existing Entity labels:
+# MeSH: `{mesh_entities}`
+# SNOMED-CT: `{snomed_ct_entities}`
+# Wikidata: `{wikidata_entities}`
+
 class EntityInformation(BaseModel):
     ontology_name: Optional[str]
     label: Optional[str]
@@ -96,16 +101,11 @@ NODE INFORMATION:
 NodeID: `{node_id}`
 Node Label: `{node_label}`
 
-Existing Entity labels:
-MeSH: `{mesh_entities}`
-SNOMED-CT: `{snomed_ct_entities}`
-Wikidata: `{wikidata_entities}`
-
 
 ##########
 INSTRUCTIONS:
 1. Please provide the following information for the node label "`{node_label}`".
-2. Extract all the important entities in the node label.
+2. Extract all the important fine grained specific entities in the node label.
 3. If the entity labels already exist, then use the existing entity.
 4. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
 5. Do not retrieve the Entity ID of the terms.
