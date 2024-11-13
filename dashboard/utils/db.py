@@ -297,3 +297,54 @@ def get_entity_by_id(id):
     return entities.find_one({
         "_id": id
     })
+
+def get_node_entities(node_id):
+    db = init_connection()["bn-validation"]
+    node_descriptions = db.nodes_descriptions
+
+    current_node_description = node_descriptions.find_one({"node_id": node_id})
+
+    if not current_node_description:
+        return None
+    else:
+        return current_node_description["entity_information"]
+
+def get_entities_of_model(bn_model):
+    ont_list = []
+    nodes_list = []
+    ent_id_list = []
+    # ent_label_list = []
+    # ent_desc_lsit = []
+    for node in bn_model.nodes():
+        node_entities_ids_list = get_node_entities(node)
+        # print(node_entities_ids_list)
+        if node_entities_ids_list:
+            for ontology_name, entity_list in node_entities_ids_list.items():
+                # print(ontology_name)
+                # print(entity_list)
+                for entity in entity_list:
+                    nodes_list.append(node)
+                    ont_list.append(ontology_name)
+                    ent_id_list.append(entity)
+                    ent_det = get_entity_by_id(entity)
+                    # ent_label_list.append(ent_det["label"])
+                    # ent_desc_lsit.append(ent_det["description"])
+
+    # print(nodes_list)
+    # print(ent_id_list)
+    # print(ont_list)
+    # print(len(ent_id_list))
+    # print(len(ent_id_list))
+    # print(len(nodes_list))
+
+    data = {
+        "nodes_list": nodes_list,
+        "ontology_name": ont_list,
+        "entity_id": ent_id_list,
+        # "entity_label": ent_label_list,
+        # "entity_desc": ent_desc_lsit
+    }
+
+    result = pd.DataFrame(data=data)
+
+    return result

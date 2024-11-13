@@ -7,6 +7,7 @@ hep - The liver(hepar)
 M - Metastasis
 diagnostic - concerned with the diagnosis examinations of illness or other problems
 sono - concerned with Ultrasound/Sonography
+peri - peritoneum
 """
 
 class StateDescription(BaseModel):

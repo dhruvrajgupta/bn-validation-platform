@@ -1,9 +1,11 @@
 import streamlit as st
 
 from utils.file import xdsl_to_digraph, convert_to_vis_super, build_network
-from utils.db import get_models, get_model_by_name, update_model_label_description, get_node_descriptions
+from utils.db import get_models, get_model_by_name, update_model_label_description, \
+    get_node_descriptions, get_entities_of_model, get_entity_by_id
 from utils.components import frag_edge_cpd_rank
 from utils.edges import edge_schema_validation_check
+from utils.nodes import get_nodes_by_type
 
 #### START OF PAGE
 
@@ -78,7 +80,7 @@ else:
     with st.container(border=True):
         if st.checkbox("Check Node Types"):
             node_type = st.radio("Select Node Type:", ["Patient Situation", "Examination Result", "Decision Node", "Unknown"], index=0, horizontal=True)
-            from utils.nodes import get_nodes_by_type
+
             nodes_by_type = get_nodes_by_type(node_type, nodes_contents)
             st.write(nodes_by_type)
 
@@ -101,23 +103,45 @@ else:
                 else:
                     nodes_not_having_entity.append(node)
 
+            all_entities_of_model_df = get_entities_of_model(bn_model)
+            # st.dataframe(all_entities_of_model_df)
+
             with st.container(border=True):
                 st.markdown("**Nodes having entity information:**")
                 ontology_name = st.radio("Select Ontology Name:", ["MeSH", "SNOMED-CT", "Wikidata"], index=0, horizontal=True)
                 st.markdown("**Selected Ontology Name:** &emsp; " + ontology_name)
 
-                from utils.nodes import get_distinct_entities, get_nodes_by_entity
-                distinct_entities = get_distinct_entities(ontology_name, nodes_having_entity)
+                nodes_with_selected_ontology = all_entities_of_model_df[all_entities_of_model_df["ontology_name"] == ontology_name]
 
-                for entity in distinct_entities:
+                # st.write(nodes_with_selected_ontology)
+
+                distinct_entity_ids = nodes_with_selected_ontology['entity_id'].unique()
+                # distinct_entity_labels = nodes_with_selected_ontology['entity_label'].unique()
+
+                for entity_id in distinct_entity_ids:
                     with st.container(border=True):
-                        st.markdown(f"**Entity Name:** &emsp; {entity}")
-                        st.write(get_nodes_by_entity(entity, nodes_having_entity))
+                        entity_info = get_entity_by_id(entity_id)
+                        # st.write(entity_info)
+                        st.markdown(f"**Entity Name :** &emsp; {entity_info['label']}")
+                        st.markdown(f"**Entity Description :** &emsp; {entity_info['description']}")
 
-                for node_desc in nodes_having_entity:
-                    st.markdown(f"**{node_desc['node_id']}**")
-                    for entity_info in node_desc['entity_information']:
-                        st.markdown(f"- **{entity_info['ontology_name']} :** {entity_info['label']}")
+                        nodes_with_current_entity = nodes_with_selected_ontology[nodes_with_selected_ontology['entity_id'] == entity_id]
+                        st.write(list(nodes_with_current_entity['nodes_list']))
+
+                # from utils.nodes import get_distinct_entities, get_nodes_by_entity
+                # from utils.db import get_distinct_entities
+                # distinct_entities = get_distinct_entities()
+
+
+                # for entity in distinct_entities:
+                #     with st.container(border=True):
+                #         st.markdown(f"**Entity Name:** &emsp; {entity}")
+                #         st.write(get_nodes_by_entity(entity, nodes_having_entity))
+
+                # for node_desc in nodes_having_entity:
+                #     st.markdown(f"**{node_desc['node_id']}**")
+                #     for entity_info in node_desc['entity_information']:
+                #         st.markdown(f"- **{entity_info['ontology_name']} :** {entity_info['label']}")
 
             with st.container(border=True):
                 st.markdown("**Nodes not having entity information:**")

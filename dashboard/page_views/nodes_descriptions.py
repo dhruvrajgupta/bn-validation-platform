@@ -42,12 +42,12 @@ def get_desc_from_gpt(node_id, node_info, model):
     node_info['description'] = gpt_node_info['description']
     node_info['node_states_description'] = gpt_node_info['node_states_description']
 
-    distinct_entities = get_distinct_entities()
+    # distinct_entities = get_distinct_entities()
 
-    prompt = ENTITY_INFORMATION.format(node_id=node_id, node_label=node_info['label'],
-                                       mesh_entities=distinct_entities["MeSH"],
-                                       snomed_ct_entities=distinct_entities["SNOMED-CT"],
-                                       wikidata_entities=distinct_entities["Wikidata"])
+    prompt = ENTITY_INFORMATION.format(node_id=node_id, node_label=node_info['label'])
+                                    #    mesh_entities=distinct_entities["MeSH"],
+                                    #    snomed_ct_entities=distinct_entities["SNOMED-CT"],
+                                    #    wikidata_entities=distinct_entities["Wikidata"])
     gpt_entity_info = json.loads(ask_llm_response_schema(prompt, response_format=EntityInformationResult))
     thinking.append(gpt_entity_info['thinking'])
 
@@ -105,7 +105,7 @@ def display_node_descriptions(bn_model, model_type, nodes_contents):
                 st.markdown(f"**STATES:** `{node_info['states']}`")
 
                 if node_info.get('thinking', None):
-                    with st.expander("**LLM Thinking ...**"):
+                    with st.expander("**LLM Thinking ...**", icon="💡"):
                         for thinking in node_info['thinking']:
                             st.info(thinking)
 
