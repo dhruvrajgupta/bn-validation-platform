@@ -3,7 +3,7 @@ import streamlit as st
 from utils.file import xdsl_to_digraph, convert_to_vis_super, build_network
 from utils.db import get_models, get_model_by_name, update_model_label_description, \
     get_node_descriptions, get_entities_of_model, get_entity_by_id
-from utils.components import frag_edge_cpd_rank
+from utils.components import frag_edge_cpd_rank, frag_g_test
 from utils.edges import edge_schema_validation_check
 from utils.nodes import get_nodes_by_type
 
@@ -46,9 +46,7 @@ else:
     with st.container(border=True):
         # 1. Using Dataset stats (G-Test)
         if st.checkbox("Compute Edge Strength (G-Test)"):
-            # TODO: Link with appropriate Dataset
-            # frag_g_test(nodes_contents, key="gt_g_test")
-            pass
+            frag_g_test(model)
 
         # 2. Using CPDs of the Bayesian Network
         if st.checkbox("Compute Edge Strength (Using CPDs)", key="gt_cpd_rank"):
