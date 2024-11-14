@@ -1,3 +1,5 @@
+import io
+
 import streamlit as st
 import pymongo
 import gridfs
@@ -218,6 +220,14 @@ def get_model_by_name(name):
     ## Get nodes content
     nodes_content = fs.get(model["nodes_content_id"]).read()
     model["nodes_content"] = json.loads(nodes_content)
+
+    ## Get Dataset content
+    if model["dataset_filename"]:
+        dataset_content = fs.get(model["dataset_file"]).read()
+        model["dataset_file"] = dataset_content.decode("utf-8")
+        file_string = io.StringIO(model["dataset_file"])
+        df = pd.read_csv(file_string)
+        model["dataset_file"] = df
 
     return model
 

@@ -16,6 +16,7 @@ comparison = st.Page("page_views/dashboard/comparison.py", title="Comparison")
 new_model = st.Page("page_views/models/new_model.py", title="New Model")
 label_descriptions = st.Page("page_views/models/label_descriptions_nodes_contents.py", title="Label, Descriptions and Nodes Contents")
 file_contents = st.Page("page_views/models/file_contents.py", title="XDSL File Contents")
+dataset = st.Page("page_views/models/dataset.py", title="Dataset")
 
 ## Nodes
 nodes_descriptions = st.Page("page_views/nodes_descriptions.py", title="Nodes Descriptions")
@@ -36,7 +37,7 @@ pg = st.navigation(
     {
         "Instructions Manual": [instructions_manual],
         "Dashboard": [ground_truth_model, work_in_progress_model, comparison],
-        "Models": [new_model, label_descriptions, file_contents],
+        "Models": [new_model, label_descriptions, file_contents, dataset],
         "Nodes Descriptions": [nodes_descriptions],
         "Edge Rationality": [edge_rationality],
         "Previous": [CPG, dashboard, Edges_Rationality, Graphs, Models, Nodes_Descriptions, pdf2html],
