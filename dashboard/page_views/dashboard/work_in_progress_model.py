@@ -51,7 +51,7 @@ else:
 
         # 2. Using CPDs of the Bayesian Network
         if st.checkbox("Compute Edge Strength (Using CPDs)", key="gt_cpd_rank"):
-            frag_edge_cpd_rank(bn_model, key="Ground Truth Model")
+            frag_edge_cpd_rank(bn_model, key="WIP Model")
 
     ##### EDGE SCHEMA VALIDATION CHECK #####
     st.markdown("#### Edge Schema Validation Check")
