@@ -45,6 +45,7 @@ label, description, node_states_description, state_name, state_description
 2. The NodeID is composed of node tokens. Node tokens are obtained by splitting the node ID using `_`.
 3. Node label should include all the node tokens meanings.
 4. The Node label should provide concise information of all information present in the node description.
+5. Do not include the states information in the label.
 
 ##########
 OUTPUT VARIABLES DEFINITIONS:
