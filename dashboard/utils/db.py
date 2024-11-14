@@ -222,7 +222,7 @@ def get_model_by_name(name):
     model["nodes_content"] = json.loads(nodes_content)
 
     ## Get Dataset content
-    if model["dataset_filename"]:
+    if model.get("dataset_filename", None):
         dataset_content = fs.get(model["dataset_file"]).read()
         model["dataset_file"] = dataset_content.decode("utf-8")
         file_string = io.StringIO(model["dataset_file"])
