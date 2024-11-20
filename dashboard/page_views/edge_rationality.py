@@ -3,6 +3,7 @@ import streamlit as st
 from utils.db import get_models, get_model_by_name, get_node_descriptions, get_edge_rationality
 from utils.file import build_network
 from utils.edges import edge_dependency_check
+import streamlit_nested_layout
 
 def display_invalid_edges(bn_model, nodes_contents):
     count = 1
@@ -36,7 +37,79 @@ def display_node_information(node, source_target, edge):
             st.markdown("**No information on the node is available in our database.**")
 
 def get_edge_rationality_from_gpt(edge, model_label, model_description):
-    from utils.cpg import ask_llm
+    from utils.cpg import ask_llm, ask_llm_response_schema
+    from utils.prompts.edge_rationality import EDGE_REPRESENTATION_E1, EDGE_REPRESENTATION_E2, EdgeRepresentation, \
+        LLM_EDGE_ORIENTATION_JUDGEMENT, EdgeOrientationJudgement
+
+    output = {
+        "e1": None,
+        "e2": None
+    }
+
+    source_node_info = get_node_descriptions(edge[0])
+    target_node_info = get_node_descriptions(edge[1])
+
+    prompt = EDGE_REPRESENTATION_E1.format(
+        source_id=source_node_info['node_id'],
+        source_type=source_node_info['type'],
+        source_observability=source_node_info['observability'],
+        source_label=source_node_info['label'],
+        source_description=source_node_info['description'],
+        source_states = source_node_info['node_states_description'],
+        target_id=target_node_info['node_id'],
+        target_type=target_node_info['type'],
+        target_observability=target_node_info['observability'],
+        target_label=target_node_info['label'],
+        target_description=target_node_info['description'],
+        target_states=target_node_info['node_states_description'],
+        model_label=model_label,
+        model_description=model_description
+    )
+
+    import json
+
+    edge_representation1 = json.loads(ask_llm_response_schema(prompt, EdgeRepresentation))
+
+    output["e1"] = edge_representation1
+    # st.write(edge_representation1)
+
+    prompt = EDGE_REPRESENTATION_E2.format(
+        source_id=source_node_info['node_id'],
+        source_type=source_node_info['type'],
+        source_observability=source_node_info['observability'],
+        source_label=source_node_info['label'],
+        source_description=source_node_info['description'],
+        source_states=source_node_info['node_states_description'],
+        target_id=target_node_info['node_id'],
+        target_type=target_node_info['type'],
+        target_observability=target_node_info['observability'],
+        target_label=target_node_info['label'],
+        target_description=target_node_info['description'],
+        target_states=target_node_info['node_states_description'],
+        model_label=model_label,
+        model_description=model_description
+    )
+
+    import json
+
+    edge_representation2 = json.loads(ask_llm_response_schema(prompt, EdgeRepresentation))
+
+    output["e2"] = edge_representation2
+    # st.write(edge_representation2)
+
+    prompt = LLM_EDGE_ORIENTATION_JUDGEMENT.format(
+        e1=edge_representation1,
+        e2=edge_representation2,
+        n1=source_node_info['node_id'],
+        n2=target_node_info['node_id'],
+        verbk="causes"
+    )
+
+    edge_orientation_judgement = json.loads(ask_llm_response_schema(prompt, EdgeOrientationJudgement))
+    output["edge_orientation_judgement"] = edge_orientation_judgement
+
+    return output
+
     from utils.prompts.edge_rationality import EDGE_RATIONALITY
 
     er = {
@@ -232,46 +305,79 @@ def display_edge_rationality(bn_model, model_type, model_label, model_descriptio
                 btn_er_info_gpt = st.button("Get Edge Rationality using GPT", key=f"GPT - {model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})")
 
                 if btn_er_info_gpt:
-                    with st.spinner(f"Extracting Node information for edge '{edge}' ..."):
+                    with st.spinner(f"Extracting Edge information for edge '{edge}' ..."):
                         edge_rationality_info = get_edge_rationality_from_gpt(edge, model_label, model_description)
                         # st.json(edge_rationality_info, expanded=False)
-
-
 
                 if not edge_rationality_info:
                     st.markdown("**No information on the edge rationality is available in our database.**")
                 else:
-                    type = st.radio("Select the type of edge rationality", ("First", "Second", "Third"), key=f"{model_type} - Edge Rationality - Rationality Type ({edge[0]})-->({edge[1]})", horizontal=True)
+                    with st.container(border=True):
+                        st.markdown(f"**E1: {edge_rationality_info['e1']['edge']}**")
+                        with st.expander("**LLM Thinking ...**", icon="💡"):
+                            thought_process = ""
+                            for item, thought in enumerate(edge_rationality_info['e1']['thinking']):
+                                thought_process += f"{item+1}. {thought}\n"
+                            st.info(thought_process)
+                        st.write(f"**Edge Representation:** {edge_rationality_info['e1']['representation']}")
 
-                # with st.container(border=True):
-                    if type == "First":
-                        st.markdown("#### First")
-                        st.markdown(edge_rationality_info["first"])
+                    with st.container(border=True):
+                        st.markdown(f"**E2:** (Reversed) **{edge_rationality_info['e2']['edge']}**")
+                        with st.expander("**LLM Thinking ...**", icon="💡"):
+                            thought_process = ""
+                            for item, thought in enumerate(edge_rationality_info['e2']['thinking']):
+                                thought_process += f"{item + 1}. {thought}\n"
+                            st.info(thought_process)
+                        st.write(f"**Edge Representation:** {edge_rationality_info['e2']['representation']}")
+
+                    with st.container(border=True):
+                        st.markdown("**LLM Judgement for Edge Orientation:**")
+                        with st.expander("**LLM Thinking ...**", icon="💡"):
+                            thought_process = ""
+                            for item, thought in enumerate(edge_rationality_info['edge_orientation_judgement']['thinking']):
+                                thought_process += f"{item + 1}. {thought}\n"
+                            st.info(thought_process)
+                        if edge_rationality_info['edge_orientation_judgement']['answer'] == "A":
+                            msg = "&emsp; **Judgement:** &emsp; Edge orientation is &emsp; **`CORRECT`**\n"
+                            msg += f"\n&emsp; **Correct Edge:** &emsp; **E1**"
+                            st.success(msg, icon="✅")
+                        else:
+                            msg = "&emsp; **Judgement:** &emsp; Edge orientation is &emsp; **`INCORRECT`**\n"
+                            msg += f"\n&emsp; **Correct Edge:** &emsp; **E2**"
+                            st.error(msg, icon="🚫")
+
+
+                #     type = st.radio("Select the type of edge rationality", ("First", "Second", "Third"), key=f"{model_type} - Edge Rationality - Rationality Type ({edge[0]})-->({edge[1]})", horizontal=True)
                 #
-                # edge_rationality_info2 = get_edge_rationality_from_gpt(edge, "second")
-                #
-                # with st.container(border=True):
-                    if type == "Second":
-                        st.markdown("#### Second")
-                        st.markdown(edge_rationality_info["second"][0])
-                        st.markdown("---")
-                        st.markdown(edge_rationality_info["second"][1])
-                #
-                # edge_rationality_info3 = get_edge_rationality_from_gpt(edge, "third")
-                #
-                # with st.container(border=True):
-                    if type == "Third":
-                        st.markdown("#### Third")
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            data = edge_rationality_info["third"][0]
-                            # st.json(data, expanded=True)
-                            display_third_er(data)
-                        with col2:
-                            data = edge_rationality_info["third"][1]
-                            display_third_er(data)
-                            # st.json(edge_rationality_info["third"][1], expanded=True)
-                        # st.json(edge_rationality_info, expanded=False)
+                # # with st.container(border=True):
+                #     if type == "First":
+                #         st.markdown("#### First")
+                #         st.markdown(edge_rationality_info["first"])
+                # #
+                # # edge_rationality_info2 = get_edge_rationality_from_gpt(edge, "second")
+                # #
+                # # with st.container(border=True):
+                #     if type == "Second":
+                #         st.markdown("#### Second")
+                #         st.markdown(edge_rationality_info["second"][0])
+                #         st.markdown("---")
+                #         st.markdown(edge_rationality_info["second"][1])
+                # #
+                # # edge_rationality_info3 = get_edge_rationality_from_gpt(edge, "third")
+                # #
+                # # with st.container(border=True):
+                #     if type == "Third":
+                #         st.markdown("#### Third")
+                #         col1, col2 = st.columns(2)
+                #         with col1:
+                #             data = edge_rationality_info["third"][0]
+                #             # st.json(data, expanded=True)
+                #             display_third_er(data)
+                #         with col2:
+                #             data = edge_rationality_info["third"][1]
+                #             display_third_er(data)
+                #             # st.json(edge_rationality_info["third"][1], expanded=True)
+                #         # st.json(edge_rationality_info, expanded=False)
                     st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[edge, edge_rationality_info], key=f"Save to DB - {model_type} - Edge Rationality - ({edge[0]}, {edge[1]})")
 
 

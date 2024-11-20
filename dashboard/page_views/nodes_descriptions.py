@@ -44,7 +44,7 @@ def get_desc_from_gpt(node_id, node_info, model):
 
     # distinct_entities = get_distinct_entities()
 
-    prompt = ENTITY_INFORMATION.format(node_id=node_id, node_label=node_info['label'])
+    prompt = ENTITY_INFORMATION.format(node_id=node_id, node_label=node_info['label'], node_states=model["nodes_content"][node_id]["states"])
                                     #    mesh_entities=distinct_entities["MeSH"],
                                     #    snomed_ct_entities=distinct_entities["SNOMED-CT"],
                                     #    wikidata_entities=distinct_entities["Wikidata"])

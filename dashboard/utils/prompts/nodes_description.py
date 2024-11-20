@@ -50,7 +50,7 @@ label, description, node_states_description, state_name, state_description
 ##########
 OUTPUT VARIABLES DEFINITIONS:
 label: Provide a clinically relevant label that describes the node.
-description: Describe the clinical meaning and significance of the node, focusing on how it relates to the context of Metastasis Staging of TNM Staging of laryngeal cancer in details. Describe the methods used to determine the node.
+description: Describe the clinical meaning and significance of the node. Describe the methods used to determine the node.
 node_state_description: A List of states of the node along with its description.
 state_name: Name of the state.
 state_description: Description of the state of the node and what it represents.
@@ -93,6 +93,8 @@ class EntityInformationResult(BaseModel):
     thinking: str
     entity_information: List[EntityInformation]
 
+# Node States: `{node_states}`
+
 ENTITY_INFORMATION = """\
 TASK:
 You’re an expert in clinical informatics with extensive knowledge of Entity Linking.
@@ -108,12 +110,11 @@ Node Label: `{node_label}`
 INSTRUCTIONS:
 1. Please provide the following information for the node label "`{node_label}`".
 2. Extract all the important fine grained specific entities in the node label.
-3. If the entity labels already exist, then use the existing entity.
-4. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
-5. Do not retrieve the Entity ID of the terms.
-6. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
-7. Each Entity label should have their corresponding descriptions.
-8. Do not output entity information for the Node token 'patient'.
+3. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
+4. Do not retrieve the Entity ID of the terms.
+5. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
+6. Each Entity label should have their corresponding descriptions.
+7. Do not output entity information for the Node token 'patient'.
 
 For each entity, retrieve the following entity information:
 1. MeSH label and description

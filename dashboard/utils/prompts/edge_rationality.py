@@ -331,3 +331,132 @@ REFLECT ON YOUR ANSWER.
 #     messages=message_list
 # )
 # print(response.content[0].text)
+
+class EdgeRepresentation(BaseModel):
+    edge: str
+    thinking: List[str]
+    representation: str
+
+EDGE_REPRESENTATION_E1 = """\
+You are an expert clinician on the "{model_label}" whose description is "{model_description}". 
+Your task is to understand what the edge {source_id} causes {target_id} represents. 
+Use the provided details of {source_id} and {target_id} nodes. 
+
+NODE 1: 
+id: `{source_id}`
+type: `{source_type}`
+observability: `{source_observability}`
+label: `{source_label}`
+description: `{source_description}`
+node_states: 
+`{source_states}`
+
+NODE 2:
+id: `{target_id}`
+type: `{target_type}`
+observability: `{target_observability}`
+label: `{target_label}`
+description: `{target_description}`
+node_states: 
+`{target_states}`
+
+##########
+OUTPUT VARIABLES DEFINITTIONS:
+representation: meaning of the edge representation and its description.
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "edge": "`{source_id}` causes `{target_id}`",
+   "thinking": ["...", ...],
+   "representation":"..."
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
+
+# REVERSE OF E1
+EDGE_REPRESENTATION_E2 = """\
+You are an expert clinician on the "{model_label}" whose description is "{model_description}". 
+Your task is to understand what the edge {target_id} causes {source_id} represents. 
+Use the provided details of {target_id} and {source_id} nodes. 
+
+NODE 1: 
+id: `{target_id}`
+type: `{target_type}`
+observability: `{target_observability}`
+label: `{target_label}`
+description: `{target_description}`
+node_states: 
+`{target_states}`
+
+NODE 2:
+id: `{source_id}`
+type: `{source_type}`
+observability: `{source_observability}`
+label: `{source_label}`
+description: `{source_description}`
+node_states: 
+`{source_states}`
+
+##########
+OUTPUT VARIABLES DEFINITTIONS:
+representation: meaning of the edge representation and its description.
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "edge": "`{target_id}` causes `{source_id}`"
+   "thinking": ["...", ...],
+   "output":"..."
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
+
+class Option(str, Enum):
+    A = "A"
+    B = "B"
+class EdgeOrientationJudgement(BaseModel):
+    thinking: List[str]
+    answer: Option
+
+# Paper: Causal Discovery with Language Models as Imperfect Experts (2023)
+LLM_EDGE_ORIENTATION_JUDGEMENT = """\
+E1: `{e1}`
+E2: `{e2}`
+
+Among these two options which one is the most likely true: 
+
+(A) {n1} {verbk} {n2} 
+(B) {n2} {verbk} {n1} 
+
+The answer is: ...
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "thinking": ["...", ...],
+   "answer": ...
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""

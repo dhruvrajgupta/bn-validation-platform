@@ -34,7 +34,7 @@ if not model_selected_flag:
 else:
     # TODO: Create an option to add dataset to the model
 
-    if model["dataset_filename"]:
+    if model.get("dataset_filename", None):
         st.write(f"**File Name :** &emsp; {model['dataset_filename']}")
         with st.spinner("Loading the Dataset file contents ..."):
             st.dataframe(model["dataset_file"])
