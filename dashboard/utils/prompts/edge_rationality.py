@@ -337,10 +337,16 @@ class EdgeRepresentation(BaseModel):
     thinking: List[str]
     representation: str
 
+# "Unobserved" nodes are evaluated from the results of nodes of type 'Examination Results' which are different diagnostic methods.
+# Emphasis on 'observability' of the node. is very crucial, even tough observability is mentioned in the context
 EDGE_REPRESENTATION_E1 = """\
 You are an expert clinician on the "{model_label}" whose description is "{model_description}". 
 Your task is to understand what the edge {source_id} causes {target_id} represents. 
 Use the provided details of {source_id} and {target_id} nodes. 
+
+Emphasis on 'observability' of both nodes.
+Nodes of type `Examination Results` represent different types of diagnostic methods.
+`Patient Situation` nodes are evaluated from the results of node type `Examination Results`.
 
 NODE 1: 
 id: `{source_id}`
@@ -386,6 +392,10 @@ EDGE_REPRESENTATION_E2 = """\
 You are an expert clinician on the "{model_label}" whose description is "{model_description}". 
 Your task is to understand what the edge {target_id} causes {source_id} represents. 
 Use the provided details of {target_id} and {source_id} nodes. 
+
+Emphasis on 'observability' of both nodes.
+Nodes of type `Examination Results` represent different types of diagnostic methods.
+`Patient Situation` nodes are evaluated from the results of node type `Examination Results`.
 
 NODE 1: 
 id: `{target_id}`
@@ -433,6 +443,7 @@ class EdgeOrientationJudgement(BaseModel):
     thinking: List[str]
     answer: Option
 
+# During reasoning, a greater emphasis should be imposed on the 'observability' of the nodes.
 # Paper: Causal Discovery with Language Models as Imperfect Experts (2023)
 LLM_EDGE_ORIENTATION_JUDGEMENT = """\
 E1: `{e1}`

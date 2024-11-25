@@ -106,8 +106,12 @@ def display_node_descriptions(bn_model, model_type, nodes_contents):
 
                 if node_info.get('thinking', None):
                     with st.expander("**LLM Thinking ...**", icon="💡"):
-                        for thinking in node_info['thinking']:
-                            st.info(thinking)
+                        for thought in node_info['thinking']:
+                            thought_process = ""
+                            if type(thought) is list:
+                                for item, thought_chunk in enumerate(thought):
+                                    thought_process += f"{item+1}. {thought_chunk}\n"
+                            st.info(thought_process)
 
                 # from utils.nodes import source_connected_nodes, target_connected_nodes
                 # st.markdown(f"**INCOMING EDGES NODES:** `{source_connected_nodes(bn_model, node_info['node_id'])}`")

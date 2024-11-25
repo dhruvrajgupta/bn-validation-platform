@@ -2,7 +2,7 @@ from openai import OpenAI
 from typing import List
 from enum import Enum
 
-OPENAI_API_KEY="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"
+OPENAI_API_KEY=""
 
 
 from pydantic import BaseModel

@@ -24,6 +24,9 @@ nodes_descriptions = st.Page("page_views/nodes_descriptions.py", title="Nodes De
 ## Edge Rationality
 edge_rationality = st.Page("page_views/edge_rationality.py", title="Edge Rationality")
 
+## Evaluations
+evaluations = st.Page("page_views/evaluations/evaluation.py", title="Evaluations")
+
 ## Previous
 CPG = st.Page("page_views/previous/CPG.py", title="CPG")
 dashboard = st.Page("page_views/previous/dashboard.py", title="Dashboard")
@@ -40,6 +43,7 @@ pg = st.navigation(
         "Models": [new_model, label_descriptions, file_contents, dataset],
         "Nodes Descriptions": [nodes_descriptions],
         "Edge Rationality": [edge_rationality],
+        "Evaluations": [evaluations],
         "Previous": [CPG, dashboard, Edges_Rationality, Graphs, Models, Nodes_Descriptions, pdf2html],
     }
 )

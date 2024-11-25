@@ -342,7 +342,7 @@ def display_edge_rationality(bn_model, model_type, model_label, model_descriptio
                             msg += f"\n&emsp; **Correct Edge:** &emsp; **E1**"
                             st.success(msg, icon="✅")
                         else:
-                            msg = "&emsp; **Judgement:** &emsp; Edge orientation is &emsp; **`INCORRECT`**\n"
+                            msg = "&emsp; **Judgement:** &emsp; **E1** &emsp; Edge orientation is &emsp; **`INCORRECT`**\n"
                             msg += f"\n&emsp; **Correct Edge:** &emsp; **E2**"
                             st.error(msg, icon="🚫")
 
