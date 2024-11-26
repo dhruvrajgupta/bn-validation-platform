@@ -175,3 +175,14 @@ def ask_llm_response_schema(prompt: str, response_format: BaseModel):
     # print(response)
 
     return llm_response
+
+
+def extract_response(response):
+    import re
+    import json
+    answer_res = r"<answer>(.*?)</answer>"
+    thinking_res = r"<thinking>(.*?)</thinking>"
+    answer_matches = re.findall(answer_res, response, re.DOTALL)
+    thinking_matches = re.findall(thinking_res, response, re.DOTALL)
+
+    return json.loads(answer_matches[0]), thinking_matches[0]
