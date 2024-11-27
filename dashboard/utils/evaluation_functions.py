@@ -18,6 +18,18 @@ from math import exp
 dataset = []
 evaluation_data = []
 
+def format_reasoning(evaluation_data):
+    for id, evaluation_data_item in enumerate(evaluation_data):
+        list_reasoning = evaluation_data_item.get("reasoning")
+        # st.write(list_reasoning)
+        if list_reasoning:
+            formatted_reasoning = ""
+            for step, reason in enumerate(list_reasoning):
+                formatted_reasoning += f"{step + 1}. {reason}\n"
+            evaluation_data[id]["reasoning"] = formatted_reasoning
+
+    return evaluation_data
+
 def create_dataset(incorrect_edges, prompt_template):
     # We are reversing the edges for evaluation
     for id, edge in enumerate(incorrect_edges):
@@ -31,8 +43,6 @@ def create_dataset(incorrect_edges, prompt_template):
         }
         dataset.append(data)
         evaluation_data.append(data)
-
-    return dataset
 
 class Option(str, Enum):
     A = "A"
@@ -126,28 +136,12 @@ def baseline_only_node_id_causes(incorrect_edges):
         scorers=[edge_judgement_scorer]
     )
 
-    with st.spinner("Evaluating Edges only using Node identifiers ..."):
-        evaluation_scorer_summary = asyncio.run(evaluation.evaluate(model))
-        for id, evaluation_data_item in enumerate(evaluation_data):
-            list_reasoning = evaluation_data_item.get("reasoning")
-            if list_reasoning:
-                formatted_reasoning = ""
-                for step, reason in enumerate(list_reasoning):
-                    formatted_reasoning += f"{step+1}. {reason}\n"
-                evaluation_data[id]["reasoning"] = formatted_reasoning
-        st.data_editor(
-            evaluation_data,
-            disabled=True,
-            column_config={
-                "prompt": st.column_config.TextColumn(
-                    width="medium"
-                ),
-                "reasoning": st.column_config.TextColumn(
-                    width="medium"
-                ),
-            },
-        )
+    evaluation_scorer_summary = asyncio.run(evaluation.evaluate(model))
 
-        st.markdown("**Evaluation Summary:**")
-        st.data_editor(evaluation_scorer_summary, disabled=True)
-        st.json(evaluation_scorer_summary, expanded=False)
+    eval_res_dict = {
+        # "dataset": dataset,
+        "eval_scorer_summary": evaluation_scorer_summary,
+        "evaluation_data": format_reasoning(evaluation_data)
+    }
+
+    return eval_res_dict

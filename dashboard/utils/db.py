@@ -358,3 +358,44 @@ def get_entities_of_model(bn_model):
     result = pd.DataFrame(data=data)
 
     return result
+
+
+#### EVALUATIONS ####
+def get_evaluation(name, model):
+    db = init_connection()["bn-validation"]
+    evaluations = db.evaluations
+
+    current_evaluation = evaluations.find_one(
+        {
+            "name": name,
+            "model_name": model
+        })
+
+    if not current_evaluation:
+        return {}
+    else:
+        return current_evaluation
+
+def save_evaluation(name, model_name, eval_res_dict):
+    db = init_connection()["bn-validation"]
+    evaluations = db.evaluations
+
+    eval_dict = {
+        "name": name,
+        "model_name": model_name,
+        "eval_result": eval_res_dict
+    }
+
+    if evaluations.find_one(eval_dict):
+        return "Same"
+
+    result = evaluations.replace_one(
+        {"name": name, "model_name": model_name},
+        eval_dict,
+        upsert=True
+    )
+
+    if result.matched_count > 0:
+        return "Updated"
+    else:
+        return "Added"
