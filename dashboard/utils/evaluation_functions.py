@@ -123,7 +123,7 @@ def edge_judgement_scorer(id, output):
     evaluation_data[id]["answer_choice_probablities"] = output["answer_choice_probablities"]
     return output["answer"] == dataset[id]["correct"]
 
-def baseline_only_node_id_causes(incorrect_edges):
+def baseline_only_node_id_causes(incorrect_edges, eval_name):
 
     create_dataset(incorrect_edges, ONLY_NODE_ID)
     weave.init('bnv_N_staging')
@@ -131,7 +131,7 @@ def baseline_only_node_id_causes(incorrect_edges):
     model = EvaluationModel(model_name='gpt-4o-mini')
 
     evaluation = weave.Evaluation(
-        name="only_node_id",
+        name=eval_name,
         dataset=dataset,
         scorers=[edge_judgement_scorer]
     )

@@ -7,6 +7,8 @@ from utils.db import get_model_by_name, save_evaluation, get_evaluation
 from utils.file import build_network
 from utils.edges import edge_dependency_check
 
+from utils.evaluation_functions import baseline_only_node_id_causes
+
 correct_edges = []
 incorrect_edges = []
 
@@ -18,6 +20,45 @@ def save_to_db_callback(eval_name, model_name, eval_res_dict):
         st.toast(f"Evaluation: `{eval_name}` of `{model_name}` updated in the Database", icon="⚓")
     elif status == "Added":
         st.toast(f"Evaluation: `{eval_name}` of `{model_name}` added to the Database", icon="✅")
+
+def trigger_evaluation(function_name, evaluation_name):
+    with st.container(border=True):
+        st.markdown(f"**Evaluation ID:** `{evaluation_name}`")
+
+        # Check Evaluation present in the database
+        evaluation = get_evaluation(evaluation_name, model_name)
+
+        if not evaluation:
+            st.markdown("**Evaluation not present in database**")
+
+        btn_run_eval = st.button("Run Evaluation",
+                                 key=f"Run Evaluation - {evaluation_name} - {model_name}")
+
+        if btn_run_eval:
+            with st.spinner("Evaluating Edges only using Node identifiers ..."):
+
+                eval_res_dict = function_name(incorrect_edges, evaluation_name)
+                evaluation["eval_result"] = eval_res_dict
+
+        if evaluation:
+            st.markdown("**Evaluation Result:**")
+            # st.json(evaluation, expanded=False)
+            st.data_editor(
+                evaluation["eval_result"]["evaluation_data"],
+                disabled=True,
+                column_config={
+                    "prompt": st.column_config.TextColumn(width="medium"),
+                    "reasoning": st.column_config.TextColumn(width="medium"),
+                },
+            )
+            st.markdown("**Evaluation Summary:**")
+            st.data_editor(evaluation["eval_result"]["eval_scorer_summary"], disabled=True)
+            # st.json(eval_res_dict["eval_scorer_summary"], expanded=False)
+
+            # Save to Database
+            st.button("Save to Database", type="primary", on_click=save_to_db_callback,
+                      args=[evaluation_name, model_name, evaluation["eval_result"]],
+                      key=f"Save to DB - {evaluation_name} - {model_name}")
 
 def display_valid_edges(model):
     edges = model.edges()
@@ -71,42 +112,8 @@ else:
         display_valid_edges(reversed_bn)
 
 
+    #### USING ONLY NODE IDENTIFIERS AND CAUSAL RELATION (CAUSES) ####
     if st.checkbox("Only using Node Identifiers and causal verb `causes`"):
-        evaluation_name = "baseline_only_node_identifiers_causes"
-        with st.container(border=True):
-            st.markdown(f"**Evaluation ID:** `{evaluation_name}`")
-
-            # Check Evaluation present in the database
-            evaluation = get_evaluation(evaluation_name, model_name)
-
-            if not evaluation:
-                st.markdown("**Evaluation not present in database**")
-
-            btn_run_eval = st.button("Run Evaluation",
-                                        key=f"Run Evaluation - {evaluation_name} - {model_name}")
-
-            if btn_run_eval:
-                with st.spinner("Evaluating Edges only using Node identifiers ..."):
-                    from utils.evaluation_functions import baseline_only_node_id_causes
-                    eval_res_dict = baseline_only_node_id_causes(incorrect_edges)
-                    evaluation["eval_result"] = eval_res_dict
-
-            if evaluation:
-                st.markdown("**Evaluation Result:**")
-                # st.json(evaluation, expanded=False)
-                st.data_editor(
-                    evaluation["eval_result"]["evaluation_data"],
-                   disabled=True,
-                   column_config={
-                       "prompt": st.column_config.TextColumn(width="medium"),
-                       "reasoning": st.column_config.TextColumn(width="medium"),
-                       },
-                   )
-                st.markdown("**Evaluation Summary:**")
-                st.data_editor(evaluation["eval_result"]["eval_scorer_summary"], disabled=True)
-                # st.json(eval_res_dict["eval_scorer_summary"], expanded=False)
-
-                # Save to Database
-                st.button("Save to Database", type="primary", on_click=save_to_db_callback,
-                          args=[evaluation_name, model_name, evaluation["eval_result"]],
-                          key=f"Save to DB - {evaluation_name} - {model_name}")
+        evaluation_name = "baseline_only_node_id_causes"
+        evaluation_function = baseline_only_node_id_causes
+        trigger_evaluation(evaluation_function, evaluation_name)
