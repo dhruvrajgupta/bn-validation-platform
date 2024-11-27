@@ -5,6 +5,7 @@ services:
     command: streamlit run dashboard/entrypoint.py
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - WANDB_API_KEY=${WANDB_API_KEY}
     volumes:
         - ./:/usr/src/app
     ports:

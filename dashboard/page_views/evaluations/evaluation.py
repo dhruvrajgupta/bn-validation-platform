@@ -3,7 +3,7 @@
 ## TODO: Run the script individual, right now it triggers with streamlit run
 import streamlit as st
 
-from utils.db import get_model_by_name, get_models
+from utils.db import get_model_by_name
 from utils.file import build_network
 from utils.edges import edge_dependency_check
 
@@ -60,3 +60,8 @@ else:
     with st.container(border=True):
         st.markdown("**Valid Edges based on Edge Dependencies schema**")
         display_valid_edges(reversed_bn)
+
+    if st.checkbox("Only using Node Identifiers and causal verb `causes`"):
+        with st.container(border=True):
+            from utils.evaluation_functions import baseline_only_node_id_causes
+            baseline_only_node_id_causes(incorrect_edges)
