@@ -361,14 +361,15 @@ def get_entities_of_model(bn_model):
 
 
 #### EVALUATIONS ####
-def get_evaluation(name, model):
+def get_evaluation(name, model, llm_model_name):
     db = init_connection()["bn-validation"]
     evaluations = db.evaluations
 
     current_evaluation = evaluations.find_one(
         {
             "name": name,
-            "model_name": model
+            "model_name": model,
+            "llm_model_name": llm_model_name
         })
 
     if not current_evaluation:
@@ -376,13 +377,14 @@ def get_evaluation(name, model):
     else:
         return current_evaluation
 
-def save_evaluation(name, model_name, eval_res_dict):
+def save_evaluation(name, model_name, llm_model_name, eval_res_dict):
     db = init_connection()["bn-validation"]
     evaluations = db.evaluations
 
     eval_dict = {
         "name": name,
         "model_name": model_name,
+        "llm_model_name": llm_model_name,
         "eval_result": eval_res_dict
     }
 
@@ -390,7 +392,7 @@ def save_evaluation(name, model_name, eval_res_dict):
         return "Same"
 
     result = evaluations.replace_one(
-        {"name": name, "model_name": model_name},
+        {"name": name, "model_name": model_name, "llm_model_name": llm_model_name},
         eval_dict,
         upsert=True
     )

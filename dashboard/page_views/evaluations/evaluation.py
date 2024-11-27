@@ -12,8 +12,8 @@ from utils.evaluation_functions import baseline_only_node_id_causes
 correct_edges = []
 incorrect_edges = []
 
-def save_to_db_callback(eval_name, model_name, eval_res_dict):
-    status = save_evaluation(eval_name, model_name, eval_res_dict)
+def save_to_db_callback(eval_name, model_name, llm_model_name, eval_res_dict):
+    status = save_evaluation(eval_name, model_name, llm_model_name, eval_res_dict)
     if status == "Same":
         st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
     elif status == "Updated":
@@ -25,8 +25,10 @@ def trigger_evaluation(function_name, evaluation_name):
     with st.container(border=True):
         st.markdown(f"**Evaluation ID:** `{evaluation_name}`")
 
+        llm_model_name = st.radio("**LLM Model Name:**", ["gpt-4o-mini", "gpt-4o"], horizontal=True)
+
         # Check Evaluation present in the database
-        evaluation = get_evaluation(evaluation_name, model_name)
+        evaluation = get_evaluation(evaluation_name, model_name, llm_model_name)
 
         if not evaluation:
             st.markdown("**Evaluation not present in database**")
@@ -57,7 +59,7 @@ def trigger_evaluation(function_name, evaluation_name):
 
             # Save to Database
             st.button("Save to Database", type="primary", on_click=save_to_db_callback,
-                      args=[evaluation_name, model_name, evaluation["eval_result"]],
+                      args=[evaluation_name, model_name, llm_model_name, evaluation["eval_result"]],
                       key=f"Save to DB - {evaluation_name} - {model_name}")
 
 def display_valid_edges(model):
