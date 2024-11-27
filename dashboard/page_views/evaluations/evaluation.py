@@ -3,7 +3,7 @@
 ## TODO: Run the script individual, right now it triggers with streamlit run
 import streamlit as st
 
-from utils.db import get_model_by_name, save_evaluation, get_evaluation
+from utils.db import get_model_by_name, save_evaluation, get_evaluation, get_models
 from utils.file import build_network
 from utils.edges import edge_dependency_check
 
@@ -28,13 +28,13 @@ def trigger_evaluation(function_name, evaluation_name):
         llm_model_name = st.radio("**LLM Model Name:**", ["gpt-4o-mini", "gpt-4o"], horizontal=True)
 
         # Check Evaluation present in the database
-        evaluation = get_evaluation(evaluation_name, model_name, llm_model_name)
+        evaluation = get_evaluation(evaluation_name, selected_model_name, llm_model_name)
 
         if not evaluation:
             st.markdown("**Evaluation not present in database**")
 
         btn_run_eval = st.button("Run Evaluation",
-                                 key=f"Run Evaluation - {evaluation_name} - {model_name}")
+                                 key=f"Run Evaluation - {evaluation_name} - {selected_model_name}")
 
         if btn_run_eval:
             with st.spinner("Evaluating Edges only using Node identifiers ..."):
@@ -59,8 +59,8 @@ def trigger_evaluation(function_name, evaluation_name):
 
             # Save to Database
             st.button("Save to Database", type="primary", on_click=save_to_db_callback,
-                      args=[evaluation_name, model_name, llm_model_name, evaluation["eval_result"]],
-                      key=f"Save to DB - {evaluation_name} - {model_name}")
+                      args=[evaluation_name, selected_model_name, llm_model_name, evaluation["eval_result"]],
+                      key=f"Save to DB - {evaluation_name} - {selected_model_name}")
 
 def display_valid_edges(model):
     edges = model.edges()
@@ -91,9 +91,16 @@ def display_valid_edges(model):
 
 st.markdown("#### Evaluations on Modified BN (Reversed Edges of Original Network)")
 
-model_name = "Lymph Node Staging of the TNM Staging of Laryngeal Cancer (WIP)"
-st.markdown(f"**Selected Model: `{model_name}`**")
-model = get_model_by_name(model_name)
+available_models = get_models(type="Ground Truth")
+model_names = [model['name'] for model in available_models]
+
+# selected_model_name = "Lymph Node Staging of the TNM Staging of Laryngeal Cancer (WIP)"
+selected_model_name = st.selectbox("Select a ground truth model", model_names,
+                                     key="Selected GT Model", index=None)
+
+# selected_model_name = "Lymph Node Staging of the TNM Staging of Laryngeal Cancer (WIP)"
+st.markdown(f"**Selected Model: `{selected_model_name}`**")
+model = get_model_by_name(selected_model_name)
 
 if not model:
     st.write("**Please select a Model to run evaluations.**")
