@@ -7,7 +7,7 @@ from utils.db import get_model_by_name, save_evaluation, get_evaluation, get_mod
 from utils.file import build_network
 from utils.edges import edge_dependency_check
 
-from utils.evaluation_functions import baseline_only_node_id_causes
+from utils.evaluation_functions import baseline_only_node_id_causes, baseline_only_node_id_state_names_causes
 
 correct_edges = []
 incorrect_edges = []
@@ -39,7 +39,7 @@ def trigger_evaluation(function_name, evaluation_name):
         if btn_run_eval:
             with st.spinner("Evaluating Edges only using Node identifiers ..."):
 
-                eval_res_dict = function_name(incorrect_edges, evaluation_name)
+                eval_res_dict = function_name(incorrect_edges, evaluation_name, model_bn)
                 evaluation["eval_result"] = eval_res_dict
 
         if evaluation:
@@ -91,12 +91,12 @@ def display_valid_edges(model):
 
 st.markdown("#### Evaluations on Modified BN (Reversed Edges of Original Network)")
 
-available_models = get_models(type="Ground Truth")
+available_models = get_models(type="Work In Progress")
 model_names = [model['name'] for model in available_models]
 
 # selected_model_name = "Lymph Node Staging of the TNM Staging of Laryngeal Cancer (WIP)"
-selected_model_name = st.selectbox("Select a ground truth model", model_names,
-                                     key="Selected GT Model", index=None)
+selected_model_name = st.selectbox("Select a work in progress model", model_names,
+                                     key="Selected WIP Model", index=None)
 
 # selected_model_name = "Lymph Node Staging of the TNM Staging of Laryngeal Cancer (WIP)"
 st.markdown(f"**Selected Model: `{selected_model_name}`**")
@@ -125,4 +125,10 @@ else:
     if st.checkbox("Only using Node Identifiers and causal verb `causes`"):
         evaluation_name = "baseline_only_node_id_causes"
         evaluation_function = baseline_only_node_id_causes
+        trigger_evaluation(evaluation_function, evaluation_name)
+
+    #### USING ONLY NODE IDENTIFIERS,ITS STATE NAMES AND CAUSAL RELATION (CAUSES) ####
+    if st.checkbox("Only using Node Identifiers, State Names and causal verb `causes`"):
+        evaluation_name = "baseline_node_id_state_names_causes"
+        evaluation_function = baseline_only_node_id_state_names_causes
         trigger_evaluation(evaluation_function, evaluation_name)

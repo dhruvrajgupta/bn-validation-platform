@@ -10,6 +10,8 @@ import asyncio
 import numpy as np
 from math import exp
 
+import streamlit as st
+
 # Example
 # dataset = [
 #     {"id": 1, "edge": (), "correct": "B", "incorrect": "A", "prompt": "..."}
@@ -29,20 +31,6 @@ def format_reasoning(evaluation_data):
             evaluation_data[id]["reasoning"] = formatted_reasoning
 
     return evaluation_data
-
-def create_dataset(incorrect_edges, prompt_template):
-    # We are reversing the edges for evaluation
-    for id, edge in enumerate(incorrect_edges):
-        data = {
-            "id": id,
-            "edge": edge,
-            "verb": "causes",
-            "correct": "B",
-            # "incorrect": "A",
-            "prompt": prompt_template.format(n1=edge[0], n2=edge[1], verbk="causes", id=id)
-        }
-        dataset.append(data)
-        evaluation_data.append(data)
 
 class Option(str, Enum):
     A = "A"
@@ -113,8 +101,6 @@ Output inside <answer> tag in JSON format. Only output valid JSON.
 DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """
 
-import streamlit as st
-
 @weave.op()
 def edge_judgement_scorer(id, output):
     evaluation_data[id] = dataset[id]
@@ -123,9 +109,104 @@ def edge_judgement_scorer(id, output):
     evaluation_data[id]["answer_choice_probablities"] = output["answer_choice_probablities"]
     return output["answer"] == dataset[id]["correct"]
 
-def baseline_only_node_id_causes(incorrect_edges, eval_name):
+def baseline_only_node_id_causes(incorrect_edges, eval_name, bn_model):
+
+    def create_dataset(incorrect_edges, prompt_template):
+        # We are reversing the edges for evaluation
+        for id, edge in enumerate(incorrect_edges):
+            data = {
+                "id": id,
+                "edge": edge,
+                "verb": "causes",
+                "correct": "B",
+                # "incorrect": "A",
+                "prompt": prompt_template.format(n1=edge[0], n2=edge[1], verbk="causes", id=id)
+            }
+            dataset.append(data)
+            evaluation_data.append(data)
 
     create_dataset(incorrect_edges, ONLY_NODE_ID)
+    weave.init('bnv_N_staging')
+
+    model = EvaluationModel(model_name='gpt-4o-mini')
+
+    evaluation = weave.Evaluation(
+        name=eval_name,
+        dataset=dataset,
+        scorers=[edge_judgement_scorer]
+    )
+
+    evaluation_scorer_summary = asyncio.run(evaluation.evaluate(model))
+
+    eval_res_dict = {
+        # "dataset": dataset,
+        "eval_scorer_summary": evaluation_scorer_summary,
+        "evaluation_data": format_reasoning(evaluation_data)
+    }
+
+    return eval_res_dict
+
+
+NODE_ID_AND_STATE_NAMES = """\
+NODE 1:
+node_id: {n1}
+states: {n1_states}
+
+NODE 2:
+node_id: {n2}
+states: {n2_states}
+
+Among these two options which one is the most likely true: 
+
+(A) {n1} {verbk} {n2} 
+(B) {n2} {verbk} {n1} 
+
+The answer is: ...
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "thinking": ["...", ...]
+   "answer": ...
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
+
+def baseline_only_node_id_state_names_causes(incorrect_edges, eval_name, bn_model):
+
+    def create_dataset(incorrect_edges, prompt_template):
+        # We are reversing the edges for evaluation
+        for id, edge in enumerate(incorrect_edges):
+            n1 = edge[0]
+            n2 = edge[1]
+            n1_states = bn_model.states[n1]
+            n2_states = bn_model.states[n2]
+            data = {
+                "id": id,
+                "edge": edge,
+                "n1_states": n1_states,
+                "n2_states": n2_states,
+                "verb": "causes",
+                "correct": "B",
+                # "incorrect": "A",
+                "prompt": prompt_template.format(
+                    n1=n1, n2=n2,
+                    n1_states=n1_states, n2_states=n2_states,
+                    verbk="causes",
+                    id=id)
+            }
+            dataset.append(data)
+            evaluation_data.append(data)
+
+    create_dataset(incorrect_edges, NODE_ID_AND_STATE_NAMES)
+
     weave.init('bnv_N_staging')
 
     model = EvaluationModel(model_name='gpt-4o-mini')
