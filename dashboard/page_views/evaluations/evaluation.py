@@ -7,8 +7,6 @@ from utils.db import get_model_by_name, save_evaluation, get_evaluation, get_mod
 from utils.file import build_network
 from utils.edges import edge_dependency_check
 
-from utils.evaluation_functions import baseline_only_node_id_causes, baseline_only_node_id_state_names_causes
-
 correct_edges = []
 incorrect_edges = []
 
@@ -39,7 +37,7 @@ def trigger_evaluation(function_name, evaluation_name):
         if btn_run_eval:
             with st.spinner("Evaluating Edges only using Node identifiers ..."):
 
-                eval_res_dict = function_name(incorrect_edges, evaluation_name, model_bn)
+                eval_res_dict = function_name(incorrect_edges, evaluation_name, llm_model_name, model_bn)
                 evaluation["eval_result"] = eval_res_dict
 
         if evaluation:
@@ -122,13 +120,32 @@ else:
 
 
     #### USING ONLY NODE IDENTIFIERS AND CAUSAL RELATION (CAUSES) ####
-    if st.checkbox("Only using Node Identifiers and causal verb `causes`"):
+    if st.checkbox("**Only using Node Identifiers and causal verb `causes`**"):
         evaluation_name = "baseline_only_node_id_causes"
+        from utils.evaluation_functions import baseline_only_node_id_causes
         evaluation_function = baseline_only_node_id_causes
         trigger_evaluation(evaluation_function, evaluation_name)
 
     #### USING ONLY NODE IDENTIFIERS,ITS STATE NAMES AND CAUSAL RELATION (CAUSES) ####
-    if st.checkbox("Only using Node Identifiers, State Names and causal verb `causes`"):
+    if st.checkbox("**Only using Node Identifiers, State Names and causal verb `causes`**"):
         evaluation_name = "baseline_node_id_state_names_causes"
+        from utils.evaluation_functions import baseline_only_node_id_state_names_causes
         evaluation_function = baseline_only_node_id_state_names_causes
         trigger_evaluation(evaluation_function, evaluation_name)
+
+    list_causal_verbs = [
+        "provokes", "triggers", "causes", "leads to", "induces", "results in",
+        "brings about", "yields", "generates", "initiates", "produces", "stimulates",
+        "instigates", "fosters", "engenders", "promotes", "catalyzes",
+        "gives rise to", "spurs", "sparks"
+    ]
+    if st.checkbox(f"**Only using Node identifiers but different causal verbs: `{list_causal_verbs}`**"):
+        evaluation_name = f"baseline_node_id_causalverb_"
+        with st.container(border=True):
+            selected_causal_verb = st.radio("**Causal Verb:** ", list_causal_verbs, key=evaluation_name, horizontal=True)
+        evaluation_name += selected_causal_verb
+        from utils.evaluation_functions import baseline_only_node_id_causal_verb
+        evaluation_function = baseline_only_node_id_causal_verb
+        trigger_evaluation(evaluation_function, evaluation_name)
+
+

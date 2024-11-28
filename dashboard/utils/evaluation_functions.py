@@ -226,3 +226,74 @@ def baseline_only_node_id_state_names_causes(incorrect_edges, eval_name, bn_mode
     }
 
     return eval_res_dict
+
+
+
+#### EVALUATION WITH NODE ID AND DIFFERENT CAUSAL VERBS
+ONLY_NODE_ID_DIFF_CAUSAL_VERB = """\
+Among these two options which one is the most likely true: 
+
+(A) {n1} {verbk} {n2} 
+(B) {n2} {verbk} {n1} 
+
+The answer is: ...
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "thinking": ["...", ...]
+   "answer": ...
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
+
+def baseline_only_node_id_causal_verb(incorrect_edges, eval_name, llm_model_name, bn_model):
+    causal_verb = eval_name.split("_")[-1]
+
+    def create_dataset(incorrect_edges, prompt_template):
+        # We are reversing the edges for evaluation
+        for id, edge in enumerate(incorrect_edges):
+            n1 = edge[0]
+            n2 = edge[1]
+            data = {
+                "id": id,
+                "edge": edge,
+                "verb": causal_verb,
+                "correct": "B",
+                # "incorrect": "A",
+                "prompt": prompt_template.format(
+                    n1=n1, n2=n2,
+                    verbk=causal_verb,
+                    id=id)
+            }
+            dataset.append(data)
+            evaluation_data.append(data)
+
+    create_dataset(incorrect_edges, ONLY_NODE_ID_DIFF_CAUSAL_VERB)
+
+    weave.init('bnv_N_staging')
+
+    model = EvaluationModel(model_name=llm_model_name)
+
+    evaluation = weave.Evaluation(
+        name=eval_name,
+        dataset=dataset,
+        scorers=[edge_judgement_scorer]
+    )
+
+    evaluation_scorer_summary = asyncio.run(evaluation.evaluate(model))
+
+    eval_res_dict = {
+        # "dataset": dataset,
+        "eval_scorer_summary": evaluation_scorer_summary,
+        "evaluation_data": format_reasoning(evaluation_data)
+    }
+
+    return eval_res_dict
