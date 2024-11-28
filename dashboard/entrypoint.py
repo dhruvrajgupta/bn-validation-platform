@@ -2,7 +2,45 @@ import streamlit as st
 
 st.set_page_config(layout="wide")
 
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+def login():
+    with st.container(border=True):
+        placeholder = st.empty()
+
+        # Insert a form in the container
+        with placeholder.form("login"):
+            st.markdown("#### Enter your credentials")
+            email = st.text_input("Email")
+            password = st.text_input("Password", type="password")
+            submit = st.form_submit_button("Login")
+
+        from utils.db import get_user
+        if submit and get_user(email) and password==get_user(email)["password"]:
+            placeholder.empty()
+            st.success("Login successful")
+            st.session_state.logged_in = True
+            st.rerun()
+        elif submit and get_user(email) and password!=get_user(email)["password"]:
+            st.error("Login failed")
+        elif submit and email is "" or password is "":
+            st.error("Login failed")
+        elif submit and get_user(email) is None:
+            st.error("Login failed")
+        else:
+            pass
+
+def logout():
+    # if st.button("Log out"):
+    st.session_state.logged_in = False
+    st.rerun()
+
 ##### Pages
+
+# Login
+login_page = st.Page(login, title="Log in", icon=":material/login:")
+logout_page = st.Page(logout, title="Log out", icon=":material/logout:")
 
 ## Instructions Manual
 instructions_manual = st.Page("page_views/instructions_manual.py", title="Instructions Manual", default=True)
@@ -36,16 +74,20 @@ Models = st.Page("page_views/previous/Models.py", title="Models")
 Nodes_Descriptions = st.Page("page_views/previous/Nodes_Descriptions.py", title="Nodes Descriptions")
 pdf2html = st.Page("page_views/previous/pdf2html.py", title="PDF2HTML")
 
-pg = st.navigation(
-    {
-        "Instructions Manual": [instructions_manual],
-        "Dashboard": [ground_truth_model, work_in_progress_model, comparison],
-        "Models": [new_model, label_descriptions, file_contents, dataset],
-        "Nodes Descriptions": [nodes_descriptions],
-        "Edge Rationality": [edge_rationality],
-        "Evaluations": [evaluations],
-        "Previous": [CPG, dashboard, Edges_Rationality, Graphs, Models, Nodes_Descriptions, pdf2html],
-    }
-)
+if st.session_state.logged_in:
+    pg = st.navigation(
+        {
+            "Instructions Manual": [instructions_manual],
+            "Dashboard": [ground_truth_model, work_in_progress_model, comparison],
+            "Models": [new_model, label_descriptions, file_contents, dataset],
+            "Nodes Descriptions": [nodes_descriptions],
+            "Edge Rationality": [edge_rationality],
+            "Evaluations": [evaluations],
+            "Logout": [logout_page],
+            "Previous": [CPG, dashboard, Edges_Rationality, Graphs, Models, Nodes_Descriptions, pdf2html],
+        }
+    )
+else:
+    pg = st.navigation([login_page])
 
 pg.run()

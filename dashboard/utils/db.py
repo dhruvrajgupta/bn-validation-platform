@@ -11,6 +11,13 @@ import json
 def init_connection():
     return pymongo.MongoClient(**st.secrets["mongo"])
 
+#### USER ####
+def get_user(username):
+    db = init_connection()["bn-validation"]
+    users = db.users
+
+    return users.find_one({"username": username})
+
 #### FOR GUIDELINES PAGES ####
 def save_page_sections_data(page_no, page_section_data):
     db = init_connection()["bn-validation"]
