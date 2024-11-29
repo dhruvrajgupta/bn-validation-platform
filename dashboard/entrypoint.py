@@ -17,14 +17,14 @@ def login():
             submit = st.form_submit_button("Login")
 
         from utils.db import get_user
-        if submit and get_user(email) and password==get_user(email)["password"]:
+        if submit and get_user(email) and password == get_user(email)["password"]:
             placeholder.empty()
             st.success("Login successful")
             st.session_state.logged_in = True
             st.rerun()
-        elif submit and get_user(email) and password!=get_user(email)["password"]:
+        elif submit and get_user(email) and password != get_user(email)["password"]:
             st.error("Login failed")
-        elif submit and email is "" or password is "":
+        elif submit and email == "" or password == "":
             st.error("Login failed")
         elif submit and get_user(email) is None:
             st.error("Login failed")
