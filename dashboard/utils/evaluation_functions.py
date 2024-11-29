@@ -56,7 +56,8 @@ class EvaluationModel(weave.Model):
             response_format=EdgeOrientationJudgement,
             temperature=0,
             logprobs=True,
-            top_logprobs=3,
+            # top_logprobs=3,
+            seed=123
         )
         result = response.choices[0].message.content
 
@@ -66,13 +67,13 @@ class EvaluationModel(weave.Model):
             # "C": None
         }
 
-        import numpy as np
-        from math import exp
-        for token in response.choices[0].logprobs.content[-2].top_logprobs:
-            print("Token:", token.token)
-            print("Log prob:", token.logprob)
-            print("Linear prob:", np.round(exp(token.logprob) * 100, 2), "%")
-            print("Bytes:", token.bytes, "\n")
+        # import numpy as np
+        # from math import exp
+        # for token in response.choices[0].logprobs.content[-2].top_logprobs:
+        #     print("Token:", token.token)
+        #     print("Log prob:", token.logprob)
+        #     print("Linear prob:", np.round(exp(token.logprob) * 100, 2), "%")
+        #     print("Bytes:", token.bytes, "\n")
 
             # if token.token == "A":
             #     answer_choice_probablities["A"] = np.round(exp(token.logprob) * 100, 2)
@@ -239,12 +240,16 @@ def baseline_only_node_id_causal_verb(incorrect_edges, eval_name, llm_model_name
 
     def create_dataset(incorrect_edges, prompt_template):
         # We are reversing the edges for evaluation
-        for id, edge in enumerate(incorrect_edges):
+        for id, edge_item in enumerate(incorrect_edges):
+            schema_dep_valid = edge_item["schema_dep_validity"]
+            edge = edge_item["edge"]
             n1 = edge[0]
             n2 = edge[1]
             data = {
                 "id": id,
+                "llm_model_name": llm_model_name,
                 "edge": edge,
+                "schema_dep_validity": schema_dep_valid,
                 "verb": causal_verb,
                 "correct": "B",
                 # "incorrect": "A",
@@ -264,7 +269,7 @@ def baseline_only_node_id_causal_verb(incorrect_edges, eval_name, llm_model_name
 
     evaluation = weave.Evaluation(
         name=eval_name,
-        dataset=dataset,
+        dataset=dataset[:2],
         scorers=[edge_judgement_scorer]
     )
 

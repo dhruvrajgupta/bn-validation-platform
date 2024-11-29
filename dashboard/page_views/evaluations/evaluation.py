@@ -2,11 +2,13 @@
 
 ## TODO: Run the script individual, right now it triggers with streamlit run
 import streamlit as st
+from attr.validators import disabled
 
 from utils.db import get_model_by_name, save_evaluation, get_evaluation, get_models
 from utils.file import build_network
 from utils.edges import edge_dependency_check
 
+# Table for correct edges and incorrect edges along with indicaation of rule based schema valid/invalid
 correct_edges = []
 incorrect_edges = []
 
@@ -29,10 +31,6 @@ def save_to_db_callback(eval_name, model_name, llm_model_name, eval_res_dict):
 def trigger_evaluation(function_name, evaluation_name):
     with st.container(border=True):
         st.markdown(f"**Evaluation ID:** `{evaluation_name}`")
-
-        # with st.container(border=True):
-        selected_causal_verb = st.radio("**Causal Verb:** ", list_causal_verbs, key=evaluation_name, horizontal=True)
-        evaluation_name += selected_causal_verb
 
         llm_model_name = st.radio("**LLM Model Name:**", ["gpt-4o-mini", "gpt-4o"], horizontal=True, key=f"LLM Radio - {evaluation_name}")
 
@@ -60,6 +58,7 @@ def trigger_evaluation(function_name, evaluation_name):
                 column_config={
                     "prompt": st.column_config.TextColumn(width="medium"),
                     "reasoning": st.column_config.TextColumn(width="medium"),
+                    "schema_dep_validity": st.column_config.TextColumn(width="small"),
                 },
                 key=f"{evaluation_name} - {llm_model_name} - Detailed Evaluation"
             )
@@ -74,28 +73,47 @@ def trigger_evaluation(function_name, evaluation_name):
                       key=f"Save to DB - {evaluation_name} - {selected_model_name}")
 
 def display_valid_edges(model):
+    # The model here is Reversed Model
     edges = model.edges()
-    for edge in edges:
+    for id, edge in enumerate(edges):
         # Only consider edges that have passed rule based validation checks
-        if not edge_dependency_check(edge, nodes_contents):
-            continue
 
-        incorrect_edges.append(edge)
-        correct_edges.append((edge[1],edge[0]))
+        incorrect_edge_dict = {
+            "id": id,
+            "edge": edge,
+            "schema_dep_validity": "valid" if edge_dependency_check(edge, nodes_contents) else "invalid"
+        }
+
+        correct_edge_dict = {
+            "id": id,
+            "edge": (edge[1], edge[0]),
+            "schema_dep_validity": "valid" if edge_dependency_check((edge[1], edge[0]), nodes_contents) else "invalid"
+        }
+
+        # st.table(edge_dict)
+
+        # if not edge_dependency_check(edge, nodes_contents):
+        #
+        #     continue
+
+        incorrect_edges.append(incorrect_edge_dict)
+        correct_edges.append(correct_edge_dict)
 
     col1, col2 = st.columns(2)
 
     with col1:
-        with st.container(border=True):
-            st.markdown("**Incorrect Edges:**")
-            for inc_e in incorrect_edges:
-                st.write(inc_e)
+        # with st.container(border=True):
+        st.markdown("**Incorrect Edges: (Reversed to the Original)**")
+        st.data_editor(incorrect_edges, disabled=True)
+        # for inc_e in incorrect_edges:
+        #     st.write(inc_e)
 
     with col2:
-        with st.container(border=True):
-            st.markdown("**Correct Edges:**")
-            for c_e in correct_edges:
-                st.write(c_e)
+        # with st.container(border=True):
+        st.markdown("**Correct Edges:**")
+        st.data_editor(correct_edges, disabled=True)
+        # for c_e in correct_edges:
+        #     st.write(c_e)
 
 
 ##### START OF PAGE #####
@@ -128,22 +146,54 @@ else:
         st.error(f"ERROR: \n{str(e)}")
 
     with st.container(border=True):
-        st.markdown("**Valid Edges based on Edge Dependencies schema**")
+        # st.markdown("**Valid Edges based on Edge Dependencies schema**")
         display_valid_edges(reversed_bn)
 
+    ##### CHECKBOX FOR ANALYSIS TO INCLUDE RULE BASED SCHEMA VALID EDGES
+    with st.container(border=True):
+        if st.checkbox("**Evaluations should include Rule Based Schema Valid Edges.**"):
+            pass
+        else:
+            # get only the valid edges
+            filtered_incorrect_edges = []
+            count = 0
+            for edge_item in incorrect_edges:
+                if edge_item["schema_dep_validity"] == "valid":
+                    filtered_incorrect_edges.append({
+                        "id": count,
+                        "edge": edge_item["edge"],
+                        "schema_dep_validity": edge_item["schema_dep_validity"]
+                    })
+                    count += 1
+            # st.data_editor(filtered_incorrect_edges, disabled=True)
+            incorrect_edges = filtered_incorrect_edges
 
-    # #### USING ONLY NODE IDENTIFIERS,ITS STATE NAMES AND CAUSAL RELATION (CAUSES) ####
-    # if st.checkbox("**Only using Node Identifiers, State Names and causal verb `causes`**"):
-    #     evaluation_name = "baseline_node_id_state_names_causes"
-    #     from utils.evaluation_functions import baseline_only_node_id_state_names_causes
-    #     evaluation_function = baseline_only_node_id_state_names_causes
-    #     trigger_evaluation(evaluation_function, evaluation_name)
+
+    with st.container(border=True):
+        st.markdown("**Evaluations Panel:**")
+
+        with st.container(border=True):
+            st.markdown("**Type 1: `Node1 {causal_verb} Node2`**")
+            selected_causal_verb = st.radio("**Causal Verb:** ", list_causal_verbs,
+                                            horizontal=True)
 
 
-    if st.checkbox(f"**Only using Node identifiers but different causal verbs**"):
-        evaluation_name = f"baseline_node_id_causalverb_"
-        from utils.evaluation_functions import baseline_only_node_id_causal_verb
-        evaluation_function = baseline_only_node_id_causal_verb
-        trigger_evaluation(evaluation_function, evaluation_name)
+            # #### USING ONLY NODE IDENTIFIERS,ITS STATE NAMES AND CAUSAL RELATION (CAUSES) ####
+            # if st.checkbox("**Only using Node Identifiers, State Names and causal verb `causes`**"):
+            #     evaluation_name = "baseline_node_id_state_names_causes"
+            #     from utils.evaluation_functions import baseline_only_node_id_state_names_causes
+            #     evaluation_function = baseline_only_node_id_state_names_causes
+            #     trigger_evaluation(evaluation_function, evaluation_name)
+
+            if st.checkbox(f"**Only using Node identifiers but different causal verbs**"):
+                evaluation_name = f"baseline_node_id_causalverb_{selected_causal_verb}"
+                from utils.evaluation_functions import baseline_only_node_id_causal_verb
+                evaluation_function = baseline_only_node_id_causal_verb
+                trigger_evaluation(evaluation_function, evaluation_name)
+
+        with st.container(border=True):
+            st.markdown("**Type 2: `changing {Node1} causes a change in {Node2}`**")
+
+
 
 
