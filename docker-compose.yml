@@ -1,8 +1,10 @@
 version: "2.3"
 services:
   bnv_dashboard:
-    image: dashboard:latest
     command: streamlit run dashboard/entrypoint.py
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - WANDB_API_KEY=${WANDB_API_KEY}
@@ -14,6 +16,7 @@ services:
       - bn_network
     # stdin_open: true
     # tty: true
+
 
   bnv_db:
     image: mongo:4.2.0
@@ -61,7 +64,9 @@ services:
       - bn_network
 
   bnv_worker:
-    image: dashboard:latest
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
     working_dir: /usr/src/app/dashboard
     command: celery -A worker worker -l info
     volumes:
@@ -73,7 +78,9 @@ services:
       - bn_network
 
   bnv_html_guidelines:
-    image: dashboard:latest
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
     working_dir: /usr/src/app/dashboard
     command: python3 -m http.server 3000 --directory guidelines/
     volumes:
