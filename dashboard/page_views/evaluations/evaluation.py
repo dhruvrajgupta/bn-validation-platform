@@ -10,6 +10,13 @@ from utils.edges import edge_dependency_check
 correct_edges = []
 incorrect_edges = []
 
+list_causal_verbs = [
+        "causes", "provokes", "triggers", "leads to", "induces", "results in",
+        "brings about", "yields", "generates", "initiates", "produces", "stimulates",
+        "instigates", "fosters", "engenders", "promotes", "catalyzes",
+        "gives rise to", "spurs", "sparks", "increases likelihood"
+    ]
+
 def save_to_db_callback(eval_name, model_name, llm_model_name, eval_res_dict):
     status = save_evaluation(eval_name, model_name, llm_model_name, eval_res_dict)
     if status == "Same":
@@ -22,6 +29,10 @@ def save_to_db_callback(eval_name, model_name, llm_model_name, eval_res_dict):
 def trigger_evaluation(function_name, evaluation_name):
     with st.container(border=True):
         st.markdown(f"**Evaluation ID:** `{evaluation_name}`")
+
+        # with st.container(border=True):
+        selected_causal_verb = st.radio("**Causal Verb:** ", list_causal_verbs, key=evaluation_name, horizontal=True)
+        evaluation_name += selected_causal_verb
 
         llm_model_name = st.radio("**LLM Model Name:**", ["gpt-4o-mini", "gpt-4o"], horizontal=True, key=f"LLM Radio - {evaluation_name}")
 
@@ -50,9 +61,11 @@ def trigger_evaluation(function_name, evaluation_name):
                     "prompt": st.column_config.TextColumn(width="medium"),
                     "reasoning": st.column_config.TextColumn(width="medium"),
                 },
+                key=f"{evaluation_name} - {llm_model_name} - Detailed Evaluation"
             )
             st.markdown("**Evaluation Summary:**")
-            st.data_editor(evaluation["eval_result"]["eval_scorer_summary"], disabled=True)
+            st.data_editor(evaluation["eval_result"]["eval_scorer_summary"], disabled=True,
+                           key=f"{evaluation_name} - {llm_model_name} - Evaluation Summary")
             # st.json(eval_res_dict["eval_scorer_summary"], expanded=False)
 
             # Save to Database
@@ -89,12 +102,12 @@ def display_valid_edges(model):
 
 st.markdown("#### Evaluations on Modified BN (Reversed Edges of Original Network)")
 
-available_models = get_models(type="Work In Progress")
+available_models = get_models(type="Ground Truth")
 model_names = [model['name'] for model in available_models]
 
 # selected_model_name = "Lymph Node Staging of the TNM Staging of Laryngeal Cancer (WIP)"
-selected_model_name = st.selectbox("Select a work in progress model", model_names,
-                                     key="Selected WIP Model", index=None)
+selected_model_name = st.selectbox("Select a ground truth model", model_names,
+                                     key="Selected Ground Truth Model", index=None)
 
 # selected_model_name = "Lymph Node Staging of the TNM Staging of Laryngeal Cancer (WIP)"
 st.markdown(f"**Selected Model: `{selected_model_name}`**")
@@ -119,31 +132,16 @@ else:
         display_valid_edges(reversed_bn)
 
 
-    #### USING ONLY NODE IDENTIFIERS AND CAUSAL RELATION (CAUSES) ####
-    if st.checkbox("**Only using Node Identifiers and causal verb `causes`**"):
-        evaluation_name = "baseline_only_node_id_causes"
-        from utils.evaluation_functions import baseline_only_node_id_causes
-        evaluation_function = baseline_only_node_id_causes
-        trigger_evaluation(evaluation_function, evaluation_name)
+    # #### USING ONLY NODE IDENTIFIERS,ITS STATE NAMES AND CAUSAL RELATION (CAUSES) ####
+    # if st.checkbox("**Only using Node Identifiers, State Names and causal verb `causes`**"):
+    #     evaluation_name = "baseline_node_id_state_names_causes"
+    #     from utils.evaluation_functions import baseline_only_node_id_state_names_causes
+    #     evaluation_function = baseline_only_node_id_state_names_causes
+    #     trigger_evaluation(evaluation_function, evaluation_name)
 
-    #### USING ONLY NODE IDENTIFIERS,ITS STATE NAMES AND CAUSAL RELATION (CAUSES) ####
-    if st.checkbox("**Only using Node Identifiers, State Names and causal verb `causes`**"):
-        evaluation_name = "baseline_node_id_state_names_causes"
-        from utils.evaluation_functions import baseline_only_node_id_state_names_causes
-        evaluation_function = baseline_only_node_id_state_names_causes
-        trigger_evaluation(evaluation_function, evaluation_name)
 
-    list_causal_verbs = [
-        "provokes", "triggers", "causes", "leads to", "induces", "results in",
-        "brings about", "yields", "generates", "initiates", "produces", "stimulates",
-        "instigates", "fosters", "engenders", "promotes", "catalyzes",
-        "gives rise to", "spurs", "sparks"
-    ]
-    if st.checkbox(f"**Only using Node identifiers but different causal verbs: `{list_causal_verbs}`**"):
+    if st.checkbox(f"**Only using Node identifiers but different causal verbs**"):
         evaluation_name = f"baseline_node_id_causalverb_"
-        with st.container(border=True):
-            selected_causal_verb = st.radio("**Causal Verb:** ", list_causal_verbs, key=evaluation_name, horizontal=True)
-        evaluation_name += selected_causal_verb
         from utils.evaluation_functions import baseline_only_node_id_causal_verb
         evaluation_function = baseline_only_node_id_causal_verb
         trigger_evaluation(evaluation_function, evaluation_name)
