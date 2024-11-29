@@ -8,8 +8,8 @@ services:
       - WANDB_API_KEY=${WANDB_API_KEY}
     volumes:
         - ./:/usr/src/app
-    ports:
-        - 8501:8501
+    expose:
+        - 8501
     networks:
       - bn_network
     # stdin_open: true
@@ -23,8 +23,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_DATA_DIR: /data/db
       MONGO_LOG_DIR: /dev/null
-    ports:
-      - 27017:27017
+    expose:
+      - 27017
     volumes:
       - ./database/db:/data/db
     networks:
@@ -33,8 +33,8 @@ services:
   bnv_mongo_express:
     image: mongo-express:0.49.0
     restart: always
-    ports:
-      - 8081:8081
+    expose:
+      - 8081
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: root
       ME_CONFIG_BASICAUTH_PASSWORD: example
@@ -54,9 +54,9 @@ services:
     image: rabbitmq:management
     volumes:
       - ./rabbitmq-data:/var/lib/rabbitmq
-    ports:
-      - 5672:5672
-      - 15672:15672
+    expose:
+      - 5672
+      - 15672
     networks:
       - bn_network
 
@@ -80,8 +80,8 @@ services:
       - ./:/usr/src/app
     depends_on:
       - bnv_dashboard
-    ports:
-      - 3000:3000
+    expose:
+      - 3000
 
 networks:
   bn_network:
