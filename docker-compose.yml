@@ -89,7 +89,19 @@ services:
       - bnv_dashboard
     expose:
       - 3000
-
+  
+  bnv-nginx:
+    image: nginx:1.25
+    container_name: bnv-nginx
+    ports:
+      - "8089:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - bnv_dashboard
+    networks:
+      - bn_network
+    restart: always
 networks:
   bn_network:
     driver: bridge
