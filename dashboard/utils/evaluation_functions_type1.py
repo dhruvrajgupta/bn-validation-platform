@@ -317,6 +317,10 @@ def baseline_only_node_id_causal_verb(incorrect_edges, eval_name, llm_model_name
         evaluation_data[id]["critique_reasoning"] = output["critique"]["critique_thinking"]
         return output["answer"] == dataset[id]["correct"]
 
+    @weave.op()
+    def edge_judgement_consistency_scorer(id, output):
+        return output["answer"] == output["critique"]["critique_answer"]
+
     def create_dataset(incorrect_edges, prompt_template):
         # We are reversing the edges for evaluation
         for id, edge_item in enumerate(incorrect_edges):
@@ -349,7 +353,7 @@ def baseline_only_node_id_causal_verb(incorrect_edges, eval_name, llm_model_name
     evaluation = weave.Evaluation(
         name=eval_name,
         dataset=dataset,
-        scorers=[edge_judgement_scorer]
+        scorers=[edge_judgement_scorer, edge_judgement_consistency_scorer]
     )
 
     evaluation_scorer_summary = asyncio.run(evaluation.evaluate(model))
