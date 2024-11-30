@@ -186,7 +186,7 @@ else:
             #     trigger_evaluation(evaluation_function, evaluation_name)
 
             if st.checkbox(f"**Only using Node identifiers but different causal verbs**"):
-                evaluation_name = f"baseline_node_id_causalverb_{selected_causal_verb}"
+                evaluation_name = f"type1_baseline_node_id_causalverb_{selected_causal_verb}"
                 from utils.evaluation_functions_type1 import baseline_only_node_id_causal_verb
                 evaluation_function = baseline_only_node_id_causal_verb
                 trigger_evaluation(evaluation_function, evaluation_name)
@@ -194,6 +194,11 @@ else:
         with st.container(border=True):
             st.markdown("**Type 2: `changing {Node1} causes a change in {Node2}`**")
 
+            if st.checkbox(f"**Only using Node identifiers**"):
+                evaluation_name = f"type2_baseline_node_id"
+                from utils.evaluation_functions_type2 import baseline_only_node_id
+                evaluation_function = baseline_only_node_id
+                trigger_evaluation(evaluation_function, evaluation_name)
 
 
 
