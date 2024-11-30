@@ -82,7 +82,7 @@ class CritiqueOption(str, Enum):
 
 class CritiqueResponse(BaseModel):
     critique_thinking: List[str]
-    critique_answer: Option
+    critique_answer: CritiqueOption
 
 class EvaluationModel(weave.Model):
     model_name: str
@@ -246,7 +246,7 @@ def baseline_only_node_id(incorrect_edges, eval_name, llm_model_name, bn_model):
 
     evaluation = weave.Evaluation(
         name=eval_name,
-        dataset=dataset[:2],
+        dataset=dataset,
         scorers=[edge_judgement_scorer]
     )
 

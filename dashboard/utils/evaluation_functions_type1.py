@@ -21,6 +21,7 @@ import streamlit as st
 
 def format_reasoning(evaluation_data):
     for id, evaluation_data_item in enumerate(evaluation_data):
+        # print(json.dumps(evaluation_data, indent=2))
         list_reasoning = evaluation_data_item.get("reasoning")
         # st.write(list_reasoning)
         if list_reasoning:
@@ -29,7 +30,40 @@ def format_reasoning(evaluation_data):
                 formatted_reasoning += f"{step + 1}. {reason}\n"
             evaluation_data[id]["reasoning"] = formatted_reasoning
 
+        list_critique_reasoning = evaluation_data_item.get("critique_reasoning")
+        # print(list_critique_reasoning)
+        if list_critique_reasoning:
+            formatted_critique_reasoning = ""
+            for step, reason in enumerate(list_critique_reasoning):
+                formatted_critique_reasoning += f"{step + 1}. {reason}\n"
+            evaluation_data[id]["critique_reasoning"] = formatted_critique_reasoning
+
     return evaluation_data
+
+CRITIQUE_PROMPT = """\
+Analyze the output from an AI assistant. 
+Is the final answer ({ini_answer}) consistent with the reasoning provided by the assistant?  
+
+Question: {prompt_from_before}  
+AI assistant: {answer_from_before}
+
+The answer is: ...
+
+DESIRED OUTPUT FORMAT:
+<critique_thinking>
+...
+</critique_thinking>
+<critique_answer>
+{{
+   "critique_thinking": ["...", ...]
+   "critique_answer": ...
+}}
+</critique_answer>
+
+Before providing the answer in <critique_answer> tags, think step by step in <critique_thinking> tags and analyze every part.
+Output inside <critique_answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
 
 class Option(str, Enum):
     A = "A"
@@ -40,6 +74,14 @@ class EdgeOrientationJudgement(BaseModel):
     # id: int
     thinking: List[str]
     answer: Option
+
+class CritiqueOption(str, Enum):
+    A = "A"
+    B = "B"
+
+class CritiqueResponse(BaseModel):
+    critique_thinking: List[str]
+    critique_answer: CritiqueOption
 
 class EvaluationModel(weave.Model):
     model_name: str
@@ -94,7 +136,39 @@ class EvaluationModel(weave.Model):
         if result is None:
             raise ValueError("No response from model")
         parsed = json.loads(result)
+        ini_parsed = json.loads(result)
         parsed["answer_choice_probablities"] = answer_choice_probablities
+
+        #### Critique ####
+
+        # print(CRITIQUE_PROMPT.format(
+        #     prompt_from_before=prompt,
+        #     answer_from_before=ini_parsed,
+        #     ini_answer=ini_parsed["answer"]
+        # ))
+        critique_response = await client.beta.chat.completions.parse(
+            model=self.model_name,
+            messages=[
+                {"role": "user", "content": CRITIQUE_PROMPT.format(
+                    prompt_from_before=prompt,
+                    answer_from_before=ini_parsed,
+                    ini_answer=ini_parsed["answer"]
+                )}
+            ],
+            response_format=CritiqueResponse,
+            temperature=0,
+            logprobs=True,
+            # top_logprobs=3,
+            seed=123
+        )
+        critique_result = critique_response.choices[0].message.content
+        # print(critique_result)
+        if critique_result is None:
+            raise ValueError("No response from model")
+        critique_parsed = json.loads(critique_result)
+
+        parsed["critique"] = critique_parsed
+
         return parsed
 
 #######################################################################################
@@ -232,10 +306,15 @@ def baseline_only_node_id_causal_verb(incorrect_edges, eval_name, llm_model_name
 
     @weave.op()
     def edge_judgement_scorer(id, output):
+        # print(json.dumps(output, indent=4))
         evaluation_data[id] = dataset[id]
         evaluation_data[id]["reasoning"] = output["thinking"]
         evaluation_data[id]["answer"] = output["answer"]
         evaluation_data[id]["answer_choice_probablities"] = output["answer_choice_probablities"]
+        evaluation_data[id]["critique_consistent"] = (
+            "yes" if output["critique"]["critique_answer"] == output["answer"] else "no")
+        evaluation_data[id]["critique_answer"] = output["critique"]["critique_answer"]
+        evaluation_data[id]["critique_reasoning"] = output["critique"]["critique_thinking"]
         return output["answer"] == dataset[id]["correct"]
 
     def create_dataset(incorrect_edges, prompt_template):
@@ -269,7 +348,7 @@ def baseline_only_node_id_causal_verb(incorrect_edges, eval_name, llm_model_name
 
     evaluation = weave.Evaluation(
         name=eval_name,
-        dataset=dataset[:2],
+        dataset=dataset,
         scorers=[edge_judgement_scorer]
     )
 
