@@ -49,6 +49,7 @@ instructions_manual = st.Page("page_views/instructions_manual.py", title="Instru
 ground_truth_model = st.Page("page_views/dashboard/ground_truth_model.py", title="Ground Truth Model")
 work_in_progress_model = st.Page("page_views/dashboard/work_in_progress_model.py", title="Work In Progress Model")
 comparison = st.Page("page_views/dashboard/comparison.py", title="Comparison")
+guidelines = st.Page("page_views/dashboard/guidelines.py", title="Clinical Guidelines")
 
 ## Models
 new_model = st.Page("page_views/models/new_model.py", title="New Model")
@@ -78,7 +79,7 @@ if st.session_state.logged_in:
     pg = st.navigation(
         {
             "Instructions Manual": [instructions_manual],
-            "Dashboard": [ground_truth_model, work_in_progress_model, comparison],
+            "Dashboard": [ground_truth_model, work_in_progress_model, comparison, guidelines],
             "Models": [new_model, label_descriptions, file_contents, dataset],
             "Nodes Descriptions": [nodes_descriptions],
             "Edge Rationality": [edge_rationality],
