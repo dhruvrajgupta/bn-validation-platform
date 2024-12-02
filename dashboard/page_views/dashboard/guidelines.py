@@ -33,13 +33,14 @@ guideline_map = {
 }
 
 def save_to_db_callback(selected_page_no, sections_info, chunk_data):
-    status = save_page_sections_data(selected_page_no, sections_info, chunk_data)
-    if status == "Same":
-        st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
-    elif status == "Updated":
-        st.toast(f"Page: {selected_page_no} updated in the Database", icon="⚓")
-    elif status == "Added":
-        st.toast(f"Page: {selected_page_no} added to the Database", icon="✅")
+    if sections_info:
+        status = save_page_sections_data(selected_page_no, sections_info, chunk_data)
+        if status == "Same":
+            st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
+        elif status == "Updated":
+            st.toast(f"Page: {selected_page_no} updated in the Database", icon="⚓")
+        elif status == "Added":
+            st.toast(f"Page: {selected_page_no} added to the Database", icon="✅")
 
 def get_selected_page_chunk_data():
     # Get Salims extracted contents
@@ -61,13 +62,7 @@ def show_prompt():
 
 def get_page_info_db(selected_page_no):
     page_data_info = get_page_info(selected_page_no)
-    if page_data_info:
-        st.session_state.page_data = page_data_info
-    else:
-        st.session_state.page_data = {
-            "page_no": selected_page_no,
-            "sections_data": None
-        }
+    return page_data_info
 
 
 with st.sidebar:
@@ -100,7 +95,7 @@ with st.sidebar:
     selected_page = sac.tree(items=items, label=f"**{guideline_map[selected_guideline]['name']}**", index=0,
                              checkbox_strict=False, open_all=True)
     selected_page_no = selected_page.split("-")[-1].strip()
-    get_page_info_db(selected_page_no)
+    # get_page_info_db(selected_page_no)
 
 st.markdown(f"**Selected Guideline: `{guideline_map[selected_guideline]['name']}`**")
 selected_topic = st.radio("Topic:", ["Guideline Page", "Data Extractions", "Sections Extractions","Causality"], horizontal=True, label_visibility="collapsed")
@@ -128,7 +123,21 @@ elif selected_topic == "Data Extractions":
                 'r', encoding='utf-8')
             source_code = HtmlFile.read()
 
-            type = st.radio("Data Source:", ["From JSON", "Sections extraction"], horizontal=True, label_visibility="collapsed")
+            type = st.radio("Data Source:", ["Sections", "From JSON", "Sections extraction"], horizontal=True, label_visibility="collapsed")
+
+            if type == "Sections":
+                page_info = get_page_info_db(selected_page_no)
+                section_names = [section_dict["section_name"] for section_dict in page_info["sections"]]
+                selected_section = st.radio("**Section:**", section_names, horizontal=True)
+
+                for section_dict in page_info["sections"]:
+                    if selected_section == section_dict["section_name"]:
+                        paragraph = ""
+                        for idx, para in enumerate(section_dict["paragraph"]):
+                            # paragraph += f"{idx+1}. {para}\n"
+                            paragraph += f"{para}\n\n"
+                        st.info(paragraph)
+                        break
 
             if type == "From JSON":
                 # with st.expander("Source code"):
@@ -160,8 +169,7 @@ elif selected_topic == "Data Extractions":
                             prompt = DATA_EXTRACTOR.format(text_content=chunk_data, html_page=source_code)
                             # st.write(prompt)
                             sections_data = json.loads(ask_llm_response_schema(prompt, response_format=ListSectionData))
-                            st.session_state.page_data = {"page_no": selected_page_no,
-                                                          "sections_data": sections_data}
+
                     st.json(sections_data, expanded=False)
                     # st.write(selected_page_no)
                     st.button("Save to Database", type="primary",
