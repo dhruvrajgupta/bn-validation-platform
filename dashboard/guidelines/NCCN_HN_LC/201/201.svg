@@ -1,0 +1,18 @@
+<svg viewBox="0 0 1210 935" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<clipPath id="c0_201"><path d="M35.7 107V29.4H267.3V107Z"/></clipPath>
+<style>
+.g0_201{fill:none;stroke:#005B99;stroke-width:2.673;stroke-linejoin:round;}
+.g1_201{fill:#005B99;}
+.g2_201{fill:#FFF;}
+</style>
+</defs>
+<path d="M34.4 121H1172.9" class="g0_201"/>
+<image clip-path="url(#c0_201)" preserveAspectRatio="none" x="36" y="30" width="231" height="77" href="img/1.jpg"/>
+<path d="M124.7 515.8h121v-1.2h-121v1.2Z" class="g1_201"/>
+<path fill-rule="evenodd" d="M85.6 557.3H590.3V537.8H85.6v19.5Z" class="g2_201"/>
+<path fill-rule="evenodd" d="M35.4 580.6H149.1V561H35.4v19.6Z" class="g2_201"/>
+<path fill-rule="evenodd" d="M466.9 673.4H578.1V653.9H466.9v19.5Z" class="g2_201"/>
+<path fill-rule="evenodd" d="M35.4 696.7H590.3V677.1H35.4v19.6Z" class="g2_201"/>
+<path fill-rule="evenodd" d="M35.4 719.9H94.1V700.3H35.4v19.6Z" class="g2_201"/>
+</svg>
