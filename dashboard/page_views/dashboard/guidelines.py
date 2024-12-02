@@ -3,8 +3,9 @@ import json
 import streamlit as st
 import streamlit_antd_components as sac
 
-from utils.db import get_page_info
-from utils.prompts2 import DATA_EXTRACTOR
+from utils.db import get_page_info, save_page_sections_data
+from utils.prompts.data_extractions import DATA_EXTRACTOR, ListSectionData
+from utils.cpg import ask_llm_response_schema
 
 web_path = "http://localhost:8089/guidelines"
 
@@ -31,6 +32,27 @@ guideline_map = {
     }
 }
 
+def save_to_db_callback(selected_page_no, sections_info):
+    status = save_page_sections_data(selected_page_no, sections_info)
+    if status == "Same":
+        st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
+    elif status == "Updated":
+        st.toast(f"Page: {selected_page_no} updated in the Database", icon="⚓")
+    elif status == "Added":
+        st.toast(f"Page: {selected_page_no} added to the Database", icon="✅")
+
+def get_selected_page_chunk_data():
+    # Get Salims extracted contents
+    chunk_data = None
+    with open(f"./dashboard/guidelines/extracted_data/{guideline_map[selected_guideline]['dir_name']}.json",
+              'r') as file:
+        all_extracted_chunks = json.load(file)
+        for chunk_dict in all_extracted_chunks:
+            # st.write(chunk_dict)
+            if chunk_dict["page_number"] == int(st.session_state["page_data"]["page_no"]) - page_offset:
+                chunk_data = chunk_dict["content"]
+
+    return chunk_data
 
 @st.dialog("View Prompt", width="large")
 def show_prompt():
@@ -40,10 +62,8 @@ def show_prompt():
 def get_page_info_db(selected_page_no):
     page_data_info = get_page_info(selected_page_no)
     if page_data_info:
-        st.session_state.data_source = "Database"
         st.session_state.page_data = page_data_info
     else:
-        st.session_state.data_source = None
         st.session_state.page_data = {
             "page_no": selected_page_no,
             "sections_data": None
@@ -73,7 +93,7 @@ with st.sidebar:
     relevant_pages.extend(NCCN_RELEVANT_TEXT_PAGE_NUMBER)
     relevant_pages.sort()
 
-    st.write(relevant_pages) # Offset of page +2
+    # st.write(relevant_pages) # Offset of page +2
 
     items = [sac.TreeItem(f"Page - {page_no+page_offset}") for page_no in relevant_pages]
     # items = [sac.TreeItem(f"Page - {i + 1}") for i in range(guideline_map[selected_guideline]['no_of_pages'])]
@@ -83,7 +103,7 @@ with st.sidebar:
     get_page_info_db(selected_page_no)
 
 st.markdown(f"**Selected Guideline: `{guideline_map[selected_guideline]['name']}`**")
-selected_topic = st.radio("Topic:", ["Guideline Page", "Data Extractions", "Causality"], horizontal=True)
+selected_topic = st.radio("Topic:", ["Guideline Page", "Data Extractions", "Sections Extractions","Causality"], horizontal=True, label_visibility="collapsed")
 
 if selected_topic == "Guideline Page":
     with st.container(border=True):
@@ -108,17 +128,59 @@ elif selected_topic == "Data Extractions":
                 'r', encoding='utf-8')
             source_code = HtmlFile.read()
 
-            # with st.expander("Source code"):
-            #     st.code(source_code)
-            st.markdown("**Extracted Data:**")
+            type = st.radio("Data Source:", ["From JSON", "Sections extraction"], horizontal=True, label_visibility="collapsed")
 
-            # Get Salims extracted contents
-            with open(f"./dashboard/guidelines/extracted_data/{guideline_map[selected_guideline]['dir_name']}.json", 'r') as file:
-                all_extracted_chunks = json.load(file)
-                for chunk_dict in all_extracted_chunks:
-                    # st.write(chunk_dict)
-                    if chunk_dict["page_number"] == int(st.session_state["page_data"]["page_no"]) - page_offset:
-                        st.info(chunk_dict["content"])
+            if type == "From JSON":
+                with st.expander("Source code"):
+                    st.code(source_code)
+
+                st.markdown("**Extracted Data:**")
+                chunk_data = get_selected_page_chunk_data()
+                st.info(chunk_data)
+
+            elif type == "Sections extraction":
+                # with st.expander("Source code"):
+                #     st.code(source_code)
+
+                chunk_data = get_selected_page_chunk_data()
+
+                db_info = None
+                if db_info:
+                    pass
+                else:
+                    col1, col2 = st.columns([0.8, 0.2])
+                    with col1:
+                        st.markdown(f"**Extracted Data:**")
+                    with col2:
+                        eb = st.button("Extract Data")
+
+                    sections_data = None
+                    if eb:
+                        with st.spinner(f"Extracting sections ..."):
+                            prompt = DATA_EXTRACTOR.format(text_content=chunk_data, html_page=source_code)
+                            # st.write(prompt)
+                            sections_data = json.loads(ask_llm_response_schema(prompt, response_format=ListSectionData))
+                            st.session_state.page_data = {"page_no": selected_page_no,
+                                                          "sections_data": sections_data}
+                    st.json(sections_data, expanded=False)
+                    # st.write(selected_page_no)
+                    st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[selected_page_no, sections_data])
+
+
+                    # # Check if sections data present
+                    # if st.session_state.page_data["sections_data"]:
+                    #     # st.write(st.session_state.page_data["sections_data"])
+                    #     sections_names = [section["section_name"] for section in st.session_state.page_data["sections_data"]["sections"]]
+                    #     selected_section = st.radio("", sections_names, horizontal=True, label_visibility="collapsed")
+                    #
+                    #     # Show selected section paragraphs
+                    #     for section_data in st.session_state.page_data["sections_data"]["sections"]:
+                    #         if selected_section == section_data["section_name"]:
+                    #             st.write(section_data["paragraph"])
+                    #
+                    #     st.write(extracted_data)
+
+
 
 elif selected_topic == "Causality":
     # with st.container(border=True):

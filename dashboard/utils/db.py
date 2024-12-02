@@ -25,7 +25,9 @@ def save_page_sections_data(page_no, page_section_data):
 
     data_dict = {}
     data_dict["page_no"] = page_no
-    data_dict["sections_data"] = page_section_data
+    data_dict["thinking"] = page_section_data["thinking"]
+    data_dict["sections"] = page_section_data["sections"]
+
     if pages.find_one(data_dict):
         return "Same"
 
