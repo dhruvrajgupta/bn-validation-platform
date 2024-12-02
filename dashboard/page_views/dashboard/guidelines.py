@@ -32,8 +32,8 @@ guideline_map = {
     }
 }
 
-def save_to_db_callback(selected_page_no, sections_info):
-    status = save_page_sections_data(selected_page_no, sections_info)
+def save_to_db_callback(selected_page_no, sections_info, chunk_data):
+    status = save_page_sections_data(selected_page_no, sections_info, chunk_data)
     if status == "Same":
         st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
     elif status == "Updated":
@@ -131,8 +131,8 @@ elif selected_topic == "Data Extractions":
             type = st.radio("Data Source:", ["From JSON", "Sections extraction"], horizontal=True, label_visibility="collapsed")
 
             if type == "From JSON":
-                with st.expander("Source code"):
-                    st.code(source_code)
+                # with st.expander("Source code"):
+                #     st.code(source_code)
 
                 st.markdown("**Extracted Data:**")
                 chunk_data = get_selected_page_chunk_data()
@@ -164,7 +164,8 @@ elif selected_topic == "Data Extractions":
                                                           "sections_data": sections_data}
                     st.json(sections_data, expanded=False)
                     # st.write(selected_page_no)
-                    st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[selected_page_no, sections_data])
+                    st.button("Save to Database", type="primary",
+                              on_click=save_to_db_callback, args=[selected_page_no, sections_data, chunk_data])
 
 
                     # # Check if sections data present
