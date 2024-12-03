@@ -26,7 +26,7 @@ Task Description:
 10. Segregate into meaningful sections.
 11. "paragraph" should be in markdown representation in ith Output JSON.
 12. The output in "paragraph" should depict the exact meaning in the "SOURCE1" and "SOURCE2".
-13. Do not output repeated content.
+13. Do not output repeated content. If repeated content, then higher preference for output should be from `SOURCE2`.
 
 SOURCE1:
 ```
