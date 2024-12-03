@@ -19,7 +19,28 @@ def get_user(username):
     return users.find_one({"username": username})
 
 #### FOR GUIDELINES PAGES ####
-def save_page_sections_data(page_no, page_section_data, chunk_data):
+def save_html_extraction_data(page_no, extracted_data):
+    db = init_connection()["bn-validation"]
+    pages = db.pages
+    data_dict = {}
+    data_dict["page_no"] = page_no
+    data_dict["html_extracted_data"] = extracted_data
+
+    if pages.find_one(data_dict):
+        return "Same"
+
+    result = pages.replace_one(
+        {"page_no": page_no},
+        data_dict,
+        upsert=True
+    )
+
+    if result.matched_count > 0:
+        return "Updated"
+    else:
+        return "Added"
+
+def save_page_sections_data(page_no, page_section_data, chunk_data, html_extracted_data):
     db = init_connection()["bn-validation"]
     pages = db.pages
 
@@ -27,10 +48,8 @@ def save_page_sections_data(page_no, page_section_data, chunk_data):
     data_dict["page_no"] = page_no
     data_dict["thinking"] = page_section_data["thinking"]
     data_dict["sections"] = page_section_data["sections"]
-    data_dict["sections"].append({
-        "section_name": "dense_retrieval_chunk",
-        "paragraph": chunk_data
-    })
+    data_dict["chunk_data"] = chunk_data
+    data_dict["html_extracted_data"] = html_extracted_data
 
     if pages.find_one(data_dict):
         return "Same"

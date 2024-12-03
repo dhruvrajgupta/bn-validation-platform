@@ -3,37 +3,39 @@ from typing import List
 
 class SectionData(BaseModel):
     section_name: str
-    paragraph: List[str]
+    paragraph: str
 
 class ListSectionData(BaseModel):
     thinking: str
     sections: List[SectionData]
 
+# 9. Add another section for superscripts informations present within the page for their relevant sections.
 DATA_EXTRACTOR = """\
-You are an expert at Data Extraction from HTML Pages.
+You are an expert at Data Extraction and Merging.
 
 Task Description: 
-Extract all the sections from the provided page of the NCCN Clinical Practitioners Guidelines.
-Ensure the extraction is accurate. The output should be a clean, ordered list of section titles as they appear on the page.
+1. Extract the contents in meaningful sentences so that it can be used for clinical data mining.
+2. Extract all the sections from "SOURCE1".
+3. Extract all the text accurately from "SOURCE1".
+4. Extract all the sections from "SOURCE2".
+5. Extract all the text accurately from "SOURCE2".
+6. Merge the text contents of the two data sources "SOURCE1" and "SOURCE2"
+7. Ensure the extraction is accurate and in detail.
+8. Do not summarize.
+9. Output in detail.
+10. Segregate into meaningful sections.
+11. "paragraph" should be in markdown representation in ith Output JSON.
+12. The output in "paragraph" should depict the exact meaning in the "SOURCE1" and "SOURCE2".
+13. Do not output repeated content.
 
-After extracting the sections,
-1. Extract the important contents of this page using the given input "TEXT CONTENT" and "HTML PAGE CONTENT".
-2. Extract the contents in meaningful sentences so that it can be used for clinical data mining.
-3. Do not summarize.
-4. Output in detail.
-5. Segregate into meaningful sections.
-6. Ensure accurate data extractions in detailed.
-7. "paragraph" should be in markdown representation in ith Output JSON.
-8. The output in "paragraph" should depict the exact meaning in the "HTML PAGE CONTENT".
-
-TEXT CONTENT:
+SOURCE1:
 ```
-{text_content}
+{chunk_data_content}
 ```
 
-HTML PAGE CONTENT:
+SOURCE2:
 ```
-{html_page}
+{html_hr_content}
 ```
 
 DESIRED OUTPUT FORMAT:
@@ -45,8 +47,8 @@ DESIRED OUTPUT FORMAT:
     "thinking": "...",
     "sections": [
        {{
-           "section_name": ... ,
-           "paragraph": []
+           "section_name": "..." ,
+           "paragraph": "..."
        }},
         ...
     ]
@@ -56,4 +58,17 @@ DESIRED OUTPUT FORMAT:
 Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
 Output inside <answer> tag in JSON format. Only output valid JSON.
 DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
+
+
+HTML_TO_READABLE_FORMAT = """\
+You are an expert Data Extractor.
+You will be given a NCCN Clinical Practitioner's Guidelines page which is converted in HTML5 format.
+Your task is to convert this HTML format to markdown format which is human readable and understandable format.
+Ensure the extraction is accurate and in detail.
+
+HTML PAGE CONTENT:
+```
+{html_page}
+```
 """

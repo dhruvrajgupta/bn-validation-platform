@@ -3,9 +3,9 @@ import json
 import streamlit as st
 import streamlit_antd_components as sac
 
-from utils.db import get_page_info, save_page_sections_data
-from utils.prompts.data_extractions import DATA_EXTRACTOR, ListSectionData
-from utils.cpg import ask_llm_response_schema
+from utils.db import get_page_info, save_page_sections_data, save_html_extraction_data
+from utils.prompts.data_extractions import DATA_EXTRACTOR, ListSectionData, HTML_TO_READABLE_FORMAT
+from utils.cpg import ask_llm_response_schema, ask_llm
 
 web_path = "http://localhost:8089/guidelines"
 
@@ -32,9 +32,9 @@ guideline_map = {
     }
 }
 
-def save_to_db_callback(selected_page_no, sections_info, chunk_data):
+def save_to_db_callback(selected_page_no, sections_info, chunk_data, html_extracted_data):
     if sections_info:
-        status = save_page_sections_data(selected_page_no, sections_info, chunk_data)
+        status = save_page_sections_data(selected_page_no, sections_info, chunk_data, html_extracted_data)
         if status == "Same":
             st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
         elif status == "Updated":
@@ -42,7 +42,17 @@ def save_to_db_callback(selected_page_no, sections_info, chunk_data):
         elif status == "Added":
             st.toast(f"Page: {selected_page_no} added to the Database", icon="✅")
 
-def get_selected_page_chunk_data():
+def save_html_extraction_to_db_callback(page_no, extracted_data):
+    if extracted_data:
+        status = save_html_extraction_data(page_no, extracted_data)
+        if status == "Same":
+            st.toast("Same Data already present in the Database. Not Added !!", icon="🚫")
+        elif status == "Updated":
+            st.toast(f"Page: {selected_page_no} updated in the Database", icon="⚓")
+        elif status == "Added":
+            st.toast(f"Page: {selected_page_no} added to the Database", icon="✅")
+
+def get_selected_page_chunk_data(page_no):
     # Get Salims extracted contents
     chunk_data = None
     with open(f"./dashboard/guidelines/extracted_data/{guideline_map[selected_guideline]['dir_name']}.json",
@@ -50,7 +60,7 @@ def get_selected_page_chunk_data():
         all_extracted_chunks = json.load(file)
         for chunk_dict in all_extracted_chunks:
             # st.write(chunk_dict)
-            if chunk_dict["page_number"] == int(st.session_state["page_data"]["page_no"]) - page_offset:
+            if chunk_dict["page_number"] == int(page_no) - page_offset:
                 chunk_data = chunk_dict["content"]
 
     return chunk_data
@@ -123,7 +133,7 @@ elif selected_topic == "Data Extractions":
                 'r', encoding='utf-8')
             source_code = HtmlFile.read()
 
-            type = st.radio("Data Source:", ["Sections", "From JSON", "Sections extraction"], horizontal=True, label_visibility="collapsed")
+            type = st.radio("Data Source:", ["Sections", "Chunk Data", "HTML Extracted Data", "Merge"], horizontal=True, label_visibility="collapsed")
 
             if type == "Sections":
                 page_info = get_page_info_db(selected_page_no)
@@ -132,63 +142,49 @@ elif selected_topic == "Data Extractions":
 
                 for section_dict in page_info["sections"]:
                     if selected_section == section_dict["section_name"]:
-                        paragraph = ""
-                        for idx, para in enumerate(section_dict["paragraph"]):
-                            # paragraph += f"{idx+1}. {para}\n"
-                            paragraph += f"{para}\n\n"
-                        st.info(paragraph)
+                        # paragraph = ""
+                        # for idx, para in enumerate(section_dict["paragraph"]):
+                        #     # paragraph += f"{idx+1}. {para}\n"
+                        #     paragraph += f"{para}\n\n"
+                        st.info(section_dict["paragraph"])
                         break
 
-            if type == "From JSON":
+            if type == "Chunk Data":
                 # with st.expander("Source code"):
                 #     st.code(source_code)
 
-                st.markdown("**Extracted Data:**")
-                chunk_data = get_selected_page_chunk_data()
+                chunk_data = get_selected_page_chunk_data(selected_page_no)
                 st.info(chunk_data)
 
-            elif type == "Sections extraction":
+            elif type == "HTML Extracted Data":
+                page_info = get_page_info(selected_page_no)
+                if page_info:
+                    html_to_hr = page_info.get("html_extracted_data", None)
+                e_html = st.button("Extract From HTML")
+                if e_html:
+                    with st.spinner(f"Extracting from HTML ..."):
+                        html_to_md_format_prompt = HTML_TO_READABLE_FORMAT.format(html_page=source_code)
+                        html_to_hr = ask_llm(html_to_md_format_prompt)
+                st.info(html_to_hr)
+                st.button("Save Extraction from HTML to Database", type="primary",
+                          on_click=save_html_extraction_to_db_callback, args=[selected_page_no, html_to_hr])
+
+            elif type == "Merge":
                 # with st.expander("Source code"):
                 #     st.code(source_code)
 
-                chunk_data = get_selected_page_chunk_data()
-
-                db_info = None
-                if db_info:
-                    pass
-                else:
-                    col1, col2 = st.columns([0.8, 0.2])
-                    with col1:
-                        st.markdown(f"**Extracted Data:**")
-                    with col2:
-                        eb = st.button("Extract Data")
-
-                    sections_data = None
-                    if eb:
-                        with st.spinner(f"Extracting sections ..."):
-                            prompt = DATA_EXTRACTOR.format(text_content=chunk_data, html_page=source_code)
-                            # st.write(prompt)
-                            sections_data = json.loads(ask_llm_response_schema(prompt, response_format=ListSectionData))
-
-                    st.json(sections_data, expanded=False)
-                    # st.write(selected_page_no)
-                    st.button("Save to Database", type="primary",
-                              on_click=save_to_db_callback, args=[selected_page_no, sections_data, chunk_data])
-
-
-                    # # Check if sections data present
-                    # if st.session_state.page_data["sections_data"]:
-                    #     # st.write(st.session_state.page_data["sections_data"])
-                    #     sections_names = [section["section_name"] for section in st.session_state.page_data["sections_data"]["sections"]]
-                    #     selected_section = st.radio("", sections_names, horizontal=True, label_visibility="collapsed")
-                    #
-                    #     # Show selected section paragraphs
-                    #     for section_data in st.session_state.page_data["sections_data"]["sections"]:
-                    #         if selected_section == section_data["section_name"]:
-                    #             st.write(section_data["paragraph"])
-                    #
-                    #     st.write(extracted_data)
-
+                page_info = get_page_info(selected_page_no)
+                chunk_data = get_selected_page_chunk_data(selected_page_no)
+                html_extracted_data = page_info.get("html_extracted_data", None)
+                merge_btn = st.button("Merge Chunk data and HTML extracted data")
+                sections_data = page_info.get("sections")
+                if merge_btn:
+                    with st.spinner(f"Merging Chunk Data and Extracted HTML data ..."):
+                        prompt = DATA_EXTRACTOR.format(chunk_data_content=chunk_data, html_hr_content=html_extracted_data)
+                        # st.code(prompt)
+                        sections_data = json.loads(ask_llm_response_schema(prompt, response_format=ListSectionData))
+                st.write(sections_data)
+                st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[selected_page_no, sections_data, chunk_data, html_extracted_data])
 
 
 elif selected_topic == "Causality":
