@@ -151,7 +151,7 @@ else:
 
     ##### CHECKBOX FOR ANALYSIS TO INCLUDE RULE BASED SCHEMA VALID EDGES
     with st.container(border=True):
-        if st.checkbox("**Evaluations should include Rule Based Schema Valid Edges.**"):
+        if st.checkbox("**Evaluations should include all edges (both Rule Based Schema `Valid` and `Invalid` edges) - [Default `only Valid edges`]**"):
             pass
         else:
             # get only the valid edges
