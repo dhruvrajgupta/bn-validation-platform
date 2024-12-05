@@ -11,6 +11,7 @@ from utils.edges import edge_dependency_check
 # Table for correct edges and incorrect edges along with indicaation of rule based schema valid/invalid
 correct_edges = []
 incorrect_edges = []
+num_options = 2
 
 list_causal_verbs = [
         "causes", "provokes", "triggers", "leads to", "induces", "results in",
@@ -150,6 +151,7 @@ else:
         display_valid_edges(reversed_bn)
 
     ##### CHECKBOX FOR ANALYSIS TO INCLUDE RULE BASED SCHEMA VALID EDGES
+    ##### CHECKBOX FOR NUMBER OF OPTIONS - DEFAULT 2 OPTIONS
     with st.container(border=True):
         if st.checkbox("**Evaluations should include all edges (both Rule Based Schema `Valid` and `Invalid` edges) - [Default `only Valid edges`]**"):
             pass
@@ -167,6 +169,16 @@ else:
                     count += 1
             # st.data_editor(filtered_incorrect_edges, disabled=True)
             incorrect_edges = filtered_incorrect_edges
+
+        if st.checkbox("Evaluations should be performed on three options `(A, B and C)` - [Default - Using two options `(A and B)`]"):
+            num_options = 3
+            st.write("Three options")
+        else:
+            num_options = 2
+            st.write("Two Options")
+
+        st.info(num_options)
+
 
 
     with st.container(border=True):
@@ -187,18 +199,21 @@ else:
 
             if st.checkbox(f"**Only using Node identifiers but different causal verbs**"):
                 evaluation_name = f"type1_baseline_node_id_causalverb_{selected_causal_verb}"
-                from utils.evaluation_functions_type1 import baseline_only_node_id_causal_verb
-                evaluation_function = baseline_only_node_id_causal_verb
-                trigger_evaluation(evaluation_function, evaluation_name)
+                if num_options == 2:
+                    from utils.evaluation_functions_type1_options2 import baseline_only_node_id_causal_verb
+                    evaluation_function = baseline_only_node_id_causal_verb
+                    trigger_evaluation(evaluation_function, evaluation_name)
+                elif num_options == 3:
+                    pass
 
         with st.container(border=True):
             st.markdown("**Type 2: `changing {Node1} causes a change in {Node2}`**")
 
             if st.checkbox(f"**Only using Node identifiers**"):
                 evaluation_name = f"type2_baseline_node_id"
-                from utils.evaluation_functions_type2 import baseline_only_node_id
-                evaluation_function = baseline_only_node_id
-                trigger_evaluation(evaluation_function, evaluation_name)
-
-
-
+                if num_options == 2:
+                    from utils.evaluation_functions_type2_options2 import baseline_only_node_id
+                    evaluation_function = baseline_only_node_id
+                    trigger_evaluation(evaluation_function, evaluation_name)
+                elif num_options == 3:
+                    pass

@@ -334,6 +334,7 @@ def baseline_only_node_id_causal_verb(incorrect_edges, eval_name, llm_model_name
                 "edge": edge,
                 "schema_dep_validity": schema_dep_valid,
                 "verb": causal_verb,
+                "num_options": 2,
                 "correct": "B",
                 # "incorrect": "A",
                 "prompt": prompt_template.format(
