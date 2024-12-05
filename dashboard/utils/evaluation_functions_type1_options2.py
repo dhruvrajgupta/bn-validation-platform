@@ -60,7 +60,7 @@ DESIRED OUTPUT FORMAT:
 }}
 </critique_answer>
 
-Before providing the answer in <critique_answer> tags, think step by step in <critique_thinking> tags and analyze every part.
+Before providing the answer in <critique_answer> tags, think step by step in detail in <critique_thinking> tags and analyze every part.
 Output inside <critique_answer> tag in JSON format. Only output valid JSON.
 DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """
@@ -275,7 +275,7 @@ class EvaluationModel(weave.Model):
 #### EVALUATION WITH NODE ID AND DIFFERENT CAUSAL VERBS
 # (C) The is no direct relation between {n1} and {n2}
 ONLY_NODE_ID_DIFF_CAUSAL_VERB = """\
-Among these three options which one is the most likely true: 
+Among these two options which one is the most likely true: 
 
 (A) {n1} {verbk} {n2} 
 (B) {n2} {verbk} {n1} 
@@ -293,7 +293,7 @@ DESIRED OUTPUT FORMAT:
 }}
 </answer>
 
-Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Before providing the answer in <answer> tags, think step by step in detail in <thinking> tags and analyze every part.
 Output inside <answer> tag in JSON format. Only output valid JSON.
 DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """
