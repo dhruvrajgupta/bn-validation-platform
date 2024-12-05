@@ -233,6 +233,7 @@ def baseline_only_node_id(incorrect_edges, eval_name, llm_model_name, bn_model):
                 "llm_model_name": llm_model_name,
                 "edge": edge,
                 "schema_dep_validity": schema_dep_valid,
+                "num_options": 2,
                 "correct": "B",
                 # "incorrect": "A",
                 "prompt": prompt_template.format(
