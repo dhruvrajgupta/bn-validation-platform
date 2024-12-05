@@ -146,7 +146,9 @@ elif selected_topic == "Data Extractions":
                         # for idx, para in enumerate(section_dict["paragraph"]):
                         #     # paragraph += f"{idx+1}. {para}\n"
                         #     paragraph += f"{para}\n\n"
-                        st.info(section_dict["paragraph"])
+                        out = f"**Section Name: &emsp; {section_dict['section_name']}**\n\n"
+                        out+= section_dict["paragraph"]
+                        st.info(out)
                         break
 
             if type == "Chunk Data":
