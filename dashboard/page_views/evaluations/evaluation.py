@@ -218,11 +218,6 @@ else:
                     from utils.evaluation_functions_type1_options2 import node_id_state_names_causal_verb
                     evaluation_function = node_id_state_names_causal_verb
                     trigger_evaluation(evaluation_function, evaluation_name)
-            #     elif num_options == 3:
-            #         evaluation_name += "_options_3"
-            #         from utils.evaluation_functions_type1_options3 import baseline_only_node_id_causal_verb
-            #         evaluation_function = baseline_only_node_id_causal_verb
-            #         trigger_evaluation(evaluation_function, evaluation_name)
 
 
         ##### TYPE 2 PROMPT STARTS HERE #####
