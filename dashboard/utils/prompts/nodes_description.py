@@ -121,7 +121,7 @@ EXCLUDE THE FOLLOWING ENTITIES:
 ##########
 INSTRUCTIONS:
 1. Please provide the following information for the node label "`{node_label}`".
-2. Extract all the important fine grained specific entities in the node label.
+2. Extract all the important entities in the node label.
 3. Extract only the important entities from the node states and only if the entities exists.
 4. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
 5. Do not retrieve the Entity ID of the terms.
