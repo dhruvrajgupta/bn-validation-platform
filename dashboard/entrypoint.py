@@ -21,6 +21,9 @@ def login():
             placeholder.empty()
             st.success("Login successful")
             st.session_state.logged_in = True
+            user = get_user(email)
+            st.session_state.user = user["username"]
+            st.session_state.user_type = user["type"]
             st.rerun()
         elif submit and get_user(email) and password != get_user(email)["password"]:
             st.error("Login failed")
@@ -65,6 +68,7 @@ edge_rationality = st.Page("page_views/edge_rationality.py", title="Edge Rationa
 
 ## Evaluations
 evaluations = st.Page("page_views/evaluations/evaluation.py", title="Evaluations")
+qualitative_analysis = st.Page("page_views/evaluations/qualitative_analysis.py", title="Qualitative Analysis")
 
 ## Previous
 CPG = st.Page("page_views/previous/CPG.py", title="CPG")
@@ -76,18 +80,26 @@ Nodes_Descriptions = st.Page("page_views/previous/Nodes_Descriptions.py", title=
 pdf2html = st.Page("page_views/previous/pdf2html.py", title="PDF2HTML")
 
 if st.session_state.logged_in:
-    pg = st.navigation(
-        {
-            "Instructions Manual": [instructions_manual],
-            "Dashboard": [ground_truth_model, work_in_progress_model, comparison, guidelines],
-            "Models": [new_model, label_descriptions, file_contents, dataset],
-            "Nodes Descriptions": [nodes_descriptions],
-            "Edge Rationality": [edge_rationality],
-            "Evaluations": [evaluations],
-            "Logout": [logout_page],
-            "Previous": [CPG, dashboard, Edges_Rationality, Graphs, Models, Nodes_Descriptions, pdf2html],
-        }
-    )
+    if st.session_state.user_type == "admin":
+        pg = st.navigation(
+            {
+                "Instructions Manual": [instructions_manual],
+                "Dashboard": [ground_truth_model, work_in_progress_model, comparison, guidelines],
+                "Models": [new_model, label_descriptions, file_contents, dataset],
+                "Nodes Descriptions": [nodes_descriptions],
+                "Edge Rationality": [edge_rationality],
+                "Evaluations": [evaluations, qualitative_analysis],
+                "Logout": [logout_page],
+                "Previous": [CPG, dashboard, Edges_Rationality, Graphs, Models, Nodes_Descriptions, pdf2html],
+            }
+        )
+    elif st.session_state.user_type == "clinician":
+        pg = st.navigation(
+            {
+                "Evaluations": [qualitative_analysis],
+                "Logout": [logout_page],
+            }
+        )
 else:
     pg = st.navigation([login_page])
 
