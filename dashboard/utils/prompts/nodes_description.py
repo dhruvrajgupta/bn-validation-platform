@@ -25,9 +25,13 @@ class NodeDescription(BaseModel):
     description: str
     node_states_description: List[StateDescription]
 
+
+# You’re an expert in clinical informatics with extensive knowledge of Bayesian Networks, particularly focused on "{model_label}" whose description is "{model_description}".
+# Your specialty lies in decoding complex nodes within these networks to extract detailed and clinically relevant information for data mining purposes.
+# Your task is to gather detailed information for a specific node in the given Bayesian Network.
 EXTRACT_NODE_DESCRIPTION = """\
 TASK:
-You’re an expert in clinical informatics with extensive knowledge of Bayesian Networks, particularly focused on "{model_label}" whose description is "{model_description}". 
+You’re an expert in clinical informatics with extensive knowledge of Bayesian Networks. 
 Your specialty lies in decoding complex nodes within these networks to extract detailed and clinically relevant information for data mining purposes.
 Your task is to gather detailed information for a specific node in the given Bayesian Network.
 
@@ -54,10 +58,10 @@ label, description, node_states_description, state_name, state_description
 ##########
 OUTPUT VARIABLES DEFINITIONS:
 label: Provide a clinically relevant label that describes the node.
-description: Describe the clinical meaning and significance of the node. Describe the methods used to determine the node.
-node_state_description: A List of states of the node along with its description.
+description: Describe the clinical meaning and significance of the node.
+node_state_description: A List of states of the node along with its detailed description.
 state_name: Name of the state.
-state_description: Description of the state of the node and what it represents.
+state_description: Description of the state of the node and what it represents in detail.
 
 
 DESIRED OUTPUT FORMAT: 
@@ -78,7 +82,7 @@ Provide the information in the following JSON structure:
 }}
 </answer>
 
-Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Before providing the answer in <answer> tags, think step by step in detail in <thinking> tags and analyze every part.
 Output inside <answer> tag in JSON format. Only output valid JSON.
 DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """
@@ -149,7 +153,7 @@ DESIRED OUTPUT FORMAT:
 }}
 </answer>
 
-Before providing the answer in <answer> tags, think step by step in <thinking> tags and analyze every part.
+Before providing the answer in <answer> tags, think step by step in detail in  <thinking> tags and analyze every part.
 Output inside <answer> tag in JSON format. Only output valid JSON.
 DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """
