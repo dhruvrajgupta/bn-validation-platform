@@ -170,14 +170,14 @@ else:
             # st.data_editor(filtered_incorrect_edges, disabled=True)
             incorrect_edges = filtered_incorrect_edges
 
-        if st.checkbox("Evaluations should be performed on three options `(A, B and C)` - [Default - Using two options `(A and B)`]"):
-            num_options = 3
-            st.write("Three options")
-        else:
-            num_options = 2
-            st.write("Two Options")
-
-        st.info(num_options)
+        # if st.checkbox("**Evaluations should be performed on three options `(A, B and C)` - [Default - Using two options `(A and B)`]**"):
+        #     num_options = 3
+        #     # st.write("Three options")
+        # else:
+        #     num_options = 2
+        #     # st.write("Two Options")
+        #
+        # # st.info(num_options)
 
 
 
@@ -197,31 +197,55 @@ else:
             #     evaluation_function = baseline_only_node_id_state_names_causes
             #     trigger_evaluation(evaluation_function, evaluation_name)
 
+            #### USING ONLY NODE IDENTIFIERS ####
             if st.checkbox(f"**Only using Node identifiers but different causal verbs**"):
                 evaluation_name = f"type1_baseline_node_id_causalverb_{selected_causal_verb}"
                 if num_options == 2:
-                    evaluation_name += "_options_2"
+                    # evaluation_name += "_options_2"
                     from utils.evaluation_functions_type1_options2 import baseline_only_node_id_causal_verb
                     evaluation_function = baseline_only_node_id_causal_verb
                     trigger_evaluation(evaluation_function, evaluation_name)
-                elif num_options == 3:
-                    evaluation_name += "_options_3"
-                    from utils.evaluation_functions_type1_options3 import baseline_only_node_id_causal_verb
-                    evaluation_function = baseline_only_node_id_causal_verb
-                    trigger_evaluation(evaluation_function, evaluation_name)
+                # elif num_options == 3:
+                #     evaluation_name += "_options_3"
+                #     from utils.evaluation_functions_type1_options3 import baseline_only_node_id_causal_verb
+                #     evaluation_function = baseline_only_node_id_causal_verb
+                #     trigger_evaluation(evaluation_function, evaluation_name)
 
+            #### USING ONLY NODE IDENTIFIERS,ITS STATE NAMES ####
+            if st.checkbox(f"**Using Node identifiers and their state names**"):
+                evaluation_name = f"type1_node_id_state_names_causalverb_{selected_causal_verb}"
+                if num_options == 2:
+                    from utils.evaluation_functions_type1_options2 import node_id_state_names_causal_verb
+                    evaluation_function = node_id_state_names_causal_verb
+                    trigger_evaluation(evaluation_function, evaluation_name)
+            #     elif num_options == 3:
+            #         evaluation_name += "_options_3"
+            #         from utils.evaluation_functions_type1_options3 import baseline_only_node_id_causal_verb
+            #         evaluation_function = baseline_only_node_id_causal_verb
+            #         trigger_evaluation(evaluation_function, evaluation_name)
+
+
+        ##### TYPE 2 PROMPT STARTS HERE #####
         with st.container(border=True):
             st.markdown("**Type 2: `changing {Node1} causes a change in {Node2}`**")
 
+            #### USING ONLY NODE IDENTIFIERS ####
             if st.checkbox(f"**Only using Node identifiers**"):
                 evaluation_name = f"type2_baseline_node_id"
                 if num_options == 2:
-                    evaluation_name += "_options_2"
+                    # evaluation_name += "_options_2"
                     from utils.evaluation_functions_type2_options2 import baseline_only_node_id
                     evaluation_function = baseline_only_node_id
                     trigger_evaluation(evaluation_function, evaluation_name)
-                elif num_options == 3:
-                    evaluation_name += "_options_3"
-                    from utils.evaluation_functions_type2_options3 import baseline_only_node_id
-                    evaluation_function = baseline_only_node_id
-                    trigger_evaluation(evaluation_function, evaluation_name)
+                # elif num_options == 3:
+                #     evaluation_name += "_options_3"
+                #     from utils.evaluation_functions_type2_options3 import baseline_only_node_id
+                #     evaluation_function = baseline_only_node_id
+                #     trigger_evaluation(evaluation_function, evaluation_name)
+
+            #### USING ONLY NODE IDENTIFIERS,ITS STATE NAMES ####
+            evaluation_name = f"type2_node_id_state_names"
+            if st.checkbox(f"**Using Node identifiers and their state names**", key=evaluation_name):
+                from utils.evaluation_functions_type2_options2 import node_id_state_names
+                evaluation_function = node_id_state_names
+                trigger_evaluation(evaluation_function, evaluation_name)
