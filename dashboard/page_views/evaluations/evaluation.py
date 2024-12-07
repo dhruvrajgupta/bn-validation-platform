@@ -13,12 +13,13 @@ correct_edges = []
 incorrect_edges = []
 num_options = 2
 
-list_causal_verbs = [
-        "causes", "provokes", "triggers", "leads to", "induces", "results in",
-        "brings about", "yields", "generates", "initiates", "produces", "stimulates",
-        "instigates", "fosters", "engenders", "promotes", "catalyzes",
-        "gives rise to", "spurs", "sparks", "increases likelihood"
-    ]
+# list_causal_verbs = [
+#         "causes", "provokes", "triggers", "leads to", "induces", "results in",
+#         "brings about", "yields", "generates", "initiates", "produces", "stimulates",
+#         "instigates", "fosters", "engenders", "promotes", "catalyzes",
+#         "gives rise to", "spurs", "sparks", "increases likelihood"
+#     ]
+list_causal_verbs = ["causes", "increases likelihood of", "leads to", "triggers", "generates", "produces", "catalyzes"]
 
 def save_to_db_callback(eval_name, model_name, llm_model_name, eval_res_dict):
     status = save_evaluation(eval_name, model_name, llm_model_name, eval_res_dict)
