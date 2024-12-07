@@ -250,3 +250,9 @@ else:
                 from utils.evaluation_functions_type2_options2 import node_id_state_names
                 evaluation_function = node_id_state_names
                 trigger_evaluation(evaluation_function, evaluation_name)
+
+            evaluation_name = f"type2_node_id_state_names_connected_nodes"
+            if st.checkbox(f"**Using Node identifiers, their state names and their direct connected Nodes**", key=evaluation_name):
+                from utils.evaluation_functions_type2_options2 import node_id_state_names_connected_nodes
+                evaluation_function = node_id_state_names_connected_nodes
+                trigger_evaluation(evaluation_function, evaluation_name)
