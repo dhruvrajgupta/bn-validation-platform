@@ -1122,3 +1122,142 @@ def node_id_state_names_node_type_observablity_node_labels_descriptions(incorrec
     }
 
     return eval_res_dict
+
+
+
+
+
+#### EVALUATION WITH NODE ID THEIR STATE NAMES, NODE TYPE, OBSERVABILITY, NODE LABELS AND DESCRIPTIONS ####
+NODE_ID_NODE_TYPE_OBSERVABILITY_NODE_LABELS_DESCRIPTIONS_STATE_DESCRIPTIONS_DIFF_CAUSAL_VERB = """\
+`NODE1`:
+id: {n1}
+label: {n1_label}
+description: {n1_description}
+type: {n1_type}
+observability: {n1_observability}
+states: {n1_states}
+
+`NODE2`:
+id: {n2}
+label: {n2_label}
+description: {n2_description}
+type: {n2_type}
+observability: {n2_observability}
+states: {n2_states}
+
+Among these two options which one is the most likely true: 
+
+(A) `{n1}` {verbk} `{n2}` 
+(B) `{n2}` `{verbk} `{n1}`
+
+The answer is: ...
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "thinking": ["...", ...]
+   "answer": ...
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in detail in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
+
+def node_id_node_type_observablity_node_labels_descriptions_states_descriptions(incorrect_edges, eval_name, llm_model_name, bn_model):
+    causal_verb = eval_name.split("_")[-1]
+
+    dataset = []
+    evaluation_data = []
+
+    @weave.op()
+    def edge_judgement_scorer(id, output):
+        # print(json.dumps(output, indent=4))
+        evaluation_data[id] = dataset[id]
+        evaluation_data[id]["reasoning"] = output["thinking"]
+        evaluation_data[id]["answer"] = output["answer"]
+        evaluation_data[id]["answer_choice_probablities"] = output["answer_choice_probablities"]
+        evaluation_data[id]["critique_consistent"] = (
+            "yes" if output["critique"]["critique_answer"] == output["answer"] else "no")
+        evaluation_data[id]["critique_answer"] = output["critique"]["critique_answer"]
+        evaluation_data[id]["critique_reasoning"] = output["critique"]["critique_thinking"]
+        return output["answer"] == dataset[id]["correct"]
+
+    @weave.op()
+    def edge_judgement_consistency_scorer(id, output):
+        return output["answer"] == output["critique"]["critique_answer"]
+
+    def create_dataset(incorrect_edges, prompt_template):
+        # We are reversing the edges for evaluation
+        for id, edge_item in enumerate(incorrect_edges):
+            schema_dep_valid = edge_item["schema_dep_validity"]
+            edge = edge_item["edge"]
+            n1 = edge[0]
+            n2 = edge[1]
+
+            nodes_data = {
+                "NODE1": {
+                    "id": n1,
+                    "label": get_node_descriptions(n1)["label"],
+                    "description": get_node_descriptions(n1)["description"],
+                    "type": get_node_descriptions(n1)["type"],
+                    "observability": get_node_descriptions(n1)["observability"],
+                    "states": get_node_descriptions(n1)["node_states_description"],
+                },
+                "NODE2": {
+                    "id": n2,
+                    "label": get_node_descriptions(n2)["label"],
+                    "description": get_node_descriptions(n2)["description"],
+                    "type": get_node_descriptions(n2)["type"],
+                    "observability": get_node_descriptions(n2)["observability"],
+                    "states": get_node_descriptions(n2)["node_states_description"],
+                }
+            }
+            data = {
+                "id": id,
+                "llm_model_name": llm_model_name,
+                "edge": edge,
+                "nodes_data": json.dumps(nodes_data, indent=2),
+                "schema_dep_validity": schema_dep_valid,
+                "verb": causal_verb,
+                "num_options": 2,
+                "correct": "B",
+                # "incorrect": "A",
+                "prompt": prompt_template.format(
+                    n1=n1, n2=n2,
+                    n1_states=nodes_data["NODE1"]["states"], n2_states=nodes_data["NODE2"]["states"],
+                    n1_type=nodes_data["NODE1"]["type"], n2_type=nodes_data["NODE2"]["type"],
+                    n1_observability=nodes_data["NODE1"]["observability"], n2_observability=nodes_data["NODE2"]["observability"],
+                    n1_label=nodes_data["NODE1"]["label"], n2_label=nodes_data["NODE2"]["label"],
+                    n1_description=nodes_data["NODE1"]["description"], n2_description=nodes_data["NODE2"]["description"],
+                    verbk=causal_verb,
+                    id=id)
+            }
+            dataset.append(data)
+            evaluation_data.append(data)
+
+    create_dataset(incorrect_edges, NODE_ID_NODE_TYPE_OBSERVABILITY_NODE_LABELS_DESCRIPTIONS_STATE_DESCRIPTIONS_DIFF_CAUSAL_VERB)
+
+    weave.init('bnv_N_staging')
+
+    model = EvaluationModel(model_name=llm_model_name)
+
+    evaluation = weave.Evaluation(
+        name=eval_name,
+        dataset=dataset,
+        scorers=[edge_judgement_scorer, edge_judgement_consistency_scorer]
+    )
+
+    evaluation_scorer_summary = asyncio.run(evaluation.evaluate(model))
+
+    eval_res_dict = {
+        # "dataset": dataset,
+        "eval_scorer_summary": evaluation_scorer_summary,
+        "evaluation_data": format_reasoning(evaluation_data)
+    }
+
+    return eval_res_dict
