@@ -275,3 +275,10 @@ else:
                 from utils.evaluation_functions_type2_options2 import node_id_state_names_node_type
                 evaluation_function = node_id_state_names_node_type
                 trigger_evaluation(evaluation_function, evaluation_name)
+
+            evaluation_name = f"type2_node_id_state_names_node_type_observability"
+            if st.checkbox(
+                f"**[Augmentation] Node Type, Observability `{{Observed [Examination Result], Unobserved [Patient Situation]}}`**", key=evaluation_name):
+                from utils.evaluation_functions_type2_options2 import node_id_state_names_node_type_observability
+                evaluation_function = node_id_state_names_node_type_observability
+                trigger_evaluation(evaluation_function, evaluation_name)
