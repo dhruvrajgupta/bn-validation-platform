@@ -308,3 +308,11 @@ else:
                 from utils.evaluation_functions_type2_options2 import node_id_state_names_node_type_observability_label
                 evaluation_function = node_id_state_names_node_type_observability_label
                 trigger_evaluation(evaluation_function, evaluation_name)
+
+            evaluation_name = f"type2_node_id_state_names_node_type_observability_labels_description"
+            if st.checkbox(
+                    f"**[Augmentation] Node Type, Observability, Node Label and Description**",
+                    key=evaluation_name):
+                from utils.evaluation_functions_type2_options2 import node_id_state_names_node_type_observability_label_description
+                evaluation_function = node_id_state_names_node_type_observability_label_description
+                trigger_evaluation(evaluation_function, evaluation_name)
