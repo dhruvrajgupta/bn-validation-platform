@@ -238,19 +238,19 @@ else:
                 evaluation_function = node_id_state_names_node_type_observablity
                 trigger_evaluation(evaluation_function, evaluation_name)
 
-            if st.checkbox(f"**[Augmentation] Node Type, Observability and Node Labels**"):
+            if st.checkbox(f"**[Augmentation] Node Type, Observability and Node Label**"):
                 evaluation_name = f"type1_node_id_state_names_node_type_observability_node_labels_causalverb_{selected_causal_verb}"
                 from utils.evaluation_functions_type1_options2 import node_id_state_names_node_type_observablity_node_labels
                 evaluation_function = node_id_state_names_node_type_observablity_node_labels
                 trigger_evaluation(evaluation_function, evaluation_name)
 
-            if st.checkbox(f"**[Augmentation] Node Type, Observability, Node Labels and Descriptions**"):
+            if st.checkbox(f"**[Augmentation] Node Type, Observability, Node Label and Description**"):
                 evaluation_name = f"type1_node_id_state_names_node_type_observability_node_labels_descriptions_causalverb_{selected_causal_verb}"
                 from utils.evaluation_functions_type1_options2 import node_id_state_names_node_type_observablity_node_labels_descriptions
                 evaluation_function = node_id_state_names_node_type_observablity_node_labels_descriptions
                 trigger_evaluation(evaluation_function, evaluation_name)
 
-            if st.checkbox(f"**[Augmentation] Node Type, Observability, Node Labels, Descriptions and States Descriptions**"):
+            if st.checkbox(f"**[Augmentation] Node Type, Observability, Node Label, Description and States Descriptions**"):
                 evaluation_name = f"type1_node_id_node_type_observability_node_labels_descriptions_state_descriptions_causalverb_{selected_causal_verb}"
                 from utils.evaluation_functions_type1_options2 import node_id_node_type_observablity_node_labels_descriptions_states_descriptions
                 evaluation_function = node_id_node_type_observablity_node_labels_descriptions_states_descriptions
@@ -299,4 +299,12 @@ else:
                 f"**[Augmentation] Node Type, Observability `{{Observed [Examination Result], Unobserved [Patient Situation]}}`**", key=evaluation_name):
                 from utils.evaluation_functions_type2_options2 import node_id_state_names_node_type_observability
                 evaluation_function = node_id_state_names_node_type_observability
+                trigger_evaluation(evaluation_function, evaluation_name)
+
+            evaluation_name = f"type2_node_id_state_names_node_type_observability_labels"
+            if st.checkbox(
+                    f"**[Augmentation] Node Type, Observability and Node Label**",
+                    key=evaluation_name):
+                from utils.evaluation_functions_type2_options2 import node_id_state_names_node_type_observability_label
+                evaluation_function = node_id_state_names_node_type_observability_label
                 trigger_evaluation(evaluation_function, evaluation_name)
