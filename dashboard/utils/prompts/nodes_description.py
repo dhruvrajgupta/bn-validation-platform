@@ -5,9 +5,12 @@ NODE_TOKENS_AND_THEIR_MEANINGS = """\
 Node tokens and their meanings:
 hep - The liver(hepar)
 M - Metastasis
+N - nearby lymph nodes that have cancer
 diagnostic - concerned with the diagnosis examinations of illness or other problems
 sono - concerned with Ultrasound/Sonography
 peri - peritoneum
+patho - pathology
+histo - histology
 """
 
 NODE_COMPOSITION_GUIDANCE = """\

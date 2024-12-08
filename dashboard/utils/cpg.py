@@ -88,7 +88,8 @@ def ask_llm(prompt: str, stream=False):
 
     model_name = "gpt-4o-mini"
     # model_name = "gpt-4o"
-    # temperature = 0
+    temperature = 0
+    seed=123
 
     client = OpenAI(
         # Defaults to os.environ.get("OPENAI_API_KEY")
@@ -100,7 +101,8 @@ def ask_llm(prompt: str, stream=False):
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
         ],
-        # temperature=temperature,
+        temperature=temperature,
+        seed=seed
         # stream=stream
     )
 
@@ -147,7 +149,8 @@ def ask_llm_response_schema(prompt: str, response_format: BaseModel):
 
     model_name = "gpt-4o-mini"
     # model_name = "gpt-4o"
-    # temperature = 0
+    temperature = 0
+    seed=123
 
     client = OpenAI(
         # Defaults to os.environ.get("OPENAI_API_KEY")
@@ -161,7 +164,8 @@ def ask_llm_response_schema(prompt: str, response_format: BaseModel):
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
         ],
-        # temperature=temperature,
+        temperature=temperature,
+        seed=seed,
         response_format=response_format
     )
 
