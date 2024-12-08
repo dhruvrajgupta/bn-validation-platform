@@ -238,6 +238,12 @@ else:
                 evaluation_function = node_id_state_names_node_type_observablity
                 trigger_evaluation(evaluation_function, evaluation_name)
 
+            if st.checkbox(f"**[Augmentation] Node Type, Observability and Node Labels**"):
+                evaluation_name = f"type1_node_id_state_names_node_type_observability_node_labels_causalverb_{selected_causal_verb}"
+                from utils.evaluation_functions_type1_options2 import node_id_state_names_node_type_observablity_node_labels
+                evaluation_function = node_id_state_names_node_type_observablity_node_labels
+                trigger_evaluation(evaluation_function, evaluation_name)
+
 
         ##### TYPE 2 PROMPT STARTS HERE #####
         with st.container(border=True):
