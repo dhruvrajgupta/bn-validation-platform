@@ -10,6 +10,8 @@ import asyncio
 import numpy as np
 from math import exp
 
+from utils.db import get_node_descriptions
+
 import streamlit as st
 
 ############## PORTION WITHIN THIS SECTION IS COMMON FOR ALL EVALUATIONS ##############
@@ -670,8 +672,6 @@ def node_id_state_names_node_type(incorrect_edges, eval_name, llm_model_name, bn
             edge = edge_item["edge"]
             n1 = edge[0]
             n2 = edge[1]
-
-            from utils.db import get_node_descriptions
 
             nodes_data = {
                 "NODE1": {
