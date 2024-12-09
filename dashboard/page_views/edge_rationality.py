@@ -273,6 +273,54 @@ def display_third_er(data):
         for fact in evidence_source['facts_and_recommendations']:
             st.markdown(f"- {fact}")
 
+def get_cf_info(edge):
+
+    E1 = None
+
+    n1 = edge[0]
+    n2 = edge[1]
+
+    from utils.prompts.edge_rationality import CAUSAL_FACTORS, CFResult
+    from utils.db import get_node_descriptions, save_causal_factors
+    prompt = CAUSAL_FACTORS.format(
+        n1=n1, n2=n2,
+        n1_type=get_node_descriptions(n1)["type"], n2_type=get_node_descriptions(n2)["type"],
+        n1_observability=get_node_descriptions(n1)["observability"],
+        n2_observability=get_node_descriptions(n2)["observability"],
+        n1_label=get_node_descriptions(n1)["label"],
+        n2_label=get_node_descriptions(n2)["label"],
+        n1_description=get_node_descriptions(n1)["description"],
+        n2_description=get_node_descriptions(n2)["description"],
+        n1_states=get_node_descriptions(n1)["node_states_description"],
+        n2_states=get_node_descriptions(n2)["node_states_description"],
+    )
+
+    import json
+    from utils.cpg import ask_llm_response_schema
+    E1 = json.loads(ask_llm_response_schema(prompt, response_format=CFResult))
+
+    n1 = edge[1]
+    n2 = edge[0]
+
+    prompt2 = CAUSAL_FACTORS.format(
+        n1=n1, n2=n2,
+        n1_type=get_node_descriptions(n1)["type"], n2_type=get_node_descriptions(n2)["type"],
+        n1_observability=get_node_descriptions(n1)["observability"],
+        n2_observability=get_node_descriptions(n2)["observability"],
+        n1_label=get_node_descriptions(n1)["label"],
+        n2_label=get_node_descriptions(n2)["label"],
+        n1_description=get_node_descriptions(n1)["description"],
+        n2_description=get_node_descriptions(n2)["description"],
+        n1_states=get_node_descriptions(n1)["node_states_description"],
+        n2_states=get_node_descriptions(n2)["node_states_description"],
+    )
+
+    E2 = json.loads(ask_llm_response_schema(prompt, response_format=CFResult))
+
+    save_causal_factors(edge, E1)
+    save_causal_factors((edge[1], edge[0]), E2)
+
+
 def display_edge_rationality(bn_model, model_type, model_label, model_description):
     edges = bn_model.edges()
     for edge in edges:
@@ -298,6 +346,13 @@ def display_edge_rationality(bn_model, model_type, model_label, model_descriptio
                     display_node_information(source, "SOURCE", edge)
                 with col2:
                     display_node_information(target, "TARGET", edge)
+
+                # btn_cf = st.button("GET  CF",
+                #                    key=f"GPT - CF - {model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})")
+                #
+                # if btn_cf:
+                #     with st.spinner(f"Extracting Causal Factors '{edge}' ..."):
+                #         cf_info = get_cf_info(edge)
 
                 if edge_rationality_info:
                     edge_rationality_info = edge_rationality_info["edge_rationality_info"]
@@ -379,7 +434,6 @@ def display_edge_rationality(bn_model, model_type, model_label, model_descriptio
                 #             # st.json(edge_rationality_info["third"][1], expanded=True)
                 #         # st.json(edge_rationality_info, expanded=False)
                     st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[edge, edge_rationality_info], key=f"Save to DB - {model_type} - Edge Rationality - ({edge[0]}, {edge[1]})")
-
 
 
 ##### START OF PAGE #####

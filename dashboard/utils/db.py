@@ -433,3 +433,31 @@ def save_evaluation(name, model_name, llm_model_name, eval_res_dict):
         return "Updated"
     else:
         return "Added"
+
+
+def save_causal_factors(edge, cf):
+    db = init_connection()["bn-validation"]
+    causal_factors = db.causal_factors
+
+    cf_dict = {
+        "edges_ids": edge,
+        "edge": cf["edge"],
+        "explanation": cf["explanation"],
+        "causal_direction": cf["causal_info"]["causal_direction"],
+        "causal_factor": cf["causal_info"]["causal_factor"],
+        "causal_distance": cf["causal_info"]["causal_distance"],
+    }
+
+    if causal_factors.find_one(cf_dict):
+        return "Same"
+
+    result = causal_factors.replace_one(
+        {"edges_ids": edge},
+        cf_dict,
+        upsert=True
+    )
+
+    if result.matched_count > 0:
+        return "Updated"
+    else:
+        return "Added"

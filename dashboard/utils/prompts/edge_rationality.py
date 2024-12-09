@@ -471,3 +471,100 @@ Before providing the answer in <answer> tags, think step by step in <thinking> t
 Output inside <answer> tag in JSON format. Only output valid JSON.
 DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """
+
+
+class CausalDirectionCategory(str, Enum):
+    POSITIVE =  "positive"
+    NEGATIVE =  "Negative"
+    UNKNOWN =  "Unknown"
+
+class CausalDistanceCategory(str, Enum):
+    DISTAL = "Distal"
+    PROXIMAL = "Proximal"
+    UNKNOWN =  "Unknown"
+
+class CausalFactor(BaseModel):
+    necessary: bool
+    sufficient: bool
+
+class CausalInfo(BaseModel):
+    causal_direction: CausalDirectionCategory
+    causal_factor: CausalFactor
+    causal_distance: CausalDistanceCategory
+
+class CFResult(BaseModel):
+    thinking: List[str]
+    edge: str
+    is_valid: bool
+    explanation: List[str]
+    causal_info: Optional[CausalInfo]
+
+CAUSAL_FACTORS = """\
+You are an expert clinician. 
+Your task is to verify edge {n1} causes {n2} nodes is a valid edge in the Bayesian Network. 
+Use the provided details of {n1} and {n2} nodes and then, assess the probable causal relationship between the nodes.
+
+##########
+INPUT:
+Edge: `({n1})` causes `({n2})`
+
+NODE1:
+id: {n1}
+type: {n1_type}
+observability: {n1_observability}
+label: {n1_label}
+description: {n1_description}
+states: {n1_states}
+
+NODE2:
+id: {n2}
+type: {n2_type}
+observability: {n2_observability}
+label: {n2_label}
+description: {n2_description}
+states: {n2_states}
+
+##########
+INSTRUCTIONS:
+1. Extract the relevant information for both {n1} and {n2} nodes based on the provided details in the INPUT.
+2. Determine if the edge given in input is valid.
+3. Analyze the causal direction of the edge.
+4. Explanations should be corresponding to the edge taken into consideration.
+5. Explanations should mention the corresponding nodes.
+6. Output in JSON format.
+
+##########
+OUTPUT VARIABLES DEFINITTIONS:
+edge - The edge which needs to be verified.
+explanation - Explanation of what the edge represents and its validity.
+causal_info - Contains other information related to edge causality.
+causal_direction - Either Positive or Negative or Unknown. A positive influence direction indicates that both factors change in the same direction (e.g. an increase causes an increase effect). A negative influence direction indicates the opposite changes (e.g. an increase causes a decrease effect).
+causal_factor - Is necessary or sufficient condition for an effect to occur. Exposure is a term commonly used in epidemiology to denote any condition that is considered as a possible cause of disease. Exposure is considered necessary when it always precedes the effects (e.g. symptoms) and always presents when the effects occur. A sufficient cause is a causal factor whose presence or occurrence guarantees the occurrence of symptom.
+causal_distance - Either Distal or Proximal or Unknown. The distal factors lie towards the beginning of causal chain (i.e. indirect causal factors). The the proximal factors lie towards the end of the chain (i.e. cause directly or almost directly the effect).
+
+##########
+DESIRED OUTPUT FORMAT:
+Provide the information in the following JSON structure:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+    "thinking": ["...", ...],
+    "edge": `({n1})` causes `({n2})`,
+    "explanation": [ ... ] ,
+    "causal_info": {{
+        "causal_direction": ... ,
+        "causal_factor": {{
+            "necessary": ... ,
+            "sufficient": ... ,
+        }},
+        "causal_distance": ... ,
+    }}
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in detail in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
