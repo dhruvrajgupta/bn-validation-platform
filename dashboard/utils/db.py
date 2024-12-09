@@ -461,3 +461,19 @@ def save_causal_factors(edge, cf):
         return "Updated"
     else:
         return "Added"
+
+
+def get_causal_factors(edge):
+    db = init_connection()["bn-validation"]
+    causal_factors = db.causal_factors
+
+    current_causal_factors = causal_factors.find_one(
+        {
+            "edges_ids": edge
+        })
+
+    if not current_causal_factors:
+        return {}
+    else:
+        del current_causal_factors["_id"]
+        return current_causal_factors
