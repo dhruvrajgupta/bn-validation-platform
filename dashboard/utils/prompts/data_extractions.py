@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 class SectionData(BaseModel):
     section_name: str
@@ -71,4 +71,75 @@ HTML PAGE CONTENT:
 ```
 {html_page}
 ```
+"""
+
+class RelationshipResult(BaseModel):
+    relationship_thinking: str
+    entity1: str
+    entity2: str
+    relationship: str
+
+class EntityInformation(BaseModel):
+    ontology_name: Optional[str]
+    label: Optional[str]
+    description: Optional[str]
+
+class E_R_Results(BaseModel):
+    thinking: List[str]
+    entity_information: List[EntityInformation]
+    relationships_information: List[RelationshipResult]
+
+ENTITIES_AND_RELATIONSHIPS = """\
+TASK:
+You’re an expert in clinical informatics with extensive knowledge of Entity Linking.
+
+TEXT DATA:
+`{text}`
+
+##########
+INSTRUCTIONS:
+1. Extract all the important entities in the TEXT DATA.
+2. Extract only the important entities from the TEXT DATA and only if the entities exists.
+3. For each entity (MeSH, SNOMED-CT, Wikidata), retrieve only the label and description.
+4. Do not retrieve the Entity ID of the terms.
+5. This information will be used for clinical data mining, so make sure the labels and descriptions are accurate and relevant to the medical domain.
+6. Each Entity label should have their corresponding descriptions.
+
+For each entity, retrieve the following entity information:
+1. MeSH label and description
+2. SNOMED-CT label and description
+3. Wikidata label and description
+
+Now, extract all the relationships between the entities from the TEXT DATA.
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "thinking": ["...", ...],
+   "entity_information":[
+      {{
+         "ontology_name": "MeSH",
+         "label": "...",
+         "description": "..."
+      }},
+      ...
+   ],
+   "relationships_information": [
+    {{
+        "relationship_thinking": "...",
+        "entity1": "...",
+        "entity2": "...",
+        "relationship": "..."
+    }},
+    ...
+   ]
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in detail in  <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """

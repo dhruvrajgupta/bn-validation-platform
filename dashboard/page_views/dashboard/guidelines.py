@@ -133,7 +133,7 @@ elif selected_topic == "Data Extractions":
                 'r', encoding='utf-8')
             source_code = HtmlFile.read()
 
-            type = st.radio("Data Source:", ["Sections", "Chunk Data", "HTML Extracted Data", "Merge"], horizontal=True, label_visibility="collapsed")
+            type = st.radio("Data Source:", ["Sections", "Chunk Data", "HTML Extracted Data", "Merge", "ER"], horizontal=True, label_visibility="collapsed")
 
             if type == "Sections":
                 page_info = get_page_info_db(selected_page_no)
@@ -188,6 +188,29 @@ elif selected_topic == "Data Extractions":
                 st.write(sections_data)
                 st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[selected_page_no, sections_data, chunk_data, html_extracted_data])
 
+            elif type == "ER":
+                from utils.db import get_page_info2
+                page_info = get_page_info2(selected_page_no)
+                updated_info = []
+                from utils.db import save_er_information_temp
+
+                if "er_info" in page_info.keys():
+                    st.write(page_info["er_info"])
+                else :
+                    if st.button("Save ER"):
+                        with st.spinner("Saving Entities and Relationships information ..."):
+                            for section in page_info["sections"]:
+                                section_para = section["paragraph"]
+                                # st.write(section_para)
+
+                                from utils.prompts.data_extractions import ENTITIES_AND_RELATIONSHIPS, E_R_Results
+                                prompt = ENTITIES_AND_RELATIONSHIPS.format(text=section_para)
+                                er = json.loads(ask_llm_response_schema(prompt, E_R_Results))
+                                updated_info.append(er)
+
+                                # st.write(updated_info)
+                                # break
+                            save_er_information_temp(selected_page_no, updated_info)
 
 elif selected_topic == "Causality":
     # with st.container(border=True):

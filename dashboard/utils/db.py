@@ -477,3 +477,52 @@ def get_causal_factors(edge):
     else:
         del current_causal_factors["_id"]
         return current_causal_factors
+
+# TODO Carefully modify
+def get_page_info2(page_no):
+    db = init_connection()["bn-validation"]
+    pages = db.pages2
+
+    return pages.find_one({"page_no": page_no})
+
+def save_er_information_temp(page_no, updated_info):
+    db = init_connection()["bn-validation"]
+    pages = db.pages2
+
+    pages.update_one(
+        {"page_no": page_no},
+        {"$set": {"er_info": updated_info}}
+    )
+
+def search_pages_with_entities(node_entities):
+    page_entity_matching_dict = {}
+    db = init_connection()["bn-validation"]
+    node_entities_labels = list(set([entity['label'] for entity in node_entities]))
+    print(node_entities_labels)
+    pages = db.pages2
+
+    all_pages = pages.find()
+
+    for page in all_pages:
+        page_entities = []
+        for section_er_info in page["er_info"]:
+            section_enitity_information = section_er_info["entity_information"]
+            page_entities.extend(section_enitity_information)
+
+        page_entities_labels = list(set([entity['label'] for entity in page_entities]))
+        print(page_entities_labels)
+
+        ## get all the matching entities
+        matching_entities_labels = []
+        for node_entity_label in node_entities_labels:
+            if node_entity_label in page_entities_labels:
+                matching_entities_labels.append(node_entity_label)
+
+        page_entity_matching_dict[page['page_no']] = {
+            "matching_entities": matching_entities_labels,
+            "count": len(matching_entities_labels)
+        }
+
+        print(page_entity_matching_dict)
+
+        page_entities = []
