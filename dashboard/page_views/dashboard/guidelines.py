@@ -133,7 +133,7 @@ elif selected_topic == "Data Extractions":
                 'r', encoding='utf-8')
             source_code = HtmlFile.read()
 
-            type = st.radio("Data Source:", ["Sections", "Chunk Data", "HTML Extracted Data", "Merge", "ER"], horizontal=True, label_visibility="collapsed")
+            type = st.radio("Data Source:", ["Sections", "Chunk Data", "HTML Extracted Data", "Merge", "ER", "CausalE"], horizontal=True, label_visibility="collapsed")
 
             if type == "Sections":
                 page_info = get_page_info_db(selected_page_no)
@@ -211,6 +211,33 @@ elif selected_topic == "Data Extractions":
                                 # st.write(updated_info)
                                 # break
                             save_er_information_temp(selected_page_no, updated_info)
+
+            elif type == "CausalE":
+                from utils.db import get_page_info2
+                page_info = get_page_info2(selected_page_no)
+                causality_info = []
+                from utils.db import save_ce_information_temp
+
+                ce_btn = st.button("Extract and Save CE")
+
+                if ce_btn:
+                    with st.spinner("Saving Causality Extractions information ..."):
+                        for section in page_info["sections"]:
+                            section_para = section["paragraph"]
+                            # st.write(section_para)
+
+                            from utils.prompts.data_extractions import EXTRACT_CAUSALITY, CausalityExtraction
+                            prompt = EXTRACT_CAUSALITY.format(text=section_para)
+                            ce = json.loads(ask_llm_response_schema(prompt, CausalityExtraction))
+                            causality_info.append(ce)
+
+                            # st.write(causality_info)
+                            # break
+                        st.write(causality_info)
+                        save_ce_information_temp(selected_page_no, causality_info)
+
+                if "causality_info" in page_info.keys():
+                    st.write(page_info["causality_info"])
 
 elif selected_topic == "Causality":
     # with st.container(border=True):

@@ -494,6 +494,15 @@ def save_er_information_temp(page_no, updated_info):
         {"$set": {"er_info": updated_info}}
     )
 
+def save_ce_information_temp(page_no, updated_info):
+    db = init_connection()["bn-validation"]
+    pages = db.pages2
+
+    pages.update_one(
+        {"page_no": page_no},
+        {"$set": {"causality_info": updated_info}}
+    )
+
 def search_pages_with_entities(node_entities):
     page_entity_matching_dict = {}
     db = init_connection()["bn-validation"]
