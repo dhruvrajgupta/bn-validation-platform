@@ -133,7 +133,9 @@ elif selected_topic == "Data Extractions":
                 'r', encoding='utf-8')
             source_code = HtmlFile.read()
 
-            type = st.radio("Data Source:", ["Sections", "Chunk Data", "HTML Extracted Data", "Merge", "ER", "CausalE"], horizontal=True, label_visibility="collapsed")
+            type = st.radio("Data Source:", ["Sections", "Chunk Data", "HTML Extracted Data", "Merge",
+                                             "Entities & Relationships Extraction", "Causality Extraction"],
+                            horizontal=True, label_visibility="collapsed")
 
             if type == "Sections":
                 page_info = get_page_info_db(selected_page_no)
@@ -188,16 +190,16 @@ elif selected_topic == "Data Extractions":
                 st.write(sections_data)
                 st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[selected_page_no, sections_data, chunk_data, html_extracted_data])
 
-            elif type == "ER":
+            elif type == "Entities & Relationships Extraction":
                 from utils.db import get_page_info2
                 page_info = get_page_info2(selected_page_no)
                 updated_info = []
-                from utils.db import save_er_information_temp
+                from utils.db import save_entity_relationships_information
 
                 if "er_info" in page_info.keys():
                     st.write(page_info["er_info"])
                 else :
-                    if st.button("Save ER"):
+                    if st.button("Extract and Save ER"):
                         with st.spinner("Saving Entities and Relationships information ..."):
                             for section in page_info["sections"]:
                                 section_para = section["paragraph"]
@@ -210,13 +212,13 @@ elif selected_topic == "Data Extractions":
 
                                 # st.write(updated_info)
                                 # break
-                            save_er_information_temp(selected_page_no, updated_info)
+                            save_entity_relationships_information(selected_page_no, updated_info)
 
-            elif type == "CausalE":
+            elif type == "Causality Extraction":
                 from utils.db import get_page_info2
                 page_info = get_page_info2(selected_page_no)
                 causality_info = []
-                from utils.db import save_ce_information_temp
+                from utils.db import save_causality_extractions_information
 
                 ce_btn = st.button("Extract and Save CE")
 
@@ -234,7 +236,7 @@ elif selected_topic == "Data Extractions":
                             # st.write(causality_info)
                             # break
                         st.write(causality_info)
-                        save_ce_information_temp(selected_page_no, causality_info)
+                        save_causality_extractions_information(selected_page_no, causality_info)
 
                 if "causality_info" in page_info.keys():
                     st.write(page_info["causality_info"])
