@@ -142,7 +142,7 @@ elif selected_topic == "Data Extractions":
                 section_names = [section_dict["section_name"] for section_dict in page_info["sections"]]
                 selected_section = st.radio("**Section:**", section_names, horizontal=True)
 
-                for section_dict in page_info["sections"]:
+                for id,section_dict in enumerate(page_info["sections"]):
                     if selected_section == section_dict["section_name"]:
                         # paragraph = ""
                         # for idx, para in enumerate(section_dict["paragraph"]):
@@ -151,6 +151,10 @@ elif selected_topic == "Data Extractions":
                         out = f"**Section Name: &emsp; {section_dict['section_name']}**\n\n"
                         out+= section_dict["paragraph"]
                         st.info(out)
+                        st.markdown("**Causality Info**")
+                        st.json(page_info["causality_info"][id], expanded=False)
+                        st.markdown("Entity & Relationships")
+                        st.json(page_info["er_info"][id], expanded=False)
                         break
 
             if type == "Chunk Data":
@@ -191,8 +195,8 @@ elif selected_topic == "Data Extractions":
                 st.button("Save to Database", type="primary", on_click=save_to_db_callback, args=[selected_page_no, sections_data, chunk_data, html_extracted_data])
 
             elif type == "Entities & Relationships Extraction":
-                from utils.db import get_page_info2
-                page_info = get_page_info2(selected_page_no)
+                from utils.db import get_page_info
+                page_info = get_page_info(selected_page_no)
                 updated_info = []
                 from utils.db import save_entity_relationships_information
 
@@ -215,8 +219,8 @@ elif selected_topic == "Data Extractions":
                             save_entity_relationships_information(selected_page_no, updated_info)
 
             elif type == "Causality Extraction":
-                from utils.db import get_page_info2
-                page_info = get_page_info2(selected_page_no)
+                from utils.db import get_page_info
+                page_info = get_page_info(selected_page_no)
                 causality_info = []
                 from utils.db import save_causality_extractions_information
 

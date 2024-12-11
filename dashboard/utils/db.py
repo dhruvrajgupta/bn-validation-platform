@@ -487,7 +487,7 @@ def get_page_info2(page_no):
 
 def save_entity_relationships_information(page_no, updated_info):
     db = init_connection()["bn-validation"]
-    pages = db.pages2
+    pages = db.pages
 
     pages.update_one(
         {"page_no": page_no},
@@ -496,7 +496,7 @@ def save_entity_relationships_information(page_no, updated_info):
 
 def save_causality_extractions_information(page_no, updated_info):
     db = init_connection()["bn-validation"]
-    pages = db.pages2
+    pages = db.pages
 
     pages.update_one(
         {"page_no": page_no},
