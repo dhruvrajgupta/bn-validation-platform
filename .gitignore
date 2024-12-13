@@ -9,3 +9,4 @@ database/
 .env
 rabbitmq-data/
 dashboard/pyvis_htmls
+evaluation_results/type1only_node_ids.pdf
