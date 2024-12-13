@@ -18,3 +18,4 @@ streamlit_js_eval
 # Bug - reports an isolated node which is not
 st-link-analysis
 weave
+transformers
