@@ -98,7 +98,7 @@ def matching_entites_to_pages(matched_entities):
     # print(existing_matched_pages_info)
 
     # Sort on the basis of count
-    sorted_data = sorted(existing_matched_pages_info.items(), key=lambda x: x[1]['count'], reverse=True)
+    sorted_data = dict(sorted(existing_matched_pages_info.items(), key=lambda x: x[1]['count'], reverse=True))
     return sorted_data
 
 if __name__ == "__main__":
