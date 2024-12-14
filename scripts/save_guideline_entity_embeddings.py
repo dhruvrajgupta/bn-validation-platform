@@ -5,13 +5,25 @@ import pickle
 
 threshold = 0.93
 
+def merge_matching_entities(dict1, dict2):
+    merged = {}
+    all_keys = set(dict1.keys()) | set(dict2.keys())
+
+    for key in all_keys:
+        val1 = dict1.get(key, float('-inf'))
+        val2 = dict2.get(key, float('-inf'))
+
+        merged[key] = max(val1, val2)
+
+    return merged
+
 def list_unique_entity_score(matching_entities):
-    matching_entities = [
-        {'Neoplasm Staging': 0.9342785},
-        {'Neoplasm Staging': 0.9338578285675354},
-        {'Neoplasm Staging': 0.937621},
-        {'Cancer Staging': 0.92}
-    ]
+    # matching_entities = [
+    #     {'Neoplasm Staging': 0.9342785},
+    #     {'Neoplasm Staging': 0.9338578285675354},
+    #     {'Neoplasm Staging': 0.937621},
+    #     {'Cancer Staging': 0.92}
+    # ]
 
     ## Output: [{'Neoplasm Staging': 0.937621}, {'Cancer Staging': 0.92}]
 
@@ -21,9 +33,8 @@ def list_unique_entity_score(matching_entities):
             max_values[key] = max(max_values.get(key, float('-inf')), value)
 
     result = []
-    for item in matching_entities:
-        if any(item == {k: v} for k, v in max_values.items()):
-            result.append(item)
+    for key, value in max_values.items():
+        result.append({key: value})
 
     return result
 
@@ -67,35 +78,53 @@ def matching_entites_to_pages(matched_entities):
         # notx = []
         for page_entity in page_entities:
             if page_entity['label'] in matched_entities:
-                print(page_entity)
+                # print(page_entity)
                 matching_page_entities.append({page_entity['label']: matched_entities[page_entity['label']]})
             # else:
             #     notx.append(page_entity)
 
-        # print(matching_page_entities)
+        print(matching_page_entities)
         # convert it to a set
         if matching_page_entities:
             matching_page_entities = list_unique_entity_score(matching_page_entities)
             matching_page_entities = sorted(matching_page_entities, key=lambda x: max(x.values()), reverse=True)
-            print(page_no)
+
             print(matching_page_entities)
+            print(page_no)
             existing_matched_pages_info[page_no] = {"matching_entities": matching_page_entities, "count": len(matching_page_entities)}
 
 
         # break
-    print(existing_matched_pages_info)
-    return
+    # print(existing_matched_pages_info)
+
+    # Sort on the basis of count
+    sorted_data = sorted(existing_matched_pages_info.items(), key=lambda x: x[1]['count'], reverse=True)
+    return sorted_data
 
 if __name__ == "__main__":
     sent1 = "Computed Tomography which means A diagnostic imaging procedure that uses a combination of X-rays and computer technology to produce cross-sectional images of the body"
     sent2 = "Tumor Staging which means A process of determining the extent to which a cancer has grown and spread"
     sent3 = "Biopsy which means medical test involving extraction of sample cells or tissues for examination to determine the presence or extent of a disease."
     sent4 = "Endoscopic Resection which means a technique used to remove cancerous or other abnormal lesions found in the digestive tract."
-    sent5 = "Magnetic Resonance Imaging which means a medical imaging technique used in radiology to form pictures of the anatomy and the physiological processes inside the body."
-    matching_entities = get_matching_entities_from_guideline(sent2)
+    sent5 = "Magnetic Resonance Imaging which means Uses strong magnetic fields and radio waves to generate detailed images."
 
-    print(json.dumps(matching_entities, indent=2))
+    sent_arr = [sent1, sent2, sent3, sent4, sent5]
 
-    matching_entites_to_pages(matching_entities)
+    all = {}
+
+    for idx, sent in enumerate(sent_arr):
+        sent_match_entities = get_matching_entities_from_guideline(sent)
+        all = merge_matching_entities(all, sent_match_entities)
+        print(json.dumps(all, indent=2))
+
+    print(matching_entites_to_pages(all))
+
+
+    # matching_entities = get_matching_entities_from_guideline(sent2)
+    #
+    # print(json.dumps(matching_entities, indent=2))
+    # print(get_matching_entities_from_guideline(sent3))
+    #
+    # matching_entites_to_pages(matching_entities)
 
     # 93
