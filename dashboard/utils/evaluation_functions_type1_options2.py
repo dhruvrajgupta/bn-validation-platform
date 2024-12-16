@@ -1619,7 +1619,7 @@ states: {n2_states}
 `EDGE2`:
 {e2}
 
-`INFORMATION FROM GUIDELINE PAGES`:
+`INFORMATION FROM KNOWLEDGE BASE`:
 {guideline_pages_info}
 
 Among these two options which one is the most likely true:
@@ -1631,7 +1631,7 @@ The answer is: ...
 
 1. State the evidences in detail of the validity of option (A) or (B) by cross referencing
 NCCN Clinical Practitioner’s Guidelines for Head and Neck Cancer.
-2. If the evidences are obtained from `INFORMATION FROM GUIDELINE PAGES`,
+2. If the evidences are obtained from `INFORMATION FROM KNOWLEDGE BASE`,
 mention their corresponding Page Numbers, entities and relationships.
 
 DESIRED OUTPUT FORMAT:
