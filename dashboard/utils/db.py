@@ -503,6 +503,7 @@ def save_causality_extractions_information(page_no, updated_info):
         {"$set": {"causality_info": updated_info}}
     )
 
+# String equal matching
 def search_pages_with_entities(node_entities):
     page_entity_matching_dict = {}
     db = init_connection()["bn-validation"]
@@ -544,3 +545,22 @@ def search_pages_with_entities(node_entities):
     print(top_10_data)
 
     return top_10_data
+
+
+def get_all_entities_guideline():
+    db = init_connection()["bn-validation"]
+    pages = db.pages
+
+    page_entities_dict = {}
+
+    all_pages = pages.find()
+    for page in all_pages:
+        page_entities = []
+        if page.get("er_info"):
+            for section_er_info in page["er_info"]:
+                section_enitity_information = section_er_info["entity_information"]
+                page_entities.extend(section_enitity_information)
+        if page_entities:
+            page_entities_dict[page["page_no"]] = [entity["label"] for entity in page_entities]
+
+    return page_entities_dict
