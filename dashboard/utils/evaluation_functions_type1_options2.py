@@ -1774,6 +1774,7 @@ def node_id_node_type_observablity_node_labels_descriptions_states_descriptions_
                 },
                 "EDGE1": get_causal_factors((n1,n2)),
                 "EDGE2": get_causal_factors((n2,n1)),
+                "ENTITIES_MATCHING_PAGES_INFO": top_10_guideline_pages,
                 "GUIDELINE_PAGES_INFO": guideline_info,
             }
             data = {

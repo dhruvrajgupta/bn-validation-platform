@@ -268,7 +268,7 @@ else:
                 evaluation_function = node_id_node_type_observablity_node_labels_descriptions_states_descriptions_causal_factors_evidences
                 trigger_evaluation(evaluation_function, evaluation_name)
 
-            if st.checkbox(f"**[Augmentation] Node Type, Observability, Node Label, Description, States Descriptions, Causal Factors, Evidences and Entites & Relations from guideline**"):
+            if st.checkbox(f"**[Augmentation] Node Type, Observability, Node Label, Description, States Descriptions, Causal Factors, LLM inherent Evidences and Entites & Relations extracted from Guideline pages**"):
                 evaluation_name = f"type1_node_id_node_type_observability_node_labels_descriptions_state_descriptions_causal_factors_evidences_ent_rel_causalverb_{selected_causal_verb}"
                 from utils.evaluation_functions_type1_options2 import node_id_node_type_observablity_node_labels_descriptions_states_descriptions_causal_factors_evidences_page_ent_rel
                 evaluation_function = node_id_node_type_observablity_node_labels_descriptions_states_descriptions_causal_factors_evidences_page_ent_rel
@@ -361,4 +361,14 @@ else:
                     node_id_node_type_observability_label_description_states_descriptions_causal_factors_evidences
 
                 evaluation_function = node_id_node_type_observability_label_description_states_descriptions_causal_factors_evidences
+                trigger_evaluation(evaluation_function, evaluation_name)
+
+            evaluation_name = f"type2_node_id__node_type_observability_labels_description_states_descriptions_causal_factors_evidences_ent_rel"
+            if st.checkbox(
+                    f"**[Augmentation] Node Type, Observability, Node Label, Description, States Descriptions, Causal Factors, LLM inherent Evidences and Entities & Relations extracted from Guideline pages**",
+                    key=evaluation_name):
+                from utils.evaluation_functions_type2_options2 import \
+                    node_id_node_type_observability_label_description_states_descriptions_causal_factors_evidences_ent_rel
+
+                evaluation_function = node_id_node_type_observability_label_description_states_descriptions_causal_factors_evidences_ent_rel
                 trigger_evaluation(evaluation_function, evaluation_name)
