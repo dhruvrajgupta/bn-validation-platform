@@ -1833,6 +1833,13 @@ causal_direction - Either Positive or Negative or Unknown. A positive influence 
 causal_factor - Is necessary or sufficient condition for an effect to occur. Exposure is a term commonly used in epidemiology to denote any condition that is considered as a possible cause of disease. Exposure is considered necessary when it always precedes the effects (e.g. symptoms) and always presents when the effects occur. A sufficient cause is a causal factor whose presence or occurrence guarantees the occurrence of symptom.
 causal_distance - Either Distal or Proximal or Unknown. The distal factors lie towards the beginning of causal chain (i.e. indirect causal factors). The the proximal factors lie towards the end of the chain (i.e. cause directly or almost directly the effect).
 
+Causality Tags:
+<A> for action, <C> for cause, <CO> for condition and <E> for effect.
+Cause (C): The reason or origin that leads to an effect. Causes often involve disease conditions, risk factors, or underlying mechanisms.
+Effect (E): The outcome or result of a cause. Effects usually represent clinical outcomes, complications, or results of a specific cause.
+Condition (CO): The circumstance or prerequisite required for an action or effect to occur. Conditions may include patient characteristics, clinical scenarios, or specific diagnostic criteria.
+Action (A): The recommended or described response or activity to address a cause or condition. Actions typically involve clinical interventions, diagnostic procedures, or treatment recommendations.
+
 
 `NODE1`:
 id: {n1}
@@ -1869,7 +1876,7 @@ The answer is: ...
 1. State the evidences in detail of the validity of option (A) or (B) by cross referencing
 NCCN Clinical Practitioner’s Guidelines for Head and Neck Cancer.
 2. If the evidences are obtained from `INFORMATION FROM KNOWLEDGE BASE`,
-mention their corresponding Page Numbers,Section Name, entities and relationships.
+mention their corresponding Page Numbers, Section Name, entities, relationships and causalities.
 
 DESIRED OUTPUT FORMAT:
 <thinking>

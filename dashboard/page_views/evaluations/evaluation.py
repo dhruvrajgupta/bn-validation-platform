@@ -378,3 +378,13 @@ else:
 
                 evaluation_function = node_id_node_type_observability_label_description_states_descriptions_causal_factors_evidences_ent_rel
                 trigger_evaluation(evaluation_function, evaluation_name)
+
+            evaluation_name = f"type2_node_id__node_type_observability_labels_description_states_descriptions_causal_factors_evidences_ent_rel_causalities"
+            if st.checkbox(
+                    f"**[Augmentation] Node Type, Observability, Node Label, Description, States Descriptions, Causal Factors, LLM inherent Evidences, Entites & Relations and Causalities extracted from Guideline pages**",
+                    key=evaluation_name):
+                from utils.evaluation_functions_type2_options2 import \
+                    node_id_node_type_observability_label_description_states_descriptions_causal_factors_evidences_ent_rel_causalities
+
+                evaluation_function = node_id_node_type_observability_label_description_states_descriptions_causal_factors_evidences_ent_rel_causalities
+                trigger_evaluation(evaluation_function, evaluation_name)
