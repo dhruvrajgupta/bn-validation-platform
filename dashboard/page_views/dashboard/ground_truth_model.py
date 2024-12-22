@@ -82,6 +82,10 @@ else:
             nodes_by_type = get_nodes_by_type(node_type, nodes_contents)
             st.write(nodes_by_type)
 
+        if st.checkbox("Check Isolated Nodes"):
+            import networkx as nx
+            st.write(list(nx.isolates(bn_model)))
+
 
     ##### NODE TO ENTITY MAPPINGS
     nodes_having_entity = []
