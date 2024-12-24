@@ -338,6 +338,8 @@ def display_edge_rationality(bn_model, model_type, model_label, model_descriptio
             status_icon = "🚫"
 
         if st.checkbox(f"{status_icon} {edge[0]} &emsp; **---->** &emsp; {edge[1]}", key=f"{model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})"):
+            # from utils.entities_match_guideline import create_guideline_entity_embeddings
+            # create_guideline_entity_embeddings()
             source = edge[0]
             target = edge[1]
             with st.container(border=True):

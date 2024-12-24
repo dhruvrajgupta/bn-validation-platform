@@ -5,6 +5,25 @@ import pickle
 
 threshold = 0.93
 
+def create_entity_embeddings():
+    page_ont_ent_desc = {}
+    with open("/home/dhruv/Desktop/bn-validation-platform/pg_entities_dict.json", "r") as f:
+        page_ont_ent_desc = json.loads(f.read())
+
+    ont_ent_desc_dict = {}
+    for page_no, ent_list in page_ont_ent_desc.items():
+        print(page_no)
+        print(ent_list)
+        for ent_info in ent_list:
+            key = f"{ent_info['ontology_name']}$${ent_info['label']}"
+            print(key)
+            if key in ont_ent_desc_dict.keys():
+                pass
+            else:
+                ont_ent_desc_dict[key] = ent_info['description']
+
+    print(len(ont_ent_desc_dict))
+
 def merge_matching_entities(dict1, dict2):
     merged = {}
     all_keys = set(dict1.keys()) | set(dict2.keys())
@@ -48,6 +67,11 @@ def get_matching_entities_from_guideline(sentence):
 
     with open('/home/dhruv/Desktop/bn-validation-platform/entity_embeddings.pkl', 'rb') as f:
         entity_dict_embeddings = pickle.load(f)
+        print(len(entity_dict_embeddings.keys())) # 982
+
+    with open('/home/dhruv/Desktop/bn-validation-platform/entity_embeddings_part.pkl', 'rb') as f:
+        entity_dict_embeddings = pickle.load(f)
+        print(len(entity_dict_embeddings.keys())) # 546
 
     for ont_entity, embed in entity_dict_embeddings.items():
         onto_ent_embed = np.array(embed)
@@ -110,6 +134,8 @@ if __name__ == "__main__":
 
     sent_arr = [sent1, sent2, sent3, sent4, sent5]
 
+    # create_entity_embeddings()
+
     all = {}
 
     for idx, sent in enumerate(sent_arr):
@@ -118,6 +144,8 @@ if __name__ == "__main__":
         print(json.dumps(all, indent=2))
 
     print(matching_entites_to_pages(all))
+
+    print(json.dumps(matching_entites_to_pages(all), indent=2))
 
 
     # matching_entities = get_matching_entities_from_guideline(sent2)

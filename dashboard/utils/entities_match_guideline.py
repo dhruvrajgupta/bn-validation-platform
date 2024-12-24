@@ -8,6 +8,39 @@ from utils.db import get_all_entities_guideline
 threshold = 0.93
 top_k_pages = 5
 
+def create_guideline_entity_embeddings():
+    from utils.db import get_all_entities_guideline
+    # print(json.dumps(get_all_entities_guideline(), indent=2))
+
+    # Convert and write JSON object to file
+    with open("page_entities_dict.json", "w") as outfile:
+        json.dump(get_all_entities_guideline(), outfile)
+    # from utils.db import get_ont_entity_dict
+    # all_ont_ent_dict = get_ont_entity_dict()
+    #
+    # ont_sent_embed_dict = {}
+    #
+    # for ont_entity, desc in all_ont_ent_dict.items():
+    #     # print(ont_entity)
+    #     # print(desc)
+    #     # print(ont_entity)
+    #     sentence = f"{ont_entity.split('$$')[1]} which means {desc}"
+    #     # print(sentence)
+    #
+    #     coder_model = AutoModel.from_pretrained('GanjinZero/UMLSBert_ENG')
+    #     coder_tokenizer = AutoTokenizer.from_pretrained('GanjinZero/UMLSBert_ENG')
+    #
+    #     sentence_input = coder_tokenizer(sentence, return_tensors='pt')
+    #     sentence_embed = np.mean(coder_model(**sentence_input).last_hidden_state[0].detach().numpy(), axis=0)
+    #
+    #     # print(sentence_embed)
+    #     ont_sent_embed_dict[ont_entity] = sentence_embed
+
+    # with open('/usr/src/app/entity_embeddings.pkl', 'wb') as f:
+    #     pickle.dump(ont_sent_embed_dict, f, protocol=pickle.HIGHEST_PROTOCOL)
+    # print("*"*50)
+    # print("Successfully created embeddings")
+
 def list_unique_entity_score(matching_entities):
     # matching_entities = [
     #     {'Neoplasm Staging': 0.9342785},

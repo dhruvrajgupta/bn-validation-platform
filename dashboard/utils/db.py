@@ -561,6 +561,35 @@ def get_all_entities_guideline():
                 section_enitity_information = section_er_info["entity_information"]
                 page_entities.extend(section_enitity_information)
         if page_entities:
-            page_entities_dict[page["page_no"]] = [entity["label"] for entity in page_entities]
+            # page_entities_dict[page["page_no"]] = [entity["label"] for entity in page_entities]
+            page_entities_dict[page["page_no"]] = page_entities
 
     return page_entities_dict
+
+def get_ont_entity_dict():
+    db = init_connection()["bn-validation"]
+    pages = db.pages
+
+    ont_entities_dict = {}
+
+    all_pages = pages.find()
+    for page in all_pages:
+        page_entities = []
+        if page.get("er_info"):
+            for section_er_info in page["er_info"]:
+                section_enitity_information = section_er_info["entity_information"]
+                for ent_info in section_enitity_information:
+                    ont_label = f"{ent_info['ontology_name']}$${ent_info['label']}"
+                    if ont_label in ont_entities_dict.keys():
+                        if len(ont_entities_dict[ont_label]) < len(ent_info['description']):
+                            ont_entities_dict[ont_label] = ent_info['description']
+                    else:
+                        ont_entities_dict[ont_label] = ent_info['description']
+    # print(json.dumps(ont_entities_dict,indent=2))
+    #             page_entities.extend(section_enitity_information)
+    #     if page_entities:
+    #         page_entities_dict[page["page_no"]] = [entity["label"] for entity in page_entities]
+    #
+    # return page_entities_dict
+
+    return ont_entities_dict
