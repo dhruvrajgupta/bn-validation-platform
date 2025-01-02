@@ -245,9 +245,13 @@ with wip_model:
             st.markdown("**Using D-Separation technique**")
 
             if bn_model:
-                st.write("**:blue[Computing Redundant edges using D-Separation very computationally expensive. Use only when needed. !!]**")
+                # st.write("**:blue[Computing Redundant edges using D-Separation very computationally expensive. Use only when needed. !!]**")
+                st.write("**:blue[Comparing Node conditional independencies before and after edge removal, with Markov Blanket visualization of the redundant edges. Computationally expensive. Use only when needed. !!]**")
 
-                if st.checkbox("Click the checkbox to run computations for finding redundant edges using D-separation"):
+                # if st.checkbox("Click the checkbox to run computations for finding redundant edges using D-separation"):
+                if st.checkbox(
+                        "Click the checkbox to run computations for finding redundant edges"):
+
                     with st.spinner("Running finding Redundant Edges (D-separation) ..."):
                         from worker import task_compute_redundant_edges_d_separation
                         # This Process is computationally expensive. Needs to be made into a background task (worker) (eg, TNM Staging Laryngeal Cancer - 54 mins approx)
@@ -267,6 +271,17 @@ with wip_model:
                                 ('Burglary', 'Earthquake'),  # <-- Redundant Edge
                                 # Burglary and Earthquake were already independent in the original graph unless conditioned on Alarm.
                                 # The new edge does not change this independence, as the two variables are still blocked by the collider at the Alarm unless the Alarm is observed.
+                                # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
+                            ])
+
+                            bn_model = BayesianNetwork([
+                                ('Smoking', 'LaryngealCancer'),
+                                ('AlcoholConsumption', 'LaryngealCancer'),
+                                ('LaryngealCancer', 'Hoarseness'),
+                                ('LaryngealCancer', 'DifficultySwallowing'),
+                                ('Smoking', 'AlcoholConsumption'),  # <-- Redundant Edge
+                                # Smoking and AlcoholConsumption are already independent in the original graph unless conditioned on LaryngealCancer.
+                                # The new edge does not change this independence, as the two variables are still blocked by the collider at LaryngealCancer unless LaryngealCancer is observed.
                                 # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
                             ])
 
