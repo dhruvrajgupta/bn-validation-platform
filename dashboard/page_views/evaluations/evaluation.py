@@ -19,7 +19,7 @@ num_options = 2
 #         "instigates", "fosters", "engenders", "promotes", "catalyzes",
 #         "gives rise to", "spurs", "sparks", "increases likelihood"
 #     ]
-list_causal_verbs = ["causes", "increases likelihood of", "leads to", "triggers", "generates", "produces", "catalyzes"]
+list_causal_verbs = ["causes", "increases likelihood of", "leads to", "triggers", "generates", "produces", "catalyzes", "increases risk"]
 
 def save_to_db_callback(eval_name, model_name, llm_model_name, eval_res_dict):
     status = save_evaluation(eval_name, model_name, llm_model_name, eval_res_dict)
