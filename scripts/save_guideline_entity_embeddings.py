@@ -68,13 +68,16 @@ def get_matching_entities_from_guideline(sentence):
     with open('/home/dhruv/Desktop/bn-validation-platform/entity_embeddings.pkl', 'rb') as f:
         entity_dict_embeddings = pickle.load(f)
         print(len(entity_dict_embeddings.keys())) # 982
+        print(entity_dict_embeddings.keys())
 
     with open('/home/dhruv/Desktop/bn-validation-platform/entity_embeddings_part.pkl', 'rb') as f:
         entity_dict_embeddings = pickle.load(f)
         print(len(entity_dict_embeddings.keys())) # 546
+        print(entity_dict_embeddings.keys())
 
     for ont_entity, embed in entity_dict_embeddings.items():
         onto_ent_embed = np.array(embed)
+        # print(onto_ent_embed.shape)
         sim = np.dot(sentence_embed, onto_ent_embed) / (np.linalg.norm(sentence_embed) * np.linalg.norm(onto_ent_embed))
         if sim > threshold:
             onto = ont_entity.split('$$')[0]
@@ -132,7 +135,8 @@ if __name__ == "__main__":
     sent4 = "Endoscopic Resection which means a technique used to remove cancerous or other abnormal lesions found in the digestive tract."
     sent5 = "Magnetic Resonance Imaging which means Uses strong magnetic fields and radio waves to generate detailed images."
 
-    sent_arr = [sent1, sent2, sent3, sent4, sent5]
+    # sent_arr = [sent1, sent2, sent3, sent4, sent5]
+    sent_arr = [sent1, sent2]
 
     # create_entity_embeddings()
 
