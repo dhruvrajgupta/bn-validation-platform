@@ -145,7 +145,7 @@ DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 """
 
 class CausalityExtraction(BaseModel):
-    thinking: str
+    thinking: List[str]
     answer: str
 
 EXTRACT_CAUSALITY = """\
@@ -169,9 +169,9 @@ Action (A): The recommended or described response or activity to address a cause
 3. Identify and tag all relevant elements within each sentence, ensuring no critical information is overlooked.
 4. If a sentence contains multiple elements (e.g., both cause and effect), ensure all are tagged accordingly.
 5. Use separate tags for each element, even if they are part of the same sentence.
-6. Each tagged element should be clear and precise, representing standalone information that can be easily understood without additional context.
-7. Maintain an understanding of clinical context to ensure accurate interpretation of complex medical terminology and guidelines.
-8. Prioritize clinical relevance and accuracy when identifying elements in the text.
+6. Maintain an understanding of clinical context to ensure accurate interpretation of complex medical terminology and guidelines.
+7. Prioritize clinical relevance and accuracy when identifying elements in the text.
+8. The output should be exact as the input text along with the appropriate tags.
 9. Output the result in JSON format.
 
 EXAMPLES:
@@ -191,8 +191,8 @@ DESIRED OUTPUT FORMAT:
 </thinking>
 <answer>
 {{
-   "thinking": "...",
-   "answer": "..."
+   "thinking": ["...", ... ],
+   "answer": "<C> Patients with advanced-stage lung cancer </C> <E> have a higher risk of metastasis </E>, particularly <CO> if they have a history of smoking </CO>. <A> Regular screening and early intervention </A> are recommended for high-risk individuals.",
 }}
 </answer>
 
