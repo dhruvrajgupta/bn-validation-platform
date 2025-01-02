@@ -1694,18 +1694,31 @@ def node_id_node_type_observablity_node_labels_descriptions_states_descriptions_
 
         return ent_desc_dict
 
-    def format_relationships(page_no):
+    def format_page_information(page_no):
         from utils.db import get_page_info
-        page_er_info = get_page_info(page_no)["er_info"]
-        # print(json.dumps(page_er_info, indent=2))
+        entities_dict = make_entities_dict(page_no)
+        # print(json.dumps(entities_dict, indent=2))
+
+        page_info = get_page_info(page_no)
+        sections_info = page_info["sections"]
+        er_info = page_info["er_info"]
+        causality_info = page_info["causality_info"]
+
         out = ""
-        count = 0
-        for section_er_info in page_er_info:
-            relationships_info = section_er_info["relationships_information"]
-            for relationship in relationships_info:
-                # print(json.dumps(relationship, indent=2))
-                count += 1
-                rel = f"{count}. Entity1: \"{relationship['entity1']}\", Entity2: \"{relationship['entity2']}\", Relationship: \"{relationship['relationship']}\"\n"
+        for idx, sections_info in enumerate(sections_info):
+            out += f"\nSection Name: {sections_info['section_name']}\n"
+            out += "=" * 20 + "\n"
+            out += f"Entities:-\n"
+            section_entities = er_info[idx]["entity_information"]
+            section_entity_dict = {}
+            for entity in section_entities:
+                if entity["label"].upper() in entities_dict and entity["label"].upper() not in section_entity_dict:
+                    out += f"{entity['label'].upper().title()} : {entities_dict[entity['label'].upper()]}\n"
+                    section_entity_dict[entity['label'].upper()] = entities_dict[entity['label'].upper()]
+
+            out += "\nRelationships:-\n"
+            for count, relationship in enumerate(er_info[idx]["relationships_information"]):
+                rel = f"{count + 1}. Entity1: \"{relationship['entity1']}\", Entity2: \"{relationship['entity2']}\", Relationship: \"{relationship['relationship']}\"\n"
                 out += rel
 
         return out
@@ -1728,32 +1741,20 @@ def node_id_node_type_observablity_node_labels_descriptions_states_descriptions_
             from utils.entities_match_guideline import get_top_10_pages_most_matching_entities
 
             top_10_guideline_pages = get_top_10_pages_most_matching_entities(nodes_entities)
+            # top_10_guideline_pages = {"48": {"matching_entities": [{"SQUAMOUS CELL CARCINOMA": 0.9999999987961385}, {"CARCINOMA, SQUAMOUS CELL": 0.9923126026170636}, {"NEOPLASMS": 0.9667357218440822}, {"CANCER": 0.9417276202737457}, {"GLOTTIS": 0.9364419240116084}, {"MALIGNANT NEOPLASM": 0.9341708108535938}, {"LARYNGEAL NEOPLASMS": 0.9301725473935487}], "count": 7}, "58": {"matching_entities": [{"SQUAMOUS CELL CARCINOMA": 0.9999999987961385}, {"CARCINOMA, SQUAMOUS CELL": 0.9923126026170636}, {"NEOPLASMS": 0.9667357218440822}, {"CANCER": 0.9417276202737457}, {"MALIGNANT NEOPLASTIC DISEASE": 0.9311691152924942}], "count": 5}, "44": {"matching_entities": [{"NEOPLASMS": 0.9667357218440822}, {"CANCER": 0.9417276202737457}, {"MALIGNANT NEOPLASTIC DISEASE": 0.9311691152924942}, {"LARYNGEAL NEOPLASMS": 0.9301725473935487}], "count": 4}, "91": {"matching_entities": [{"MELANOMA": 0.9744447238087438}, {"NEOPLASMS": 0.9667357218440822}, {"CANCER": 0.9417276202737457}, {"MALIGNANT NEOPLASTIC DISEASE": 0.9311691152924942}], "count": 4}, "97": {"matching_entities": [{"NEOPLASMS": 0.9667357218440822}, {"TUMOR": 0.9533099127239301}, {"CANCER": 0.9417276202737457}, {"MALIGNANT NEOPLASTIC DISEASE": 0.9311691152924942}], "count": 4}}
             # print(json.dumps(top_10_guideline_pages))
 
             # count = 0
             out = ""
             for page_no, ent_info in top_10_guideline_pages.items():
-                out += "-"*50+"\n"
+                out += "-" * 50 + "\n"
                 # print(page_ent_info)
-                out += f"Page Number: {page_no}\n\n"
-                out += f"All entities present in this page: \n"
-                page_entities = make_entities_dict(page_no)
-                # print(json.dumps(page_entities, indent=2))
-                for idx, (entity_label, entity_description) in enumerate(page_entities.items()):
-                    ent = f"{idx+1}. {entity_label.title()} : {entity_description}\n"
-                    out += ent
+                out += f"Page Number: {page_no}\n"
+                out += format_page_information(page_no)
 
-                out += f"\nAll Relationships present in this page: \n"
-                out += format_relationships(page_no)
-
-                out += "-"*50+"\n"
-                # print(out)
-
-                # count += 1
-                # if count == 2:
-                #     break
-
+            # print(out)
             guideline_info = out
+            # break
 
             context_input_data = {
                 "NODE1": {
@@ -1777,11 +1778,12 @@ def node_id_node_type_observablity_node_labels_descriptions_states_descriptions_
                 "ENTITIES_MATCHING_PAGES_INFO": top_10_guideline_pages,
                 "GUIDELINE_PAGES_INFO": guideline_info,
             }
+            # print(str(context_input_data))
             data = {
                 "id": id,
                 "llm_model_name": llm_model_name,
                 "edge": edge,
-                "context_input_data": json.dumps(context_input_data, indent=2),
+                "context_input_data": json.dumps(str(context_input_data), indent=2),
                 "schema_dep_validity": schema_dep_valid,
                 "verb": causal_verb,
                 "num_options": 2,
