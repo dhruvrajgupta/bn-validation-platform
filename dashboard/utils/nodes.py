@@ -58,9 +58,10 @@ def compute_page_rank(bn_model):
 
     pagerank_df = pagerank_df[["rank", "node_id", "pagerank"]]
 
-    fig = show_pagerank_distribution(pagerank_df)
+    # fig = show_pagerank_distribution(pagerank_df)
 
-    return pagerank_df, fig
+    return pagerank_df
+    # return pagerank_df, fig
 
 def show_pagerank_distribution(pagerank_df):
     # Plot the distribution of PageRank values
