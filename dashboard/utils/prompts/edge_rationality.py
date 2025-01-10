@@ -497,7 +497,8 @@ class CFResult(BaseModel):
     edge: str
     is_valid: bool
     explanation: List[str]
-    causal_info: Optional[CausalInfo]
+    # causal_info: Optional[CausalInfo]
+    causal_info: CausalInfo
 
 CAUSAL_FACTORS = """\
 You are an expert clinician. 
