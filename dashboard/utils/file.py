@@ -94,10 +94,10 @@ def extract_xdsl_content(xdsl_content):
                 # print(node_color)
                 # print(node_id)
                 # print()
-                if node_color == "ff9900":
+                if node_color == "ff9900" or node_color == "bf2d13" or node_color == "ffffff":
                     node_type = 'Patient Situation'
                     observability = "Unobserved"
-                elif node_color == "ffff00":
+                elif node_color == "ffff00" or node_color == "F6FF00" or node_color == "f6ff00":
                     node_type = 'Examination Result'
                     observability = "Observed"
                 elif node_color == "ff00ff" or node_color == "cc99ff":
