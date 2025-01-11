@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smile version="1.0" id="Sub0" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="MRT_9">
+			<state id="present" />
+			<state id="absent" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Location_of_Lymph_Nodes_3">
+			<state id="present" />
+			<state id="absent" />
+			<parents>MRT_9</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Number_of_Lymph_Nodes_5">
+			<state id="present" />
+			<state id="absent" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Histological_Grade_of_Tumor_4">
+			<state id="present" />
+			<state id="absent" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="N_State_1">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Location_of_Lymph_Nodes_3 Number_of_Lymph_Nodes_5 Histological_Grade_of_Tumor_4</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Sonographie_7">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Location_of_Lymph_Nodes_3</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="CT_8">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Location_of_Lymph_Nodes_3</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="PET_10">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Location_of_Lymph_Nodes_3</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Examination_11">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Location_of_Lymph_Nodes_3</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Pathologie_12">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Number_of_Lymph_Nodes_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Size_of_Lymph_Nodes_6">
+			<state id="present" />
+			<state id="absent" />
+			<parents>N_State_1</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Imaging_Results_13">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Size_of_Lymph_Nodes_6</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Biopsie_14">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Histological_Grade_of_Tumor_4</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only" name="N-Stage-Eenas">
+			<node id="N_State_1">
+				<name>N_State</name>
+				<interior color="ff00ff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>61 61 146 196</position>
+				<barchart active="true" />
+			</node>
+			<node id="Sonographie_7">
+				<name>Sonographie</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>274 51 379 206</position>
+				<barchart active="true" />
+			</node>
+			<node id="CT_8">
+				<name>CT</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>519 73 579 183</position>
+				<barchart active="true" />
+			</node>
+			<node id="MRT_9">
+				<name>MRT</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>740 71 805 186</position>
+				<barchart active="true" />
+			</node>
+			<node id="PET_10">
+				<name>PET</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>963 71 1028 186</position>
+				<barchart active="true" />
+			</node>
+			<node id="Examination_11">
+				<name>Examination</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>1166 51 1271 206</position>
+				<barchart active="true" />
+			</node>
+			<node id="Pathologie_12">
+				<name>Pathologie</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>1391 53 1491 203</position>
+				<barchart active="true" />
+			</node>
+			<node id="Imaging_Results_13">
+				<name>Imaging_Results</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>1280 159 1405 334</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Biopsie_14">
+				<name>Biopsie</name>
+				<interior color="ffffff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>1168 287 1253 422</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Location_of_Lymph_Nodes_3">
+				<name>Location_of_Lymph_Nodes</name>
+				<interior color="ffffff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>21 305 186 520</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Number_of_Lymph_Nodes_5">
+				<name>Number_of_Lymph_Nodes</name>
+				<interior color="ffffff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>249 309 404 514</position>
+				<barchart active="true" />
+			</node>
+			<node id="Size_of_Lymph_Nodes_6">
+				<name>Size_of_Lymph_Nodes</name>
+				<interior color="ffffff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>477 314 622 509</position>
+				<barchart active="true" />
+			</node>
+			<node id="Histological_Grade_of_Tumor_4">
+				<name>Histological_Grade_of_Tumor</name>
+				<interior color="ffffff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>680 294 865 529</position>
+				<barchart active="true" />
+			</node>
+		</genie>
+	</extensions>
+</smile>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smile version="1.0" id="Sub0" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="Number_of_Affected_Lymph_Nodes_2">
+			<state id="present" />
+			<state id="absent" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Number_of_Lymph_Nodes_Metastasis_3">
+			<state id="present" />
+			<state id="absent" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Largest_Diameter_of_Positive_Lymph_Node_4">
+			<state id="present" />
+			<state id="absent" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Extranodal_Extension_5">
+			<state id="present" />
+			<state id="absent" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Lymph_Node_Ratio_6">
+			<state id="present" />
+			<state id="absent" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="PET_Scan_Results_10">
+			<state id="extracapsular_spread_of_lymph_nodes" />
+			<state id="unilateral_lymph_node_involvement" />
+			<state id="bilateral_lymph_node_involvement" />
+			<state id="absence_of_lymph_node_involvement" />
+			<state id="enlarged_lymph_node_size" />
+			<state id="present" />
+			<state id="absent" />
+			<parents>Number_of_Lymph_Nodes_Metastasis_3 Number_of_Affected_Lymph_Nodes_2</parents>
+			<probabilities>0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428 0.1428571428571428</probabilities>
+		</cpt>
+		<cpt id="Histopathological_Examination_7">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Extranodal_Extension_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Imaging_Test_Results_8">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Extranodal_Extension_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Lymph_Node_Biopsy_Results_9">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Extranodal_Extension_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="N_Staging_1">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Number_of_Affected_Lymph_Nodes_2 Number_of_Lymph_Nodes_Metastasis_3 Largest_Diameter_of_Positive_Lymph_Node_4 Extranodal_Extension_5 Lymph_Node_Ratio_6</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only" name="N stage Marcus">
+			<node id="Number_of_Affected_Lymph_Nodes_2">
+				<name>Number_of_Affected_Lymph_Nodes</name>
+				<interior color="bf2d13" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>33 33 233 283</position>
+				<barchart active="true" />
+			</node>
+			<node id="Number_of_Lymph_Nodes_Metastasis_3">
+				<name>Number_of_Lymph_Nodes_Metastasis</name>
+				<interior color="bf2d13" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>323 28 533 288</position>
+				<barchart active="true" />
+			</node>
+			<node id="Largest_Diameter_of_Positive_Lymph_Node_4">
+				<name>Largest_Diameter_of_Positive_Lymph_Node</name>
+				<interior color="bf2d13" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>601 11 846 306</position>
+				<barchart active="true" />
+			</node>
+			<node id="Extranodal_Extension_5">
+				<name>Extranodal_Extension</name>
+				<interior color="bf2d13" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>943 58 1093 258</position>
+				<barchart active="true" />
+			</node>
+			<node id="Lymph_Node_Ratio_6">
+				<name>Lymph_Node_Ratio</name>
+				<interior color="bf2d13" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>1248 68 1378 248</position>
+				<barchart active="true" />
+			</node>
+			<node id="PET_Scan_Results_10">
+				<name>PET_Scan_Results</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>166 423 296 603</position>
+				<barchart active="true" width="401" height="128" />
+			</node>
+			<node id="Histopathological_Examination_7">
+				<name>Histopathological_Examination</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>439 394 634 639</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Imaging_Test_Results_8">
+				<name>Imaging_Test_Results</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>648 413 798 613</position>
+				<barchart active="true" />
+			</node>
+			<node id="Lymph_Node_Biopsy_Results_9">
+				<name>Lymph_Node_Biopsy_Results</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>931 401 1106 626</position>
+				<barchart active="true" />
+			</node>
+			<node id="N_Staging_1">
+				<name>N_Staging</name>
+				<interior color="ff00ff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>1266 441 1361 586</position>
+				<barchart active="true" />
+			</node>
+		</genie>
+	</extensions>
+</smile>

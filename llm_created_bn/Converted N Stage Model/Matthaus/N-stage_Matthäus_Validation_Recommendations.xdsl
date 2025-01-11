@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smile version="1.0" id="Sub0" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="Size_of_Involved_Lymph_Nodes_6">
+			<state id="more_than_6_cm" />
+			<state id="three_cm_to_six_cm" />
+			<state id="smaller_than_three_cm" />
+			<state id="absent" />
+			<probabilities>0.25 0.25 0.25 0.25</probabilities>
+		</cpt>
+		<cpt id="N_State_1__patient">
+			<state id="nx" />
+			<state id="n3" />
+			<state id="n2c" />
+			<state id="n2b" />
+			<state id="n2a" />
+			<state id="n2" />
+			<state id="n1" />
+			<state id="n0" />
+			<parents>Size_of_Involved_Lymph_Nodes_6</parents>
+			<probabilities>0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125</probabilities>
+		</cpt>
+		<cpt id="Number_of_Involved_Lymph_Nodes_3">
+			<state id="zero_involved_lymph_nodes" />
+			<state id="one_three_involved_lymph_nodes" />
+			<state id="four_or_more_involved_lymph_nodes" />
+			<parents>N_State_1__patient</parents>
+			<probabilities>0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+		</cpt>
+		<cpt id="Presence_of_Metastasis_in_Lymph_Nodes_5">
+			<state id="unknown" />
+			<state id="present" />
+			<state id="absent" />
+			<parents>N_State_1__patient</parents>
+			<probabilities>0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+		</cpt>
+		<cpt id="Computed_Tomography_CT_Scans_8">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Presence_of_Metastasis_in_Lymph_Nodes_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Magnetic_Resonance_Imaging_MRI_9">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Presence_of_Metastasis_in_Lymph_Nodes_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Positron_Emission_Tomography_PET_Scans_10">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Presence_of_Metastasis_in_Lymph_Nodes_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Ultrasound_11">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Presence_of_Metastasis_in_Lymph_Nodes_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Location_of_Involved_Lymph_Nodes_4">
+			<state id="ipsilateral" />
+			<state id="bilateral" />
+			<state id="contralateral" />
+			<parents>N_State_1__patient</parents>
+			<probabilities>0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+		</cpt>
+		<cpt id="Computerized_Tomography_CT_12">
+			<state id="bilateral_lymph_node_metastasis" />
+			<state id="ipsilateral_lymph_node_metastasis" />
+			<state id="contralateral_lymph_node_metastasis" />
+			<parents>Location_of_Involved_Lymph_Nodes_4</parents>
+			<probabilities>0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+		</cpt>
+		<cpt id="Examination_13">
+			<state id="bilateral_lymph_node_metastasis" />
+			<state id="ipsilateral_lymph_node_metastasis" />
+			<state id="contralateral_lymph_node_metastasis" />
+			<parents>Location_of_Involved_Lymph_Nodes_4</parents>
+			<probabilities>0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+		</cpt>
+		<cpt id="Magnetic_Resonance_Imaging_MRI_14">
+			<state id="bilateral_lymph_node_metastasis" />
+			<state id="ipsilateral_lymph_node_metastasis" />
+			<state id="contralateral_lymph_node_metastasis" />
+			<parents>Location_of_Involved_Lymph_Nodes_4</parents>
+			<probabilities>0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+		</cpt>
+		<cpt id="Positron_Emission_Tomography_PET_15">
+			<state id="bilateral_lymph_node_metastasis" />
+			<state id="ipsilateral_lymph_node_metastasis" />
+			<state id="contralateral_lymph_node_metastasis" />
+			<parents>Location_of_Involved_Lymph_Nodes_4</parents>
+			<probabilities>0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+		</cpt>
+		<cpt id="Ultrasonography_16">
+			<state id="bilateral_lymph_node_metastasis" />
+			<state id="ipsilateral_lymph_node_metastasis" />
+			<state id="contralateral_lymph_node_metastasis" />
+			<parents>Location_of_Involved_Lymph_Nodes_4</parents>
+			<probabilities>0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only" name="N-stage_Matthäus">
+			<node id="Number_of_Involved_Lymph_Nodes_3">
+				<name>Number_of_Involved_Lymph_Nodes</name>
+				<interior color="ffffff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>125 -66 325 184</position>
+				<barchart active="true" width="384" height="64" />
+			</node>
+			<node id="Size_of_Involved_Lymph_Nodes_6">
+				<name>Size_of_Involved_Lymph_Nodes</name>
+				<interior color="ffffff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>251 39 441 279</position>
+				<barchart active="true" width="238" height="80" />
+			</node>
+			<node id="Computed_Tomography_CT_Scans_8">
+				<name>Computed_Tomography_CT_Scans</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>496 -51 686 189</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Magnetic_Resonance_Imaging_MRI_9">
+				<name>Magnetic_Resonance_Imaging_MRI</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>685 -68 885 182</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Positron_Emission_Tomography_PET_Scans_10">
+				<name>Positron_Emission_Tomography_PET_Scans</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>744 48 984 338</position>
+				<barchart active="true" width="178" height="64" />
+			</node>
+			<node id="Ultrasound_11">
+				<name>Ultrasound</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>905 -2 1005 148</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Computerized_Tomography_CT_12">
+				<name>Computerized_Tomography_CT</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>666 554 846 784</position>
+				<barchart active="true" width="417" height="64" />
+			</node>
+			<node id="Examination_13">
+				<name>Examination</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>570 305 675 460</position>
+				<barchart active="true" width="369" height="64" />
+			</node>
+			<node id="Magnetic_Resonance_Imaging_MRI_14">
+				<name>Magnetic_Resonance_Imaging_MRI</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>914 309 1114 559</position>
+				<barchart active="true" width="400" height="64" />
+			</node>
+			<node id="Positron_Emission_Tomography_PET_15">
+				<name>Positron_Emission_Tomography_PET</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>959 388 1169 648</position>
+				<barchart active="true" width="412" height="64" />
+			</node>
+			<node id="Ultrasonography_16">
+				<name>Ultrasonography</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>868 501 993 676</position>
+				<barchart active="true" width="438" height="64" />
+			</node>
+			<node id="Presence_of_Metastasis_in_Lymph_Nodes_5">
+				<name>Presence_of_Metastasis_in_Lymph_Nodes</name>
+				<interior color="ffffff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>398 127 633 412</position>
+				<barchart active="true" width="245" height="64" />
+			</node>
+			<node id="Location_of_Involved_Lymph_Nodes_4">
+				<name>Location_of_Involved_Lymph_Nodes</name>
+				<interior color="ffffff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>378 419 588 679</position>
+				<barchart active="true" width="225" height="64" />
+			</node>
+			<node id="N_State_1__patient">
+				<name>N_State</name>
+				<interior color="ff00ff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>118 530 203 665</position>
+				<barchart active="true" width="128" height="144" />
+			</node>
+		</genie>
+	</extensions>
+</smile>

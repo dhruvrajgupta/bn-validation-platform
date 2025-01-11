@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smile version="1.0" id="Sub0" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="N_Stage_1">
+			<state id="present" />
+			<state id="absent" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Lymph_Node_Involvement_2">
+			<state id="present" />
+			<state id="absent" />
+			<parents>N_Stage_1</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Number_of_Positive_Lymph_Nodes_3">
+			<state id="present" />
+			<state id="absent" />
+			<parents>N_Stage_1</parents>
+			<probabilities>0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Size_of_Positive_Lymph_Nodes_4">
+			<state id="n0" />
+			<state id="n1" />
+			<state id="n2" />
+			<state id="n3a" />
+			<state id="n3b" />
+			<state id="n3c" />
+			<state id="large_positive_lymph_nodes" />
+			<state id="small_positive_lymph_nodes" />
+			<state id="present" />
+			<state id="absent" />
+			<parents>N_Stage_1</parents>
+			<probabilities>0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1</probabilities>
+		</cpt>
+		<cpt id="Location_of_Positive_Lymph_Nodes_5">
+			<state id="tnm_klassifikation_2017___lateralität_einseitig_unilateral" />
+			<state id="tnm_klassifikation_2017___lateralität_beidseitig_bilateral" />
+			<state id="tnm_klassifikation_2017___effekt_auf_n_stage" />
+			<state id="present" />
+			<state id="absent" />
+			<parents>N_Stage_1</parents>
+			<probabilities>0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2</probabilities>
+		</cpt>
+		<cpt id="Laterality_of_Lymph_Nodes_7">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Size_of_Positive_Lymph_Nodes_4</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Number_of_Positive_Lymph_Nodes_6">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Location_of_Positive_Lymph_Nodes_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="MRI_Magnetic_Resonance_Imaging_8">
+			<state id="present" />
+			<state id="absent" />
+			<parents>Location_of_Positive_Lymph_Nodes_5</parents>
+			<probabilities>0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="CT_Scan_Computed_Tomography_9">
+			<state id="no_lymph_node_involvement" />
+			<state id="unilateral_lymph_node_involvement" />
+			<state id="bilateral_lymph_node_involvement" />
+			<state id="n1_lymph_node_involvement" />
+			<state id="n2_lymph_node_involvement" />
+			<state id="n3_lymph_node_involvement" />
+			<state id="present" />
+			<state id="absent" />
+			<parents>Location_of_Positive_Lymph_Nodes_5</parents>
+			<probabilities>0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only" name="N-Nodes Max">
+			<node id="N_Stage_1">
+				<name>N_Stage</name>
+				<interior color="ff00ff" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>73 73 158 208</position>
+				<barchart active="true" />
+			</node>
+			<node id="Lymph_Node_Involvement_2">
+				<name>Lymph_Node_Involvement</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>35 348 195 558</position>
+				<barchart active="true" />
+			</node>
+			<node id="Number_of_Positive_Lymph_Nodes_3">
+				<name>Number_of_Positive_Lymph_Nodes</name>
+				<interior color="bf2d13" />
+				<outline color="000080" />
+				<font color="000080" name="Arial" size="8" />
+				<position>192 331 392 581</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Size_of_Positive_Lymph_Nodes_4">
+				<name>Size_of_Positive_Lymph_Nodes</name>
+				<interior color="bf2d13" />
+				<outline color="000080" />
+				<font color="000080" name="Arial" size="8" />
+				<position>409 336 599 576</position>
+				<barchart active="true" width="199" height="176" />
+			</node>
+			<node id="Location_of_Positive_Lymph_Nodes_5">
+				<name>Location_of_Positive_Lymph_Nodes</name>
+				<interior color="bf2d13" />
+				<outline color="000080" />
+				<font color="000080" name="Arial" size="8" />
+				<position>808 325 1018 585</position>
+				<barchart active="true" width="598" height="96" />
+			</node>
+			<node id="Laterality_of_Lymph_Nodes_7">
+				<name>Laterality_of_Lymph_Nodes</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>28 654 203 879</position>
+				<barchart active="true" />
+			</node>
+			<node id="Number_of_Positive_Lymph_Nodes_6">
+				<name>Number_of_Positive_Lymph_Nodes</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>268 641 468 891</position>
+				<barchart active="true" />
+			</node>
+			<node id="MRI_Magnetic_Resonance_Imaging_8">
+				<name>MRI_Magnetic_Resonance_Imaging</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>521 641 721 891</position>
+				<barchart active="true" />
+			</node>
+			<node id="CT_Scan_Computed_Tomography_9">
+				<name>CT_Scan_Computed_Tomography</name>
+				<interior color="f6ff00" />
+				<outline color="000000" />
+				<font color="000080" name="Arial" size="8" />
+				<position>837 649 1022 884</position>
+				<barchart active="true" width="366" height="144" />
+			</node>
+		</genie>
+	</extensions>
+</smile>
