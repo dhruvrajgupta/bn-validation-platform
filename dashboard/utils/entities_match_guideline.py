@@ -139,9 +139,9 @@ def get_top_10_pages_most_matching_entities(nodes_entities):
     # print(json.dumps(nodes_entities_dict, indent=2))
 
     for entity_label, entity_desc in nodes_entities_dict.items():
-        print(entity_label.title())
+        # print(entity_label.title())
         entity_matches = get_matching_entities_from_guideline(f"{entity_label.title()} which means {entity_desc}")
-        print(entity_matches)
+        # print(entity_matches)
         all_matching_entities = merge_matching_entities(all_matching_entities, entity_matches)
     page_with_matching_entities_info = matching_entites_to_pages(all_matching_entities)
     # print(json.dumps(page_with_matching_entities_info, indent=2))
