@@ -508,7 +508,7 @@ def search_pages_with_entities(node_entities):
     page_entity_matching_dict = {}
     db = init_connection()["bn-validation"]
     node_entities_labels = list(set([entity['label'] for entity in node_entities]))
-    print(node_entities_labels)
+    # print(node_entities_labels)
     pages = db.pages
 
     all_pages = pages.find()
@@ -521,8 +521,8 @@ def search_pages_with_entities(node_entities):
                 page_entities.extend(section_enitity_information)
 
             page_entities_labels = list(set([entity['label'] for entity in page_entities]))
-            print(page["page_no"])
-            print(page_entities_labels)
+            # print(page["page_no"])
+            # print(page_entities_labels)
 
             ## get all the matching entities
             matching_entities_labels = []
@@ -537,12 +537,12 @@ def search_pages_with_entities(node_entities):
 
         page_entities = []
 
-    print(page_entity_matching_dict)
+    # print(page_entity_matching_dict)
 
     sorted_page_entity_matching_dict = dict(sorted(page_entity_matching_dict.items(), key=lambda x: x[1]['count'], reverse=True))
     sorted_page_entity_matching_dict = {k: v for k, v in sorted_page_entity_matching_dict.items() if v['count'] > 0}
     top_10_data = dict(list(sorted_page_entity_matching_dict.items())[:10])
-    print(top_10_data)
+    # print(top_10_data)
 
     return top_10_data
 
