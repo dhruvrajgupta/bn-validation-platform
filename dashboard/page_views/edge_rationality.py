@@ -9,7 +9,23 @@ def display_invalid_edges(bn_model, nodes_contents):
     count = 1
     for edge in bn_model.edges():
         if not edge_dependency_check(edge, nodes_contents):
-            st.markdown(f"{count}. {edge[0]} &emsp; **---->** &emsp; {edge[1]}")
+            e0_type = get_node_descriptions(edge[0])["type"]
+            e1_type = get_node_descriptions(edge[1])["type"]
+            if e0_type == "Patient Situation":
+                e0_type = e0_type + " (PN)"
+            elif e0_type == "Examination Result":
+                e0_type = e0_type + " (EN)"
+            elif e0_type == "Decision Node":
+                e0_type = e0_type + " (DN)"
+
+            if e1_type == "Patient Situation":
+                e1_type = e1_type + " (PN)"
+            elif e1_type == "Examination Result":
+                e1_type = e1_type + " (EN)"
+            elif e1_type == "Decision Node":
+                e1_type = e1_type + " (DN)"
+
+            st.markdown(f"{count}. {edge[0]} `[{e0_type}]` &emsp; **---->** &emsp; {edge[1]} `[{e1_type}]`")
             count += 1
 
 def save_to_db_callback(edge, edge_rationality_info):
@@ -294,6 +310,7 @@ def get_cf_info(edge):
         n1_states=get_node_descriptions(n1)["node_states_description"],
         n2_states=get_node_descriptions(n2)["node_states_description"],
     )
+    # print(prompt)
 
     import json
     from utils.cpg import ask_llm_response_schema
@@ -314,8 +331,9 @@ def get_cf_info(edge):
         n1_states=get_node_descriptions(n1)["node_states_description"],
         n2_states=get_node_descriptions(n2)["node_states_description"],
     )
+    # print(prompt2)
 
-    E2 = json.loads(ask_llm_response_schema(prompt, response_format=CFResult))
+    E2 = json.loads(ask_llm_response_schema(prompt2, response_format=CFResult))
 
     save_causal_factors(edge, E1)
     save_causal_factors((edge[1], edge[0]), E2)
@@ -356,16 +374,16 @@ def display_edge_rationality(bn_model, model_type, model_label, model_descriptio
                 target_entities = get_node_descriptions(target)['entity_information']
                 all_entities.extend(target_entities)
 
-                st.json(all_entities, expanded=False)
+                # st.json(all_entities, expanded=False)
                 from utils.db import search_pages_with_entities
                 search_pages_with_entities(all_entities)
 
-                # btn_cf = st.button("GET  CF",
-                #                    key=f"GPT - CF - {model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})")
-                #
-                # if btn_cf:
-                #     with st.spinner(f"Extracting Causal Factors '{edge}' ..."):
-                #         cf_info = get_cf_info(edge)
+                btn_cf = st.button("GET  CF",
+                                   key=f"GPT - CF - {model_type} - Edge Rationality - ({edge[0]})-->({edge[1]})")
+
+                if btn_cf:
+                    with st.spinner(f"Extracting Causal Factors '{edge}' ..."):
+                        cf_info = get_cf_info(edge)
 
                 # if edge_rationality_info:
                 #     edge_rationality_info = edge_rationality_info["edge_rationality_info"]
