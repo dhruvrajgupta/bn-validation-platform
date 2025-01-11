@@ -2035,7 +2035,7 @@ def node_id_node_type_observablity_node_labels_descriptions_states_descriptions_
                 "id": id,
                 "llm_model_name": llm_model_name,
                 "edge": edge,
-                "context_input_data": json.dumps(context_input_data, indent=2),
+                "context_input_data": json.dumps(str(context_input_data), indent=2),
                 "schema_dep_validity": schema_dep_valid,
                 "verb": causal_verb,
                 "num_options": 2,
