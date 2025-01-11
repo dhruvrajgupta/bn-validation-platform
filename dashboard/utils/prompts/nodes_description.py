@@ -11,6 +11,7 @@ sono - concerned with Ultrasound/Sonography
 peri - peritoneum
 patho - pathology
 histo - histology
+MRT - Magnetresonanztomographie
 """
 
 NODE_COMPOSITION_GUIDANCE = """\
@@ -116,9 +117,6 @@ NODE INFORMATION:
 NodeID: `{node_id}`
 Node Label: `{node_label}`
 Node States: `{node_states}`
-
-EXCLUDE THE FOLLOWING ENTITIES:
-[M0, M1, MX]
 
 
 ##########
