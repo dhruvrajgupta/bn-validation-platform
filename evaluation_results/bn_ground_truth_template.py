@@ -184,7 +184,7 @@ import pandas as pd
 # cvs_file = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/evaluation_results/type1only_node_ids.csv", header=0)
 # cvs_file = pd.read_csv("/home/dhruv/Desktop/descccc.csv", header=0)
 # print(cvs_file)
-csv_file = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/llm_created_bn/Converted N Stage Model/Max/evaluation.csv",header=0)
+csv_file = pd.read_csv("/home/dhruv/Desktop/bn-validation-platform/llm_created_bn/ground_truth_evaluations_result.csv",header=0)
 
 output = ""
 
@@ -243,7 +243,7 @@ for index, row in csv_file.iterrows():
 # print(set(matching_pages))
 
 title = """
-# Causal Reasoning of edges of BN constructed by Max.
+# Causal Reasoning of edges of ground truth of N Staging BN.
 **In addition to the PDF representing the N-Staging sub model,
 these evaluations here present as chatbot-based reasoning about two pre-selected edge directions.
 We ask you to read the following reasonings and evaluate whether the LLM reasonings are,**
