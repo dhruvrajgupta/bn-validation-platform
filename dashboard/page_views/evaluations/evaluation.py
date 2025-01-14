@@ -280,6 +280,12 @@ else:
                 evaluation_function = node_id_node_type_observablity_node_labels_descriptions_states_descriptions_causal_factors_evidences_page_ent_rel_causalities
                 trigger_evaluation(evaluation_function, evaluation_name)
 
+            if st.checkbox(f"**[Augmentation]** Only Node Label"):
+                evaluation_name = f"type1_node_labels_causalverb_{selected_causal_verb}"
+                from utils.evaluation_functions_type1_options2 import node_labels_causal_verb
+                evaluation_function = node_labels_causal_verb
+                trigger_evaluation(evaluation_function, evaluation_name)
+
 
         ##### TYPE 2 PROMPT STARTS HERE #####
         with st.container(border=True):
