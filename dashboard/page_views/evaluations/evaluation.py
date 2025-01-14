@@ -286,6 +286,12 @@ else:
                 evaluation_function = node_labels_causal_verb
                 trigger_evaluation(evaluation_function, evaluation_name)
 
+            if st.checkbox(f"**[Augmentation]** Only Node Label and Causal Factors"):
+                evaluation_name = f"type1_node_labels_causal_factors_causalverb_{selected_causal_verb}"
+                from utils.evaluation_functions_type1_options2 import node_labels_causal_factors_causal_verb
+                evaluation_function = node_labels_causal_factors_causal_verb
+                trigger_evaluation(evaluation_function, evaluation_name)
+
 
         ##### TYPE 2 PROMPT STARTS HERE #####
         with st.container(border=True):
