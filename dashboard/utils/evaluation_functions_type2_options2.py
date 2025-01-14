@@ -1928,7 +1928,212 @@ def node_id_node_type_observability_label_description_states_descriptions_causal
 
     evaluation = weave.Evaluation(
         name=eval_name,
-        dataset=dataset[31:],
+        dataset=dataset,
+        scorers=[edge_judgement_scorer, edge_judgement_consistency_scorer]
+    )
+
+    evaluation_scorer_summary = asyncio.run(evaluation.evaluate(model))
+
+    eval_res_dict = {
+        # "dataset": dataset,
+        "eval_scorer_summary": evaluation_scorer_summary,
+        "evaluation_data": format_reasoning(evaluation_data)
+    }
+
+    return eval_res_dict
+
+
+
+#### EVALUATION WITH NODE ID AND THEIR STATE NAMES, NODE TYPE,OBSERVABILITY AND LABeLS ... EVIDENCES, ENTITIES AND RELATIONSHIPS CAUSALITIES####
+NODE_LABELS_ONLY = """\
+Which cause-and-effect relationship is more likely?
+
+A. changing `{n1}` causes a change in `{n2}`. 
+B. changing `{n2}` causes a change in `{n1}`.
+
+The answer is: ...
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "thinking": ["...", ...],
+   "answer": ...
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in detail in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
+def node_labels_only(incorrect_edges, eval_name, llm_model_name, bn_model):
+
+    dataset = []
+    evaluation_data = []
+
+    @weave.op()
+    def edge_judgement_scorer(id, output):
+        # print(json.dumps(output, indent=4))
+        evaluation_data[id] = dataset[id]
+        evaluation_data[id]["reasoning"] = output["thinking"]
+        # if "evidences" in output.keys():
+        #     evaluation_data[id]["evidences"] = output["evidences"]
+        evaluation_data[id]["answer"] = output["answer"]
+        evaluation_data[id]["answer_choice_probablities"] = output["answer_choice_probablities"]
+        evaluation_data[id]["critique_consistent"] = ("yes" if output["critique"]["critique_answer"] == output["answer"] else "no")
+        evaluation_data[id]["critique_answer"] = output["critique"]["critique_answer"]
+        evaluation_data[id]["critique_reasoning"] = output["critique"]["critique_thinking"]
+        return output["answer"] == dataset[id]["correct"]
+
+    @weave.op()
+    def edge_judgement_consistency_scorer(id, output):
+        return output["answer"] == output["critique"]["critique_answer"]
+
+    # def make_entities_dict(page_no):
+    #     ent_desc_dict = {}
+    #     from utils.db import get_page_info
+    #     page_er_info = get_page_info(page_no)["er_info"]
+    #     for section_er_info in page_er_info:
+    #         for entity in section_er_info["entity_information"]:
+    #             entity_label_upper = entity["label"].upper()
+    #             # print(entity_label_upper)
+    #             # print(entity["description"])
+    #             if ent_desc_dict.get(entity_label_upper, None):
+    #                 if len(ent_desc_dict[entity_label_upper]) < len(entity["description"]):
+    #                     ent_desc_dict[entity_label_upper] = entity["description"]
+    #             else:
+    #                 ent_desc_dict[entity_label_upper] = entity["description"]
+    #     # print(json.dumps(ent_desc_dict, indent=2))
+    #
+    #     return ent_desc_dict
+    #
+    # def format_page_information(page_no):
+    #     from utils.db import get_page_info
+    #     entities_dict = make_entities_dict(page_no)
+    #     # print(json.dumps(entities_dict, indent=2))
+    #
+    #     page_info = get_page_info(page_no)
+    #     sections_info = page_info["sections"]
+    #     er_info = page_info["er_info"]
+    #     causality_info = page_info["causality_info"]
+    #
+    #     out = ""
+    #     for idx, sections_info in enumerate(sections_info):
+    #         out += f"\nSection Name: {sections_info['section_name']}\n"
+    #         out += "=" * 20 + "\n"
+    #         out += f"Entities:-\n"
+    #         section_entities = er_info[idx]["entity_information"]
+    #         section_entity_dict = {}
+    #         for entity in section_entities:
+    #             if entity["label"].upper() in entities_dict and entity["label"].upper() not in section_entity_dict:
+    #                 out += f"{entity['label'].upper().title()} : {entities_dict[entity['label'].upper()]}\n"
+    #                 section_entity_dict[entity['label'].upper()] = entities_dict[entity['label'].upper()]
+    #
+    #         out += "\nRelationships:-\n"
+    #         for count, relationship in enumerate(er_info[idx]["relationships_information"]):
+    #             rel = f"{count + 1}. Entity1: \"{relationship['entity1']}\", Entity2: \"{relationship['entity2']}\", Relationship: \"{relationship['relationship']}\"\n"
+    #             out += rel
+    #
+    #         try:
+    #             section_causality_info = json.loads(causality_info[idx]["answer"])
+    #         except json.JSONDecodeError as e:
+    #             out += "\nCausalities:-\n"
+    #             out += f"{causality_info[idx]['answer']}\n"
+    #         section_causality_info = causality_info[idx]["answer"]
+    #         # out += f"{section_causality_info}\n"
+    #
+    #     return out
+
+    def create_dataset(incorrect_edges, prompt_template):
+        # We are reversing the edges for evaluation
+        for id, edge_item in enumerate(incorrect_edges):
+            schema_dep_valid = edge_item["schema_dep_validity"]
+            edge = edge_item["edge"]
+            n1 = edge[0]
+            n2 = edge[1]
+
+            # nodes_entities = []
+            # n1_entities = get_node_descriptions(n1)["entity_information"]
+            # n2_entities = get_node_descriptions(n2)["entity_information"]
+            # nodes_entities.extend(n1_entities)
+            # nodes_entities.extend(n2_entities)
+            #
+            # from utils.entities_match_guideline import get_top_10_pages_most_matching_entities
+            #
+            # top_10_guideline_pages = get_top_10_pages_most_matching_entities(nodes_entities)
+            # # print(json.dumps(top_10_guideline_pages))
+            #
+            # # count = 0
+            # out = ""
+            # for page_no, ent_info in top_10_guideline_pages.items():
+            #     out += "-" * 50 + "\n"
+            #     # print(page_ent_info)
+            #     out += f"Page Number: {page_no}\n"
+            #     out += format_page_information(page_no)
+            #
+            # # print(out)
+            # guideline_info = out
+            # # break
+
+            context_input_data = {
+                "NODE1": {
+                    # "id": n1,
+                    "label": get_node_descriptions(n1)["label"],
+                    # "description": get_node_descriptions(n1)["description"],
+                    # "type": get_node_descriptions(n1)["type"],
+                    # "observability": get_node_descriptions(n1)["observability"],
+                    # "states": get_node_descriptions(n1)["node_states_description"],
+                },
+                "NODE2": {
+                    # "id": n2,
+                    "label": get_node_descriptions(n2)["label"],
+                    # "description": get_node_descriptions(n2)["description"],
+                    # "type": get_node_descriptions(n2)["type"],
+                    # "observability": get_node_descriptions(n2)["observability"],
+                    # "states": get_node_descriptions(n2)["node_states_description"],
+                },
+                # "EDGE1": get_causal_factors((n1, n2)),
+                # "EDGE2": get_causal_factors((n2, n1)),
+                # "ENTITIES_MATCHING_PAGES_INFO": top_10_guideline_pages,
+                # "GUIDELINE_PAGES_INFO": guideline_info,
+            }
+            data = {
+                "id": id,
+                "llm_model_name": llm_model_name,
+                "edge": edge,
+                "nodes_data": json.dumps(str(context_input_data), indent=2),
+                "schema_dep_validity": schema_dep_valid,
+                "num_options": 2,
+                "correct": "B",
+                # "incorrect": "A",
+                "prompt": prompt_template.format(
+                    # n1=n1, n2=n2,
+                    # n1_states=context_input_data["NODE1"]["states"], n2_states=context_input_data["NODE2"]["states"],
+                    # n1_type=context_input_data["NODE1"]["type"], n2_type=context_input_data["NODE2"]["type"],
+                    # n1_observability=context_input_data["NODE1"]["observability"],
+                    # n2_observability=context_input_data["NODE2"]["observability"],
+                    n1=context_input_data["NODE1"]["label"], n2=context_input_data["NODE2"]["label"],
+                    # n1_description=context_input_data["NODE1"]["description"],
+                    # n2_description=context_input_data["NODE2"]["description"],
+                    # e1=context_input_data["EDGE1"], e2=context_input_data["EDGE2"],
+                    # guideline_pages_info=context_input_data["GUIDELINE_PAGES_INFO"],
+                    id=id
+                )
+            }
+            dataset.append(data)
+            evaluation_data.append(data)
+
+    create_dataset(incorrect_edges, NODE_LABELS_ONLY)
+
+    weave.init('bnv_N_staging')
+
+    model = EvaluationModel(model_name=llm_model_name)
+
+    evaluation = weave.Evaluation(
+        name=eval_name,
+        dataset=dataset,
         scorers=[edge_judgement_scorer, edge_judgement_consistency_scorer]
     )
 
