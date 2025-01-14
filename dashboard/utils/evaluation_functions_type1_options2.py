@@ -2516,3 +2516,248 @@ def node_labels_causal_factors_causal_verb(incorrect_edges, eval_name, llm_model
     }
 
     return eval_res_dict
+
+
+
+#### EVALUATION WITH NODE ID THEIR STATE NAMES, NODE TYPE, OBSERVABILITY, NODE LABELS AND DESCRIPTIONS ####
+NODE_LABELS_CAUSAL_FACTORS_EVIDENCES_PAGES_ENT_REL_CAUSALITIES_DIFF_CAUSAL_VERB = """\
+edge - The edge which needs to be verified.
+explanation - Explanation of what the edge represents and its validity.
+causal_direction - Either Positive or Negative or Unknown. A positive influence direction indicates that both factors change in the same direction (e.g. an increase causes an increase effect). A negative influence direction indicates the opposite changes (e.g. an increase causes a decrease effect).
+causal_factor - Is necessary or sufficient condition for an effect to occur. Exposure is a term commonly used in epidemiology to denote any condition that is considered as a possible cause of disease. Exposure is considered necessary when it always precedes the effects (e.g. symptoms) and always presents when the effects occur. A sufficient cause is a causal factor whose presence or occurrence guarantees the occurrence of symptom.
+causal_distance - Either Distal or Proximal or Unknown. The distal factors lie towards the beginning of causal chain (i.e. indirect causal factors). The the proximal factors lie towards the end of the chain (i.e. cause directly or almost directly the effect).
+
+Causality Tags:
+<A> for action, <C> for cause, <CO> for condition and <E> for effect.
+Cause (C): The reason or origin that leads to an effect. Causes often involve disease conditions, risk factors, or underlying mechanisms.
+Effect (E): The outcome or result of a cause. Effects usually represent clinical outcomes, complications, or results of a specific cause.
+Condition (CO): The circumstance or prerequisite required for an action or effect to occur. Conditions may include patient characteristics, clinical scenarios, or specific diagnostic criteria.
+Action (A): The recommended or described response or activity to address a cause or condition. Actions typically involve clinical interventions, diagnostic procedures, or treatment recommendations.
+
+
+`NODE1`:
+id: {n1}
+label: {n1_label}
+
+`NODE2`:
+id: {n2}
+label: {n2_label}
+
+`EDGE1`:
+{e1}
+
+`EDGE2`:
+{e2}
+
+`INFORMATION FROM KNOWLEDGE BASE`:
+{guideline_pages_info}
+
+Among these two options which one is the most likely true:
+
+(A) `{n1_label}` {verbk} `{n2_label}`
+(B) `{n2_label}` {verbk} `{n1_label}`
+
+The answer is: ...
+
+1. State the evidences in detail of the validity of option (A) or (B) by cross referencing
+NCCN Clinical Practitioner’s Guidelines for Head and Neck Cancer.
+2. If the evidences are obtained from `INFORMATION FROM KNOWLEDGE BASE`,
+mention their corresponding Page Numbers, Section Name, entities, relationships and causalities.
+
+DESIRED OUTPUT FORMAT:
+<thinking>
+...
+</thinking>
+<answer>
+{{
+   "thinking": ["...", ...],
+   "evidences": ["...", ...],
+   "answer": ...
+}}
+</answer>
+
+Before providing the answer in <answer> tags, think step by step in detail in <thinking> tags and analyze every part.
+Output inside <answer> tag in JSON format. Only output valid JSON.
+DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
+"""
+
+def node_labels_causal_factors_causalities_causal_verb(incorrect_edges, eval_name, llm_model_name, bn_model):
+    causal_verb = eval_name.split("_")[-1]
+
+    dataset = []
+    evaluation_data = []
+
+    @weave.op()
+    def edge_judgement_scorer(id, output):
+        # print(json.dumps(output, indent=4))
+        evaluation_data[id] = dataset[id]
+        evaluation_data[id]["reasoning"] = output["thinking"]
+        if "evidences" in output.keys():
+            evaluation_data[id]["evidences"] = output["evidences"]
+        evaluation_data[id]["answer"] = output["answer"]
+        evaluation_data[id]["answer_choice_probablities"] = output["answer_choice_probablities"]
+        evaluation_data[id]["critique_consistent"] = (
+            "yes" if output["critique"]["critique_answer"] == output["answer"] else "no")
+        evaluation_data[id]["critique_answer"] = output["critique"]["critique_answer"]
+        evaluation_data[id]["critique_reasoning"] = output["critique"]["critique_thinking"]
+        return output["answer"] == dataset[id]["correct"]
+
+    @weave.op()
+    def edge_judgement_consistency_scorer(id, output):
+        return output["answer"] == output["critique"]["critique_answer"]
+
+    def make_entities_dict(page_no):
+        ent_desc_dict = {}
+        from utils.db import get_page_info
+        page_er_info = get_page_info(page_no)["er_info"]
+        for section_er_info in page_er_info:
+            for entity in section_er_info["entity_information"]:
+                entity_label_upper = entity["label"].upper()
+                # print(entity_label_upper)
+                # print(entity["description"])
+                if ent_desc_dict.get(entity_label_upper, None):
+                    if len(ent_desc_dict[entity_label_upper]) < len(entity["description"]):
+                        ent_desc_dict[entity_label_upper] = entity["description"]
+                else:
+                    ent_desc_dict[entity_label_upper] = entity["description"]
+        # print(json.dumps(ent_desc_dict, indent=2))
+
+        return ent_desc_dict
+
+    def format_page_information(page_no):
+        from utils.db import get_page_info
+        entities_dict = make_entities_dict(page_no)
+        # print(json.dumps(entities_dict, indent=2))
+
+        page_info = get_page_info(page_no)
+        sections_info = page_info["sections"]
+        er_info = page_info["er_info"]
+        causality_info = page_info["causality_info"]
+
+        out = ""
+        for idx, sections_info in enumerate(sections_info):
+            out += f"\nSection Name: {sections_info['section_name']}\n"
+            out += "="*20+"\n"
+            out += f"Entities:-\n"
+            section_entities = er_info[idx]["entity_information"]
+            section_entity_dict = {}
+            for entity in section_entities:
+                if entity["label"].upper() in entities_dict and entity["label"].upper() not in section_entity_dict:
+                    out += f"{entity['label'].upper().title()} : {entities_dict[entity['label'].upper()]}\n"
+                    section_entity_dict[entity['label'].upper()] = entities_dict[entity['label'].upper()]
+
+            out += "\nRelationships:-\n"
+            for count, relationship in enumerate(er_info[idx]["relationships_information"]):
+                rel = f"{count+1}. Entity1: \"{relationship['entity1']}\", Entity2: \"{relationship['entity2']}\", Relationship: \"{relationship['relationship']}\"\n"
+                out += rel
+
+            try:
+                section_causality_info = json.loads(causality_info[idx]["answer"])
+            except json.JSONDecodeError as e:
+                out += "\nCausalities:-\n"
+                out += f"{causality_info[idx]['answer']}\n"
+            section_causality_info = causality_info[idx]["answer"]
+            # out += f"{section_causality_info}\n"
+
+        return out
+
+    def create_dataset(incorrect_edges, prompt_template):
+        # We are reversing the edges for evaluation
+        for id, edge_item in enumerate(incorrect_edges):
+            schema_dep_valid = edge_item["schema_dep_validity"]
+            edge = edge_item["edge"]
+            n1 = edge[0]
+            n2 = edge[1]
+
+            nodes_entities = []
+            n1_entities = get_node_descriptions(n1)["entity_information"]
+            n2_entities = get_node_descriptions(n2)["entity_information"]
+            nodes_entities.extend(n1_entities)
+            nodes_entities.extend(n2_entities)
+
+            from utils.entities_match_guideline import get_top_10_pages_most_matching_entities
+
+            top_10_guideline_pages = get_top_10_pages_most_matching_entities(nodes_entities)
+            # top_10_guideline_pages = {"48": {"matching_entities": [{"SQUAMOUS CELL CARCINOMA": 0.9999999987961385}, {"CARCINOMA, SQUAMOUS CELL": 0.9923126026170636}, {"NEOPLASMS": 0.9667357218440822}, {"CANCER": 0.9417276202737457}, {"GLOTTIS": 0.9364419240116084}, {"MALIGNANT NEOPLASM": 0.9341708108535938}, {"LARYNGEAL NEOPLASMS": 0.9301725473935487}], "count": 7}, "58": {"matching_entities": [{"SQUAMOUS CELL CARCINOMA": 0.9999999987961385}, {"CARCINOMA, SQUAMOUS CELL": 0.9923126026170636}, {"NEOPLASMS": 0.9667357218440822}, {"CANCER": 0.9417276202737457}, {"MALIGNANT NEOPLASTIC DISEASE": 0.9311691152924942}], "count": 5}, "44": {"matching_entities": [{"NEOPLASMS": 0.9667357218440822}, {"CANCER": 0.9417276202737457}, {"MALIGNANT NEOPLASTIC DISEASE": 0.9311691152924942}, {"LARYNGEAL NEOPLASMS": 0.9301725473935487}], "count": 4}, "91": {"matching_entities": [{"MELANOMA": 0.9744447238087438}, {"NEOPLASMS": 0.9667357218440822}, {"CANCER": 0.9417276202737457}, {"MALIGNANT NEOPLASTIC DISEASE": 0.9311691152924942}], "count": 4}, "97": {"matching_entities": [{"NEOPLASMS": 0.9667357218440822}, {"TUMOR": 0.9533099127239301}, {"CANCER": 0.9417276202737457}, {"MALIGNANT NEOPLASTIC DISEASE": 0.9311691152924942}], "count": 4}}
+            # print(json.dumps(top_10_guideline_pages))
+
+            # count = 0
+            out = ""
+            for page_no, ent_info in top_10_guideline_pages.items():
+                out += "-"*50+"\n"
+                # print(page_ent_info)
+                out += f"Page Number: {page_no}\n"
+                out += format_page_information(page_no)
+
+            # print(out)
+            guideline_info = out
+            # break
+
+            context_input_data = {
+                "NODE1": {
+                    "id": n1,
+                    "label": get_node_descriptions(n1)["label"],
+                    # "description": get_node_descriptions(n1)["description"],
+                    # "type": get_node_descriptions(n1)["type"],
+                    # "observability": get_node_descriptions(n1)["observability"],
+                    # "states": get_node_descriptions(n1)["node_states_description"],
+                },
+                "NODE2": {
+                    "id": n2,
+                    "label": get_node_descriptions(n2)["label"],
+                    # "description": get_node_descriptions(n2)["description"],
+                    # "type": get_node_descriptions(n2)["type"],
+                    # "observability": get_node_descriptions(n2)["observability"],
+                    # "states": get_node_descriptions(n2)["node_states_description"],
+                },
+                "EDGE1": get_causal_factors((n1,n2)),
+                "EDGE2": get_causal_factors((n2,n1)),
+                "ENTITIES_MATCHING_PAGES_INFO": top_10_guideline_pages,
+                "GUIDELINE_PAGES_INFO": guideline_info,
+            }
+            data = {
+                "id": id,
+                "llm_model_name": llm_model_name,
+                "edge": edge,
+                "context_input_data": json.dumps(str(context_input_data), indent=2),
+                "schema_dep_validity": schema_dep_valid,
+                "verb": causal_verb,
+                "num_options": 2,
+                "correct": "B",
+                # "incorrect": "A",
+                "prompt": prompt_template.format(
+                    n1=n1, n2=n2,
+                    # n1_states=context_input_data["NODE1"]["states"], n2_states=context_input_data["NODE2"]["states"],
+                    # n1_type=context_input_data["NODE1"]["type"], n2_type=context_input_data["NODE2"]["type"],
+                    # n1_observability=context_input_data["NODE1"]["observability"], n2_observability=context_input_data["NODE2"]["observability"],
+                    n1_label=context_input_data["NODE1"]["label"], n2_label=context_input_data["NODE2"]["label"],
+                    # n1_description=context_input_data["NODE1"]["description"], n2_description=context_input_data["NODE2"]["description"],
+                    verbk=causal_verb,
+                    e1=context_input_data["EDGE1"], e2=context_input_data["EDGE2"],
+                    guideline_pages_info=context_input_data["GUIDELINE_PAGES_INFO"],
+                    id=id)
+            }
+            dataset.append(data)
+            evaluation_data.append(data)
+
+    create_dataset(incorrect_edges, NODE_LABELS_CAUSAL_FACTORS_EVIDENCES_PAGES_ENT_REL_CAUSALITIES_DIFF_CAUSAL_VERB)
+
+    weave.init('bnv_N_staging')
+
+    model = EvaluationModel(model_name=llm_model_name)
+
+    evaluation = weave.Evaluation(
+        name=eval_name,
+        dataset=dataset,
+        scorers=[edge_judgement_scorer, edge_judgement_consistency_scorer]
+    )
+
+    evaluation_scorer_summary = asyncio.run(evaluation.evaluate(model))
+
+    eval_res_dict = {
+        # "dataset": dataset,
+        "eval_scorer_summary": evaluation_scorer_summary,
+        "evaluation_data": format_reasoning(evaluation_data)
+    }
+
+    return eval_res_dict
