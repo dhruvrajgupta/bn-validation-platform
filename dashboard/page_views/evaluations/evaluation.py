@@ -407,3 +407,10 @@ else:
 
                 evaluation_function = node_labels_only
                 trigger_evaluation(evaluation_function, evaluation_name)
+
+            evaluation_name = f"type2_node_labels_causal_factors_only"
+            if st.checkbox(f"**[Augmentation]** Only Node Label and Causal Factors", key=evaluation_name):
+                from utils.evaluation_functions_type2_options2 import node_label_causal_factors
+
+                evaluation_function = node_label_causal_factors
+                trigger_evaluation(evaluation_function, evaluation_name)
