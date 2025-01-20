@@ -3,7 +3,7 @@ import numpy as np
 from transformers import AutoTokenizer, AutoModel
 import pickle
 
-threshold = 0.93
+threshold = 0.92
 
 def create_entity_embeddings():
     page_ont_ent_desc = {}
@@ -70,10 +70,10 @@ def get_matching_entities_from_guideline(sentence):
         print(len(entity_dict_embeddings.keys())) # 982
         print(entity_dict_embeddings.keys())
 
-    with open('/home/dhruv/Desktop/bn-validation-platform/entity_embeddings_part.pkl', 'rb') as f:
-        entity_dict_embeddings = pickle.load(f)
-        print(len(entity_dict_embeddings.keys())) # 546
-        print(entity_dict_embeddings.keys())
+    # with open('/home/dhruv/Desktop/bn-validation-platform/entity_embeddings_part.pkl', 'rb') as f:
+    #     entity_dict_embeddings = pickle.load(f)
+    #     print(len(entity_dict_embeddings.keys())) # 546
+    #     print(entity_dict_embeddings.keys())
 
     for ont_entity, embed in entity_dict_embeddings.items():
         onto_ent_embed = np.array(embed)
@@ -82,6 +82,7 @@ def get_matching_entities_from_guideline(sentence):
         if sim > threshold:
             onto = ont_entity.split('$$')[0]
             ent = ont_entity.split('$$')[1]
+            print(ent, sim)
             # print(onto)
             # print(f"{ont_entity.split('$$')[1]}\t\t\t{sim}")
             entity_label_score[ent] = sim
@@ -97,7 +98,7 @@ def get_matching_entities_from_guideline(sentence):
 def matching_entites_to_pages(matched_entities):
     existing_matched_pages_info = {}
 
-    with open('/home/dhruv/Desktop/bn-validation-platform/data.json') as f:
+    with open('/home/dhruv/Desktop/bn-validation-platform/pg_entities_dict.json') as f:
         page_entity_data = json.loads(f.read())
 
     for page_no, page_entities in page_entity_data.items():
@@ -136,7 +137,7 @@ if __name__ == "__main__":
     sent5 = "Magnetic Resonance Imaging which means Uses strong magnetic fields and radio waves to generate detailed images."
 
     # sent_arr = [sent1, sent2, sent3, sent4, sent5]
-    sent_arr = [sent1, sent2]
+    sent_arr = [sent1]
 
     # create_entity_embeddings()
 
