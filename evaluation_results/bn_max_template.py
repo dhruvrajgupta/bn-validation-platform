@@ -166,8 +166,39 @@ template = """
 | {critique_consistent} | {critique_answer} | {critique_reasoning} |
 
 ---
+<div style="page-break-after: always;"></div>
 """
 # **Schema Dependency Validity**: {schema_dep_validity}
+
+template_prev = """
+---
+
+**Edge ID**: {id}
+
+**Edge**: {edge}
+
+**Prompt**:
+{prompt}
+
+**LLM Answer**: {answer}
+
+**LLM Answer Choice Probabilities**: {answer_choice_probabilities}
+
+**Evidences**:
+{evidences}
+
+**Reasoning**:
+{reasoning}
+
+**Critique**:
+
+| Critique Consistent | Critique Answer | Critique Reasoning |
+|---------------------|----------------|-------------------|
+| {critique_consistent} | {critique_answer} | {critique_reasoning} |
+
+---
+<div style="page-break-after: always;"></div>
+"""
 
 prompt_str = """
 {edge1}
@@ -192,8 +223,8 @@ matching_pages = []
 
 for index, row in csv_file.iterrows():
     # print(row)
-    # if index == 1:
-    #     break
+    if index == 3:
+        break
 
     edge = row["edge"].split(",")
     edge = f"`{edge[1]}`  &emsp; ----> &emsp;  `{edge[0]}`"
