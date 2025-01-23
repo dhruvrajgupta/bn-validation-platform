@@ -146,26 +146,23 @@ template = """
 
 **Edge**: {edge}
 
-**Prompt**:
+**Question to LLM**:
 {prompt}
 
 **LLM Answer**: {answer}
 
-**LLM Answer Choice Probabilities**: {answer_choice_probabilities}
+**LLM Answer Choice Confidence %**: {answer_choice_probabilities}
 
-**Evidences**:
-{evidences}
-
-**Reasoning**:
+**LLM Reasoning Summary**:
 {reasoning}
 
-**Critique**:
+**Critique Answer**: {critique_answer}
 
-| Critique Consistent | Critique Answer | Critique Reasoning |
-|---------------------|----------------|-------------------|
-| {critique_consistent} | {critique_answer} | {critique_reasoning} |
+**Critique Reasoning Summary**: 
+{critique_reasoning}
 
 ---
+*NEXT EDGE ON A NEW PAGE*
 <div style="page-break-after: always;"></div>
 """
 # **Schema Dependency Validity**: {schema_dep_validity}
@@ -192,15 +189,19 @@ template_prev = """
 
 **Critique**:
 
-| Critique Consistent | Critique Answer | Critique Reasoning |
-|---------------------|----------------|-------------------|
-| {critique_consistent} | {critique_answer} | {critique_reasoning} |
+| Critique Answer| Critique Reasoning |
+|---------------------|-------------------|
+| {critique_answer} | {critique_reasoning} |
 
 ---
 <div style="page-break-after: always;"></div>
 """
 
 prompt_str = """
+{eval_prompt}
+"""
+
+prompt_str_2 = """
 {edge1}
 
 {edge2}
@@ -221,9 +222,73 @@ output = ""
 
 matching_pages = []
 
+def ask_llm(prompt: str, stream=False):
+    """
+    Ask the LLM a question and print the response.
+
+    Parameters
+    ----------
+    prompt : str
+        The question to ask the LLM.
+    stream : bool, optional
+        If True, stream the response from the LLM as it is generated. If False, wait for the
+        entire response to be generated before printing it. Defaults to False.
+
+    Returns
+    -------
+    str
+        The response from the LLM.
+    """
+
+    # return
+
+    model_name = "gpt-4o-mini"
+    # model_name = "gpt-4o"
+    temperature = 0
+    seed=123
+
+    from openai import OpenAI
+    client = OpenAI(
+        # Defaults to os.environ.get("OPENAI_API_KEY")
+    )
+
+    response = client.chat.completions.create(
+        model=model_name,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=temperature,
+        seed=seed
+        # stream=stream
+    )
+
+    print(f"PROMPT:\n\n{prompt}")
+
+    print(f"START OF LLM RESPONSE: \n{'-'*20}\n")
+
+    if stream:
+        llm_response = ""
+
+        for chunk in response:
+            if chunk.choices[0].delta.content:
+                llm_response += chunk.choices[0].delta.content
+                print(chunk.choices[0].delta.content, end='', flush=True)
+
+    else:
+        llm_response = response.choices[0].message.content
+        # print(llm_response)
+
+    print(f"\n\nEND OF LLM RESPONSE\n{'-'*50}\n")
+
+    return llm_response
+
 for index, row in csv_file.iterrows():
     # print(row)
-    if index == 3:
+    # if index == 3:
+    #     break
+
+    if index == 1:
         break
 
     edge = row["edge"].split(",")
@@ -256,6 +321,21 @@ for index, row in csv_file.iterrows():
 
     critique_reasoning = row["critique_reasoning"].replace("\n", "<br>")
 
+    summary_prompt = """
+INSTRUCTIONS:
+1. Replace EDGE1 with "option (A)"
+2. Replace EDGE2 with "option (B)"
+3. Do not specify specific "Page" "Section"
+
+Summarize this:
+`
+{sentence}
+`
+"""
+
+    llm_reasoning_summary = ask_llm(summary_prompt.format(sentence=row["reasoning"]))
+    critique_reasoning_summary = ask_llm(summary_prompt.format(sentence=critique_reasoning))
+
 
     output += template.format(
         id=row["id"],
@@ -264,10 +344,12 @@ for index, row in csv_file.iterrows():
         prompt=prompt,
         answer=row["answer"],
         answer_choice_probabilities=row["answer_choice_probablities"],
-        reasoning=row["reasoning"],
+        # reasoning=row["reasoning"],
+        reasoning=llm_reasoning_summary,
         critique_consistent=row["critique_consistent"],
         critique_answer=row["critique_answer"],
-        critique_reasoning=critique_reasoning,
+        # critique_reasoning=critique_reasoning,
+        critique_reasoning=critique_reasoning_summary,
         evidences=row["evidences"]
     )
 
@@ -275,7 +357,7 @@ for index, row in csv_file.iterrows():
 
 title = """
 # Causal Reasoning of edges of BN constructed by Max.
-**In addition to the PDF representing the N-Staging sub model,
+**In addition to the PDF representing the N-Staging model in Page _ and _ model,
 these evaluations here present as chatbot-based reasoning about two pre-selected edge directions.
 We ask you to read the following reasonings and evaluate whether the LLM reasonings are,**
 1. **Correct/Incorrect recommendation (Yes/No)**
@@ -286,7 +368,21 @@ We ask you to read the following reasonings and evaluate whether the LLM reasoni
 4. **provide additional feedback of thoughts related to the chatbased evaluation.**
 ---
 ---
----
+---  
+  
+*These will be frequently mentioned in the reasoning please assume and continue, because:*    
+*1. 'INFORMATION FROM KNOWLEDGE BASE' has been purposely been removed not to overwhelm the Clinician.*    
+  
+EDGE1 - refers to choice (A)  
+EDGE2 - refers to choice (B)  
+*2. 'explanation for ... (EDGE1 or EDGE2)' has been purposely been removed not to overwhelm the Clinician.*  
+*3. 'causal direction for ... (EDGE1 or EDGE2)' has been purposely been removed not to overwhelm the Clinician.*  
+*4. 'causal distance for ... (EDGE1 or EDGE2)' has been purposely been removed not to overwhelm the Clinician.*  
+*5. 'causal factor for ... (EDGE1 or EDGE2)' has been purposely been removed not to overwhelm the Clinician.*  
+  
+---  
+*CAUSAL REASONING ON EDGE STARTS FROM A NEW PAGE*
+<div style="page-break-after: always;"></div>
 """
 print(title+output)
 
