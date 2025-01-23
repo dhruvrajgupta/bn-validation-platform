@@ -142,29 +142,34 @@ DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 template = """
 ---
 
-**Edge ID**: {id}
+### **EdgeID: {id}**
+**Edge:** {edge}  
 
-**Edge**: {edge}
-
-**Question to LLM**:
+#### **Question to the Chatbot:**
 {prompt}
 
-**LLM Answer**: {answer}
+#### **Chatbot's Answer:** 
+- **Selected Option:** {answer}  
+- **Confidence Levels % :** {answer_choice_probabilities}  
+- **Reasoning Summary:**  
+  {reasoning}
+  
+#### **Critique Answer:** 
+- **Selected Option:** {critique_answer}  
+- **Reasoning Summary:**  
+  {critique_reasoning}
 
-**LLM Answer Choice Confidence %**: {answer_choice_probabilities}
-
-**LLM Reasoning Summary**:
-{reasoning}
-
-**Critique Answer**: {critique_answer}
-
-**Critique Reasoning Summary**: 
-{critique_reasoning}
+#### **Your Task:**
+Do you agree with (Chatbot or Critique or both)?  
+<br/>
+<br/>
+<br/>
+<br/>
 
 ---
-*NEXT EDGE ON A NEW PAGE*
-<div style="page-break-after: always;"></div>
 """
+# *NEXT EDGE ON A NEW PAGE*
+# <div style="page-break-after: always;"></div>
 # **Schema Dependency Validity**: {schema_dep_validity}
 
 template_prev = """
@@ -263,9 +268,9 @@ def ask_llm(prompt: str, stream=False):
         # stream=stream
     )
 
-    print(f"PROMPT:\n\n{prompt}")
-
-    print(f"START OF LLM RESPONSE: \n{'-'*20}\n")
+    # print(f"PROMPT:\n\n{prompt}")
+    #
+    # print(f"START OF LLM RESPONSE: \n{'-'*20}\n")
 
     if stream:
         llm_response = ""
@@ -279,7 +284,7 @@ def ask_llm(prompt: str, stream=False):
         llm_response = response.choices[0].message.content
         # print(llm_response)
 
-    print(f"\n\nEND OF LLM RESPONSE\n{'-'*50}\n")
+    # print(f"\n\nEND OF LLM RESPONSE\n{'-'*50}\n")
 
     return llm_response
 
@@ -325,6 +330,7 @@ for index, row in csv_file.iterrows():
 INSTRUCTIONS:
 1. Replace EDGE1 with "option (A)"
 2. Replace EDGE2 with "option (B)"
+3. Replace INFORMATION FROM KNOWLEDGE BASE with "NCCN Clinical Guideline Head and Neck Cancer"
 3. Do not specify specific "Page" "Section"
 
 Summarize this:
@@ -355,7 +361,7 @@ Summarize this:
 
 # print(set(matching_pages))
 
-title = """
+title_prev = """
 # Causal Reasoning of edges of BN constructed by Max.
 **In addition to the PDF representing the N-Staging model in Page _ and _ model,
 these evaluations here present as chatbot-based reasoning about two pre-selected edge directions.
@@ -365,25 +371,75 @@ We ask you to read the following reasonings and evaluate whether the LLM reasoni
 3. **Helpful/Not Helpful**
 
 **Please feel free to**  
-4. **provide additional feedback of thoughts related to the chatbased evaluation.**
+4. **provide additional feedback of thoughts related to the chat based evaluation.**
 ---
 ---
 ---  
-  
-*These will be frequently mentioned in the reasoning please assume and continue, because:*    
-*1. 'INFORMATION FROM KNOWLEDGE BASE' has been purposely been removed not to overwhelm the Clinician.*    
-  
-EDGE1 - refers to choice (A)  
-EDGE2 - refers to choice (B)  
-*2. 'explanation for ... (EDGE1 or EDGE2)' has been purposely been removed not to overwhelm the Clinician.*  
-*3. 'causal direction for ... (EDGE1 or EDGE2)' has been purposely been removed not to overwhelm the Clinician.*  
-*4. 'causal distance for ... (EDGE1 or EDGE2)' has been purposely been removed not to overwhelm the Clinician.*  
-*5. 'causal factor for ... (EDGE1 or EDGE2)' has been purposely been removed not to overwhelm the Clinician.*  
-  
 ---  
 *CAUSAL REASONING ON EDGE STARTS FROM A NEW PAGE*
 <div style="page-break-after: always;"></div>
 """
-print(title+output)
+
+
+title = """
+# Causal Reasoning of edges of BN constructed by Clinician (Max).
+"""
+
+# print(title+output)
 
 # print(output)
+
+masterhead = """
+# Subject: Validation Phase for Your Bayesian Network Model
+
+Dear {Clinician_Name}, 
+
+Recently, you attended a chatbot-based Bayesian network modelling session study. We are very thankful for your contribution and would like to invite you to participate in the second phase: **validation of your model**.
+
+In this validation phase, we will focus exclusively on the **causal dependencies** (edge directions: either A or B) of the variables in your model. Specifically, we asked our chatbot to revisit your model and provide suggestions for improvement.
+
+Now, we would like to gather your opinion on the chatbot’s suggestions—whether they are correct, conflict with your knowledge, or are helpful at all.
+
+## Example of What to Expect:
+
+---
+### **EdgeID: Example 0**
+**Edge:** `Smoking` ----> `Laryngeal Cancer`  
+
+#### **Question to the Chatbot:**
+Among these two options, which one is the most likely true?  
+(A) `Smoking` increases risk of `Laryngeal Cancer`  
+(B) `Laryngeal Cancer` increases risk of `Smoking`  
+
+#### **Chatbot's Answer:** 
+- **Selected Option:** A  
+- **Confidence Levels % :** {'A': 100.0, 'B': 0.0}  
+- **Reasoning Summary:**  
+  This is supported by the TNM Staging of Laryngeal Cancer because ...
+
+#### **Critique Answer:** 
+- **Selected Option:** B  
+- **Reasoning Summary:**  
+  I don't agree with the AI assistant because there can be several other reasons that can cause Laryngeal Cancer, such as ...
+
+#### **Your Task:**
+Do you agree with (Chatbot or Critique or both)?  
+[Your Answer Here]  
+
+Example Response:  
+"I agree with Critique."
+---
+
+## Next Steps:
+Please find the specific suggestions and validation prompts for your model attached below.
+
+Thank you again for your valuable contribution. If you have any questions or need assistance, feel free to reach out to us.
+
+Best regards.  
+<br/>
+*CAUSAL REASONING ON EDGE STARTS FROM A NEW PAGE*
+<div style="page-break-after: always;"></div>
+"""
+
+print(masterhead)
+print(output)
