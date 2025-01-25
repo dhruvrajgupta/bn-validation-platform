@@ -145,19 +145,19 @@ template = """
 ### **EdgeID: {id}**
 **Edge:** {edge}  
 
-#### **Question to the Chatbot:**
+#### **Our question to the Chatbot:**
 {prompt}
 
 #### **Chatbot's Answer:** 
 - **Selected Option:** {answer}  
 - **Confidence Levels % :** {answer_choice_probabilities}  
-- **Reasoning Summary:**  
-  {reasoning}
+- **Reasoning Summary:**  <br/>
+{reasoning}
   
-#### **Critique Answer:** 
+#### **Chatbot's critique Answer:** 
 - **Selected Option:** {critique_answer}  
-- **Reasoning Summary:**  
-  {critique_reasoning}
+- **Reasoning Summary:**  <br/>
+{critique_reasoning}
 
 #### **Your Task:**
 Do you agree with (Chatbot or Critique or both)?  
@@ -167,9 +167,10 @@ Do you agree with (Chatbot or Critique or both)?
 <br/>
 
 ---
+*NEXT EDGE ON A NEW PAGE*
+<div style="page-break-after: always;"></div>
 """
-# *NEXT EDGE ON A NEW PAGE*
-# <div style="page-break-after: always;"></div>
+
 # **Schema Dependency Validity**: {schema_dep_validity}
 
 template_prev = """
@@ -247,8 +248,8 @@ def ask_llm(prompt: str, stream=False):
 
     # return
 
-    model_name = "gpt-4o-mini"
-    # model_name = "gpt-4o"
+    # model_name = "gpt-4o-mini"
+    model_name = "gpt-4o"
     temperature = 0
     seed=123
 
@@ -293,8 +294,8 @@ for index, row in csv_file.iterrows():
     # if index == 3:
     #     break
 
-    if index == 1:
-        break
+    # if index == 2:
+    #     break
 
     edge = row["edge"].split(",")
     edge = f"`{edge[1]}`  &emsp; ----> &emsp;  `{edge[0]}`"
@@ -333,7 +334,7 @@ INSTRUCTIONS:
 3. Replace INFORMATION FROM KNOWLEDGE BASE with "NCCN Clinical Guideline Head and Neck Cancer"
 3. Do not specify specific "Page" "Section"
 
-Summarize this:
+Summarize this outlining key points from the attached article:
 `
 {sentence}
 `
@@ -392,7 +393,7 @@ title = """
 masterhead = """
 # Subject: Validation Phase for Your Bayesian Network Model
 
-Dear {Clinician_Name}, 
+Dear Max, 
 
 Recently, you attended a chatbot-based Bayesian network modelling session study. We are very thankful for your contribution and would like to invite you to participate in the second phase: **validation of your model**.
 
@@ -406,7 +407,7 @@ Now, we would like to gather your opinion on the chatbot’s suggestions—wheth
 ### **EdgeID: Example 0**
 **Edge:** `Smoking` ----> `Laryngeal Cancer`  
 
-#### **Question to the Chatbot:**
+#### **Our question to the Chatbot:**
 Among these two options, which one is the most likely true?  
 (A) `Smoking` increases risk of `Laryngeal Cancer`  
 (B) `Laryngeal Cancer` increases risk of `Smoking`  
@@ -417,27 +418,60 @@ Among these two options, which one is the most likely true?
 - **Reasoning Summary:**  
   This is supported by the TNM Staging of Laryngeal Cancer because ...
 
-#### **Critique Answer:** 
-- **Selected Option:** B  
+#### **Chatbot's critique Answer:** 
+- **Selected Option:** A  
 - **Reasoning Summary:**  
-  I don't agree with the AI assistant because there can be several other reasons that can cause Laryngeal Cancer, such as ...
+  I agree with the AI assistant, as this evidence is supported by the NCCN Guidelines and ...
 
 #### **Your Task:**
 Do you agree with (Chatbot or Critique or both)?  
 [Your Answer Here]  
 
 Example Response:  
-"I agree with Critique."
+"I agree with both."
 ---
 
 ## Next Steps:
-Please find the specific suggestions and validation prompts for your model attached below.
 
-Thank you again for your valuable contribution. If you have any questions or need assistance, feel free to reach out to us.
+Please find in the following:  
+1. **Your Model as a Reminder**  
+2. **The Specific Chatbot Suggestions for Edges of Your Model**
 
-Best regards.  
+---
+**1. Your Previously Created Model:**  
 <br/>
-*CAUSAL REASONING ON EDGE STARTS FROM A NEW PAGE*
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+**2. The Specific Chatbot Suggestions for Edges of Your Model Starts from a New Page**
+
+Thank you again for your valuable contribution. If you have any questions or need assistance, feel free to reach out to us. 
+
+Contact Information:
+- Dhruv Raj Gupta (Master Thesis Student): dhruv.learner@gmail.com  
+- Dr. Mario Cypko (Supervisor) (CC): mario.cypko@hahn-schickard.de  
+
+Best regards.
 <div style="page-break-after: always;"></div>
 """
 
