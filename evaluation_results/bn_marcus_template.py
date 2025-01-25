@@ -142,41 +142,37 @@ DO NOT HALLUCINATE. DO NOT MAKE UP FACTUAL INFORMATION.
 template = """
 ---
 
-**Edge ID**: {id}
+### **EdgeID: {id}**
+**Edge:** {edge}  
 
-**Edge**: {edge}
-
-**Prompt**:
+#### **Our question to the Chatbot:**
 {prompt}
 
-**LLM Answer**: {answer}
-
-**LLM Answer Choice Probabilities**: {answer_choice_probabilities}
-
-**Evidences**:
-{evidences}
-
-**Reasoning**:
+#### **Chatbot's Answer:** 
+- **Selected Option:** {answer}  
+- **Confidence Levels % :** {answer_choice_probabilities}  
+- **Reasoning Summary:**  <br/>
 {reasoning}
 
-**Critique**:
+#### **Chatbot's critique Answer:** 
+- **Selected Option:** {critique_answer}  
+- **Reasoning Summary:**  <br/>
+{critique_reasoning}
 
-| Critique Consistent | Critique Answer | Critique Reasoning |
-|---------------------|----------------|-------------------|
-| {critique_consistent} | {critique_answer} | {critique_reasoning} |
+#### **Your Task:**
+Do you agree with (Chatbot or Critique or both)?  
+<br/>
+<br/>
+<br/>
+<br/>
 
 ---
+*NEXT EDGE ON A NEW PAGE*
+<div style="page-break-after: always;"></div>
 """
 # **Schema Dependency Validity**: {schema_dep_validity}
 
 prompt_str = """
-{edge1}
-
-{edge2}
-
-Top 5 Corresponding Pages:
-{matching_pages}
-
 {eval_prompt}
 """
 
@@ -190,9 +186,70 @@ output = ""
 
 matching_pages = []
 
+def ask_llm(prompt: str, stream=False):
+    """
+    Ask the LLM a question and print the response.
+
+    Parameters
+    ----------
+    prompt : str
+        The question to ask the LLM.
+    stream : bool, optional
+        If True, stream the response from the LLM as it is generated. If False, wait for the
+        entire response to be generated before printing it. Defaults to False.
+
+    Returns
+    -------
+    str
+        The response from the LLM.
+    """
+
+    # return
+
+    # model_name = "gpt-4o-mini"
+    model_name = "gpt-4o"
+    temperature = 0
+    seed=123
+
+    from openai import OpenAI
+    client = OpenAI(
+        # Defaults to os.environ.get("OPENAI_API_KEY")
+    )
+
+    response = client.chat.completions.create(
+        model=model_name,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=temperature,
+        seed=seed
+        # stream=stream
+    )
+
+    # print(f"PROMPT:\n\n{prompt}")
+    #
+    # print(f"START OF LLM RESPONSE: \n{'-'*20}\n")
+
+    if stream:
+        llm_response = ""
+
+        for chunk in response:
+            if chunk.choices[0].delta.content:
+                llm_response += chunk.choices[0].delta.content
+                print(chunk.choices[0].delta.content, end='', flush=True)
+
+    else:
+        llm_response = response.choices[0].message.content
+        # print(llm_response)
+
+    # print(f"\n\nEND OF LLM RESPONSE\n{'-'*50}\n")
+
+    return llm_response
+
 for index, row in csv_file.iterrows():
     # print(row)
-    # if index == 1:
+    # if index == 2:
     #     break
 
     edge = row["edge"].split(",")
@@ -225,6 +282,21 @@ for index, row in csv_file.iterrows():
 
     critique_reasoning = row["critique_reasoning"].replace("\n", "<br>")
 
+    summary_prompt = """
+INSTRUCTIONS:
+1. Replace EDGE1 with "option (A)"
+2. Replace EDGE2 with "option (B)"
+3. Replace INFORMATION FROM KNOWLEDGE BASE with "NCCN Clinical Guideline Head and Neck Cancer"
+3. Do not specify specific "Page" "Section"
+
+Summarize this outlining key points from the attached article:
+`
+{sentence}
+`
+"""
+
+    llm_reasoning_summary = ask_llm(summary_prompt.format(sentence=row["reasoning"]))
+    critique_reasoning_summary = ask_llm(summary_prompt.format(sentence=critique_reasoning))
 
     output += template.format(
         id=row["id"],
@@ -233,10 +305,10 @@ for index, row in csv_file.iterrows():
         prompt=prompt,
         answer=row["answer"],
         answer_choice_probabilities=row["answer_choice_probablities"],
-        reasoning=row["reasoning"],
+        reasoning=llm_reasoning_summary,
         critique_consistent=row["critique_consistent"],
         critique_answer=row["critique_answer"],
-        critique_reasoning=critique_reasoning,
+        critique_reasoning=critique_reasoning_summary,
         evidences=row["evidences"]
     )
 
@@ -257,6 +329,94 @@ We ask you to read the following reasonings and evaluate whether the LLM reasoni
 ---
 ---
 """
-print(title+output)
+# print(title+output)
 
 # print(output)
+
+masterhead = """
+# Subject: Validation Phase for Your Bayesian Network Model
+
+Dear Marcus, 
+
+Recently, you attended a chatbot-based Bayesian network modelling session study. We are very thankful for your contribution and would like to invite you to participate in the second phase: **validation of your model**.
+
+In this validation phase, we will focus exclusively on the **causal dependencies** (edge directions: either A or B) of the variables in your model. Specifically, we asked our chatbot to revisit your model and provide suggestions for improvement.
+
+Now, we would like to gather your opinion on the chatbot’s suggestions—whether they are correct, conflict with your knowledge, or are helpful at all.
+
+## Example of What to Expect:
+
+---
+### **EdgeID: Example 0**
+**Edge:** `Smoking` ----> `Laryngeal Cancer`  
+
+#### **Our question to the Chatbot:**
+Among these two options, which one is the most likely true?  
+(A) `Smoking` increases risk of `Laryngeal Cancer`  
+(B) `Laryngeal Cancer` increases risk of `Smoking`  
+
+#### **Chatbot's Answer:** 
+- **Selected Option:** A  
+- **Confidence Levels % :** {'A': 100.0, 'B': 0.0}  
+- **Reasoning Summary:**  
+  This is supported by the TNM Staging of Laryngeal Cancer because ...
+
+#### **Chatbot's critique Answer:** 
+- **Selected Option:** A  
+- **Reasoning Summary:**  
+  I agree with the AI assistant, as this evidence is supported by the NCCN Guidelines and ...
+
+#### **Your Task:**
+Do you agree with (Chatbot or Critique or both)?  
+[Your Answer Here]  
+
+Example Response:  
+"I agree with both."
+---
+
+## Next Steps:
+
+Please find in the following:  
+1. **Your Model as a Reminder**  
+2. **The Specific Chatbot Suggestions for Edges of Your Model**
+
+---
+**1. Your Previously Created Model:**  
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+**2. The Specific Chatbot Suggestions for Edges of Your Model Starts from a New Page**
+
+Thank you again for your valuable contribution. If you have any questions or need assistance, feel free to reach out to us. 
+
+Contact Information:
+- Dhruv Raj Gupta (Master Thesis Student): dhruv.learner@gmail.com  
+- Dr. Mario Cypko (Supervisor) (CC): mario.cypko@hahn-schickard.de  
+
+Best regards.
+<div style="page-break-after: always;"></div>
+"""
+
+print(masterhead)
+print(output)
