@@ -34,7 +34,7 @@ def trigger_evaluation(function_name, evaluation_name):
     with st.container(border=True):
         st.markdown(f"**Evaluation ID:** `{evaluation_name}`")
 
-        llm_model_name = st.radio("**LLM Model Name:**", ["gpt-4o-mini", "gpt-4o"], horizontal=True, key=f"LLM Radio - {evaluation_name}")
+        llm_model_name = st.radio("**LLM Model Name:**", ["gpt-4o-mini", "gpt-4o", "deepseek-r1:14b"], horizontal=True, key=f"LLM Radio - {evaluation_name}")
 
         # Check Evaluation present in the database
         evaluation = get_evaluation(evaluation_name, selected_model_name, llm_model_name)

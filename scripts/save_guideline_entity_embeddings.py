@@ -12,17 +12,17 @@ def create_entity_embeddings():
 
     ont_ent_desc_dict = {}
     for page_no, ent_list in page_ont_ent_desc.items():
-        print(page_no)
-        print(ent_list)
+        # print(page_no)
+        # print(ent_list)
         for ent_info in ent_list:
             key = f"{ent_info['ontology_name']}$${ent_info['label']}"
-            print(key)
+            # print(key)
             if key in ont_ent_desc_dict.keys():
                 pass
             else:
                 ont_ent_desc_dict[key] = ent_info['description']
 
-    print(len(ont_ent_desc_dict))
+    # print(len(ont_ent_desc_dict))
 
 def merge_matching_entities(dict1, dict2):
     merged = {}
@@ -67,8 +67,8 @@ def get_matching_entities_from_guideline(sentence):
 
     with open('/home/dhruv/Desktop/bn-validation-platform/entity_embeddings.pkl', 'rb') as f:
         entity_dict_embeddings = pickle.load(f)
-        print(len(entity_dict_embeddings.keys())) # 982
-        print(entity_dict_embeddings.keys())
+        # print(len(entity_dict_embeddings.keys())) # 982
+        # print(entity_dict_embeddings.keys())
 
     # with open('/home/dhruv/Desktop/bn-validation-platform/entity_embeddings_part.pkl', 'rb') as f:
     #     entity_dict_embeddings = pickle.load(f)
@@ -82,7 +82,7 @@ def get_matching_entities_from_guideline(sentence):
         if sim > threshold:
             onto = ont_entity.split('$$')[0]
             ent = ont_entity.split('$$')[1]
-            print(ent, sim)
+            # print(ent, sim)
             # print(onto)
             # print(f"{ont_entity.split('$$')[1]}\t\t\t{sim}")
             entity_label_score[ent] = sim
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     sent5 = "Magnetic Resonance Imaging which means Uses strong magnetic fields and radio waves to generate detailed images."
 
     # sent_arr = [sent1, sent2, sent3, sent4, sent5]
-    sent_arr = [sent1]
+    sent_arr = [sent1, sent2]
 
     # create_entity_embeddings()
 
@@ -146,11 +146,11 @@ if __name__ == "__main__":
     for idx, sent in enumerate(sent_arr):
         sent_match_entities = get_matching_entities_from_guideline(sent)
         all = merge_matching_entities(all, sent_match_entities)
-        print(json.dumps(all, indent=2))
+        print(json.dumps(str(all), indent=2))
 
     print(matching_entites_to_pages(all))
 
-    print(json.dumps(matching_entites_to_pages(all), indent=2))
+    # print(json.dumps(matching_entites_to_pages(all), indent=2))
 
 
     # matching_entities = get_matching_entities_from_guideline(sent2)

@@ -84,16 +84,16 @@ def find_redundant_edges_d_separation(graph, debug=False):
         # If removing the edge does not affect d-separation, it is redundant
         return before_removal == after_removal
 
-    graph = BayesianNetwork([
-        ('Burglary', 'Alarm'),
-        ('Earthquake', 'Alarm'),
-        ('Alarm', 'JohnCalls'),
-        ('Alarm', 'MaryCalls'),
-        ('Burglary', 'Earthquake'), # <-- Redundant Edge
-        # Burglary and Earthquake were already independent in the original graph unless conditioned on Alarm.
-        # The new edge does not change this independence, as the two variables are still blocked by the collider at the Alarm unless the Alarm is observed.
-        # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
-    ])
+    # graph = BayesianNetwork([
+    #     ('Burglary', 'Alarm'),
+    #     ('Earthquake', 'Alarm'),
+    #     ('Alarm', 'JohnCalls'),
+    #     ('Alarm', 'MaryCalls'),
+    #     ('Burglary', 'Earthquake'), # <-- Redundant Edge
+    #     # Burglary and Earthquake were already independent in the original graph unless conditioned on Alarm.
+    #     # The new edge does not change this independence, as the two variables are still blocked by the collider at the Alarm unless the Alarm is observed.
+    #     # Therefore, this edge does not add new information or change the probabilistic relationships between variables. It’s redundant in terms of the conditional independencies in the graph.
+    # ])
 
     graph = BayesianNetwork([
         ('Smoking', 'LaryngealCancer'),

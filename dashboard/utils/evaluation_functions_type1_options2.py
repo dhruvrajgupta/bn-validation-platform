@@ -98,7 +98,10 @@ class EvaluationModel(weave.Model):
 
     @weave.op()
     async def predict(self, prompt: str) -> dict:
-        client = openai.AsyncClient()
+        client = openai.AsyncClient(
+            base_url='http://bnv-ollama:11434/v1/',
+        )
+        # client = openai.AsyncClient()
 
         response = await client.beta.chat.completions.parse(
             model=self.model_name,
@@ -112,6 +115,7 @@ class EvaluationModel(weave.Model):
             seed=123
         )
         result = response.choices[0].message.content
+        print(result)
 
         answer_choice_probablities = {
             "A": None,
@@ -135,13 +139,16 @@ class EvaluationModel(weave.Model):
             #     answer_choice_probablities["C"] = np.round(exp(token.logprob) * 100, 2)
         # print(answer_choice_probablities)
         #
-        answer_choice_token_log_prob_content = response.choices[0].logprobs.content[-2]
-        if answer_choice_token_log_prob_content.token == "B":
-            answer_choice_probablities["B"] = np.round(exp(answer_choice_token_log_prob_content.logprob) * 100, 2)
-            answer_choice_probablities["A"] = np.round(100.0 - answer_choice_probablities["B"], 2)
-        else:
-            answer_choice_probablities["A"] = np.round(exp(answer_choice_token_log_prob_content.logprob) * 100, 2)
-            answer_choice_probablities["B"] = np.round(100.0 - answer_choice_probablities["A"],2)
+        # answer_choice_token_log_prob_content = response.choices[0].logprobs.content[-2]
+        # if answer_choice_token_log_prob_content.token == "B":
+        #     answer_choice_probablities["B"] = np.round(exp(answer_choice_token_log_prob_content.logprob) * 100, 2)
+        #     answer_choice_probablities["A"] = np.round(100.0 - answer_choice_probablities["B"], 2)
+        # else:
+        #     answer_choice_probablities["A"] = np.round(exp(answer_choice_token_log_prob_content.logprob) * 100, 2)
+        #     answer_choice_probablities["B"] = np.round(100.0 - answer_choice_probablities["A"],2)
+
+        answer_choice_probablities["A"] = 0
+        answer_choice_probablities["B"] = 0
 
         if result is None:
             raise ValueError("No response from model")
